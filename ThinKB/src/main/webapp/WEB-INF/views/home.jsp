@@ -1,171 +1,180 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>회의방 플랫폼</title>
-    <link rel="stylesheet" href="styles.css">
-<style type="text/css">
+<html lang="ko">
+<style>
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
     color: #333;
-}
-
-.main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-    font-size: 1.5rem;
     font-weight: bold;
-    color: #ffcc00; /* 노란색 */
 }
 
-.header-right {
+.user {
     display: flex;
     align-items: center;
 }
 
-.profile {
-    margin-right: 1rem;
+.user img {
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
 }
 
-.logout-btn {
-    background-color: #ffcc00; /* 노란색 */
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    color: #fff;
-    font-weight: bold;
+main {
+    padding: 20px;
 }
 
-.main-container {
-    display: flex;
-    height: calc(100vh - 80px); /* 헤더 높이만큼 빼줌 */
+.meeting-rooms {
+    margin-bottom: 40px;
 }
 
-.sidebar {
-    width: 250px;
-    background-color: #fff;
-    padding: 1rem;
-    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-}
-
-.sidebar h2 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-}
-
-.room-card {
-    background-color: #fff;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
-}
-
-.content {
-    flex: 1;
-    padding: 2rem;
-    overflow-y: auto;
-}
-
-.content-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.create-room-btn {
-    background-color: #ffcc00; /* 노란색 */
-    border: none;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    border-radius: 4px;
-    color: #fff;
-    font-weight: bold;
+.meeting-rooms h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
 }
 
 .room-list {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    justify-content: space-between;
 }
 
-.my-room-card {
-    background-color: #fff;
-    padding: 1rem;
-    width: calc(33.333% - 1rem);
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.room {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 30%;
+    text-align: center;
+}
+
+.room h3 {
+    margin-top: 0;
+}
+
+.create-room {
+    background-color: #ff0;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 20px;
+    font-size: 16px;
     cursor: pointer;
 }
 
-@media (max-width: 768px) {
-    .sidebar {
-        width: 200px;
-    }
-
-    .my-room-card {
-        width: calc(50% - 1rem);
-    }
+.notifications {
+    margin-bottom: 40px;
 }
 
-@media (max-width: 480px) {
-    .sidebar {
-        display: none;
-    }
-
-    .my-room-card {
-        width: 100%;
-    }
+.notifications h2 {
+    font-size: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
+
+.notifications .notification {
+    display: flex;
+    flex-direction: column;
+}
+
+.notifications button {
+    background-color: #ddd;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.notifications button.blue {
+    background-color: #007bff;
+    color: white;
+}
+
 </style>
+<head>
+    <meta charset="UTF-8">
+    <title>thinKB 홈</title>
+    <link rel="stylesheet" href="<c:url value='/css/style.css'/>">
+    <script src="<c:url value='/js/jquery.min.js'/>"></script>
 </head>
 <body>
-    <header class="main-header">
-        <div class="logo">회의방 로고</div>
-        <div class="header-right">
-            <div class="profile">프로필</div>
-            <button class="logout-btn">로그아웃</button>
+    <header>
+        <div class="logo">
+            <img src="<c:url value='/images/thinKB_logo.png'/>" alt="thinKB Logo">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">사용자 가이드</a></li>
+                <li><a href="#">회의방</a></li>
+                <li><a href="#">내 보고서</a></li>
+                <li><a href="#">알림함</a></li>
+                <li><a href="#">마이페이지</a></li>
+            </ul>
+        </nav>
+        <div class="user">
+            <span>${username} 님</span>
+            <img src="<c:url value='/images/user_profile.png'/>" alt="User Profile">
         </div>
     </header>
-    <div class="main-container">
-        <aside class="sidebar">
-            <h2>회의방 목록</h2>
-            <div class="room-card">회의방 1</div>
-            <div class="room-card">회의방 2</div>
-            <div class="room-card">회의방 3</div>
-            <!-- 추가적인 회의방 카드들 -->
-        </aside>
-        <main class="content">
-            <div class="content-header">
-                <h2>나의 회의방</h2>
-                <button class="create-room-btn">방 만들기</button>
-            </div>
+    <main>
+        <section class="meeting-rooms">
+            <h2>진행중인 회의방</h2>
             <div class="room-list">
-                <div class="my-room-card">나의 회의방 1</div>
-                <div class="my-room-card">나의 회의방 2</div>
-                <div class="my-room-card">나의 회의방 3</div>
-                <!-- 추가적인 나의 회의방 카드들 -->
+                <div class="room">
+                    <h3>진행중인 아이디어 회의방 제목</h3>
+                    <p>1차 투표를 진행해주세요!</p>
+                </div>
+                <div class="room">
+                    <h3>진행중인 아이디어 회의방 제목</h3>
+                    <p>1차 투표를 진행해주세요!</p>
+                </div>
+                <div class="room">
+                    <h3>진행중인 아이디어 회의방 제목</h3>
+                    <p>1차 투표를 진행해주세요!</p>
+                </div>
             </div>
-        </main>
-    </div>
+            <button class="create-room">+ 아이디어 회의방 만들기</button>
+        </section>
+        <section class="notifications">
+            <h2>알림함 <a href="#">+ 더보기</a></h2>
+            <div class="notification">
+                <button class="blue">아직 투표 전이에요! 투표를 진행해주세요</button>
+                <button>아직 투표 전이에요! 투표를 진행해주세요</button>
+                <button>아직 투표 전이에요! 투표를 진행해주세요</button>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
