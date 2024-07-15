@@ -5,6 +5,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
 <style>
 .newRoom-body {
@@ -34,7 +35,6 @@
 
 .custom-input {
 	width: 100%; /* 화면 가로에 꽉 차도록 설정 (여백 20px 고려) */
-	max-width: 400px; /* 최대 너비 설정 */
 	padding: 12px; /* 내부 여백 설정 */
 	border: 3px solid #666; /* 테두리 두께와 색상 설정 */
 	border-radius: 8px; /* 테두리 둥글기 설정 */
@@ -99,33 +99,110 @@
 .calendar-popup .selected {
 	background-color: #ffcc00;
 }
+
+.calendar-nav {
+	display: flex;
+	justify-content: space-between;
+	padding: 0 10px;
+	margin-bottom: 10px;
+}
+
+.calendar-nav span {
+	cursor: pointer;
+}
+
+.calendar-popup .disabled {
+	background-color: #f2f2f2; /* 회색 배경색 */
+	color: #ccc; /* 텍스트 색상 */
+	cursor: not-allowed; /* 커서 모양 변경 */
+}
+
+.timer-container {
+	margin-top: 30px;
+	display: flex;
+	align-items: center;
+}
+
+.timer-label {
+	margin-right: 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.timer-input {
+	width: 60px;
+	padding: 8px;
+	border: 2px solid #666;
+	border-radius: 5px;
+	font-size: 16px;
+	text-align: center;
+}
+
+.timer-input:hover {
+	border-color: #ffcc00;
+}
+
+.yellow-button1 {
+	background-color: #e6b800; /* 진한 노란색 배경색 */
+	color: black; /* 텍스트 색상 */
+	padding: 10px 40px; /* 버튼의 여백 */
+	border: none; /* 테두리 없음 */
+	border-radius: 20px; /* 라운드 처리 */
+	font-size: 20px; /* 텍스트 크기 */
+	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+	font-weight: bold;
+}
 </style>
 </head>
 <body>
+
 	<div class="newRoom-body">
 		<%@ include file="../header.jsp"%>
 	</div>
+
 	<div class="content">
-		<form action="" method="post">
+		<form action="./makeRoom" method="post">
+			<input type="hidden" name="id" value="${userId}" />
 			<div class="title">아이디어 회의 주제</div>
 			<input type="text" class="custom-input" name="title"
 				placeholder="여기에 입력하세요">
-			<div class="title" style="margin-top: 70px;'">회의 종료일</div>
+			
+			<div class="title" style="margin-top: 70px;">회의 상세설명</div>
+			<input type="text" class="custom-input" style="height: 70px;"
+				name="content"
+				placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">
+			
+			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
-				<input type="text" class="date-input" id="datepicker"
-					placeholder="날짜를 선택하세요"> <span class="calendar-icon"
+				<input type="text" class="date-input" name="endDate" id="datepicker"
+					placeholder="YYYY-MM-DD"> <span class="calendar-icon"
 					onclick="toggleCalendar()">📅</span>
 			</div>
+
+			<div class="title" style="margin-top: 70px;">타이머 설정</div>
+			<div>
+				<input type="number" class="timer-input" name="timer_hours" min="0"
+					max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp; <input
+					type="number" class="timer-input" name="timer_minutes" min="0"
+					max="59" placeholder="MM">&nbsp;분&nbsp;&nbsp;&nbsp; <input
+					type="number" class="timer-input" name="timer_seconds" min="0"
+					max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp;
+			</div>
+			
+			<div style="margin: 70px; text-align:center;">
+				<button class="yellow-button1" type="submit">만들기</button>
+			</div>
+
 		</form>
 	</div>
 
 	<div class="calendar-popup" id="calendarPopup">
+		<div class="calendar-nav">
+			<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
+			<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
+		</div>
 		<table id="calendarTable">
 			<thead>
-				<tr>
-					<th colspan="7"><span id="calendarMonth"></span> <span
-						id="calendarYear"></span></th>
-				</tr>
 				<tr>
 					<th>일</th>
 					<th>월</th>
@@ -142,73 +219,123 @@
 	</div>
 
 	<script>
-    // 달력 팝업 열고 닫기 함수
-    function toggleCalendar() {
-        var calendarPopup = document.getElementById("calendarPopup");
-        if (calendarPopup.style.display === "block") {
-            calendarPopup.style.display = "none";
-        } else {
-            calendarPopup.style.display = "block";
-        }
-    }
+		// 달력 팝업 열고 닫기 함수
+		function toggleCalendar() {
+			var calendarPopup = document.getElementById("calendarPopup");
+			if (calendarPopup.style.display === "block") {
+				calendarPopup.style.display = "none";
+			} else {
+				calendarPopup.style.display = "block";
+			}
+		}
 
-    // 초기 달력 생성 함수 (현재 달 기준)
-    function createCalendar() {
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = now.getMonth();
-        var firstDay = new Date(year, month, 1);
-        var lastDay = new Date(year, month + 1, 0);
-        var startDay = firstDay.getDay(); // 월의 첫째 날의 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
-        var totalDays = lastDay.getDate(); // 월의 총 날짜 수
+		// 이전 달 표시 함수
+		function prevMonth() {
+			currentMonth--;
+			if (currentMonth < 0) {
+				currentMonth = 11;
+				currentYear--;
+			}
+			createCalendar();
+		}
 
-        var calendarBody = document.getElementById("calendarBody");
-        calendarBody.innerHTML = ""; // 기존 콘텐츠 초기화
+		// 다음 달 표시 함수
+		function nextMonth() {
+			currentMonth++;
+			if (currentMonth > 11) {
+				currentMonth = 0;
+				currentYear++;
+			}
+			createCalendar();
+		}
 
-        var date = 1;
-        // 행을 생성하여 달력 날짜 채우기
-        for (var i = 0; i < 6; i++) {
-            var row = document.createElement("tr");
-            for (var j = 0; j < 7; j++) {
-                if (i === 0 && j < startDay) {
-                    // 첫 주에서 시작일 이전의 빈 셀 채우기
-                    var cell = document.createElement("td");
-                    row.appendChild(cell);
-                } else if (date > totalDays) {
-                    // 날짜가 초과하면 빈 셀 채우기
-                    break;
-                } else {
-                    // 정상적인 날짜 셀 생성
-                    var cell = document.createElement("td");
-                    cell.textContent = date;
-                    cell.onclick = function() {
-                        selectDate(this);
-                    };
-                    row.appendChild(cell);
-                    date++;
-                }
-            }
-            calendarBody.appendChild(row);
-        }
+		var currentYear;
+		var currentMonth;
 
-        // 달력 상단에 년도와 월 표시
-        document.getElementById("calendarMonth").textContent = (month + 1) + "월";
-        document.getElementById("calendarYear").textContent = year;
-    }
+		function createCalendar() {
+			var now = new Date();
+			if (currentYear === undefined || currentMonth === undefined) {
+				currentYear = now.getFullYear();
+				currentMonth = now.getMonth();
+			}
 
-    // 날짜 선택 함수
-    function selectDate(cell) {
-        var selectedDate = cell.textContent;
-        var selectedMonth = document.getElementById("calendarMonth").textContent.replace("월", "");
-        var selectedYear = document.getElementById("calendarYear").textContent;
-        document.getElementById("datepicker").value = selectedYear + "-" + selectedMonth.padStart(2, '0') + "-" + selectedDate.padStart(2, '0');
-        document.getElementById("calendarPopup").style.display = "none";
-    }
+			var firstDay = new Date(currentYear, currentMonth, 1);
+			var lastDay = new Date(currentYear, currentMonth + 1, 0);
+			var startDay = firstDay.getDay(); // 월의 첫째 날의 요일 (0: 일요일, 1: 월요일, ..., 6: 토요일)
+			var totalDays = lastDay.getDate(); // 월의 총 날짜 수
 
-    // 페이지 로드 시 초기 달력 생성
-    window.onload = function() {
-        createCalendar();
-    };
-</script>
+			var calendarBody = document.getElementById("calendarBody");
+			calendarBody.innerHTML = ""; // 기존 콘텐츠 초기화
+
+			var date = 1;
+			// 행을 생성하여 달력 날짜 채우기
+			for (var i = 0; i < 6; i++) {
+				var row = document.createElement("tr");
+				for (var j = 0; j < 7; j++) {
+					if (i === 0 && j < startDay) {
+						// 첫 주에서 시작일 이전의 빈 셀 채우기
+						var cell = document.createElement("td");
+						row.appendChild(cell);
+					} else if (date > totalDays) {
+						// 날짜가 초과하면 빈 셀 채우기
+						break;
+					} else {
+						// 정상적인 날짜 셀 생성
+						var cell = document.createElement("td");
+						cell.textContent = date;
+						cell.onclick = function() {
+							selectDate(this);
+						};
+
+						// 오늘 이후의 날짜만 선택 가능하도록 설정
+						var currentDate = new Date();
+						if (currentYear > currentDate.getFullYear()
+								|| (currentYear === currentDate.getFullYear() && currentMonth > currentDate
+										.getMonth())
+								|| (currentYear === currentDate.getFullYear()
+										&& currentMonth === currentDate
+												.getMonth() && date >= currentDate
+										.getDate())) {
+							cell.classList.add('selectable');
+						} else {
+							cell.classList.add('disabled');
+						}
+
+						row.appendChild(cell);
+						date++;
+					}
+				}
+				calendarBody.appendChild(row);
+			}
+
+			// 달력 상단에 년도와 월 표시
+			document.getElementById("calendarMonth").textContent = (currentMonth + 1)
+					+ "월";
+			document.getElementById("calendarYear").textContent = currentYear;
+		}
+
+		// 날짜 선택 함수
+		function selectDate(cell) {
+			if (!cell.classList.contains('selectable')) {
+				return; // 선택 불가능한 날짜는 무시
+			}
+
+			var selectedDate = cell.textContent;
+			var selectedMonth = document.getElementById("calendarMonth").textContent
+					.replace("월", "");
+			var selectedYear = document.getElementById("calendarYear").textContent;
+			document.getElementById("datepicker").value = selectedYear + "-"
+					+ selectedMonth.padStart(2, '0') + "-"
+					+ selectedDate.padStart(2, '0');
+			document.getElementById("calendarPopup").style.display = "none";
+		}
+
+		// 페이지 로드 시 초기 달력 생성
+		window.onload = function() {
+			createCalendar();
+		};
+	</script>
+
+
 </body>
 </html>

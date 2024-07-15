@@ -219,9 +219,6 @@
 			<div class="section-wrapper" style="width: 50%;">
 				<div class="section-title">
 					내 보고서
-					<%-- <button class="more-button"
-						onclick="location.href='<c:url value="/more-reports"/>';">
-						+ 더보기</button> --%>
 				</div>
 				<div class="reports-wrapper">
 					<div style="text-align: right;">
