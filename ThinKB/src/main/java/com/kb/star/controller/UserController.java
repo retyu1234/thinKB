@@ -8,8 +8,5 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class UserController {
 
-	@RequestMapping("/main")
-	public String mainView(Model model) {
-		return "main";
-	}
+
 }
