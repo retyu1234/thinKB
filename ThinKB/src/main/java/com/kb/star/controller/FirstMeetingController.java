@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class AddFunctionController {
+public class FirstMeetingController {
 
-	@RequestMapping("/vote")
-	public String vote(Model model) {
-		return "/addFunction/vote";
+	@RequestMapping("/meetingList")
+	public String meetingList(Model model) {
+		return "/firstMeeting/meetingList";
 	}
 	
 	

@@ -24,7 +24,7 @@ public class LoginController {
 	}
 	@RequestMapping("/main")
 	public String mainView(Model model) {
-		return "home";
+		return "main";
 	}
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request,Model model) {

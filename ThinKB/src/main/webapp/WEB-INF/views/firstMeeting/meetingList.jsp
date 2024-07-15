@@ -16,14 +16,14 @@
             padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .header {
+        .header1 {
             text-align: center;
         }
-        .header img {
+        .header1 img {
             width: 100%;
             height: auto;
             max-height: 500px;
-            border-radius: 10px;
+            /* border-radius: 10px; */
         }
         .user-info p {
             margin: 0;
@@ -37,7 +37,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 20px 0;
+            margin: 10px 0;
         }
         .progress {
             background-color: #ffffff;
@@ -46,7 +46,7 @@
             display: flex;
             justify-content: space-around;
             height: 50px;
-            width: 100%;
+            width: 80%;
             border: 1px solid #ccc;
             font-size: 1.3em;
         }
@@ -57,12 +57,23 @@
         .progress input {
             margin-right: 5px;
         }
+        /* 진행중인 단계 */
+        .progress-header-container {
+		    display: flex;
+		    justify-content: left;
+		    width: 80%;
+		    margin: 0 auto;
+		}
+		.progress-header {
+		    margin: 0;
+		    padding: 10px 0;
+		}
         .ideas {
-           margin: 50px 20px; 
+           margin: 70px 20px;
         }
         .idea {
             padding: 20px 20px;
-            background-color: #f0f0f0;
+            background-color: #ffffff;
             border-radius: 10px;
             margin-top: 30px;
             margin-left: auto;
@@ -94,65 +105,68 @@
             font-size: 1.2em; /* 글자 크기를 키움 */
             border: none;
             padding: 20px 20px;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
             margin-top: 50px;
+            margin-right: 180px;
         }
         .yellow-button:hover {
             background-color: #e0a800;
         }
     </style>
     <script>
-        function filterIdeas() {
-            var checkboxes = document.querySelectorAll('.progress input');
-            var ideas = document.querySelectorAll('.idea');
-            var anyChecked = false;
+    function filterIdeas() {
+        var checkboxes = document.querySelectorAll('.progress input');
+        var ideas = document.querySelectorAll('.idea');
+        var anyChecked = false;
+
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                anyChecked = true;
+            }
+        });
+
+        if (!anyChecked) {
+            ideas.forEach(function(idea) {
+                idea.style.display = 'flex'; // 모든 아이디어를 기본적으로 보이도록 설정
+            });
+        } else {
+            ideas.forEach(function(idea) {
+                idea.style.display = 'none'; // 기본적으로 숨김 처리
+            });
 
             checkboxes.forEach(function(checkbox) {
                 if (checkbox.checked) {
-                    anyChecked = true;
+                    var stage = checkbox.getAttribute('data-stage');
+                    var matchingIdeas = document.querySelectorAll('.idea.' + stage);
+                    matchingIdeas.forEach(function(idea) {
+                        idea.style.display = 'flex'; // 해당하는 아이디어만 보이도록 설정
+                    });
                 }
             });
-
-            if (!anyChecked) {
-                ideas.forEach(function(idea) {
-                    idea.classList.add('active');
-                });
-            } else {
-                ideas.forEach(function(idea) {
-                    idea.classList.remove('active');
-                });
-
-                checkboxes.forEach(function(checkbox) {
-                    if (checkbox.checked) {
-                        var stage = checkbox.getAttribute('data-stage');
-                        var matchingIdeas = document.querySelectorAll('.idea.' + stage);
-                        matchingIdeas.forEach(function(idea) {
-                            idea.classList.add('active');
-                        });
-                    }
-                });
-            }
         }
+    }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var checkboxes = document.querySelectorAll('.progress input');
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', filterIdeas);
-            });
-            filterIdeas();
+    document.addEventListener('DOMContentLoaded', function() {
+        var checkboxes = document.querySelectorAll('.progress input');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', filterIdeas);
         });
+        filterIdeas();
+    });
     </script>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
+	<%@ include file="../header.jsp" %>
+	  <div class="header1">
             <img src="./resources/header2.jpg" alt="Header Image">
         </div>
         <div class="button-container">
-            <button class="yellow-button" onclick="createMeetingRoom()">아이디어 회의방 만들기</button>
+            <button class="yellow-button" onclick="createMeetingRoom()">+ 아이디어 회의방 만들기</button>
         </div>
-        <h2>진행중인 단계</h2>
+        <div class="progress-header-container">
+		    <h2 class="progress-header">진행중인 단계</h2>
+		</div>
         <div class="progress-container">
             <div class="progress">
                 <label><input type="checkbox" data-stage="draft" onchange="filterIdeas()"> 초안작성</label>
@@ -165,7 +179,7 @@
         <div class="ideas">
             <div class="idea first-review active">
                 <div class="idea-left">
-                    <h3>아이디어 제목 1</h3><br>
+                    <h3>회의방 제목 1</h3><br>
                     <p>ESG팀</p>
                 </div>
                 <div class="idea-right">
@@ -175,7 +189,7 @@
             </div>
             <div class="idea draft active">
                 <div class="idea-left">
-                    <h3>아이디어 제목 2</h3><br>
+                    <h3>회의방 제목 2</h3><br>
                     <p>ESG팀</p>
                 </div>
                 <div class="idea-right">
