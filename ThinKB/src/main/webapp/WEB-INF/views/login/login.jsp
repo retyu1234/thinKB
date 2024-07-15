@@ -15,7 +15,6 @@
 	position: relative;
 	overflow: hidden;
 }
-
 .login-body::before {
 	content: "";
 	position: absolute;
