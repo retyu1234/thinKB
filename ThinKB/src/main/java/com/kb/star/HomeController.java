@@ -40,7 +40,7 @@ public class HomeController {
     public String home(Model model) {
         // 여기에 필요한 데이터 추가
         model.addAttribute("username", "김국민");
-        return "home";
+        return "main";
     }
 	
 }

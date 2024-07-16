@@ -75,7 +75,7 @@
                 <a href="#">A/B테스트</a> <a href="#">투표</a>
             </div>
             <div class="profile">
-                <img src="<c:url value='/resources/images.jpg'/>" alt="Profile Picture"> 김국민 님
+                <img src="<c:url value='/resources/images.jpg'/>" alt="Profile Picture"> ${userId} 님, 안녕하세요! 
             </div>
             <a href="<c:url value='/logout'/>"> <img src="<c:url value='/resources/logout.png'/>" alt="Logout Icon" class="logout-icon"> </a>
         </div>

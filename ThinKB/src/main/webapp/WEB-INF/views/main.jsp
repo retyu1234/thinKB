@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Home</title>
 <style>
-body {
+.main-body {
 	margin: 0;
 	padding: 0;
 	font-family: Arial, sans-serif;
@@ -156,32 +156,12 @@ body {
 }
 </style>
 </head>
-<body>
-	<%-- <header>
-		<div class="header">
-			<div class="logo">
-				<a href="<c:url value='/'/>"> <img
-					src="<c:url value='/resources/logo1.png'/>" alt="Logo">
-				</a>
-			</div>
-			<div class="menu">
-				<a href="#">사용가이드</a> <a href="#">회의방</a> <a href="#">내 보고서</a> <a
-					href="#">알림함</a> <a href="#">마이페이지</a> <a href="#">A/B테스트</a> <a
-					href="#">투표</a>
-			</div>
-			<div class="profile">
-				<img src="<c:url value='/resources/images.jpg'/>"
-					alt="Profile Picture"> 김국민 님
-			</div>
-			<a href="<c:url value='/logout'/>"> <img
-				src="<c:url value='/resources/logout.png'/>" alt="Logout Icon"
-				class="logout-icon">
-			</a>
-		</div>
-	</header> --%>
+<body class="main-body">
+
 	<%@ include file="./header.jsp" %>
 	<div style="text-align: right; margin-top: 6%; margin-right: 15%;">
-		<button class="yellow-button">+ 아이디어 회의방 만들기</button>
+		<button class="yellow-button"
+		onclick="location.href='./newIdeaRoom'">+ 아이디어 회의방 만들기</button>
 	</div>
 	<div style="height: 400px;"></div>
 
@@ -239,9 +219,6 @@ body {
 			<div class="section-wrapper" style="width: 50%;">
 				<div class="section-title">
 					내 보고서
-					<%-- <button class="more-button"
-						onclick="location.href='<c:url value="/more-reports"/>';">
-						+ 더보기</button> --%>
 				</div>
 				<div class="reports-wrapper">
 					<div style="text-align: right;">
