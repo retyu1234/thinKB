@@ -11,6 +11,8 @@ public class UsersDto {
 	private int teamId;
 	private boolean isDelete;
 	private boolean isAdmin;
+	private String profileImg;
+	
 	public int getUserId() {
 		return userId;
 	}
@@ -64,6 +66,12 @@ public class UsersDto {
 	}
 	public void setAdmin(boolean isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+	public String getProfileImg() {
+		return profileImg;
+	}
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
 	}
 	
 	
