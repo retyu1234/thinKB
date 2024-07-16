@@ -24,7 +24,7 @@ public class LoginController {
 	}
 	@RequestMapping("/main")
 	public String mainView(Model model) {
-		return "home";
+		return "main";
 	}
 	@RequestMapping("/login")
 	public String login(HttpServletRequest request,Model model) {
@@ -32,5 +32,15 @@ public class LoginController {
 		command=new Login(sqlSession);
 		command.execute(model);
 		return "login/login";
+	}
+	@RequestMapping("/mypage")
+	public String mypage(HttpServletRequest request,Model model) {
+
+		return "login/mypage";
+	}
+	@RequestMapping("/adminMain")
+	public String adminMain(HttpServletRequest request,Model model) {
+		
+		return "adminMain";
 	}
 }

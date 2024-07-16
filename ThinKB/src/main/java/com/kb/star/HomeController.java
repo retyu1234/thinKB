@@ -24,23 +24,9 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
+
+		return "redirect:/loginView";
 	}
 	
-	@RequestMapping("/home")
-    public String home(Model model) {
-        // 여기에 필요한 데이터 추가
-        model.addAttribute("username", "김국민");
-        return "home";
-    }
 	
 }
