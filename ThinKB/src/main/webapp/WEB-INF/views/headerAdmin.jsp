@@ -73,7 +73,7 @@
 				</a>
 			</div>
 			<div class="menu">
-				<a href="#">회원관리</a> <a href="#">프로젝트 관리</a> <a href="#">전체 보고서</a>
+				<a href="./userAdminView">회원관리</a> <a href="#">프로젝트 관리</a> <a href="#">전체 보고서</a>
 				<a href="#">A/B테스트</a> <a href="#">투표</a>
 			</div>
 			<div class="profile">
