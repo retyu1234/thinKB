@@ -166,17 +166,39 @@
 			<div class="title">아이디어 회의 주제</div>
 			<input type="text" class="custom-input" name="title"
 				placeholder="여기에 입력하세요">
-			
+
 			<div class="title" style="margin-top: 70px;">회의 상세설명</div>
 			<input type="text" class="custom-input" style="height: 70px;"
 				name="content"
 				placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">
-			
+
 			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
 				<input type="text" class="date-input" name="endDate" id="datepicker"
 					placeholder="YYYY-MM-DD"> <span class="calendar-icon"
-					onclick="toggleCalendar()">📅</span>
+					onclick="toggleCalendar()">📅
+					<div class="calendar-popup" id="calendarPopup">
+						<div class="calendar-nav">
+							<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
+							<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
+						</div>
+						<table id="calendarTable">
+							<thead>
+								<tr>
+									<th>일</th>
+									<th>월</th>
+									<th>화</th>
+									<th>수</th>
+									<th>목</th>
+									<th>금</th>
+									<th>토</th>
+								</tr>
+							</thead>
+							<tbody id="calendarBody">
+							</tbody>
+						</table>
+					</div>
+				</span>
 			</div>
 
 			<div class="title" style="margin-top: 70px;">타이머 설정</div>
@@ -188,35 +210,15 @@
 					type="number" class="timer-input" name="timer_seconds" min="0"
 					max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp;
 			</div>
-			
-			<div style="margin: 70px; text-align:center;">
+
+			<div style="margin: 70px; text-align: center;">
 				<button class="yellow-button1" type="submit">만들기</button>
 			</div>
 
 		</form>
 	</div>
 
-	<div class="calendar-popup" id="calendarPopup">
-		<div class="calendar-nav">
-			<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
-			<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
-		</div>
-		<table id="calendarTable">
-			<thead>
-				<tr>
-					<th>일</th>
-					<th>월</th>
-					<th>화</th>
-					<th>수</th>
-					<th>목</th>
-					<th>금</th>
-					<th>토</th>
-				</tr>
-			</thead>
-			<tbody id="calendarBody">
-			</tbody>
-		</table>
-	</div>
+
 
 	<script>
 		// 달력 팝업 열고 닫기 함수

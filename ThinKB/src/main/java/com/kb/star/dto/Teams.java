@@ -3,7 +3,7 @@ package com.kb.star.dto;
 public class Teams {
 
 	private int teamId;
-	private String teanName;
+	private String teamName;
 	private int departmentId;
 	public int getTeamId() {
 		return teamId;
@@ -11,11 +11,11 @@ public class Teams {
 	public void setTeamId(int teamId) {
 		this.teamId = teamId;
 	}
-	public String getTeanName() {
-		return teanName;
+	public String getTeamName() {
+		return teamName;
 	}
-	public void setTeanName(String teanName) {
-		this.teanName = teanName;
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
 	}
 	public int getDepartmentId() {
 		return departmentId;
