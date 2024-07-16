@@ -2,8 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kb.star.util.LoginDao">
-<!-- 쿼리문 -->
-
-
+<mapper namespace="com.kb.star.util.UserDao">
+    <select id="selectUserIdByUserName" parameterType="String" resultType="Integer">
+        SELECT UserID
+        FROM Users
+        WHERE UserName = #{userName}
+    </select>
 </mapper>

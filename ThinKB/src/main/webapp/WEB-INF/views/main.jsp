@@ -155,12 +155,13 @@
 	margin: 20px 0;
 }
 </style>
+
 </head>
 <body class="main-body">
-	<%@ include file="./header.jsp" %>
+	<%@ include file="./header.jsp"%>
 	<div style="text-align: right; margin-top: 6%; margin-right: 15%;">
-		<button class="yellow-button"
-		onclick="location.href='./newIdeaRoom'">+ 아이디어 회의방 만들기</button>
+		<button class="yellow-button" onclick="location.href='./newIdeaRoom'">+
+			아이디어 회의방 만들기</button>
 	</div>
 	<div style="height: 400px;"></div>
 
@@ -216,9 +217,7 @@
 				</div>
 			</div>
 			<div class="section-wrapper" style="width: 50%;">
-				<div class="section-title">
-					내 보고서
-				</div>
+				<div class="section-title">내 보고서</div>
 				<div class="reports-wrapper">
 					<div style="text-align: right;">
 						<button class="more-button"
@@ -240,8 +239,8 @@
 	<footer class="footer">
 		<hr>
 		<!-- 흰색 가로 줄 -->
-		<div style="text-align: center;">&copy; 2024 DigiCampus 3rd FourSideOut Team. All
-			rights reserved.</div>
+		<div style="text-align: center;">&copy; 2024 DigiCampus 3rd
+			FourSideOut Team. All rights reserved.</div>
 	</footer>
 </body>
 </html>
