@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>Home</title>
 <style>
-body {
+.main-body {
 	margin: 0;
 	padding: 0;
 	font-family: Arial, sans-serif;
@@ -156,10 +156,11 @@ body {
 }
 </style>
 </head>
-<body>
+<body class="main-body">
 	<%@ include file="./header.jsp" %>
 	<div style="text-align: right; margin-top: 6%; margin-right: 15%;">
-		<button class="yellow-button">+ 아이디어 회의방 만들기</button>
+		<button class="yellow-button"
+		onclick="location.href='./newIdeaRoom'">+ 아이디어 회의방 만들기</button>
 	</div>
 	<div style="height: 400px;"></div>
 
@@ -217,9 +218,6 @@ body {
 			<div class="section-wrapper" style="width: 50%;">
 				<div class="section-title">
 					내 보고서
-					<%-- <button class="more-button"
-						onclick="location.href='<c:url value="/more-reports"/>';">
-						+ 더보기</button> --%>
 				</div>
 				<div class="reports-wrapper">
 					<div style="text-align: right;">
