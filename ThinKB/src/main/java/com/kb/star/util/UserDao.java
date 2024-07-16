@@ -2,14 +2,21 @@ package com.kb.star.util;
 
 import java.util.List;
 
+import com.kb.star.dto.Teams;
+import com.kb.star.dto.UserListDto;
 import com.kb.star.dto.UsersDto;
 
 // 마이바티스 인터페이스
 public interface UserDao {
 
-	String userDepartment(String name);
 
-	List<UsersDto> userList(String department);
+	public int departmentAdmin(int userId);
+	List<UserListDto> userListAdmin(int departmentId);
+	String getdepartmentName(int departmentId);
+	List<Teams>getTeamName(int departmentId);
+	void insertUser(UsersDto userDto);
+
+	String userDepartment(String name);
 
 	void insertNewRoom(String title, String content, String departmentId, String teamId, String id, String endDate);
 
@@ -24,5 +31,6 @@ public interface UserDao {
 	void insertThisStage0(String id, int roomNum);
 
 	void insertForwardStage1(String id, int roomNum);
+
 
 }

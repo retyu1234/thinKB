@@ -281,8 +281,30 @@
 			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
 				<input type="text" class="date-input" name="endDate" id="datepicker"
-					placeholder="YYYYMMDD"> <span class="calendar-icon"
-					onclick="toggleCalendar()">📅</span>
+					placeholder="YYYY-MM-DD"> <span class="calendar-icon"
+					onclick="toggleCalendar()">📅
+					<div class="calendar-popup" id="calendarPopup">
+						<div class="calendar-nav">
+							<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
+							<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
+						</div>
+						<table id="calendarTable">
+							<thead>
+								<tr>
+									<th>일</th>
+									<th>월</th>
+									<th>화</th>
+									<th>수</th>
+									<th>목</th>
+									<th>금</th>
+									<th>토</th>
+								</tr>
+							</thead>
+							<tbody id="calendarBody">
+							</tbody>
+						</table>
+					</div>
+				</span>
 			</div>
 
 			<div class="title" style="margin-top: 70px;">타이머 설정</div>
@@ -294,22 +316,18 @@
 					type="number" class="timer-input" name="timer_seconds" min="0"
 					max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp;
 			</div>
-
 			<div class="title" style="margin-top: 70px;">참여자 선택</div>
 			<div class="btn" id="openModalBtn">직원 조회</div>
 			<div class="selected-employees" id="selectedEmployees">
 				<!-- 선택된 직원들이 여기에 추가됩니다 -->
 			</div>
 			<input type="hidden" id="selectedEmployeeIds" name="users">
-
 			<div style="margin: 70px; text-align: center;">
 				<button class="yellow-button1" type="submit">만들기</button>
 			</div>
 
 		</form>
 	</div>
-
-
 	<!-- 모달창 -->
 	<!-- 직원 목록 모달 -->
 	<div id="employeeModal" class="modal">
@@ -344,32 +362,6 @@
 			</div>
 		</div>
 	</div>
-
-
-
-
-	<div class="calendar-popup" id="calendarPopup">
-		<div class="calendar-nav">
-			<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
-			<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
-		</div>
-		<table id="calendarTable">
-			<thead>
-				<tr>
-					<th>일</th>
-					<th>월</th>
-					<th>화</th>
-					<th>수</th>
-					<th>목</th>
-					<th>금</th>
-					<th>토</th>
-				</tr>
-			</thead>
-			<tbody id="calendarBody">
-			</tbody>
-		</table>
-	</div>
-
 	<script>
 		// 달력 팝업 열고 닫기 함수
 		function toggleCalendar() {
