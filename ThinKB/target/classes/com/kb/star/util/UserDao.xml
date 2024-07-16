@@ -2,8 +2,41 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kb.star.util.LoginDao">
+<mapper namespace="com.kb.star.util.UserDao">
 <!-- 쿼리문 -->
+
+<select id="userDepartment" resultType="String">
+	select DepartmentID from Users where UserName=#{param1}
+</select>
+
+<select id="userList" resultType="com.kb.star.dto.UsersDto">
+	select * from Users where DepartmentID=#{param1} and UserId!=#{param2}
+</select>
+
+<insert id="insertNewRoom">
+	INSERT INTO MeetingRooms (RoomTitle,Description,DepartmentID,TeamID,RoomManagerID,StageID,EndDate) values (#{param1},#{param2},#{param3},#{param4},#{param5},1,#{param6})
+</insert>
+
+<select id="roomNumConfirm" resultType="int">
+	select max(RoomID) from MeetingRooms where RoomManagerID=#{param1}
+</select>
+
+<insert id="insertNewTimer">
+	INSERT INTO Timer values (#{param1},0,now(),#{param2})
+</insert>
+
+<insert id="insertUserIntoRoom">
+	INSERT INTO MeetingRoomMembers values (#{param1}, #{param2}, "noPick", 0, 0)
+</insert>
+
+<insert id="insertThisStage0">
+	INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) values (0,0,#{param1},1,#{param2})
+</insert>
+
+<insert id="insertForwardStage1">
+	INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) values (0,1,#{param1},0,#{param2})	
+</insert>
+
 
 
 </mapper>
