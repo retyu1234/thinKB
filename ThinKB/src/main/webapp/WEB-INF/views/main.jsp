@@ -157,7 +157,6 @@
 </style>
 </head>
 <body class="main-body">
-
 	<%@ include file="./header.jsp" %>
 	<div style="text-align: right; margin-top: 6%; margin-right: 15%;">
 		<button class="yellow-button"
