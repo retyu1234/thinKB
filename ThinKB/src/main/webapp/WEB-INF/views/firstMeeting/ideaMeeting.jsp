@@ -147,7 +147,7 @@ body {
     let selectedIdeaId = null;
     let selectedIdeaDescription = null;
 
-    function toggleSelect(element, ideaId, ideaTitle, ideaDescription){
+    function toggleSelect(element, ideaId, ideaTitle, ideaDescription, isCircle){
         if (selectedIdea) {
             selectedIdea.classList.remove('selected');
         }
@@ -156,7 +156,9 @@ body {
             selectedIdea = element;
             selectedIdeaId = ideaId;
             selectedIdeaDescription = ideaDescription;
-            openModal(ideaId, ideaTitle, ideaDescription);
+            if (isCircle) {
+                openModal(ideaId, ideaTitle, ideaDescription);
+            }
         } else {
             selectedIdea = null;
             selectedIdeaId = null;
@@ -260,9 +262,9 @@ body {
 			<c:forEach var="idea" items="${ideas}">
 				<div class="idea-item">
 					<div class="idea-circle"
-						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}")'></div>
+						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}", true)'></div>
 					<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}")'>${idea.title}</div>
+						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}", false)'>${idea.title}</div>
 				</div>
 			</c:forEach>
 		</div>
