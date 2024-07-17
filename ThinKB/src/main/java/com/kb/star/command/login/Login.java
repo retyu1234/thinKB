@@ -35,6 +35,8 @@ public class Login implements LoginCommand {
 			HttpSession session = request.getSession();
             session.setAttribute("userId", dto.getUserId()); // userId 저장
             session.setAttribute("userName", dto.getUserName()); // userName 저장	
+            session.setAttribute("departmentId", dto.getDepartmentId());
+            session.setAttribute("teamId", dto.getTeamId());
             model.addAttribute("loginSuccess", true);
 		}else {
 			model.addAttribute("loginSuccess", false);

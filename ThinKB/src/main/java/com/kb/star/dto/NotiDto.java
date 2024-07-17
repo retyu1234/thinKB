@@ -10,6 +10,7 @@ public class NotiDto {
     private boolean isRead;     // 읽음 여부
     private boolean isDelete;   // 삭제 여부
     private Timestamp createdAt;// 생성 시간
+
     
     // Getters and setters
 	public int getNotificationID() {
@@ -55,10 +56,7 @@ public class NotiDto {
 		this.createdAt = createdAt;
 	}
 
-
 	
-    
-
-    
-    
 }
+
+

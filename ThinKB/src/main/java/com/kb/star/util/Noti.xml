@@ -11,5 +11,10 @@
 		SELECT * FROM Notifications WHERE UserID = #{userId} AND IsDelete = FALSE ORDER BY CreatedAt DESC
 	</select>
 	
+	<!-- IdeaID로 아이디어 정보 가져오기 -->
+    <select id="getIdeaById" resultType="com.kb.star.dto.Ideas">
+        SELECT IdeaID, RoomID, Title FROM Ideas WHERE IdeaID = #{ideaId}
+    </select>
+	
 
 </mapper>

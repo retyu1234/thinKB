@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.star.util.IdeaDao">
+	<select id="selectIdeas" parameterType="map"
+		resultType="com.kb.star.dto.Ideas">
+		SELECT IdeaID, UserID, RoomID, Title, Description, IsDelete, StageID,
+		PickNum
+		FROM Ideas
+		WHERE IsDelete = 0 AND RoomID = #{roomId}
+	</select>
+
+	<update id="incrementPickNum">
+		UPDATE Ideas
+		SET PickNum = PickNum + 1
+		WHERE Title = #{title}
+	</update>
+
+	<select id="selectByTitle" parameterType="String"
+		resultType="com.kb.star.dto.MeetingRooms">
+		SELECT RoomID, RoomTitle, Description, DepartmentID, TeamID, RoomManagerID,
+		StageID, IsDelete, EndDate, CreatedAt
+		FROM MeetingRooms
+		WHERE RoomTitle = #{roomTitle}
+	</select>
+
+	<select id="checkParticipationStatus" parameterType="map"
+		resultType="Integer">
+		SELECT Status
+		FROM StageParticipation
+		WHERE StageID = #{stageId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
+		AND UserID = #{userId}
+	</select>
+
+	<update id="updateParticipationStatus" parameterType="map">
+		UPDATE StageParticipation
+		SET Status = 1
+		WHERE StageID = #{stageId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
+		AND UserID = #{userId}
+	</update>
+
+</mapper>
