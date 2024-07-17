@@ -48,8 +48,7 @@
 		t.TeamName,
 		u.ProfileImg,
 		u.IsDelete,
-		u.IsAdmin,
-		u.
+		u.IsAdmin
 		FROM
 		Users u
 		LEFT JOIN

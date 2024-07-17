@@ -72,5 +72,10 @@ public class LoginController {
 		session.invalidate();
 		return "redirect:/loginView";
 	}
+	//비밀번호 변경
+	@RequestMapping("/passwordChange")
+	public String passwordChange(HttpServletRequest request,Model model) {
+		return "login/passwordChange";
+	}
 	
 }
