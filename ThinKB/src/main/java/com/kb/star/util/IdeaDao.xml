@@ -13,6 +13,14 @@
 		WHERE IsDelete = 0 AND RoomID =
 		#{roomId}
 	</select>
+	
+	<select id="selectIdeaReplys" parameterType="map"
+		resultType="com.kb.star.dto.IdeaReplys">
+		SELECT IdeaID, UserID, RoomID, ReplyStep, IsDelete, ReplyContent
+		FROM IdeaReply
+		WHERE IsDelete = 0 AND  RoomID =
+		#{roomId}
+	</select>
 
 	<update id="incrementPickNum">
 		UPDATE Ideas
@@ -62,5 +70,11 @@
 		WHERE RoomID = #{roomId} AND
 		UserID = #{userId} AND StageID = #{stageId}
 		AND Status = 1
+	</select>
+	
+	<select id="selectIdeaReplysByIdeaId" parameterType="map" resultType="com.kb.star.dto.IdeaReplys">
+		SELECT IdeaReply, IdeaID, UserID, RoomID, ReplyStep, IsDelete, ReplyContent
+		FROM IdeaReply
+		WHERE IsDelete = 0 AND IdeaID = #{ideaId}
 	</select>
 </mapper>

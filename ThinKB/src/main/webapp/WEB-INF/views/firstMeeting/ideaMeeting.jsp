@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
@@ -117,178 +116,132 @@ body {
 	width: 100%;
 	height: 100%;
 	overflow: auto;
+	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	padding-top: 60px;
 }
 
 .modal-content {
-	background-color: #D9D9D9;
-	margin: auto;
+	background-color: #fefefe;
+	margin: 5% auto;
 	padding: 20px;
 	border: 1px solid #888;
-	width: 920px;
-	max-width: 920px;
-	min-height: 489px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	border-radius: 10px; /* 모서리 둥글게 */
-	box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
+	width: 80%;
 }
 
 .close {
 	color: #aaa;
-	align-self: flex-end;
+	float: right;
 	font-size: 28px;
 	font-weight: bold;
-	cursor: pointer;
 }
 
 .close:hover, .close:focus {
 	color: black;
 	text-decoration: none;
-}
-
-.modal-content h2 {
-	font-weight: bold;
-	font-size: 23pt;
-	color: #494949;
-	margin: 20px 0 10px 0; /* 상하 여백 동일하게, 좌우 여백 0 */
-	align-self: flex-start; /* 왼쪽 정렬 */
-}
-
-.description-box, .question-box {
-	width: 836px;
-	/*     height: 87px; */
-	border: 5px solid #FFC000;
-	background-color: #FFFFFF;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 20px;
-	font-weight: 500;
-	font-size: 20px;
-	color: #212121;
-	border-radius: 10px; /* 모서리 둥글게 */
-}
-
-.question-input {
-	width: 100%;
-	height: 100%;
-	border: none;
-	border-bottom: 5px solid #6F614E;
-	background-color: transparent;
-	padding: 10px;
-	font-weight: 500;
-	font-size: 20px;
-	color: #212121;
-	box-sizing: border-box;
-	/*     border-radius: 0 0 10px 10px; /* 모서리 둥글게, 아래쪽만 */
-	*/
+	cursor: pointer;
 }
 </style>
 <script>
-let selectedIdea = null;
-let selectedIdeaId = null;
+    let selectedIdea = null;
+    let selectedIdeaId = null;
+    let selectedIdeaDescription = null;
 
-function toggleSelectCircle(element, ideaId, ideaTitle, ideaDescription) {
-    if (selectedIdea) {
-        selectedIdea.classList.remove('selected');
+    function toggleSelect(element, ideaId, ideaTitle, ideaDescription){
+        if (selectedIdea) {
+            selectedIdea.classList.remove('selected');
+        }
+        if (selectedIdea !== element) {
+            element.classList.add('selected');
+            selectedIdea = element;
+            selectedIdeaId = ideaId;
+            selectedIdeaDescription = ideaDescription;
+            openModal(ideaId, ideaTitle, ideaDescription);
+        } else {
+            selectedIdea = null;
+            selectedIdeaId = null;
+            selectedIdeaDescription = null;
+            closeModal();
+        }
     }
-    if (selectedIdea !== element) {
-        element.classList.add('selected');
-        selectedIdea = element;
-        selectedIdeaId = ideaId;
-        openModal(ideaId, ideaTitle, ideaDescription);
-    } else {
-        selectedIdea = null;
-        selectedIdeaId = null;
-        closeModal();
+
+    function openModal(ideaId, ideaTitle, ideaDescription) {
+        document.getElementById("myModal").style.display = "block";
+        document.getElementById("modal-idea-id").innerText = ideaId;
+        document.getElementById("modal-idea-title").innerText = ideaTitle;
+        document.getElementById("modal-idea-description").innerText = ideaDescription;
+
+        // AJAX 요청을 통해 댓글 데이터 불러오기
+        fetch('${pageContext.request.contextPath}/getIdeaReplies?ideaId=' + ideaId)
+            .then(response => response.json())
+            .then(data => {
+                const repliesContainer = document.getElementById("modal-idea-replies");
+                repliesContainer.innerHTML = '';
+                data.forEach(reply => {
+                    const replyElement = document.createElement('div');
+                    replyElement.className = 'idea-box';
+                    replyElement.innerText = reply.replyContent;
+                    repliesContainer.appendChild(replyElement);
+                });
+            });
     }
-}
 
-function toggleSelectBox(element, ideaId) {
-    if (selectedIdea) {
-        selectedIdea.classList.remove('selected');
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
     }
-    if (selectedIdea !== element) {
-        element.classList.add('selected');
-        selectedIdea = element;
-        selectedIdeaId = ideaId;
-    } else {
-        selectedIdea = null;
-        selectedIdeaId = null;
+
+    function submitVote() {
+        if (selectedIdea) {
+            const selectedTitle = selectedIdea.innerText;
+
+            // 폼 생성 및 제출
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '${pageContext.request.contextPath}/submitVote'; // 실제 투표 제출 경로로 변경
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'selectedIdea';
+            input.value = selectedTitle;
+
+            const roomIdInput = document.createElement('input');
+            roomIdInput.type = 'hidden';
+            roomIdInput.name = 'roomId';
+            roomIdInput.value = '${meetingRoom.roomId}';
+
+            const roomTitleInput = document.createElement('input');
+            roomTitleInput.type = 'hidden';
+            roomTitleInput.name = 'roomTitle';
+            roomTitleInput.value = '${meetingRoom.roomTitle}';
+
+            const userIdInput = document.createElement('input');
+            userIdInput.type = 'hidden';
+            userIdInput.name = 'userId';
+            userIdInput.value = '${sessionScope.userId}';
+
+            const ideaIdInput = document.createElement('input');
+            ideaIdInput.type = 'hidden';
+            ideaIdInput.name = 'ideaId';
+            ideaIdInput.value = selectedIdeaId;
+
+            form.appendChild(input);
+            form.appendChild(roomIdInput);
+            form.appendChild(userIdInput);
+            form.appendChild(roomTitleInput);
+            form.appendChild(ideaIdInput);
+            document.body.appendChild(form);
+            form.submit();
+        } else {
+            alert('아이디어를 선택하세요.');
+        }
     }
-}
 
-function openModal(ideaId, ideaTitle, ideaDescription) {
-    console.log("Opening modal with description: ", ideaDescription); // 디버깅용 로그
-    document.getElementById("myModal").style.display = "flex";
-    document.getElementById("modal-idea-id").innerText = ideaId;
-    document.getElementById("modal-idea-title").innerText = ideaTitle;
-    document.getElementById("modal-idea-description").innerText = ideaDescription;
-}
-
-
-function closeModal() {
-    document.getElementById("myModal").style.display = "none";
-}
-
-function submitVote() {
-    if (selectedIdea) {
-        const selectedTitle = selectedIdea.innerText;
-
-        // 폼 생성 및 제출
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '${pageContext.request.contextPath}/submitVote'; // 실제 투표 제출 경로로 변경
-
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'selectedIdea';
-        input.value = selectedTitle;
-
-        const roomIdInput = document.createElement('input');
-        roomIdInput.type = 'hidden';
-        roomIdInput.name = 'roomId';
-        roomIdInput.value = '${meetingRoom.roomId}';
-
-        const roomTitleInput = document.createElement('input');
-        roomTitleInput.type = 'hidden';
-        roomTitleInput.name = 'roomTitle';
-        roomTitleInput.value = '${meetingRoom.roomTitle}';
-
-        const userIdInput = document.createElement('input');
-        userIdInput.type = 'hidden';
-        userIdInput.name = 'userId';
-        userIdInput.value = '${sessionScope.userId}';
-
-        const ideaIdInput = document.createElement('input');
-        ideaIdInput.type = 'hidden';
-        ideaIdInput.name = 'ideaId';
-        ideaIdInput.value = selectedIdeaId;
-
-        form.appendChild(input);
-        form.appendChild(roomIdInput);
-        form.appendChild(userIdInput);
-        form.appendChild(roomTitleInput);
-        form.appendChild(ideaIdInput);
-        document.body.appendChild(form);
-        form.submit();
-    } else {
-        alert('아이디어를 선택하세요.');
+    window.onload = function() {
+        const Message = '${errorMessage}';
+        if (Message) {
+            alert(Message);
+        }
     }
-}
-
-window.onload = function() {
-    const Message = '${errorMessage}';
-    if (Message) {
-        alert(Message);
-    }
-}
-
 </script>
 </head>
 <body>
@@ -307,13 +260,11 @@ window.onload = function() {
 			<c:forEach var="idea" items="${ideas}">
 				<div class="idea-item">
 					<div class="idea-circle"
-						onclick="toggleSelectCircle(this, ${idea.ideaID}, '${idea.title}', '${idea.description}')"></div>
+						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}")'></div>
 					<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-						onclick="toggleSelectBox(this, ${idea.ideaID})">${idea.title}</div>
+						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}")'>${idea.title}</div>
 				</div>
 			</c:forEach>
-
-
 		</div>
 		<button class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
 	</div>
@@ -322,16 +273,18 @@ window.onload = function() {
 	<div id="myModal" class="modal">
 		<div class="modal-content">
 			<span class="close" onclick="closeModal()">&times;</span>
-			<h2>상세설명</h2>
-			<div class="description-box">
-				<p id="modal-idea-description">${idea.description}</p>
-			</div>
-			<h2>질문하기</h2>
-			<div class="description-box">
-				<div class="question-box">
-					<input type="text" class="question-input"
-						placeholder="여기에 질문을 입력하세요.">
-				</div>
+			<p>
+				<span><input type="hidden" id="modal-idea-id"></span>
+			</p>
+			<p>
+				<span><input type="hidden" id="modal-idea-title"></span>
+			</p>
+			<p>
+				상세설명 : <span id="modal-idea-description"></span>
+			</p>
+			<p>질문하기</p>
+			<div class="idea-container" id="modal-idea-replies">
+				<!-- 댓글 내용이 여기에 동적으로 추가됩니다 -->
 			</div>
 		</div>
 	</div>
