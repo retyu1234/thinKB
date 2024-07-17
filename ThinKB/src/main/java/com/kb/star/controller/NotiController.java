@@ -17,6 +17,7 @@ import com.kb.star.dto.Ideas;
 import com.kb.star.dto.NotiDto;
 import com.kb.star.util.NotiDao;
 
+
 @Controller
 public class NotiController {
 	
