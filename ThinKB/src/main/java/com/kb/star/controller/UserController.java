@@ -43,6 +43,6 @@ public class UserController {
 		model.addAttribute("request",request);
 		command = new InsertUser(sqlSession);
 		command.execute(model);
-		return "redirect:/";
+		return "redirect:/userAdminView";
 	}
 }

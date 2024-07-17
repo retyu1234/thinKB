@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kb.star.command.login.Login;
 import com.kb.star.command.login.LoginCommand;
+import com.kb.star.command.login.Mypage;
+import com.kb.star.command.login.ProfileImg;
 
 @Controller
 public class LoginController {
@@ -38,8 +40,20 @@ public class LoginController {
 	}
 	//마이페이지
 	@RequestMapping("/mypage")
-	public String mypage(HttpServletRequest request,Model model) {
-
+	public String mypage(HttpSession session,HttpServletRequest request,Model model) {
+		int userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("request", request);
+		model.addAttribute("userId",userId);
+		command=new Mypage(sqlSession);
+		command.execute(model);
+		return "login/mypage";
+	}
+	//프로필사진 변경
+	@RequestMapping("/updateProfileImg")
+	public String updateProfileImg(HttpServletRequest request,Model model) {
+		model.addAttribute("request", request);
+		command=new ProfileImg(sqlSession);
+		command.execute(model);
 		return "login/mypage";
 	}
 	//관리자메인
@@ -57,6 +71,11 @@ public class LoginController {
 		// 세션 무효화
 		session.invalidate();
 		return "redirect:/loginView";
+	}
+	//비밀번호 변경
+	@RequestMapping("/passwordChange")
+	public String passwordChange(HttpServletRequest request,Model model) {
+		return "login/passwordChange";
 	}
 	
 }
