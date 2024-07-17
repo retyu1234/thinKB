@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>My Page</title>
 <style>
-body {
+.mypage-body {
 	font-family: 'Arial', sans-serif;
 	background-color: #f4f4f4;
 	margin: 0;
@@ -134,39 +134,48 @@ tr:hover {
         }
     </script>
 </head>
-<body>
-	<%@ include file="../header.jsp" %>
+<body class="mypage-body">
+	<%@ include file="../header.jsp"%>
 	<div class="container">
 		<h1>마이페이지</h1>
 		<div class="profile-section">
-			<img src="./resources/profile1.png" alt="Profile Picture"
-				class="profile-pic"> <br>
+			<c:choose>
+				<c:when test="${not empty user.profileImg}">
+					<img src="./upload/${user.profileImg}" alt="Profile Picture"
+						class="profile-pic">
+				</c:when>
+				<c:otherwise>
+					<img src="./resources/profile1.png" alt="Profile Picture"
+						class="profile-pic">
+				</c:otherwise>
+			</c:choose>
+			<br>
 			<button class="change-pic-btn" onclick="openModal()">프로필 변경</button>
 		</div>
 		<table>
 			<tr>
 				<th>사용자 ID</th>
-				<td>{user.UserID}</td>
+				<td>${user.userId}</td>
 			</tr>
 			<tr>
 				<th>사용자 이름</th>
-				<td>{user.UserName}</td>
+				<td>${user.userName}</td>
 			</tr>
 			<tr>
 				<th>이메일</th>
-				<td>{user.Email}</td>
+				<td>${user.email}</td>
 			</tr>
 			<tr>
 				<th>생일</th>
-				<td>{user.birth}</td>
+				<td>${user.birth}</td>
 			</tr>
 			<tr>
 				<th>부서</th>
-				<td>{user.DepartmentName}</td>
+				<td>${user.departmentName}</td>
 			</tr>
 			<tr>
 				<th>팀</th>
-				<td>{user.TeamName}</td>
+				<td>${user.teamName}</td>
 			</tr>
 		</table>
 	</div>
@@ -175,11 +184,10 @@ tr:hover {
 		<div class="modal-content">
 			<span class="close" onclick="closeModal()">&times;</span>
 			<h2>프로필 사진 업로드</h2>
-			<form action="uploadProfilePicture" method="post"
+			<form action="./updateProfileImg" method="post"
 				enctype="multipart/form-data">
-				<input type="file" name="profilePicture" accept="image/*" required>
-				<br>
-				<br>
+				<input type="file" name="profileImg"> <input type="hidden"
+					name="userId" value="${user.userId}" /> <br> <br>
 				<button type="submit" class="change-pic-btn">업로드</button>
 			</form>
 		</div>

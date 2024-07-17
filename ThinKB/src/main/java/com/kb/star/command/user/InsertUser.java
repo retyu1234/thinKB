@@ -27,12 +27,21 @@ public class InsertUser implements UserCommand {
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		String userName = request.getParameter("userName");
+
 		String birth = request.getParameter("birth");
-		int userId=Integer.parseInt(request.getParameter("userId"));
-		int departmentId=Integer.parseInt(request.getParameter("departmentId"));
-		int teamId=Integer.parseInt(request.getParameter("teamId"));
+
+		String password = BCrypt.hashpw(request.getParameter("userId"), BCrypt.gensalt());
+
+		int userId = Integer.parseInt(request.getParameter("userId"));
+
+		int departmentId = Integer.parseInt(request.getParameter("departmentId"));
+
+		int teamId = Integer.parseInt(request.getParameter("team"));
+
 		String email = request.getParameter("email");
+
 		UserDao dao = sqlSession.getMapper(UserDao.class);
+		dao.insertUser(userId, userName, email, birth, password, departmentId, teamId);
 
 	}
 

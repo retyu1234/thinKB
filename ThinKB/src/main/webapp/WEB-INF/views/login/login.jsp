@@ -15,6 +15,7 @@
 	position: relative;
 	overflow: hidden;
 }
+
 .login-body::before {
 	content: "";
 	position: absolute;
@@ -99,26 +100,35 @@ button {
 }
 </style>
 <script>
-// 페이지 로드 시 실행되는 함수
-window.onload = function() {
-    // loginSuccess 변수를 JavaScript에서 사용할 수 있도록 초기화
-    var loginSuccess = '${loginSuccess}';
-    
-    // loginSuccess 변수가 비어있지 않고 'true'인 경우에만 팝업을 띄우고 메인 페이지로 이동하는 함수
-    function showLoginPopup() {
-        if (loginSuccess && loginSuccess === 'true') { // 로그인 성공일 경우
-        	alert("로그인 성공");
-            window.location.href = './main'; // 메인 페이지로 이동
-        } else if (loginSuccess && loginSuccess === 'false') { // 로그인 실패일 경우
-        	alert("로그인 실패. 다시 시도해주세요.");
-        }
-        // loginSuccess가 비어있는 경우에는 아무런 작업도 하지 않음
-    }
-    
-    // showLoginPopup 함수 호출
-    showLoginPopup();
-};
-    </script>
+	// 페이지 로드 시 실행되는 함수
+	window.onload = function() {
+		// loginSuccess 변수를 JavaScript에서 사용할 수 있도록 초기화
+		var loginSuccess = '${loginSuccess}';
+
+		// loginSuccess 변수가 비어있지 않고 'true'인 경우에만 팝업을 띄우고 메인 페이지로 이동하는 함수
+		function showLoginPopup() {
+			var loginSuccess = "${loginSuccess}";
+
+			if (loginSuccess === 'true') { // 로그인 성공일 경우
+				alert("로그인 성공");
+
+				var isAdmin = "${isAdmin}";
+
+				if (isAdmin === 'true') {
+					window.location.href = './adminMain'; // 관리자 페이지로 이동
+				} else {
+					window.location.href = './main'; // 일반 사용자 페이지로 이동
+				}
+			} else if (loginSuccess === 'false') { // 로그인 실패일 경우
+				alert("로그인 실패. 다시 시도해주세요.");
+			}
+			// loginSuccess가 비어있는 경우에는 아무런 작업도 하지 않음
+		}
+
+		// showLoginPopup 함수 호출
+		showLoginPopup();
+	};
+</script>
 <title>로그인</title>
 </head>
 <body class="login-body">

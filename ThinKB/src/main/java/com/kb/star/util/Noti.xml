@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.kb.star.util.NotiDao">
+
+	<!-- 알림 목록(모든정보) 가져오기 -->
+	<select id="getAllNoti" resultType="com.kb.star.dto.NotiDto">
+		SELECT * FROM Notifications WHERE UserID = #{userId} AND IsDelete = FALSE ORDER BY CreatedAt DESC
+	</select>
+	
+	<!-- IdeaID로 아이디어 정보 가져오기 -->
+    <select id="getIdeaById" resultType="com.kb.star.dto.Ideas">
+        SELECT IdeaID, RoomID, Title FROM Ideas WHERE IdeaID = #{ideaId}
+    </select>
+	
+
+</mapper>

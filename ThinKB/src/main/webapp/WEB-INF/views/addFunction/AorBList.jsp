@@ -43,7 +43,6 @@ body {
 .progress-container {
 	display: flex;
 	justify-content: center;
-	align-items: center;
 	margin: 10px 0;
 }
 
@@ -57,28 +56,33 @@ body {
 	width: 80%;
 	border: 1px solid #ccc;
 	font-size: 1.3em;
+	justify-content: flex-start; /* 전체 컨테이너에서 왼쪽 정렬 */
 }
 
 .progress label {
 	display: flex;
 	align-items: center;
+	margin-left: 40px; /* 레이블 간의 간격 조정 */
 }
 
 .progress input {
 	margin-right: 5px;
 }
+
 /* 진행중인 단계 */
 .progress-header-container {
 	display: flex;
 	justify-content: left;
 	width: 80%;
 	margin: 0 auto;
+	margin-top: 50px;
 }
 
 .progress-header {
 	margin: 0;
 	padding: 10px 0;
 }
+/*  */
 
 .ideas {
 	margin: 70px 20px;
@@ -109,28 +113,59 @@ body {
 }
 
 .idea-right {
-	text-align: right;
-	align-self: flex-end;
-	justify-content: flex-end;
-	display: flex;
-	flex-direction: column;
+    display: flex;
+    justify-content: center; /* 세로로 가운데 정렬 */
+    align-items: flex-end;
+    flex-direction: column;
 }
 
-.yellow-button {
-	background-color: #ffc107;
-	color: white;
-	font-size: 1.2em; /* 글자 크기를 키움 */
-	border: none;
-	padding: 20px 20px;
-	border-radius: 30px;
-	cursor: pointer;
-	margin-top: 50px;
-	margin-right: 180px;
+/* 완료/미완료 버튼 */
+.idea-right button {
+    font-size: 1em;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 50px;
+    width: 200px; /* 버튼 크기를 동일하게 유지 */
+    text-align: center;
 }
 
-.yellow-button:hover {
+.idea-right button.complete {
+	background-color: #d3d3d3; /* 연한 회색 */
+	color: black;
+}
+
+.idea-right button.incomplete {
+	background-color: #ffc107; /* 노란색 */
+	color: black;
+}
+
+.idea-right button.incomplete:hover {
 	background-color: #e0a800;
 }
+
+/* 테스트 생성 버튼 */
+.vote-button-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
+}
+
+.vote-button {
+	background-color: #ffc107;
+	font-size: 1.2em;
+	border: none;
+	width: 300px;
+	padding: 15px 30px;
+	border-radius: 25px;
+	cursor: pointer;
+}
+
+.vote-button:hover {
+	background-color: #e0a800;
+}
+
 </style>
 </head>
 
@@ -139,55 +174,40 @@ body {
 	<div class="header1">
 		<img src="./resources/header2.jpg" alt="Header Image">
 	</div>
-	<div class="button-container">
-		<button class="yellow-button" onclick="createMeetingRoom()">+
-			아이디어 회의방 만들기</button>
-	</div>
 	<div class="progress-header-container">
 		<h2 class="progress-header">진행중인 단계</h2>
 	</div>
 	<div class="progress-container">
 		<div class="progress">
-		<!-- data-stage 수정 필요 이 부분 수정이 필요해. 체크박스를 눌렀을 때 해당 단계인 아이디어만 보여지게 하는건 맞지만, 이후 데이터베이스에서 반복문을 통해 데이터를 가져올거기 때문에 지금 코드처럼  data-stage="draft" 이렇게 작성하면 안돼. 재사용 가능하도록 수정하고싶어-->
-			<label><input type="checkbox" data-stage="draft" onchange="filterIdeas()"> 초안작성</label> 
-			<label><input type="checkbox" data-stage="first-review" onchange="filterIdeas()">1차의견</label> 
-			<label><input type="checkbox" data-stage="second-review" onchange="filterIdeas()"> 2차의견</label> 
-			<label><input type="checkbox" data-stage="final-report" onchange="filterIdeas()"> 최종보고서</label> 
-			<label><input type="checkbox" data-stage="complete" onchange="filterIdeas()"> 완료</label>
+			<label><input type="checkbox" data-stage="draft" onchange="filterIdeas()">미완료</label> 
+			<label><input type="checkbox" data-stage="first-review" onchange="filterIdeas()">완료</label> 
 		</div>
 	</div>
 	<div class="ideas">
 		<div class="idea first-review active">
 			<div class="idea-left">
-				<h3>회의방 제목 1</h3>
+				<h3>A/B테스트 제목 1</h3>
 				<br>
 				<p>ESG팀</p>
 			</div>
 			<div class="idea-right">
-				<p>1차의견</p>
-				<p>2024.01.01 까지</p>
+				<button class="incomplete">미완료</button>
 			</div>
 		</div>
 		<div class="idea draft active">
 			<div class="idea-left">
-				<h3>회의방 제목 2</h3>
+				<h3>A/B테스트 제목 2</h3>
 				<br>
 				<p>ESG팀</p>
 			</div>
 			<div class="idea-right">
-				<p>초안작성</p>
-				<p>2024.01.01 까지</p>
+				<button class="complete">완료</button>
 			</div>
 		</div>
-		<!-- 더 많은 아이디어를 여기에 추가할 수 있습니다 -->
 	</div>
+	<div class="vote-button-container">
+		<button class="vote-button">테스트 생성</button>
 	</div>
-	<script>
-		function createMeetingRoom() {
-			// 회의방 만들기 기능 구현
-			alert("회의방 만들기 기능은 구현되지 않았습니다.");
-		}
-	</script>
 </body>
 
 <script>
