@@ -6,7 +6,7 @@
 <!-- 쿼리문 -->
 
 <select id="userDepartment" resultType="String">
-	select DepartmentID from Users where UserName=#{param1}
+	select DepartmentID from Users where UserId=#{param1}
 </select>
 
 <select id="userList" resultType="com.kb.star.dto.UsersDto">
@@ -37,6 +37,10 @@
 	INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) values (0,1,#{param1},0,#{param2})	
 </insert>
 
+<select id="myMeetingRoom" resultType="com.kb.star.dto.MeetingRooms">
+	SELECT mr.* from MeetingRooms mr inner join MeetingRoomMembers mrm on mr.RoomID = mrm.RoomID 
+	where mr.IsDelete = 0 and mrm.UserID = #{param1} and mr.EndDate >= curdate() order by mr.RoomID desc limit 3;
+</select>
 
 
 </mapper>

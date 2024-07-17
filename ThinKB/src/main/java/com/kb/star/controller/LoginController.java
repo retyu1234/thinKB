@@ -1,6 +1,7 @@
 package com.kb.star.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kb.star.command.login.Login;
 import com.kb.star.command.login.LoginCommand;
+import com.kb.star.command.user.UserInfoCommand;
 
 @Controller
 public class LoginController {
@@ -22,8 +24,13 @@ public class LoginController {
 	public String loginView(Model model) {		
 		return "login/login";
 	}
-	@RequestMapping("/main")
-	public String mainView(Model model) {
+	@RequestMapping("/main") //UserInfoCommand 추가
+	public String mainView(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		int id = (Integer) session.getAttribute("userId");
+		model.addAttribute("id", id);
+		command = new UserInfoCommand(sqlSession);
+		command.execute(model);
 		return "main";
 	}
 	@RequestMapping("/login")

@@ -34,6 +34,11 @@
 	font-weight: bold;
 }
 
+.yellow-button:hover {
+	background-color: #696969;
+	color: white;
+}
+
 .section-wrapper {
 	margin-top: 20px;
 }
@@ -51,6 +56,9 @@
 	padding: 30px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 	margin-bottom: 20px;
+	height: 250px;
+	display: flex;           /* 추가 */
+    flex-direction: column;  /* 추가 */
 }
 
 .room-container {
@@ -58,6 +66,7 @@
 	gap: 20px; /* 작은 네모칸 간격 */
 	flex-wrap: nowrap; /* 줄바꿈하지 않도록 설정 */
 	justify-content: space-between; /* 공간을 균등하게 배치 */
+	flex: 1;       
 }
 
 .room {
@@ -108,6 +117,7 @@
 	font-size: 15px;
 	padding: 0;
 	margin-left: 10px;
+	margin-bottom: 10px;
 }
 
 .notifications {
@@ -154,6 +164,24 @@
 	background-color: #f0f0f0; /* 푸터 가로 줄 색상 */
 	margin: 20px 0;
 }
+
+.no-rooms-message {
+    color: grey;
+    font-size: 15pt;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* 수직으로 정렬되도록 설정 */
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* 높이 설정을 유지하고 */
+    width: 100%;
+}
+
+.no-rooms-message img {
+    width: 100px; /* 이미지 너비 조정 */
+    height: auto; /* 높이 자동 조정 */
+    margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
+}
 </style>
 </head>
 <body class="main-body">
@@ -167,31 +195,47 @@
 	<div class="content">
 		<div class="section-wrapper">
 			<div class="section-title">진행중인 회의방</div>
-			<div class="room-container-wrapper">
+			<div class="room-container-wrapper" style="margin: 0 auto;">
 				<div style="text-align: right;">
-					<button class="more-button"
-						onclick="location.href='<c:url value="/more-reports"/>';">
+					<button class="more-button" onclick="location.href='./meetingList'">
 						+ 더보기</button>
 				</div>
-				<div class="room-container">
-					<div class="room">
-						<h2>회의방 제목</h2>
-						<p>이름: 참여자1</p>
-						<p>기간: 2024년 7월 15일 ~ 2024년 7월 30일</p>
-						<p>진행상황: 진행중</p>
-					</div>
-					<div class="room">
-						<h2>회의방 제목</h2>
-						<p>이름: 참여자2</p>
-						<p>기간: 2024년 8월 1일 ~ 2024년 8월 15일</p>
-						<p>진행상황: 준비중</p>
-					</div>
-					<div class="room">
-						<h2>회의방 제목</h2>
-						<p>이름: 참여자3</p>
-						<p>기간: 2024년 8월 20일 ~ 2024년 9월 5일</p>
-						<p>진행상황: 완료</p>
-					</div>
+				<div class="room-container" style="text-align: center;">
+					<c:choose>
+						<c:when test="${empty roomList}">
+							<div class="no-rooms-message">
+								<div style="text-align: center;">
+									<img src="<c:url value='/resources/noContents.png' />"
+										alt="no Img" style="width: 100px; height: auto;" />
+								</div>
+								<div style="text-align: center;">
+									<p style="font-size: 15pt; color: black;">진행중인 회의가 없습니다!</p>
+								</div>
+							</div>
+						</c:when>
+
+						<c:otherwise>
+							<c:forEach var="li" items="${roomList}">
+								<div class="room">
+									<h2>${li.getRoomTitle()}</h2>
+									<p>방장 : ${li.getRoomManagerId() }</p>
+									<p>종료일 : ${li.getEndDate() }</p>
+									<p>단계 : 
+										<c:choose>
+											<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+											<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+											<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+											<c:when test="${li.getStageId() == 4}">1차 의견 투표중</c:when>
+											<c:when test="${li.getStageId() == 5}">2차 의견 작성중</c:when>
+											<c:when test="${li.getStageId() == 6}">2차 의견 투표중</c:when>
+											<c:when test="${li.getStageId() == 7}">최종보고서 작성중</c:when>
+											<c:when test="${li.getStageId() == 8}">아이디어 회의 완료</c:when>
+										</c:choose>
+									</p>
+								</div>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
 				</div>
 			</div>
 		</div>
