@@ -128,5 +128,4 @@
 		WHERE UserID = #{userId}
 	</update>
 
-
 </mapper>

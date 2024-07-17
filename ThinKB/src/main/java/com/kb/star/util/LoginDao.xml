@@ -3,11 +3,19 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kb.star.util.LoginDao">
-<!-- 쿼리문 -->
+	<!-- 쿼리문 -->
 	<select id="login" resultType="com.kb.star.dto.UsersDto">
 		select * from Users where
 		UserID=#{param1}
 	</select>
-
+	<update id="updatePassword">
+		UPDATE users
+		SET password = #{newPassword}
+		WHERE user_id = #{userId}
+	</update>
+	<!-- 비밀번호변경 전 본인확인 -->
+	<select id="checkUser" resultType="com.kb.star.dto.UsersDto">
+		SELECT * from Users where UserID=#{userId} and Birth = ${birth} 
+	</select>
 
 </mapper>
