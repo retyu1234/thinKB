@@ -6,23 +6,43 @@
 <mapper namespace="com.kb.star.util.IdeaDao">
 	<select id="selectIdeas" parameterType="map"
 		resultType="com.kb.star.dto.Ideas">
-		SELECT IdeaID, UserID, RoomID, Title, Description, IsDelete, StageID,
+		SELECT IdeaID, UserID, RoomID, Title, Description,
+		IsDelete, StageID,
 		PickNum
 		FROM Ideas
-		WHERE IsDelete = 0 AND RoomID = #{roomId}
+		WHERE IsDelete = 0 AND RoomID =
+		#{roomId}
+	</select>
+	
+	<select id="selectIdeaReplys" parameterType="map"
+		resultType="com.kb.star.dto.IdeaReplys">
+		SELECT IdeaID, UserID, RoomID, ReplyStep, IsDelete, ReplyContent
+		FROM IdeaReply
+		WHERE IsDelete = 0 AND  RoomID =
+		#{roomId}
 	</select>
 
 	<update id="incrementPickNum">
 		UPDATE Ideas
 		SET PickNum = PickNum + 1
-		WHERE Title = #{title}
+		WHERE Title =
+		#{title}
+	</update>
+
+	<update id="decrementPickNum">
+		UPDATE Ideas
+		SET PickNum = PickNum - 1
+		WHERE IdeaID =
+		#{ideaId}
 	</update>
 
 	<select id="selectByTitle" parameterType="String"
 		resultType="com.kb.star.dto.MeetingRooms">
-		SELECT RoomID, RoomTitle, Description, DepartmentID, TeamID, RoomManagerID,
+		SELECT RoomID, RoomTitle, Description, DepartmentID,
+		TeamID, RoomManagerID,
 		StageID, IsDelete, EndDate, CreatedAt
-		FROM MeetingRooms
+		FROM
+		MeetingRooms
 		WHERE RoomTitle = #{roomTitle}
 	</select>
 
@@ -30,15 +50,31 @@
 		resultType="Integer">
 		SELECT Status
 		FROM StageParticipation
-		WHERE StageID = #{stageId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
+		WHERE StageID =
+		#{stageId} AND RoomID = #{roomId}
 		AND UserID = #{userId}
 	</select>
 
 	<update id="updateParticipationStatus" parameterType="map">
-		UPDATE StageParticipation
-		SET Status = 1
-		WHERE StageID = #{stageId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
+		UPDATE
+		StageParticipation
+		SET Status = 1 ,IdeaID = #{ideaId}
+		WHERE StageID =
+		#{stageId} AND RoomID = #{roomId}
 		AND UserID = #{userId}
 	</update>
 
+	<select id="getVotedIdeaId" parameterType="map" resultType="int">
+		SELECT IdeaID
+		FROM StageParticipation
+		WHERE RoomID = #{roomId} AND
+		UserID = #{userId} AND StageID = #{stageId}
+		AND Status = 1
+	</select>
+	
+	<select id="selectIdeaReplysByIdeaId" parameterType="map" resultType="com.kb.star.dto.IdeaReplys">
+		SELECT IdeaReply, IdeaID, UserID, RoomID, ReplyStep, IsDelete, ReplyContent
+		FROM IdeaReply
+		WHERE IsDelete = 0 AND IdeaID = #{ideaId}
+	</select>
 </mapper>
