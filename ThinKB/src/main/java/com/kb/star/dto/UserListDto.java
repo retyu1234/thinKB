@@ -11,6 +11,15 @@ public class UserListDto {
 	private String teamName;
 	private boolean isDelete;
 	private boolean isAdmin;
+	private String profileImg;
+
+	public String getProfileImg() {
+		return profileImg;
+	}
+
+	public void setProfileImg(String profileImg) {
+		this.profileImg = profileImg;
+	}
 
 	public int getUserId() {
 		return userId;

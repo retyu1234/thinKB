@@ -67,14 +67,22 @@
     <header>
         <div class="header">
             <div class="logo">
-                <a href="<c:url value='./main'/>"> <img src="<c:url value='/resources/logo1.png'/>" alt="Logo"> </a>
+                <a href="<c:url value='./main'/>"> <img src="<c:url value='./resources/logo1.png'/>" alt="Logo"> </a>
             </div>
             <div class="menu">
                 <a href="#">사용가이드</a> <a href="#">회의방</a> <a href="#">내 보고서</a> <a href="#">알림함</a> <a href="#">마이페이지</a>
                 <a href="#">A/B테스트</a> <a href="#">투표</a>
             </div>
             <div class="profile">
-                <img src="<c:url value='/resources/images.jpg'/>" alt="Profile Picture"> ${userName} 님
+            <a href="<c:url value='./mypage'/>">
+               <c:choose>
+            <c:when test="${not empty profileImg}">
+                <img src="<c:url value='./upload/${profileImg}'/>" alt="Profile Image">
+            </c:when>
+            <c:otherwise>
+                <img src="<c:url value='./resources/profile1.png'/>" alt="Logo">
+            </c:otherwise>
+        </c:choose></a> ${userName} 님
             </div>
             <a href="<c:url value='/logout'/>"> <img src="<c:url value='/resources/logout.png'/>" alt="Logout Icon" class="logout-icon"> </a>
         </div>
