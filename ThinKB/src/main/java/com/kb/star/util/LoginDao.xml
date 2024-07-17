@@ -11,11 +11,12 @@
 	<update id="updatePassword">
 		UPDATE users
 		SET password = #{newPassword}
-		WHERE user_id = #{userId}
+		WHERE
+		user_id = #{userId}
 	</update>
 	<!-- 비밀번호변경 전 본인확인 -->
 	<select id="checkUser" resultType="com.kb.star.dto.UsersDto">
-		SELECT * from Users where UserID=#{userId} and Birth = ${birth} 
+		SELECT * FROM Users WHERE UserID = #{param1} AND Birth = #{param2}
 	</select>
 
 </mapper>

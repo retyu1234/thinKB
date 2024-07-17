@@ -8,6 +8,6 @@ public interface LoginDao {
 
 	public UsersDto login(String userId);
 	void updatePassword(int userId,String password);
-	UsersDto checkUser(@Param("userId") int userId,@Param("birth")String birth);
+	UsersDto checkUser(int userId,String birth);
 }
 

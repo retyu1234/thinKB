@@ -10,9 +10,7 @@
 <link
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	rel="stylesheet">
-<link
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-	rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <style>
 .password-body {
 	font-family: Arial, sans-serif;
@@ -140,54 +138,31 @@
 	<div class="password-container">
 		<div class="back-button">
 			<a href="javascript:history.back()"><i class="fas fa-arrow-left"></i>
-				이전</a>
+				</a>
 		</div>
-<h1 class="password-h1">비밀번호 변경</h1>
-<form id="passwordForm" action="./checkUser" method="post" target="hiddenFrame">
-    <div class="form-group">
-        <label for="userId">직원번호</label>
-        <input type="text" id="userId" name="userId" placeholder="직원번호를 입력하세요" required>
-    </div>
-    <div class="form-group">
-        <label for="birth">생년월일</label>
-        <input type="date" id="birth" name="birth" placeholder="생년월일을 입력하세요(6자리)" required>
-    </div>
-    <div class="form-group1">
-        <input type="submit" value="본인확인">
-    </div>
-</form>
-
-<!-- 숨겨진 iframe -->
-<iframe name="hiddenFrame" style="display:none;"></iframe>
-
-<!-- 비밀번호 변경 모달 -->
-<div id="changePasswordModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!-- 모달 내용은 서버에서 반환됩니다 -->
-        </div>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script>
-$(document).ready(function() {
-    $('#passwordForm').submit(function() {
-        setTimeout(function() {
-            var modalContent = $('iframe[name=hiddenFrame]').contents().find('body').html();
-            if (modalContent.includes('비밀번호 변경')) {
-                $('#changePasswordModal .modal-content').html(modalContent);
-                $('#changePasswordModal').modal('show');
-            } else {
-                var errorMsg = $(modalContent).find('.error-message').text();
-                if (errorMsg) {
-                    alert(errorMsg);
-                }
-            }
-        }, 500); // 서버 응답을 기다리기 위한 짧은 지연
-    });
-});
-</script>
+		<h1 class="password-h1">비밀번호 변경</h1>
+		<form id="passwordForm" action="./checkUser" method="post"
+			target="_self">
+			<div class="form-group">
+				<label for="userId">직원번호</label> <input type="text" id="userId"
+					name="userId" placeholder="직원번호를 입력하세요" required>
+			</div>
+			<div class="form-group">
+				<label for="birth">생년월일</label> <input type="date" id="birth"
+					name="birth" placeholder="생년월일을 입력하세요(6자리)" required>
+			</div>
+			<div class="form-group1">
+				<input type="submit" value="본인확인">
+			</div>
+		</form>
+	</div>
+	<c:if test="${not empty error}">
+		<script>
+			alert('${error}');
+		</script>
+	</c:if>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

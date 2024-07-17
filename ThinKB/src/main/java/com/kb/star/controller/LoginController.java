@@ -16,6 +16,7 @@ import com.kb.star.command.login.Login;
 import com.kb.star.command.login.LoginCommand;
 import com.kb.star.command.login.Mypage;
 import com.kb.star.command.login.ProfileImg;
+import com.kb.star.command.login.UpdatePassword;
 
 @Controller
 public class LoginController {
@@ -85,10 +86,19 @@ public class LoginController {
 	public String checkUser(HttpServletRequest request,Model model) {
 		model.addAttribute("request", request);
 		command=new CheckUser(sqlSession);
+		command.execute(model);
 		Map<String, Object> map = model.asMap();
 		String path=(String)map.get("path");
-		System.out.println(path);
+		return path;
+	}
+	//비밀번호 변경update
+	@RequestMapping("/updatePassword")
+	public String updatePassword(HttpServletRequest request,Model model) {
+		model.addAttribute("request", request);
+		command=new UpdatePassword(sqlSession);
 		command.execute(model);
+		Map<String, Object> map = model.asMap();
+		String path=(String)map.get("path");
 		return path;
 	}
 	

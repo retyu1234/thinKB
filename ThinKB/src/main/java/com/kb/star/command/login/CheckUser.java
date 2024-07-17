@@ -28,15 +28,15 @@ public class CheckUser implements LoginCommand {
 		String birth=request.getParameter("birth");
 		LoginDao dao=sqlSession.getMapper(LoginDao.class);
 		UsersDto dto=dao.checkUser(userId, birth);
-		
+		String path=null;
 	    if (dto != null) {
-	    	System.out.println("췌크"+userId);
 	        model.addAttribute("user",dto);
-	        model.addAttribute("path","login/passwordChangeModal");
+	        path="login/passwordChangeModal";
+	        model.addAttribute("path",path);
 	    }else {
-	    	System.out.println("췌크1"+userId);
 	        model.addAttribute("error", "사용자 정보가 일치하지 않습니다.");
-	        model.addAttribute("path","login/passwordChange");
+	        path="login/passwordChange";
+	        model.addAttribute("path",path);
 	    }
 	}
 
