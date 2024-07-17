@@ -6,7 +6,7 @@
 <!-- 쿼리문 -->
 	<select id="login" resultType="com.kb.star.dto.UsersDto">
 		select * from Users where
-		UserID=#{param1} and Password=#{param2}
+		UserID=#{param1}
 	</select>
 
 

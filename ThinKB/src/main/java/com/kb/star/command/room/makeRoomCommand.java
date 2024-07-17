@@ -80,13 +80,13 @@ public class makeRoomCommand implements RoomCommand {
 		//참여여부 0단계(방생성)->모두 참여
 		dao.insertThisStage0(id, roomNum);
 		for (String user : list) {
-			dao.insertThisStage0(id, roomNum);
+			dao.insertThisStage0(user, roomNum);
 		}
 		
 		//참여여부 1단계(초안작성) -> 모두 미참여로 만들어두기
 		dao.insertForwardStage1(id, roomNum);
 		for (String user : list) {
-			dao.insertForwardStage1(id, roomNum);
+			dao.insertForwardStage1(user, roomNum);
 		}
 
 		
