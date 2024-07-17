@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.RequestParam;
 import com.kb.star.command.firstMeeting.FirstMeetingCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
@@ -32,6 +32,7 @@ public class FirstMeetingController {
 		this.command = new FirstMeeting(sqlSession); // SqlSession을 사용하여 FirstMeetingCommand 구현체를 생성
 	}
 
+	// 진행 중인 회의 및 단계
 	@RequestMapping("/meetingList")
 	public String meetingList(Model model) {
 		return "/firstMeeting/meetingList";
