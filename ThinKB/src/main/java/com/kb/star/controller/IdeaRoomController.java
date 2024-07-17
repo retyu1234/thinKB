@@ -24,6 +24,7 @@ public class IdeaRoomController {
 		this.sqlSession = sqlSession;
 	}
 	
+	// 메인에서 회의방 생성버튼 눌렀을때, 동일 부서직원 목록 조회, 저장해서 view로 이동
 	@RequestMapping("/newIdeaRoom")
 	public String newIdeaRoom(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();

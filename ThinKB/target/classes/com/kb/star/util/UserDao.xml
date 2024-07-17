@@ -78,11 +78,11 @@
 		#{param6}, #{param7}, null, false, false)
 	</insert>
 
-
 	<select id="userDepartment" resultType="String">
-		select DepartmentID from
-		Users where UserName=#{param1}
+		select DepartmentID from Users where UserId=#{param1}
 	</select>
+
+
 
 	<select id="userList" resultType="com.kb.star.dto.UsersDto">
 		select * from Users where
@@ -116,6 +116,15 @@
 		(0,0,#{param1},1,#{param2})
 	</insert>
 
+
+	<select id="myMeetingRoom"
+		resultType="com.kb.star.dto.MeetingRooms">
+		SELECT mr.* from MeetingRooms mr inner join MeetingRoomMembers mrm on
+		mr.RoomID = mrm.RoomID
+		where mr.IsDelete = 0 and mrm.UserID = #{param1} and mr.EndDate >=
+		curdate() order by mr.RoomID desc limit 3;
+	</select>
+
 	<insert id="insertForwardStage1">
 		INSERT into StageParticipation
 		(IdeaID,StageID,UserID,Status,RoomID) values
@@ -124,9 +133,11 @@
 	<!-- 프로필사진 업데이트 -->
 	<update id="updateProfileImg" parameterType="map">
 		UPDATE Users
-		SET ProfileImg = #{profileImg}
+		SET
+		ProfileImg = #{profileImg}
 		WHERE UserID = #{userId}
 	</update>
+
 
 
 </mapper>
