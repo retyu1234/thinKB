@@ -16,5 +16,9 @@
         SELECT IdeaID, RoomID, Title FROM Ideas WHERE IdeaID = #{ideaId}
     </select>
 	
+	<!-- 알림 읽음 상태 업데이트 -->
+    <update id="updateReadStatus">
+        UPDATE Notifications SET IsRead = true WHERE NotificationID = #{notificationId}
+    </update>
 
 </mapper>
