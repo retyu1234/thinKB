@@ -11,6 +11,12 @@ body {
 	background-color: #f5f5f5;
 }
 
+.content {
+	padding: 20px;
+	margin-left: 15%;
+	margin-right: 15%;
+}
+
 .container {
 	width: 80%;
 	margin: 0 auto;
@@ -117,19 +123,19 @@ body {
 }
 
 .yellow-button {
-	background-color: #ffc107;
-	color: white;
-	font-size: 1.2em; /* 글자 크기를 키움 */
-	border: none;
-	padding: 20px 20px;
-	border-radius: 30px;
-	cursor: pointer;
-	margin-top: 50px;
-	margin-right: 180px;
+	background-color: #e6b800; /* 진한 노란색 배경색 */
+	color: black; /* 텍스트 색상 */
+	padding: 10px 20px; /* 버튼의 여백 */
+	border: none; /* 테두리 없음 */
+	border-radius: 20px; /* 라운드 처리 */
+	font-size: 20px; /* 텍스트 크기 */
+	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+	font-weight: bold;
 }
 
 .yellow-button:hover {
-	background-color: #e0a800;
+	background-color: #696969;
+	color: white;
 }
 </style>
 </head>
@@ -139,8 +145,9 @@ body {
 	<div class="header1">
 		<img src="./resources/header2.jpg" alt="Header Image">
 	</div>
+	<div class="content">
 	<div class="button-container">
-		<button class="yellow-button" onclick="createMeetingRoom()">+
+		<button class="yellow-button" onclick="location.href='./newIdeaRoom'">+
 			아이디어 회의방 만들기</button>
 	</div>
 	<div class="progress-header-container">
@@ -148,12 +155,15 @@ body {
 	</div>
 	<div class="progress-container">
 		<div class="progress">
-		<!-- data-stage 수정 필요 이 부분 수정이 필요해. 체크박스를 눌렀을 때 해당 단계인 아이디어만 보여지게 하는건 맞지만, 이후 데이터베이스에서 반복문을 통해 데이터를 가져올거기 때문에 지금 코드처럼  data-stage="draft" 이렇게 작성하면 안돼. 재사용 가능하도록 수정하고싶어-->
-			<label><input type="checkbox" data-stage="draft" onchange="filterIdeas()"> 초안작성</label> 
-			<label><input type="checkbox" data-stage="first-review" onchange="filterIdeas()">1차의견</label> 
-			<label><input type="checkbox" data-stage="second-review" onchange="filterIdeas()"> 2차의견</label> 
-			<label><input type="checkbox" data-stage="final-report" onchange="filterIdeas()"> 최종보고서</label> 
-			<label><input type="checkbox" data-stage="complete" onchange="filterIdeas()"> 완료</label>
+			<!-- data-stage 수정 필요 이 부분 수정이 필요해. 체크박스를 눌렀을 때 해당 단계인 아이디어만 보여지게 하는건 맞지만, 이후 데이터베이스에서 반복문을 통해 데이터를 가져올거기 때문에 지금 코드처럼  data-stage="draft" 이렇게 작성하면 안돼. 재사용 가능하도록 수정하고싶어-->
+			<label><input type="checkbox" data-stage="draft"
+				onchange="filterIdeas()"> 초안작성</label> <label><input
+				type="checkbox" data-stage="first-review" onchange="filterIdeas()">1차의견</label>
+			<label><input type="checkbox" data-stage="second-review"
+				onchange="filterIdeas()"> 2차의견</label> <label><input
+				type="checkbox" data-stage="final-report" onchange="filterIdeas()">
+				최종보고서</label> <label><input type="checkbox" data-stage="complete"
+				onchange="filterIdeas()"> 완료</label>
 		</div>
 	</div>
 	<div class="ideas">
@@ -179,8 +189,8 @@ body {
 				<p>2024.01.01 까지</p>
 			</div>
 		</div>
+		</div>
 		<!-- 더 많은 아이디어를 여기에 추가할 수 있습니다 -->
-	</div>
 	</div>
 	<script>
 		function createMeetingRoom() {

@@ -1,5 +1,14 @@
 package com.kb.star.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -7,18 +16,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import com.kb.star.command.firstMeeting.FirstMeeting;
 import com.kb.star.command.firstMeeting.FirstMeetingCommand;
+import com.kb.star.command.firstMeeting.MeetingRoomListCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
-import com.kb.star.command.firstMeeting.FirstMeeting;
-
-import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Controller
 public class FirstMeetingController {
@@ -32,9 +35,14 @@ public class FirstMeetingController {
 		this.command = new FirstMeeting(sqlSession); // SqlSession을 사용하여 FirstMeetingCommand 구현체를 생성
 	}
 
-	// 진행 중인 회의 및 단계
+	// 진행 중인 회의 및 단계 + 희의정보 불러오는거 추가함
 	@RequestMapping("/meetingList")
-	public String meetingList(Model model) {
+	public String meetingList(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		int id = (Integer) session.getAttribute("userId");
+		model.addAttribute("id", id);
+		command = new MeetingRoomListCommand(sqlSession);
+		command.execute(model);
 		return "/firstMeeting/meetingList";
 	}
 
