@@ -353,21 +353,17 @@
 					max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp;
 					<span class="error-message" id="timerError"></span>
 			</div>
-
 			<div class="title" style="margin-top: 70px;">참여자 선택</div>
 			<div class="btn" id="openModalBtn">직원 조회</div>
 			<div id="selectedEmployees">
 				<!-- 선택된 직원들이 여기에 표시됩니다 -->
 			</div>
 			<input type="hidden" id="selectedEmployeeIds" name="users">
-
 			<div style="margin: 70px; text-align: center;">
 				<button class="btn" type="submit">만들기</button>
 			</div>
 		</form>
 	</div>
-
-
 	<!-- 모달창 -->
 	<!-- 직원 목록 모달 -->
 	<div id="employeeModal" class="modal">
@@ -401,7 +397,10 @@
 			</div>
 		</div>
 	</div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> refs/heads/main
 	<script>
 		// 달력 팝업 열고 닫기 함수
 		function toggleCalendar() {

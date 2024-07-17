@@ -3,12 +3,28 @@ package com.kb.star.util;
 import java.util.List;
 
 import com.kb.star.dto.MeetingRooms;
+
+import com.kb.star.dto.Teams;
+import com.kb.star.dto.UserListDto;
 import com.kb.star.dto.UsersDto;
 
 // 마이바티스 인터페이스
 public interface UserDao {
 
+
 	String userDepartment(int id);
+
+
+	public int departmentAdmin(int userId);
+	List<UserListDto> userListAdmin(int departmentId);
+	UserListDto userListUser(int userId);
+	String getdepartmentName(int departmentId);
+	List<Teams>getTeamName(int departmentId);
+	//회원등록
+	void insertUser(int userId,String userName,String email,String birth,String password,int departmentId,int teamId);
+
+	String userDepartment(String name);
+
 
 	void insertNewRoom(String title, String content, String departmentId, String teamId, String id, String endDate);
 
@@ -23,6 +39,9 @@ public interface UserDao {
 	void insertThisStage0(String id, int roomNum);
 
 	void insertForwardStage1(String id, int roomNum);
+	//프로필사진 업데이트
+	 void updateProfileImg(int userId, String profileImg);
+
 
 	List<MeetingRooms> myMeetingRoom(int id);
 

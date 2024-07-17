@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+<mapper namespace="com.kb.star.util.AorBDao">
+
+	<!-- A/B테스트 생성 -->
+	<insert id="makeAorB">
+		insert into ABTests (TestName, VariantA, VariantB) 
+		values (#{TestName}, #{VariantA}, #{VariantB})
+	</insert>	
+	
+	<!-- A/B테스트 목록(모든정보) 가져오기 -->
+	<select id="getAorBList" resultType="com.kb.star.dto.AorBDto">
+		SELECT * FROM ABTests
+	</select>
+	
+
+</mapper>

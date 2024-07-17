@@ -4,5 +4,5 @@ import com.kb.star.dto.UsersDto;
 
 public interface LoginDao {
 
-	public UsersDto login(String email, String password);
+	public UsersDto login(String userId);
 }
