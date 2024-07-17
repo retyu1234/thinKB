@@ -54,11 +54,19 @@
 	display: flex;
 	align-items: center;
 	width: 100%;
-	max-width: 400px;
+	max-width: 600px; /* 전체 컨테이너의 최대 너비를 늘림 */
+	position: relative;
+}
+
+.date-input-wrapper {
+	display: flex;
+	align-items: center;
+	width: 200px; /* 날짜 입력칸의 너비를 고정 */
+	margin-right: 10px; /* 오른쪽 여백 추가 */
 }
 
 .date-input {
-	flex: 1;
+	width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
 	padding: 12px;
 	border: 3px solid #666;
 	border-radius: 8px;
@@ -71,9 +79,22 @@
 	cursor: pointer;
 }
 
-/* 달력 팝업 스타일 */
+.error-message-container {
+	flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
+	white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
+	overflow: hidden; /* 내용이 넘칠 경우 숨김 */
+	text-overflow: ellipsis; /* 내용이 넘칠 경우 ... 표시 */
+}
+
+.error-message {
+	color: red;
+	font-size: 0.9em;
+}
+
 .calendar-popup {
 	position: absolute;
+	top: 100%;
+	left: 0;
 	z-index: 1000;
 	background-color: #fff;
 	border: 1px solid #ccc;
@@ -81,6 +102,7 @@
 	display: none;
 }
 
+/* 기존의 calendar-popup 관련 스타일들... */
 .calendar-popup table {
 	width: 100%;
 	border-collapse: collapse;
@@ -161,15 +183,16 @@
 	display: inline-block;
 	padding: 10px 20px;
 	font-size: 16px;
-	color: white;
-	background-color: blue;
+	color: black;
+	background-color: #e6b800;
 	border: none;
-	border-radius: 5px;
+	border-radius: 10px;
 	cursor: pointer;
 }
 
 .btn:hover {
-	background-color: darkblue;
+	background-color: #696969;
+	color: white;
 }
 
 .modal {
@@ -256,6 +279,12 @@
 .btn-primary:hover {
 	background-color: darkblue;
 }
+
+.error-message {
+	color: red;
+	margin-left: 10px;
+	font-size: 0.9em;
+}
 </style>
 </head>
 <body>
@@ -265,10 +294,12 @@
 	</div>
 
 	<div class="content">
-		<form action="./makeRoom" method="post">
-			<input type="hidden" name="id" value="${userId}" />
-			<input type="hidden" name="departmentId" value="${departmentId}" />
-			<input type="hidden" name="teamId" value="${teamId}" />
+		<form action="./makeRoom" method="post"
+			onsubmit="return validateForm()">
+			<input type="hidden" name="id" value="${userId}" /> <input
+				type="hidden" name="departmentId" value="${departmentId}" /> <input
+				type="hidden" name="teamId" value="${teamId}" />
+
 			<div class="title">아이디어 회의 주제</div>
 			<input type="text" class="custom-input" name="title"
 				placeholder="여기에 입력하세요">
@@ -280,52 +311,57 @@
 
 			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
-				<input type="text" class="date-input" name="endDate" id="datepicker"
-					placeholder="YYYY-MM-DD"> <span class="calendar-icon"
-					onclick="toggleCalendar()">📅
-					<div class="calendar-popup" id="calendarPopup">
-						<div class="calendar-nav">
-							<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
-							<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
-						</div>
-						<table id="calendarTable">
-							<thead>
-								<tr>
-									<th>일</th>
-									<th>월</th>
-									<th>화</th>
-									<th>수</th>
-									<th>목</th>
-									<th>금</th>
-									<th>토</th>
-								</tr>
-							</thead>
-							<tbody id="calendarBody">
-							</tbody>
-						</table>
+				<div class="date-input-wrapper">
+					<input type="text" class="date-input" name="endDate"
+						id="datepicker" placeholder="YYYYMMDD"> <span
+						class="calendar-icon" onclick="toggleCalendar()">📅</span>
+				</div>
+				<div class="error-message-container">
+					<span class="error-message" id="endDateError"></span>
+				</div>
+
+				<div class="calendar-popup" id="calendarPopup">
+					<div class="calendar-nav">
+						<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
+						<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
 					</div>
-				</span>
+					<table id="calendarTable">
+						<thead>
+							<tr>
+								<th>일</th>
+								<th>월</th>
+								<th>화</th>
+								<th>수</th>
+								<th>목</th>
+								<th>금</th>
+								<th>토</th>
+							</tr>
+						</thead>
+						<tbody id="calendarBody">
+						</tbody>
+					</table>
+				</div>
 			</div>
 
 			<div class="title" style="margin-top: 70px;">타이머 설정</div>
 			<div>
 				<input type="number" class="timer-input" name="timer_hours" min="0"
-					max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp; <input
-					type="number" class="timer-input" name="timer_minutes" min="0"
-					max="59" placeholder="MM">&nbsp;분&nbsp;&nbsp;&nbsp; <input
-					type="number" class="timer-input" name="timer_seconds" min="0"
+					max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp;
+					<input type="number" class="timer-input" name="timer_minutes" min="0"
+					max="59" placeholder="MM">&nbsp;분&nbsp;&nbsp;&nbsp;
+					<input type="number" class="timer-input" name="timer_seconds" min="0"
 					max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp;
+					<span class="error-message" id="timerError"></span>
 			</div>
 			<div class="title" style="margin-top: 70px;">참여자 선택</div>
 			<div class="btn" id="openModalBtn">직원 조회</div>
-			<div class="selected-employees" id="selectedEmployees">
-				<!-- 선택된 직원들이 여기에 추가됩니다 -->
+			<div id="selectedEmployees">
+				<!-- 선택된 직원들이 여기에 표시됩니다 -->
 			</div>
 			<input type="hidden" id="selectedEmployeeIds" name="users">
 			<div style="margin: 70px; text-align: center;">
-				<button class="yellow-button1" type="submit">만들기</button>
+				<button class="btn" type="submit">만들기</button>
 			</div>
-
 		</form>
 	</div>
 	<!-- 모달창 -->
@@ -357,11 +393,14 @@
 				</table>
 			</div>
 			<div class="modal-footer">
-				<button class="btn-secondary" id="closeModalFooterBtn">닫기</button>
 				<button class="btn-primary" id="submitBtn">선택 완료</button>
 			</div>
 		</div>
 	</div>
+<<<<<<< HEAD
+
+=======
+>>>>>>> refs/heads/main
 	<script>
 		// 달력 팝업 열고 닫기 함수
 		function toggleCalendar() {
@@ -468,10 +507,13 @@
 			var selectedMonth = document.getElementById("calendarMonth").textContent
 					.replace("월", "");
 			var selectedYear = document.getElementById("calendarYear").textContent;
-			document.getElementById("datepicker").value = selectedYear
-					+ selectedMonth.padStart(2, '0')
+			var datepicker = document.getElementById("datepicker");
+			datepicker.value = selectedYear + selectedMonth.padStart(2, '0')
 					+ selectedDate.padStart(2, '0');
 			document.getElementById("calendarPopup").style.display = "none";
+
+			// 오류 메시지 제거
+			clearError(datepicker);
 		}
 
 		// 페이지 로드 시 초기 달력 생성
@@ -484,9 +526,10 @@
 		function openModal() {
 			var modal = document.getElementById('employeeModal');
 			modal.style.display = 'block';
+			addEmployeeCheckboxListeners(); // 체크박스 리스너 추가
 		}
 
-		// 모달 창 닫기 함수
+		//모달 창 닫기 함수
 		function closeModal() {
 			var modal = document.getElementById('employeeModal');
 			modal.style.display = 'none';
@@ -516,7 +559,7 @@
 		// 선택된 직원들을 저장할 배열
 		var selectedEmployees = [];
 
-		// 직원 선택 처리 함수
+		//직원 선택 처리 함수
 		function toggleEmployeeSelection(employeeId, employeeName) {
 			var index = selectedEmployees.findIndex(function(emp) {
 				return emp.id === employeeId;
@@ -534,9 +577,10 @@
 			}
 
 			updateSelectedEmployeesDisplay();
+			updateHiddenInput();
 		}
 
-		// 선택된 직원 목록을 화면에 업데이트하는 함수
+		//선택된 직원 목록을 화면에 업데이트하는 함수
 		function updateSelectedEmployeesDisplay() {
 			var selectedEmployeesDiv = document
 					.getElementById('selectedEmployees');
@@ -553,29 +597,25 @@
 			}
 		}
 
-		// 모달의 선택 완료 버튼 클릭 시 처리하는 함수
-		document.getElementById('submitBtn').addEventListener('click',
-				function() {
-					closeModal(); // 모달 닫기
-				});
+		//hidden input 업데이트 함수
+		function updateHiddenInput() {
+			var hiddenInput = document.getElementById('selectedEmployeeIds');
+			hiddenInput.value = selectedEmployees.map(function(emp) {
+				return emp.id;
+			}).join(',');
+		}
 
-		// 직원 선택 체크박스에 대한 이벤트 리스너
-		document
-				.querySelectorAll('input[name="employees"]')
-				.forEach(
-						function(checkbox) {
-							checkbox
-									.addEventListener(
-											'change',
-											function() {
-												var employeeId = this.value;
-												var employeeName = this.parentElement.nextElementSibling.textContent
-														.trim();
-												toggleEmployeeSelection(
-														employeeId,
-														employeeName);
-											});
-						});
+		//직원 선택 체크박스에 대한 이벤트 리스너
+		function addEmployeeCheckboxListeners() {
+			document.querySelectorAll('input[name="employees"]')
+				.forEach(function(checkbox) {
+					checkbox.addEventListener('change', function() {
+						var employeeId = this.value;
+						var employeeName = this.parentElement.nextElementSibling.textContent.trim();
+						toggleEmployeeSelection(employeeId, employeeName);
+					});
+				});
+		}
 
 		//선택된 직원들의 ID를 담을 배열
 		var selectedEmployeeIds = [];
@@ -618,6 +658,167 @@
 			var hiddenInput = document.getElementById('selectedEmployeeIds');
 			hiddenInput.value = selectedEmployeeIds.join(',');
 		}
+
+		// 유효성 검사 함수 (수정됨)
+		function validateForm() {
+			let isValid = true;
+
+			const titleInput = document.querySelector('input[name="title"]');
+			const contentInput = document.querySelector('input[name="content"]');
+			const endDateInput = document.querySelector('input[name="endDate"]');
+			const selectedEmployeeIdsInput = document.getElementById('selectedEmployeeIds');
+
+			const timerHours = document.querySelector('input[name="timer_hours"]');
+		    const timerMinutes = document.querySelector('input[name="timer_minutes"]');
+		    const timerSeconds = document.querySelector('input[name="timer_seconds"]');
+		    const timerError = document.getElementById('timerError');
+				
+			// Validate title
+			if (!titleInput.value.trim()) {
+				showError(titleInput, '(필수)주제를 입력해주세요');
+				isValid = false;
+			} else {
+				clearError(titleInput);
+			}
+
+			// Validate content
+			if (!contentInput.value.trim()) {
+				showError(contentInput, '(필수)설명을 입력해주세요');
+				isValid = false;
+			} else {
+				clearError(contentInput);
+			}
+
+			// Validate end date
+			if (!endDateInput.value.trim()) {
+				document.getElementById('endDateError').textContent = '(필수)회의 종료일을 선택해주세요';
+				isValid = false;
+			} else {
+				document.getElementById('endDateError').textContent = '';
+			}
+
+			// Validate selected employees
+			if (!selectedEmployeeIdsInput.value.trim()) {
+				showError(selectedEmployeeIdsInput, '(필수)참여할 직원을 선택해주세요');
+				isValid = false;
+			} else {
+				clearError(selectedEmployeeIdsInput);
+			}
+			
+			//타이머검증
+			if (timerHours.value.trim() === '' && timerMinutes.value.trim() === '' && timerSeconds.value.trim() === '') {
+			        timerError.textContent = '(필수)타이머를 설정해주세요';
+			        valid = false;
+			    } else {
+			        timerError.textContent = '';
+			    }
+
+			return isValid;
+		}
+
+		// 오류 표시 함수 (새로 추가)
+		function showError(input, message) {
+			let errorElement = input.nextElementSibling;
+			if (!errorElement
+					|| !errorElement.classList.contains('error-message')) {
+				errorElement = document.createElement('span');
+				errorElement.classList.add('error-message');
+				input.parentNode.insertBefore(errorElement, input.nextSibling);
+			}
+			errorElement.textContent = message;
+		}
+
+		// 오류 제거 함수 (수정됨)
+		function clearError(input) {
+			let errorElement;
+			if (input.id === 'datepicker') {
+				errorElement = document.getElementById('endDateError');
+			} else if (input.id === 'selectedEmployeeIds') {
+				errorElement = input.nextElementSibling;
+			} else {
+				errorElement = input.nextElementSibling;
+			}
+
+			if (errorElement && errorElement.classList.contains('error-message')) {
+				errorElement.textContent = '';
+			}
+		}
+		
+		// 타이머 입력 오류 제거 함수
+		function clearTimerError() {
+		    let timerHours = document.querySelector('input[name="timer_hours"]').value.trim();
+		    let timerMinutes = document.querySelector('input[name="timer_minutes"]').value.trim();
+		    let timerSeconds = document.querySelector('input[name="timer_seconds"]').value.trim();
+		    let errorElement = document.getElementById('timerError');
+
+		    if (timerHours !== '' || timerMinutes !== '' || timerSeconds !== '') {
+		        if (errorElement && errorElement.classList.contains('error-message')) {
+		            errorElement.textContent = '';
+		        }
+		    }
+		}
+
+			// 이벤트 리스너 설정 (새로 추가)
+			document.addEventListener('DOMContentLoaded', function() {
+				
+			// 입력 필드에 대한 이벤트 리스너 추가
+			document.querySelectorAll('input[name="title"], input[name="content"], input[name="endDate"]')
+				.forEach(function(input) {
+					input.addEventListener('input', function() {
+						clearError(this);
+					});
+			});
+			
+			// 타이머 입력 필드에 대한 이벤트 리스너 추가
+		    document.querySelectorAll('input[name="timer_hours"], input[name="timer_minutes"], input[name="timer_seconds"]')
+		        .forEach(function(input) {
+		            input.addEventListener('input', function() {
+		                clearTimerError(); // 타이머 입력 필드에 입력이 있을 때마다 호출
+		            });
+		    });
+
+			// 직원 선택 버튼에 대한 이벤트 리스너
+			document.getElementById('openModalBtn').addEventListener('click', function() {
+				clearError(document.getElementById('selectedEmployeeIds'));
+			});
+
+			// 기존의 이벤트 리스너들
+			document.getElementById('closeModalBtn').addEventListener('click', function() {
+				closeModal();
+			});
+
+			document.getElementById('openModalBtn').addEventListener('click', function() {
+				openModal();
+			});
+
+			document.getElementById('submitBtn').addEventListener('click', function() {
+				closeModal();
+			});
+
+			// datepicker에 대한 이벤트 리스너 추가
+			document.getElementById('datepicker').addEventListener('input', function() {
+				clearError(this);
+			});
+
+			document.querySelectorAll('input[name="employees"]').forEach(function(checkbox) {
+				checkbox.addEventListener('change', function() {
+					var employeeId = this.value;
+					var employeeName = this.parentElement.nextElementSibling.textContent.trim();
+					toggleEmployeeSelection(employeeId, employeeName);
+				});
+			});
+
+			// 페이지 로드 시 초기 달력 생성
+			createCalendar();
+		});
+
+		// 모달 외부 영역 클릭 시 모달 닫기 (변경 없음)
+		window.onclick = function(event) {
+			var modal = document.getElementById('employeeModal');
+			if (event.target == modal) {
+				closeModal();
+			}
+		};
 	</script>
 
 
