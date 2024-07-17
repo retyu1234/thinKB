@@ -195,7 +195,7 @@ body {
 				</div>
 			</c:forEach>
 		</div>
-		<button class="vote-button" onclick="submitVote()">투표하기1</button>
+		<button class="vote-button" onclick="submitVote()">투표하기</button>
 	</div>
 </body>
 </html>
