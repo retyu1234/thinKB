@@ -176,6 +176,24 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.5</version>
 		</dependency>
+		
+		<!-- Jackson 라이브러리 추가 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.12.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>2.12.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.12.3</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>

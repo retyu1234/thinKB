@@ -88,6 +88,25 @@ h2 {
 	background-color: #ffcd50;
 }
 </style>
+<script>
+function validateForm() {
+    var userName = document.getElementById("userName").value;
+    var email = document.getElementById("email").value;
+    var birth = document.getElementById("birth").value;
+    var userId = document.getElementById("userId").value;
+    var team = document.getElementById("team").value;
+
+    if (userName.trim() === '' || email.trim() === '' || birth.trim() === '' || userId.trim() === '' || team.trim() === '') {
+        alert("모든 필드를 입력하세요.");
+        return false;
+    }
+
+    return true;
+}
+function confirmSubmit() {
+    return confirm("정말로 등록하시겠습니까?");
+}
+</script>
 </head>
 <body>
 	<div class="userAdmin-body">
@@ -95,8 +114,8 @@ h2 {
 	</div>
 	<div class="employee-content">
 		<h2>회원 등록</h2>
-		<form action="register" method="post">
-			<input type="hidden" name="${departmentId}" />
+		<form action="./insertUser" method="post">
+			 <input type="hidden" name="departmentId" value="${departmentId}" />
 			<div class="form-group">
 				<label for="userName">이름:</label> <input type="text" id="userName"
 					name="userName" required>
@@ -129,7 +148,7 @@ h2 {
 			</div>
 			<br>
 			<div class="form-group">
-				<input type="submit" value="등록">
+				    <input type="submit" value="등록" onclick="return confirmSubmit();">
 			</div>
 		</form>
 	</div>
