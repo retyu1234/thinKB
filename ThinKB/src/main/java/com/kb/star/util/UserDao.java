@@ -11,9 +11,7 @@ import com.kb.star.dto.UsersDto;
 // 마이바티스 인터페이스
 public interface UserDao {
 
-
 	String userDepartment(int id);
-
 
 	public int departmentAdmin(int userId);
 	List<UserListDto> userListAdmin(int departmentId);

@@ -7,10 +7,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>비밀번호 변경</title>
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-	rel="stylesheet">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <style>
 .password-body {
 	font-family: Arial, sans-serif;
@@ -18,7 +16,6 @@
 	margin: 0;
 	padding: 0;
 }
-
 .password-container {
 	max-width: 1000px;
 	margin: 100px auto;
@@ -29,14 +26,12 @@
 	border-radius: 8px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
 .password-h1 {
 	font-size: 24px;
 	font-weight: bold;
 	text-align: center;
 	margin-bottom: 20px;
 }
-
 .form-group {
 	margin-bottom: 5px;
 	position: relative;
@@ -49,17 +44,14 @@
 	transition: background-color 0.3s;
 	background-color: #FFFFE4;
 }
-
 .form-group:hover {
 	background-color: #FFFFD2;
 }
-
 .form-group label {
 	font-weight: bold;
 	margin-right: 10px;
 	padding-left: 10px;
 }
-
 .form-group input[type="text"], .form-group input[type="date"],
 	.form-group input[type="password"] {
 	border: none;
@@ -69,12 +61,10 @@
 	background-color: transparent;
 	margin-left: 10px;
 }
-
 .form-group1 {
 	display: flex;
 	justify-content: center;
 }
-
 .form-group1 input[type="submit"] {
 	margin-top: 30px;
 	width: 100%;
@@ -88,81 +78,60 @@
 	transition: background-color 0.3s;
 	width: 30%;
 }
-
 .form-group1 input[type="submit"]:hover {
 	background-color: #ffcd50;
 }
-
 .back-button {
 	display: inline-block;
 	margin-bottom: 20px;
 }
-
 .back-button a {
 	text-decoration: none;
 	color: #000;
 	font-size: 18px;
 }
-
 .back-button a i {
 	margin-right: 8px;
-}
-
-/* 모달 스타일 */
-.modal-content {
-	background-color: #ffffff;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.modal-header {
-	border-bottom: none;
-}
-
-.modal-title {
-	font-size: 24px;
-	font-weight: bold;
-	text-align: center;
-}
-
-.modal-body {
-	padding: 20px;
-}
-
-.modal-footer {
-	border-top: none;
 }
 </style>
 </head>
 <body class="password-body">
 	<div class="password-container">
 		<div class="back-button">
-			<a href="javascript:history.back()"><i class="fas fa-arrow-left"></i>
-				</a>
+			<a href="./passwordChange"><i class="fas fa-arrow-left"></i> </a>
 		</div>
 		<h1 class="password-h1">비밀번호 변경</h1>
-		<form id="passwordForm" action="./checkUser" method="post"
-			target="_self">
+		<p>개인정보확인 </p>
+		<p>${user.userName}님/(${user.userId}) </p><br>
+		<hr/><br>
+		<form id="passwordChangeForm" action="/password/change" method="post" onsubmit="return validatePassword()">
 			<div class="form-group">
-				<label for="userId">직원번호</label> <input type="text" id="userId"
-					name="userId" placeholder="직원번호를 입력하세요" required>
+				<label for="newPassword">새 비밀번호</label>
+				<input type="password" id="newPassword" name="newPassword" required>
 			</div>
 			<div class="form-group">
-				<label for="birth">생년월일</label> <input type="date" id="birth"
-					name="birth" placeholder="생년월일을 입력하세요(6자리)" required>
+				<label for="confirmPassword">비밀번호 확인</label>
+				<input type="password" id="confirmPassword" name="confirmPassword" required>
 			</div>
 			<div class="form-group1">
-				<input type="submit" value="본인확인">
+				<input type="hidden" id="userId" name="userId" value="${userId}">
+				<input type="submit" value="변경">
 			</div>
 		</form>
 	</div>
-	<c:if test="${not empty error}">
-		<script>
-			alert('${error}');
-		</script>
-	</c:if>
+	<script>
+		// 비밀번호 변경 폼 제출 시 유효성 검사
+		function validatePassword() {
+			var newPassword = document.getElementById("newPassword").value;
+			var confirmPassword = document.getElementById("confirmPassword").value;
+			if (newPassword !== confirmPassword) {
+				alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+				return false;
+			}
+			return true;
+		}
+	</script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

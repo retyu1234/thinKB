@@ -1,5 +1,7 @@
 package com.kb.star.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,11 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kb.star.command.login.CheckUser;
 import com.kb.star.command.login.Login;
 import com.kb.star.command.login.LoginCommand;
 import com.kb.star.command.user.UserInfoCommand;
 import com.kb.star.command.login.Mypage;
 import com.kb.star.command.login.ProfileImg;
+import com.kb.star.command.login.UpdatePassword;
 
 @Controller
 public class LoginController {
@@ -78,10 +82,30 @@ public class LoginController {
 		session.invalidate();
 		return "redirect:/loginView";
 	}
-	//비밀번호 변경
+	//비밀번호 변경화면
 	@RequestMapping("/passwordChange")
 	public String passwordChange(HttpServletRequest request,Model model) {
 		return "login/passwordChange";
+	}
+	//비밀번호 변경 전 본인확인
+	@RequestMapping("/checkUser")
+	public String checkUser(HttpServletRequest request,Model model) {
+		model.addAttribute("request", request);
+		command=new CheckUser(sqlSession);
+		command.execute(model);
+		Map<String, Object> map = model.asMap();
+		String path=(String)map.get("path");
+		return path;
+	}
+	//비밀번호 변경update
+	@RequestMapping("/updatePassword")
+	public String updatePassword(HttpServletRequest request,Model model) {
+		model.addAttribute("request", request);
+		command=new UpdatePassword(sqlSession);
+		command.execute(model);
+		Map<String, Object> map = model.asMap();
+		String path=(String)map.get("path");
+		return path;
 	}
 	
 }
