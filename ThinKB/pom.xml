@@ -176,7 +176,7 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.5</version>
 		</dependency>
-		
+
 		<!-- Jackson 라이브러리 추가 -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -192,6 +192,12 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.12.3</version>
+		</dependency>
+		<!-- word파일사용 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.3</version>
 		</dependency>
 
 	</dependencies>
