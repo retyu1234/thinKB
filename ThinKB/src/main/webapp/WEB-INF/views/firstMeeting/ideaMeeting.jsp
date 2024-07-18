@@ -8,146 +8,147 @@
 <title>아이디어 투표</title>
 <style>
 body {
-	font-family: 'Inter', sans-serif;
-	margin: 0;
-	padding: 0;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .idea_header {
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 1000;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .content {
-	margin-top: 60px; /* 헤더 높이만큼 여백 추가 */
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    margin-top: 60px; /* 헤더 높이만큼 여백 추가 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .topic-box {
-	width: 962px;
-	height: 150px;
-	background-color: #EEEEEE;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: left;
-	margin-top: 90px;
+    width: 962px;
+    height: 150px;
+    background-color: #EEEEEE;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    margin-top: 90px;
 }
 
 .topic-title {
-	font-size: 25px;
-	text-align: left;
-	margin-left: 20px;
+    font-size: 25px;
+    text-align: left;
+    margin-left: 20px;
 }
 
 .topic-description {
-	font-size: 20px;
-	text-align: left;
-	margin-left: 30px;
+    font-size: 20px;
+    text-align: left;
+    margin-left: 30px;
 }
 
 .idea-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .idea-item {
-	display: flex;
-	align-items: center;
-	margin-top: 10px;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
 }
 
 .idea-circle {
-	width: 96px;
-	height: 96px;
-	border-radius: 50%;
-	background-color: #EEEEEE;
-	margin-right: 10px;
-	cursor: pointer;
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background-color: #EEEEEE;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
 .idea-circle.selected {
-	background-color: #FFCE20;
+    background-color: #FFCE20;
 }
 
 .idea-box {
-	width: 849px;
-	height: 96px;
-	background-color: #EEEEEE;
-	border-radius: 10px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	font-size: 20px;
-	cursor: pointer;
+    width: 849px;
+    height: 96px;
+    background-color: #EEEEEE;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    cursor: pointer;
 }
 
 .idea-box.selected {
-	background-color: #FFCE20;
+    background-color: #FFCE20;
 }
 
 .idea-box.voted {
-	background-color: #A9A9A9;
+    background-color: #A9A9A9;
 }
 
 .vote-button {
-	width: 216px;
-	height: 53px;
-	background-color: #FFCE20;
-	border: none;
-	border-radius: 10px;
-	font-size: 20px;
-	cursor: pointer;
-	margin-top: 20px;
+    width: 216px;
+    height: 53px;
+    background-color: #FFCE20;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 20px;
 }
 
 .modal {
-	display: none;
-	position: fixed;
-	z-index: 1000;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.4);
-	padding-top: 60px;
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
 }
 
 .modal-content {
-	background-color: #fefefe;
-	margin: 5% auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 80%;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
 }
 
 .close {
-	color: #aaa;
-	float: right;
-	font-size: 28px;
-	font-weight: bold;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
 }
 
 .close:hover, .close:focus {
-	color: black;
-	text-decoration: none;
-	cursor: pointer;
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 </style>
 <script>
     let selectedIdea = null;
     let selectedIdeaId = null;
     let selectedIdeaDescription = null;
+    let selectedIdeaUserId = null;
 
-    function toggleSelect(element, ideaId, ideaTitle, ideaDescription, isCircle){
+    function toggleSelect(element, ideaId, ideaTitle, ideaDescription, ideaUserId, isCircle){
         if (selectedIdea) {
             selectedIdea.classList.remove('selected');
         }
@@ -156,37 +157,20 @@ body {
             selectedIdea = element;
             selectedIdeaId = ideaId;
             selectedIdeaDescription = ideaDescription;
+            selectedIdeaUserId = ideaUserId;
             if (isCircle) {
-                openModal(ideaId, ideaTitle, ideaDescription);
+                openModal(ideaId, ideaTitle, ideaDescription, ideaUserId);
             }
         } else {
             selectedIdea = null;
             selectedIdeaId = null;
             selectedIdeaDescription = null;
+            selectedIdeaUserId = null;
             closeModal();
         }
     }
 
-    function openModal(ideaId, ideaTitle, ideaDescription) {
-        document.getElementById("myModal").style.display = "block";
-        document.getElementById("modal-idea-id").innerText = ideaId;
-        document.getElementById("modal-idea-title").innerText = ideaTitle;
-        document.getElementById("modal-idea-description").innerText = ideaDescription;
-
-        // AJAX 요청을 통해 댓글 데이터 불러오기
-        fetch('${pageContext.request.contextPath}/getIdeaReplies?ideaId=' + ideaId)
-            .then(response => response.json())
-            .then(data => {
-                const repliesContainer = document.getElementById("modal-idea-replies");
-                repliesContainer.innerHTML = '';
-                data.forEach(reply => {
-                    const replyElement = document.createElement('div');
-                    replyElement.className = 'idea-box';
-                    replyElement.innerText = reply.replyContent;
-                    repliesContainer.appendChild(replyElement);
-                });
-            });
-    }
+    
 
     function closeModal() {
         document.getElementById("myModal").style.display = "none";
@@ -247,48 +231,34 @@ body {
 </script>
 </head>
 <body>
-	<div class="idea_header">
-		<jsp:include page="../header.jsp" />
-	</div>
-	<div class="content">
-		<div class="topic-box">
-			<div class="topic-title">
-				${meetingRoom.roomTitle} <input type="hidden" name="roomId"
-					value="${meetingRoom.roomId}" />
-			</div>
-			<div class="topic-description">${meetingRoom.description}</div>
-		</div>
-		<div class="idea-container">
-			<c:forEach var="idea" items="${ideas}">
-				<div class="idea-item">
-					<div class="idea-circle"
-						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}", true)'></div>
-					<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}", false)'>${idea.title}</div>
-				</div>
-			</c:forEach>
-		</div>
-		<button class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
-	</div>
 
-	<!-- 아이디어 상세정보 모달 -->
-	<div id="myModal" class="modal">
-		<div class="modal-content">
-			<span class="close" onclick="closeModal()">&times;</span>
-			<p>
-				<span><input type="hidden" id="modal-idea-id"></span>
-			</p>
-			<p>
-				<span><input type="hidden" id="modal-idea-title"></span>
-			</p>
-			<p>
-				상세설명 : <span id="modal-idea-description"></span>
-			</p>
-			<p>질문하기</p>
-			<div class="idea-container" id="modal-idea-replies">
-				<!-- 댓글 내용이 여기에 동적으로 추가됩니다 -->
-			</div>
-		</div>
-	</div>
+    <!-- Display userId for debugging -->
+    <input type="hidden" id="session-user-id" value="${sessionScope.userId}">
+    <input type="hidden" id="session-room-id" value="${sessionScope.roomId}">
+
+    <div class="idea_header">
+        <jsp:include page="../header.jsp" />
+    </div>
+    <div class="content">
+        <div class="topic-box">
+            <div class="topic-title">
+                ${meetingRoom.roomTitle} <input type="hidden" name="roomId" value="${meetingRoom.roomId}" />
+            </div>
+            <div class="topic-description">${meetingRoom.description}</div>
+        </div>
+        <div class="idea-container">
+            <c:forEach var="idea" items="${ideas}">
+                <div class="idea-item">
+                    <div class="idea-circle" onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}", "${idea.userID}", true)'></div>
+                    <div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}" onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}", "${idea.userID}", false)'>${idea.title}</div>
+                </div>
+            </c:forEach>
+        </div>     
+        <button class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+    </div>
+
+    <!-- 모달 창 포함 -->
+    <jsp:include page="ideaReplying.jsp" />
+
 </body>
 </html>
