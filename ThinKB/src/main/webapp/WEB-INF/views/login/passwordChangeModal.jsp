@@ -104,7 +104,7 @@
 		<p>개인정보확인 </p>
 		<p>${user.userName}님/(${user.userId}) </p><br>
 		<hr/><br>
-		<form id="passwordChangeForm" action="/password/change" method="post" onsubmit="return validatePassword()">
+		<form id="passwordChangeForm" action="./updatePassword" method="post" onsubmit="return validatePassword()">
 			<div class="form-group">
 				<label for="newPassword">새 비밀번호</label>
 				<input type="password" id="newPassword" name="newPassword" required>
@@ -114,7 +114,7 @@
 				<input type="password" id="confirmPassword" name="confirmPassword" required>
 			</div>
 			<div class="form-group1">
-				<input type="hidden" id="userId" name="userId" value="${userId}">
+				<input type="hidden" id="userId" name="userId" value="${user.userId}">
 				<input type="submit" value="변경">
 			</div>
 		</form>

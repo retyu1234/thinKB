@@ -77,7 +77,7 @@ public class UserListDto {
 		this.teamName = teamName;
 	}
 
-	public boolean isDelete() {
+	public boolean getIsDelete() {
 		return isDelete;
 	}
 
