@@ -1,7 +1,7 @@
 package com.kb.star.dto;
 
 public class IdeaReplys {
-    private int ideaReplyId;
+    private int ideaReply;
     private int ideaId;
     private int userId;
     private int roomId;
@@ -13,8 +13,8 @@ public class IdeaReplys {
     public IdeaReplys() {}
 
     // Parameterized constructor
-    public IdeaReplys(int ideaReplyId, int ideaId, int userId, int roomId, int replyStep, boolean isDelete, String replyContent) {
-        this.ideaReplyId = ideaReplyId;
+    public IdeaReplys(int ideaReply, int ideaId, int userId, int roomId, int replyStep, boolean isDelete, String replyContent) {
+        this.ideaReply = ideaReply;
         this.ideaId = ideaId;
         this.userId = userId;
         this.roomId = roomId;
@@ -24,12 +24,12 @@ public class IdeaReplys {
     }
 
     // Getters and Setters
-    public int getIdeaReplyId() {
-        return ideaReplyId;
+    public int getIdeaReply() {
+        return ideaReply;
     }
 
-    public void setIdeaReplyId(int ideaReplyId) {
-        this.ideaReplyId = ideaReplyId;
+    public void setIdeaReply(int ideaReply) {
+        this.ideaReply = ideaReply;
     }
 
     public int getIdeaId() {
@@ -83,7 +83,7 @@ public class IdeaReplys {
     @Override
     public String toString() {
         return "IdeaReplys{" +
-                "ideaReplyId=" + ideaReplyId +
+                "ideaReply=" + ideaReply +
                 ", ideaId=" + ideaId +
                 ", userId=" + userId +
                 ", roomId=" + roomId +
