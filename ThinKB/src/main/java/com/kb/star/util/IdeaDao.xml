@@ -18,7 +18,8 @@
 	<!-- 아이디어에 달린 질문 리스트 가져오기 -->
 	<select id="selectIdeaReplys" parameterType="map"
 		resultType="com.kb.star.dto.IdeaReplys">
-		SELECT IdeaReply, IdeaID, UserID, RoomID, ReplyStep, IsDelete,
+		SELECT IdeaReply, IdeaID, UserID, RoomID, ReplyStep,
+		IsDelete,
 		ReplyContent
 		FROM IdeaReply
 		WHERE IsDelete = 0 AND RoomID =
@@ -42,14 +43,14 @@
 	</update>
 
 	<!-- 아이디어 제목으로 방정보 가져오기 -->
-	<select id="selectByTitle" parameterType="String"
+	<select id="selectById" parameterType="int"
 		resultType="com.kb.star.dto.MeetingRooms">
 		SELECT RoomID, RoomTitle, Description, DepartmentID,
 		TeamID, RoomManagerID,
 		StageID, IsDelete, EndDate, CreatedAt
 		FROM
 		MeetingRooms
-		WHERE RoomTitle = #{roomTitle}
+		WHERE RoomID = #{roomId}
 	</select>
 
 	<!-- 아이디어 투표 여부 확인하기 -->
@@ -84,13 +85,12 @@
 	<!-- 아이디어id로 아이디어에 달린 질문 가져오기 -->
 	<select id="selectIdeaReplysByIdeaId" parameterType="map"
 		resultType="com.kb.star.dto.IdeaReplys">
-		SELECT IdeaReply, IdeaID, UserID, RoomID, ReplyStep,
-		IsDelete, ReplyContent
-		FROM IdeaReply
-		WHERE IsDelete = 0 AND IdeaID =
-		#{ideaId}
+		SELECT * FROM IdeaReply
+		WHERE IsDelete = 0 AND IdeaID = #{ideaId}
+		ORDER BY COALESCE(NULLIF(ReplyStep, 0), IdeaReply), ReplyStep, IdeaReply
 	</select>
-	
+
+
 	<!-- 아이디어에 질문 달기 -->
 	<insert id="insertIdeaReply" parameterType="map">
 		INSERT INTO IdeaReply
@@ -99,5 +99,17 @@
 		VALUES
 		(#{ideaId}, #{userId}, #{roomId}, #{replyStep}, 0, #{replyContent})
 	</insert>
+
+	<!-- 질문에 답변 달기 -->
+	<insert id="insertIdeaAnswerReply" parameterType="map">
+		INSERT INTO
+		IdeaReply
+		(IdeaID, UserID, RoomID, ReplyStep, IsDelete,
+		ReplyContent)
+		VALUES
+		(#{ideaId}, #{userId}, #{roomId}, #{replyStep}, 0,
+		#{replyContent})
+	</insert>
+	
 
 </mapper>
