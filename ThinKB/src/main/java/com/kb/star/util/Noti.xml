@@ -11,10 +11,24 @@
 		SELECT * FROM Notifications WHERE UserID = #{userId} AND IsDelete = FALSE ORDER BY CreatedAt DESC
 	</select>
 	
-	<!-- IdeaID로 아이디어 정보 가져오기 -->
+	<!-- IdeaID로 아이디어 정보  가져오기 -->
     <select id="getIdeaById" resultType="com.kb.star.dto.Ideas">
         SELECT IdeaID, RoomID, Title FROM Ideas WHERE IdeaID = #{ideaId}
     </select>
+     
+     <!-- Ideas 테이블의 RoomID컬럼으로 MeetingRooms 테이블 정보 가져오기(roomTitle) -->
+     <select id="getRoomTitleById" resultType="com.kb.star.dto.MeetingRooms">
+        SELECT RoomTitle FROM MeetingRooms WHERE RoomID = #{RoomID}
+    </select>
 	
+	<!-- 알림 읽음 상태 업데이트 -->
+    <update id="updateReadStatus">
+        UPDATE Notifications SET IsRead = true WHERE NotificationID = #{notificationID}
+    </update>
+    
+    <!-- 알림 삭제 -->
+    <update id="deleteNotification">
+        UPDATE Notifications SET IsDelete = true WHERE NotificationID = #{notificationID}
+    </update>
 
 </mapper>
