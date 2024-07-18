@@ -51,10 +51,10 @@ public class FirstMeetingController {
 
 
     // 아이디어 회의 목록 표시 페이지
-    @RequestMapping("/ideaMeeting")
-    public String ideaMeeting(@RequestParam("roomTitle") String roomTitle, Model model, HttpSession session) {
+    @RequestMapping("/roomStage2")
+    public String ideaMeeting(@RequestParam("roomId") int roomId, Model model, HttpSession session) {
 
-        MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectByTitle", roomTitle);
+        MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectById", roomId);
         model.addAttribute("meetingRoom", meetingRoom);
 
         // 아이디어 목록을 RoomID로 조회하여 모델에 추가
@@ -124,11 +124,11 @@ public class FirstMeetingController {
 
             try {
                 String encodedRoomTitle = URLEncoder.encode(roomTitle, "UTF-8");
-                return "redirect:/ideaMeeting?roomTitle=" + encodedRoomTitle; // 에러 메시지와 함께 리다이렉트
+                return "redirect:/roomStage2?roomTitle=" + encodedRoomTitle; // 에러 메시지와 함께 리다이렉트
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 System.out.println(session.getAttribute("Message"));
-                return "redirect:/ideaMeeting?roomTitle=" + roomTitle; // 인코딩 오류 발생 시 기본 리다이렉트
+                return "redirect:/roomStage2?roomTitle=" + roomTitle; // 인코딩 오류 발생 시 기본 리다이렉트
             }
         } else {
             session.setAttribute("Message", "선택한 아이디어 :" + selectedIdea); // 선택한 아이디어 알림
@@ -138,11 +138,11 @@ public class FirstMeetingController {
 
             try {
                 String encodedRoomTitle = URLEncoder.encode(roomTitle, "UTF-8");
-                return "redirect:/ideaMeeting?roomTitle=" + encodedRoomTitle; // 투표 후 다시 리스트 페이지로 리다이렉트
+                return "redirect:/roomStage2?roomTitle=" + encodedRoomTitle; // 투표 후 다시 리스트 페이지로 리다이렉트
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
                 System.out.println(session.getAttribute("Message"));
-                return "redirect:/ideaMeeting?roomTitle=" + roomTitle; // 인코딩 오류 발생 시 기본 리다이렉트
+                return "redirect:/roomStage2?roomTitle=" + roomTitle; // 인코딩 오류 발생 시 기본 리다이렉트
             }
         }
     }
@@ -206,7 +206,7 @@ public class FirstMeetingController {
         }
     }
 
-    // 아이디어에 답변 등록하기
+    // 질문에 답변 등록하기
     @RequestMapping(value = "/submitReplyAnswer", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded", produces = "text/plain")
     @ResponseBody
     public String submitReplyAnswer(@RequestParam Map<String, String> payload, HttpSession session) {
@@ -217,7 +217,7 @@ public class FirstMeetingController {
 
         Integer ideaId = Integer.parseInt(payload.get("ideaId"));
         Integer roomId = Integer.parseInt(payload.get("roomId"));
-        Integer replyStep = Integer.parseInt(payload.get("ideaReply"));
+        Integer replyStep = Integer.parseInt(payload.get("replyStep"));
         String replyContent = payload.get("replyContent");
 
         // 콘솔에 각 변수의 값 출력
@@ -238,7 +238,7 @@ public class FirstMeetingController {
         System.out.println("Params for answer: " + params);
 
         try {
-            sqlSession.insert("com.kb.star.util.IdeaDao.insertIdeaReply", params);
+            sqlSession.insert("com.kb.star.util.IdeaDao.insertIdeaAnswerReply", params);
             System.out.println("Reply inserted successfully");
             return "success";
         } catch (Exception e) {
