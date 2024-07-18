@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
+import com.kb.star.command.room.SubmitIdeaCommand;
 import com.kb.star.command.room.UserListCommand;
 import com.kb.star.command.room.makeRoomCommand;
 
@@ -46,12 +47,16 @@ public class IdeaRoomController {
 		model.addAttribute("request", request);
 		command = new makeRoomCommand(sqlSession);
 		command.execute(model);
-		return "main";
+		return "redirect:main";
 	}
 	
 	//회의방 stage단계별로 화면이동 다르게
 	@RequestMapping("/roomDetail")
-	public String roomDetail(@RequestParam("roomId") int roomId, @RequestParam("stage") int stage, Model model) {
+	public String roomDetail(HttpServletRequest request, @RequestParam("roomId") int roomId,
+			@RequestParam("stage") int stage, Model model) {
+		HttpSession session = request.getSession();
+		int id = (Integer) session.getAttribute("userId");
+		model.addAttribute("id", id);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
 		
@@ -59,13 +64,36 @@ public class IdeaRoomController {
 			case 1:
 				command = new StageOneCommand(sqlSession);
 				command.execute(model);
-				return "firstMeeting/roomStage1";
+				Map<String, Object> map = model.asMap();
+				Boolean result = (Boolean)map.get("result");
+				if(result!=null && !result) { 
+					//1단계의 status가 0이면 아이디어 등록화면으로 이동
+					return "firstMeeting/roomStage1";
+				} else {
+					//1단계의 status가 1이면 아이디어 기다리라고 나옴
+					return "redirect:main";
+				}
 			case 2:
 				return "firstMeeting/roomStage2";
 				
 			default:
 				return "main";
 		}
+	}
+	
+	//아이디어 초안 저장
+	@RequestMapping("/submitIdea")
+	public String submitIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
+			@RequestParam("myIdea") String myIdea, @RequestParam("ideaDetail") String ideaDetail, Model model) {
+		HttpSession session = request.getSession();
+		int userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("userId", userId);
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("myIdea", myIdea);
+		model.addAttribute("ideaDetail", ideaDetail);
+		command = new SubmitIdeaCommand(sqlSession);
+		command.execute(model);
+		return "redirect:main";
 	}
 	
 	/*

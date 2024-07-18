@@ -1,5 +1,6 @@
 package com.kb.star.command.room;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -23,7 +24,14 @@ public class StageOneCommand implements RoomCommand {
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
 		model.addAttribute("info", info);
-
+		
+		String timer = dao.roomTimerInfo(roomId);
+		model.addAttribute("timer", timer);
+		
+		// 아이디어 참여여부에 따라 페이지 분기를 위한 로직 false=아이디어 안냄/ true=아이디어 냄
+		int id = (Integer) map.get("id");
+		boolean result = dao.isParticipantsStage1(roomId, id);
+		model.addAttribute("result", result);
 	}
 
 }
