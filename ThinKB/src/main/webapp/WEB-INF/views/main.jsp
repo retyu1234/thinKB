@@ -173,29 +173,74 @@
     transform: translate(-50%, -50%); /* 화면의 가운데에 뜨게끔 설정 */
     background: white;
     padding: 40px;
-    height: 100px; /* 팝업창의 고정된 세로 높이 */
-    border-radius: 30px;
+    min-height: 150px; /* 팝업창의 최소 높이 설정 */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1001;
     color: #000; /* 텍스트 색상 검정으로 설정 */
     text-align: center;
     border: 4px solid #ffc107; /* 굵은 노란색 테두리 추가 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함한 전체 크기 계산 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
+/* 삭제버튼 */
+.delete {
+	position: absolute;
+    top: 1px; /* 팝업창 상단에서의 거리 */
+    right: 1px; /* 팝업창 오른쪽에서의 거리 */
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center; /* 세로로 가운데 정렬 */
+    justify-content: center; /* 가로로 가운데 정렬 */
+}
+
+.popup img {
+    display: block;
+    margin: 0 auto 20px; /* 가운데 정렬 및 아래쪽 마진 추가 */
+    max-width: 100%; /* 이미지가 팝업창을 넘지 않도록 설정 */
+    height: auto; /* 이미지 비율 유지 */
+}
+
+
 .popup-message {
-    font-size: 1.2em;
-    margin-bottom: 20px;.
+    font-size: 1.3em;
+    margin-bottom: 40px;
+    /* font-weight: bold; */ /* 글자를 두껍게 설정 */
+}
+.popup-footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.popup-dont-show, .popup-close {
+    background: #808080;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: inline-block; /* 버튼을 인라인 블록 요소로 설정 */
 }
 
 .popup-close {
- 	background: #ffc107;
+    background: #ffc107;
     color: #ffffff;
     border: none;
     padding: 10px 50px;
     cursor: pointer;
     border-radius: 5px;
     display: inline-block; /* 추가: 버튼을 인라인 블록 요소로 설정 */
-    margin-top: 20px; /* 추가: 버튼과 메시지 사이에 여백 추가 */
+}
+
+.popup-dont-show:hover {
+	background-color: #606060;
 }
 .popup-close:hover {
 	background-color: #e0a800;
@@ -314,7 +359,12 @@
 			<!-- 팝업창 추가 -->
 			<div class="popup-overlay">
 			    <div class="popup">
+			    	<div class="delete">
+			    		<img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
+			    	</div>
+			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
 			        <p class="popup-message"></p>
+			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
 			        <button class="popup-close">닫기</button>
 			    </div>
 			</div>
@@ -377,18 +427,60 @@ $(document).ready(function() {
         }
     });
     
- 	// 읽지 않은 알림이 있을 경우 팝업 표시
-    var unreadCount = ${unreadCount}; 
-    console.log("Unread Count:", unreadCount);
-    if (unreadCount > 0) {
-        $('.popup-message').text("읽지 않은 " + unreadCount + "개의 알림이 있습니다.");
-        $('.popup-overlay').show();
+    function setCookie(name, value, days) {
+        const date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        const expires = "expires=" + date.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
     }
 
+    function getCookie(name) {
+        const decodedCookie = decodeURIComponent(document.cookie);
+        const cookies = decodedCookie.split(';');
+        name = name + "=";
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.indexOf(name) == 0) {
+                return cookie.substring(name.length, cookie.length);
+            }
+        }
+        return "";
+    }
+
+    // 쿠키 확인
+    if (getCookie("dontShowPopupToday") !== "true") {
+        // 포맷된 날짜를 표시하기 위해 createdAt 값을 변환
+        $('.notification-time').each(function() {
+            const timestamp = $(this).text().trim();
+            const date = new Date(timestamp);
+            if (!isNaN(date.getTime())) {
+                $(this).text(formatTimestamp(date));
+            } else {
+                $(this).text(timestamp);
+            }
+        });
+    
+	 	// 읽지 않은 알림이 있을 경우 팝업 표시
+	    var unreadCount = ${unreadCount}; 
+	    console.log("Unread Count:", unreadCount);
+	    if (unreadCount > 0) {
+	    	$('#popup-image').attr('src', './resources/bibi1.png').show(); // 이미지 URL 설정
+	        $('.popup-message').text("읽지 않은 " + unreadCount + "개의 알림이 도착 !");
+	        $('.popup-overlay').show();
+	    }
+	}
+
     // 팝업 닫기
-    $('.popup-close').click(function() {
+    $('.popup-close, .delete').click(function() {
         $('.popup-overlay').hide();
     });
+    
+ 	// "오늘 하루 보지 않기" 버튼 클릭 시
+    $('.popup-dont-show').click(function() {
+        setCookie("dontShowPopupToday", "true", 1); // 1일 동안 쿠키 설정
+        $('.popup-overlay').hide();
+    });
+ 	
 });
 </script>
 </body>
