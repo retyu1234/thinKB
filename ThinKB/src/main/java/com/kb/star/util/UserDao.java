@@ -51,10 +51,16 @@ public interface UserDao {
 
 	List<MeetingRooms> myMeetingRoom(int id);
 
+
+	List<Teams> myDepartmentTeams(String department);
+
+	List<MeetingRooms> myAllMeetingRoom(int id);
+
 	// 검색된 직원 목록 조회
 	List<UserListDto> searchEmployees(Map<String, Object> params);
 
 	// 검색된 직원 수 조회
 	int countEmployees(Map<String, Object> params);
+
 
 }
