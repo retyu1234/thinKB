@@ -3,6 +3,7 @@ package com.kb.star.util;
 import java.util.List;
 
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
 
 public interface NotiDao {
@@ -12,4 +13,15 @@ public interface NotiDao {
 
 	// 알림 테이블의 IdeaID컬럼으로 Ideas 테이블 정보 가져오기
     Ideas getIdeaById(int ideaId); // IdeasDto =  Ideas
+    
+    // Ideas 테이블의 RoomID컬럼으로 MeetingRooms 테이블 정보 가져오기(roomTitle)
+    MeetingRooms getRoomTitleById(int RoomID); // MeetingRoomsDto =  MeetingRooms 
+    
+    // 알림 읽음 상태 업데이트
+    void updateReadStatus(int notificationID);
+
+    // 알림 삭제
+	void deleteNotification(int notificationID);
+    
+    
 }

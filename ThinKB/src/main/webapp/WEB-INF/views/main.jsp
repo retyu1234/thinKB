@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -131,10 +132,12 @@
 	padding: 10px;
 	border-radius: 15px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	cursor: pointer; /* 커서를 손 모양으로 변경 */
 }
 
 .notification.unread {
-	background-color: #cce5ff; /* 읽지 않은 알림의 파란색 배경 */
+	/* background-color: #cce5ff; */ /* 읽지 않은 알림의 파란색 배경 */
+	background-color: #fffde7; /* 연노랑색 */
 }
 
 .notification.read {
@@ -150,6 +153,54 @@
 	color: #333;
 	margin-bottom: 0;
 }
+
+/* 읽지 않은 메세지 팝업 스타일 */
+.popup-overlay {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* 화면의 가운데에 뜨게끔 설정 */
+    background: white;
+    padding: 40px;
+    height: 100px; /* 팝업창의 고정된 세로 높이 */
+    border-radius: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    color: #000; /* 텍스트 색상 검정으로 설정 */
+    text-align: center;
+    border: 4px solid #ffc107; /* 굵은 노란색 테두리 추가 */
+}
+
+.popup-message {
+    font-size: 1.2em;
+    margin-bottom: 20px;.
+}
+
+.popup-close {
+ 	background: #ffc107;
+    color: #ffffff;
+    border: none;
+    padding: 10px 50px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: inline-block; /* 추가: 버튼을 인라인 블록 요소로 설정 */
+    margin-top: 20px; /* 추가: 버튼과 메시지 사이에 여백 추가 */
+}
+.popup-close:hover {
+	background-color: #e0a800;
+}
+/*  */
 
 .footer {
 	/* background-color: white; */
@@ -241,25 +292,34 @@
 			</div>
 		</div>
 		<div class="notifications-reports-wrapper">
+		
+			<!-- 알림함 -->
 			<div class="section-wrapper" style="width: 43%;">
-				<div class="section-title">알림함</div>
-				<div class="notifications">
-					<div style="text-align: right;">
-						<button class="more-button"
-							onclick="location.href='<c:url value="/more-reports"/>';">
-							+ 더보기</button>
-					</div>
-					<div class="notification unread">
-						<p class="notification-time">2024년 7월 15일 12:00</p>
-						<p class="notification-content">새로운 알림 내용</p>
-					</div>
-					<div class="notification read">
-						<p class="notification-time">2024년 7월 16일 14:00</p>
-						<p class="notification-content">또 다른 알림 내용</p>
-					</div>
-					<!-- 최대 5개까지 알림을 추가합니다 -->
-				</div>
+			    <div class="section-title">알림함</div>
+			    <div class="notifications">
+			        <div style="text-align: right;">
+			            <button class="more-button" onclick="location.href='<c:url value="/noticeList"/>';">+ 더보기</button>
+			        </div>
+			        <c:forEach var="notification" items="${notifications}">
+			            <div class="notification ${notification.read ? 'read' : 'unread'}" onclick="location.href='<c:url value="/noticeList"/>';">
+			                <p class="notification-time">
+			                    <fmt:formatDate value="${notification.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+			                </p>
+			                <p class="notification-content">[${notification.idea.title}]&nbsp;&nbsp;${notification.message}</p>
+			            </div>
+			        </c:forEach>
+			    </div>
 			</div>
+			
+			<!-- 팝업창 추가 -->
+			<div class="popup-overlay">
+			    <div class="popup">
+			        <p class="popup-message"></p>
+			        <button class="popup-close">닫기</button>
+			    </div>
+			</div>
+			
+			<!-- 내 보고서 -->
 			<div class="section-wrapper" style="width: 50%;">
 				<div class="section-title">내 보고서</div>
 				<div class="reports-wrapper">
@@ -275,9 +335,10 @@
 					</div>
 				</div>
 			</div>
+			
 		</div>
 	</div>
-
+	
 	<div style="height: 200px;"></div>
 
 	<footer class="footer">
@@ -286,6 +347,50 @@
 		<div style="text-align: center;">&copy; 2024 DigiCampus 3rd
 			FourSideOut Team. All rights reserved.</div>
 	</footer>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+
+        const formattedMonth = (month < 10 ? '0' + month : month);
+        const formattedDay = (day < 10 ? '0' + day : day);
+        const formattedHours = (hours < 10 ? '0' + hours : hours);
+        const formattedMinutes = (minutes < 10 ? '0' + minutes : minutes);
+
+        return year + '.' + formattedMonth + '.' + formattedDay + ' ' + formattedHours + ':' + formattedMinutes;
+    }
+
+    // 포맷된 날짜를 표시하기 위해 createdAt 값을 변환
+    $('.notification-time').each(function() {
+        const timestamp = $(this).text().trim();
+        const date = new Date(timestamp);
+        if (!isNaN(date.getTime())) {
+            $(this).text(formatTimestamp(date));
+        } else {
+            $(this).text(timestamp);
+        }
+    });
+    
+ 	// 읽지 않은 알림이 있을 경우 팝업 표시
+    var unreadCount = ${unreadCount}; 
+    console.log("Unread Count:", unreadCount);
+    if (unreadCount > 0) {
+        $('.popup-message').text("읽지 않은 " + unreadCount + "개의 알림이 있습니다.");
+        $('.popup-overlay').show();
+    }
+
+    // 팝업 닫기
+    $('.popup-close').click(function() {
+        $('.popup-overlay').hide();
+    });
+});
+</script>
 </body>
 </html>
 

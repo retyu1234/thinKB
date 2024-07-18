@@ -9,6 +9,7 @@ public class Ideas {
     private boolean isDelete;
     private int stageID;
     private int pickNum;
+    
 
     // 기본 생성자
     public Ideas() {}
@@ -89,8 +90,10 @@ public class Ideas {
     public void setPickNum(int pickNum) {
         this.pickNum = pickNum;
     }
+    
 
-    // toString 메소드 (선택 사항)
+
+	// toString 메소드 (선택 사항)
     @Override
     public String toString() {
         return "Idea{" +
@@ -104,4 +107,5 @@ public class Ideas {
                 ", pickNum=" + pickNum +
                 '}';
     }
+
 }
