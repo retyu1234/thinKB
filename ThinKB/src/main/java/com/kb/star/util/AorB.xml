@@ -2,20 +2,67 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  
+
+
 <mapper namespace="com.kb.star.util.AorBDao">
 
 	<!-- A/B테스트 생성 -->
 	<insert id="makeAorB">
-		insert into ABTests (TestName, VariantA, VariantB) 
-		values (#{TestName}, #{VariantA}, #{VariantB})
-	</insert>	
-	
+		insert into ABTests (TestName, VariantA,
+		VariantB,ResultANum,ResultBNum)
+		values (#{testName}, #{variantA},
+		#{variantB},0,0)
+	</insert>
+
 	<!-- A/B테스트 목록(모든정보) 가져오기 -->
 	<select id="getAorBList" resultType="com.kb.star.dto.AorBDto">
-		SELECT * FROM ABTests
+		SELECT
+		t.ABTestID,
+		t.TestName,
+		t.VariantA,
+		t.VariantB,
+		t.ResultANum,
+		t.ResultBNum,
+		t.CreatedAt,
+		IF(r.ABResultID IS NOT NULL, 1, 0) AS participated
+		FROM
+		ABTests t
+		LEFT JOIN
+		(SELECT ABResultID, ABTestID
+		FROM ABResult
+		WHERE
+		UserID = #{userId}) r
+		ON
+		t.ABTestID = r.ABTestID
+		ORDER BY
+		t.CreatedAt DESC
 	</select>
-	
+	<!-- abTest 개별방 -->
+	<select id="abTestDetail" resultType="com.kb.star.dto.AorBDto">
+		SELECT
+		*
+		FROM
+		ABTests
+		WHERE
+		ABTestID = #{param1}
+	</select>
+	<!-- 개인투표 insert -->
+	<insert id="insertABResult">
+		INSERT INTO ABResult (ABTestID, UserID, Pick)
+		VALUES (#{abTestId}, #{userId}, #{pick})
+	</insert>
+	<!-- A 버전 선택시 -->
+	<update id="voteForVariantA" parameterType="int">
+		UPDATE ABTests
+		SET ResultANum = ResultANum + 1
+		WHERE ABTestID = #{abTestId}
+	</update>
+	<!-- B 버전 선택시 -->
+	<update id="voteForVariantB" parameterType="int">
+		UPDATE ABTests
+		SET ResultBNum = ResultBNum + 1
+		WHERE ABTestID = #{abTestId}
+	</update>
+
 
 </mapper>

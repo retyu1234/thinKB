@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kb.star.command.addFunction.Command;
+import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.NotiDto;
 import com.kb.star.util.NotiDao;
@@ -20,7 +20,7 @@ import com.kb.star.util.NotiDao;
 @Controller
 public class NotiController {
 	
-	Command command = null;
+	AddCommand command = null;
 
 	@Autowired
 	private SqlSession sqlSession;
