@@ -145,7 +145,7 @@ button {
 					id="password" name="password" required>
 			</div>
 			<button type="submit" class="loginBtn">로그인</button>
-			<a href="#" class="forgot-password">비밀번호 찾기</a>
+			<a href="./passwordChange" class="forgot-password">비밀번호 변경</a>
 		</form>
 	</div>
 </body>

@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <title>직원관리</title>
 <style>
 .userAdmin-body {
@@ -30,7 +31,7 @@
 .employee-title {
 	font-size: 30px;
 	font-weight: bold;
-	margin-top:30px;
+	margin-top: 30px;
 }
 
 .employee-search-form {
@@ -137,7 +138,7 @@
 	border-radius: 4px;
 	cursor: pointer;
 	font-size: 16px;
-	font-weight:bold;
+	font-weight: bold;
 	margin-bottom: 20px;
 	transition: background-color 0.3s;
 }
@@ -145,12 +146,21 @@
 .add-employee-button:hover {
 	background-color: #ffcd50;
 }
-.add-btn{
-    display: flex;
-    justify-content: flex-end;
+
+.add-btn {
+	display: flex;
+	justify-content: flex-end;
 }
 </style>
-
+<script>
+    function deleteEmployee(userId) {
+        var confirmation = confirm("정말로 이 직원을 삭제하시겠습니까?");
+        if (confirmation) {
+            // 지정한 경로로 이동 (예: /deleteEmployee 경로로 이동)
+            window.location.href = './deleteEmployee?userId=' + userId;
+        }
+    }
+</script>
 </head>
 <body>
 	<div class="userAdmin-body">
@@ -159,17 +169,17 @@
 	<div class="employee-content">
 		<div class="employee-title">직원조회</div>
 		<div class="add-btn">
-		<a href="./addUserView?departmentId=${departmentId}"><button class="add-employee-button">직원 추가</button></a>
+			<a href="./addUserView?departmentId=${departmentId}"><button
+					class="add-employee-button">직원 추가</button></a>
 		</div>
-		<form action="./searchEmployees" method="get"
+		<form action="./userAdminView" method="get"
 			class="employee-search-form">
 			<div class="input-group">
 				<input type="text" class="employee-search-input" name="searchTerm"
-					placeholder="여기에 입력하세요">
+					value="${param.searchTerm}" placeholder="여기에 입력하세요">
 				<div class="input-group-append">
 					<button class="employee-search-button" type="submit">
 						<i class="fa fa-search"></i>
-						<!-- 돋보기 아이콘 -->
 					</button>
 				</div>
 			</div>
@@ -185,19 +195,40 @@
 				<div class="employee-header-item">삭제</div>
 			</div>
 			<div class="employee-list">
-        <c:forEach var="employee" items="${userList}">
-            <div class="employee-item">
-                <div class="employee-info">${employee.userName}</div>
-                <div class="employee-info">${employee.userId}</div>
-                <div class="employee-info">${employee.departmentName}</div>
-                <div class="employee-info">${employee.teamName}</div>
-                <div class="employee-info">${employee.email}</div>
-                <div class="employee-info">
-                    <button class="employee-delete-button" onclick="deleteEmployee(${employee.userId})">삭제</button>
-                </div>
-            </div>
-        </c:forEach>
+				<c:forEach var="employee" items="${userList}">
+					<c:choose>
+						<c:when
+							test="${employee.isDelete == null ? false : !employee.isDelete && employee.userId != 1}">
+							<div class="employee-item">
+								<div class="employee-info">${employee.userName}</div>
+								<div class="employee-info">${employee.userId}</div>
+								<div class="employee-info">${employee.departmentName}</div>
+								<div class="employee-info">${employee.teamName}</div>
+								<div class="employee-info">${employee.email}</div>
+								<div class="employee-info">
+									<button class="employee-delete-button"
+										onclick="deleteEmployee(${employee.userId})">삭제</button>
+								</div>
+							</div>
+						</c:when>
+						<c:otherwise>
+							<!-- Do nothing or provide some default behavior -->
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
 			</div>
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <c:forEach var="i" begin="1" end="${totalPages}">
+                        <li class="page-item ${i == currentPage ? 'active' : ''}">
+                            <a class="page-link" href="./userAdminView?searchTerm=${param.searchTerm}&page=${i}">${i}</a>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </nav>
+			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+			<script
+				src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 		</div>
 	</div>
 </body>

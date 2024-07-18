@@ -10,6 +10,7 @@ public class AorBDto {
 	private int resultANum; // A 버전 결과
 	private int resultBNum; // B 버전 결과
 	private Timestamp createdAt; // 생성 시간
+	private boolean participated;
 
 	// Getters and setters
 	public int getABTestID() {
@@ -67,4 +68,13 @@ public class AorBDto {
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
+
+	public boolean isParticipated() {
+		return participated;
+	}
+
+	public void setParticipated(boolean participated) {
+		this.participated = participated;
+	}
+	
 }
