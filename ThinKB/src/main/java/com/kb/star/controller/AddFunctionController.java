@@ -1,9 +1,7 @@
 package com.kb.star.controller;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -13,13 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.kb.star.command.addFunction.ABTestDetail;
+import com.kb.star.command.addFunction.ABTestList;
+import com.kb.star.command.addFunction.ABTestVote;
+import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.addFunction.MakeAorBCommand;
-import com.kb.star.dto.AorBDto;
-import com.kb.star.util.AorBDao;
 
 @Controller
 public class AddFunctionController {
@@ -27,6 +25,7 @@ public class AddFunctionController {
 	@Autowired
 	private SqlSession sqlSession;
 
+	AddCommand command;
 	// 나의 보고서 목록
 	@RequestMapping("/myReportList")
 	public String myReportList(Model model) {
@@ -37,12 +36,12 @@ public class AddFunctionController {
 
 	// A/B테스트 목록
 	@RequestMapping("/AorBList")
-	public String AorBList(Model model) {
-		System.out.println("AddFunctionController - AorBList");
-
-		AorBDao dao = sqlSession.getMapper(AorBDao.class);
-		List<AorBDto> aorBList = dao.getAorBList();
-		model.addAttribute("aorBList", aorBList);
+	public String AorBList(HttpSession session,HttpServletRequest request,Model model) {
+		int userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("request",request);
+		model.addAttribute("userId",userId);
+		command=new ABTestList(sqlSession);
+		command.execute(model);
 
 		return "/addFunction/AorBList";
 	}
@@ -50,39 +49,15 @@ public class AddFunctionController {
 	// A/B테스트 생성 form
 	@RequestMapping("/makeAorB")
 	public String makeAorB() {
-		System.out.println("AddFunctionController - makeAorB");
-
 		return "/addFunction/makeAorB";
 	}
 
 	// A/B 테스트를 생성 후 목록 페이지로 리다이렉트
 	@RequestMapping(value = "/processAorB", method = RequestMethod.POST)
-	public String processAorB(MultipartHttpServletRequest request, Model model
-	,@RequestParam("variantA") MultipartFile variantA
-	,@RequestParam("variantB") MultipartFile variantB
-			, @RequestParam String testName
-			) throws IOException, ServletException {
-		log.info("processAorB");
-
-
-		System.out.println("AddFunctionController - processAorB");
-
-		// 디버깅 로그 추가
-		System.out.println("processAorB method called");
-		/*
-		 * System.out.println("Test Name: " + testName);
-		 * System.out.println("Variant A: " + variantA.getOriginalFilename());
-		 * System.out.println("Variant B: " + variantB.getOriginalFilename());
-		 * 
-		 */
+	public String processAorB(MultipartHttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
-		model.addAttribute("variantA", variantA);
-		model.addAttribute("variantB", variantB);
-		model.addAttribute("testName", testName);
-
-		MakeAorBCommand command = new MakeAorBCommand(sqlSession.getMapper(AorBDao.class));
+		command = new MakeAorBCommand(sqlSession);
 		command.execute(model);
-
 		return "redirect:/AorBList";
 	}
 
@@ -90,6 +65,22 @@ public class AddFunctionController {
 	@RequestMapping("/vote")
 	public String vote(Model model) {
 		return "/addFunction/vote";
+	}
+	//ab테스트 투표화면
+	@RequestMapping("/adTsetdetail")
+	public String adTsetdetail(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new ABTestDetail(sqlSession);
+		command.execute(model);
+		return "/addFunction/userABTest"; 
+	}
+	//ab테스트 투표
+	@RequestMapping("/abTestVote")
+	public String abTestVote(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new ABTestVote(sqlSession);
+		command.execute(model);
+		return "redirect:/AorBList";
 	}
 
 }

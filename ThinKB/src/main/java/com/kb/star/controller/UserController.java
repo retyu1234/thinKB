@@ -9,11 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kb.star.command.user.DeleteEmployee;
 import com.kb.star.command.user.DepartmentTeam;
 import com.kb.star.command.user.InsertUser;
 import com.kb.star.command.user.UserCommand;
 import com.kb.star.command.user.UserListAdmin;
-import com.kb.star.dto.UsersDto;
 
 @Controller
 public class UserController {
@@ -42,6 +42,14 @@ public class UserController {
 	public String insertUser(HttpServletRequest request,Model model) {
 		model.addAttribute("request",request);
 		command = new InsertUser(sqlSession);
+		command.execute(model);
+		return "redirect:/userAdminView";
+	}
+	//회원삭제
+	@RequestMapping("/deleteEmployee")
+	public String deleteEmployee(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command = new DeleteEmployee(sqlSession);
 		command.execute(model);
 		return "redirect:/userAdminView";
 	}

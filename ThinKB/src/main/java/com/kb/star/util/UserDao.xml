@@ -134,8 +134,8 @@
 	<update id="updateProfileImg" parameterType="map">
 		UPDATE Users
 		SET
-		ProfileImg = #{profileImg}
-		WHERE UserID = #{userId}
+		ProfileImg = #{param2}
+		WHERE UserID = #{param1}
 	</update>
 	
 	<!-- 회의방목록볼때 회의방별 팀명 조회하기위한 쿼리문 -->
@@ -147,5 +147,36 @@
 		SELECT mr.* from MeetingRooms mr inner join MeetingRoomMembers mrm on mr.RoomID = mrm.RoomID
 		where mr.IsDelete = 0 and mrm.UserID = #{param1} order by mr.RoomID desc;
 	</select>
+
+	<!-- 회원삭제 -->
+		<update id="deleteUser" parameterType="map">
+		UPDATE Users
+		SET
+		IsDelete = #{param2}
+		WHERE UserID = #{param1}
+	</update>
+	    <!-- 직원 목록 조회 (검색 및 페이지네이션) -->
+    <select id="searchEmployees" parameterType="map" resultType="com.kb.star.dto.UserListDto">
+        SELECT u.*, d.DepartmentName, t.TeamName
+        FROM Users u
+        LEFT JOIN Departments d ON u.DepartmentID = d.DepartmentID
+        LEFT JOIN Teams t ON u.TeamID = t.TeamID
+        WHERE u.IsDelete = 0
+          AND u.UserID != 1
+          AND (u.UserName LIKE CONCAT('%', #{searchTerm}, '%')
+          OR t.TeamName LIKE CONCAT('%', #{searchTerm}, '%'))
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 직원 목록 수 조회 (검색용) -->
+    <select id="countEmployees" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM Users u
+        LEFT JOIN Teams t ON u.TeamID = t.TeamID
+        WHERE u.IsDelete = 0
+          AND u.UserID != 1
+          AND (u.UserName LIKE CONCAT('%', #{searchTerm}, '%')
+          OR t.TeamName LIKE CONCAT('%', #{searchTerm}, '%'))
+    </select>
 
 </mapper>

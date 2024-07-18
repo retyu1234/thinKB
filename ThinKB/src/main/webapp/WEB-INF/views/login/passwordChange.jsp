@@ -140,7 +140,7 @@
 			<a href="javascript:history.back()"><i class="fas fa-arrow-left"></i>
 				</a>
 		</div>
-		<h1 class="password-h1">비밀번호 변경</h1>
+		<h1 class="password-h1">개인정보 확인</h1>
 		<form id="passwordForm" action="./checkUser" method="post"
 			target="_self">
 			<div class="form-group">

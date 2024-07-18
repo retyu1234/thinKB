@@ -64,7 +64,7 @@ public class LoginController {
 		model.addAttribute("request", request);
 		command=new ProfileImg(sqlSession);
 		command.execute(model);
-		return "login/mypage";
+		return "redirect:/mypage";
 	}
 	//관리자메인
 	@RequestMapping("/adminMain")
@@ -103,9 +103,7 @@ public class LoginController {
 		model.addAttribute("request", request);
 		command=new UpdatePassword(sqlSession);
 		command.execute(model);
-		Map<String, Object> map = model.asMap();
-		String path=(String)map.get("path");
-		return path;
+		return "redirect:/loginView";
 	}
 	
 }
