@@ -8,11 +8,12 @@
 		select * from Users where
 		UserID=#{param1}
 	</select>
+	<!-- 비밀번호 update -->
 	<update id="updatePassword">
-		UPDATE users
-		SET password = #{newPassword}
+		UPDATE Users
+		SET Password = #{param2}
 		WHERE
-		user_id = #{userId}
+		UserID = #{param1}
 	</update>
 	<!-- 비밀번호변경 전 본인확인 -->
 	<select id="checkUser" resultType="com.kb.star.dto.UsersDto">

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kb.star.command.addFunction.Command;
+import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
@@ -25,7 +25,7 @@ import com.kb.star.util.NotiDao;
 @Controller
 public class NotiController {
 	
-	Command command = null;
+	AddCommand command = null;
 
 	@Autowired
 	private SqlSession sqlSession;
