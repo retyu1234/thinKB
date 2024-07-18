@@ -138,6 +138,14 @@ input.room1-detail:focus {
 	background-color: #696969;
 	color: white;
 }
+
+.room1-timer {
+    font-size: 24px;
+    font-weight: bold;
+    color: #007BFF;
+    text-align: center;
+    margin-bottom: 20px;
+}
 </style>
 </head>
 <script>
@@ -178,14 +186,45 @@ function submitForm() {
 
     document.getElementById('ideaForm').submit();
 }
+
+// 여기 아래부터 타이머
+// 타이머 함수
+function updateTimer() {
+    const endDate = new Date("${timer}").getTime();
+    const now = new Date().getTime();
+    const distance = endDate - now;
+
+    if (distance < 0) {
+        document.getElementById("timer").innerHTML = "시간이 종료되었습니다";
+        return;
+    }
+
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("timer").innerHTML = 
+        "남은 시간: " + 
+        (hours < 10 ? "0" : "") + hours + ":" +
+        (minutes < 10 ? "0" : "") + minutes + ":" +
+        (seconds < 10 ? "0" : "") + seconds;
+}
+
+// 페이지 로드 시 타이머 시작
+document.addEventListener("DOMContentLoaded", function() {
+    updateTimer();
+    setInterval(updateTimer, 1000);
+});
 </script>
 <body>
 	<header class="header">
 		<%@ include file="../header.jsp"%>
 	</header>
 	<div class="room1"></div>
+	<h1></h1>
 	<!-- 배경 이미지를 위한 영역 -->
 	<div class="room1-content">
+		<div id="timer" class="room1-timer"></div>
 		<h2 class="room1-title">아이디어 회의 주제</h2>
 		<div class="room1-subject">
 			${info.getRoomTitle()}
@@ -211,6 +250,7 @@ function submitForm() {
 		
 		
 		<form id="ideaForm" action="./submitIdea" method="post">
+			<input type="hidden" name="roomId" value="${info.getRoomId()}">
 		 	<input type="hidden" id="myIdeaHidden" name="myIdea">
             <input type="hidden" id="ideaDetailHidden" name="ideaDetail">
 			<div style="text-align:center;">

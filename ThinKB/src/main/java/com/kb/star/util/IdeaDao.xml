@@ -42,14 +42,14 @@
 	</update>
 
 	<!-- 아이디어 제목으로 방정보 가져오기 -->
-	<select id="selectByTitle" parameterType="String"
+	<select id="selectByRoomId" parameterType="int"
 		resultType="com.kb.star.dto.MeetingRooms">
 		SELECT RoomID, RoomTitle, Description, DepartmentID,
 		TeamID, RoomManagerID,
 		StageID, IsDelete, EndDate, CreatedAt
 		FROM
 		MeetingRooms
-		WHERE RoomTitle = #{roomTitle}
+		WHERE RoomId = #{roomId}
 	</select>
 
 	<!-- 아이디어 투표 여부 확인하기 -->

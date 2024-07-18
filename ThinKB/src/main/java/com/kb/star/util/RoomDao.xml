@@ -9,4 +9,21 @@
 	select * from MeetingRooms where RoomID=#{param1}
 </select>
 
+<select id="roomTimerInfo" resultType="String">
+	select endTime from Timer where RoomID=#{param1} and IdeaID=0
+</select>
+
+<insert id="submitIdea">
+	INSERT INTO Ideas (UserID,RoomID,Title,Description,IsDelete,StageID,PickNum) values 
+	(#{param1},#{param2},#{param3},#{param4},0,1,0);
+</insert>
+
+<update id="updateParticipantStage1">
+	update StageParticipation set Status=1 WHERE RoomID=#{param1} and StageID=1 and UserID=#{param2}
+</update>
+
+<select id="isParticipantsStage1" resultType="boolean">
+	SELECT Status from StageParticipation WHERE RoomID=#{param1} and UserID=#{param2} and StageID=1
+</select>
+	
 </mapper>
