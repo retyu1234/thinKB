@@ -10,6 +10,10 @@ public class NotiDto {
     private boolean isRead;     // 읽음 여부
     private boolean isDelete;   // 삭제 여부
     private Timestamp createdAt;// 생성 시간
+    
+    private Ideas idea; // noticeList.jsp에서 한 번의 반복문만 돌리기 위한 아이디어 정보 추가
+    private String roomTitle; // noticeList.jsp에서 한 번의 반복문만 돌리기 위한 roomTitle 정보 추가
+
 
     
     // Getters and setters
@@ -54,6 +58,19 @@ public class NotiDto {
 	}
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
+	}
+	public Ideas getIdea() {
+		return idea;
+	}
+	public void setIdea(Ideas idea) {
+		this.idea = idea;
+	}
+    public String getRoomTitle() {
+		return roomTitle;
+	}
+
+	public void setRoomTitle(String roomTitle) {
+		this.roomTitle = roomTitle;
 	}
 
 	

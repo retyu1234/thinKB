@@ -12,6 +12,8 @@ public class MeetingRooms {
 	private boolean isDelete; 
 	private String endDate;
 	private String createdAt;
+	
+	// getter setter
 	public int getRoomId() {
 		return roomId;
 	}
