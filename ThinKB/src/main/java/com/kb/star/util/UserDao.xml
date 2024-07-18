@@ -137,5 +137,15 @@
 		ProfileImg = #{profileImg}
 		WHERE UserID = #{userId}
 	</update>
+	
+	<!-- 회의방목록볼때 회의방별 팀명 조회하기위한 쿼리문 -->
+	<select id="myDepartmentTeams" resultType="com.kb.star.dto.Teams">
+		select * from Teams WHERE DepartmentID=#{param1}
+	</select>
+	
+	<select id="myAllMeetingRoom" resultType="com.kb.star.dto.MeetingRooms">
+		SELECT mr.* from MeetingRooms mr inner join MeetingRoomMembers mrm on mr.RoomID = mrm.RoomID
+		where mr.IsDelete = 0 and mrm.UserID = #{param1} order by mr.RoomID desc;
+	</select>
 
 </mapper>

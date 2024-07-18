@@ -43,4 +43,8 @@ public interface UserDao {
 
 	List<MeetingRooms> myMeetingRoom(int id);
 
+	List<Teams> myDepartmentTeams(String department);
+
+	List<MeetingRooms> myAllMeetingRoom(int id);
+
 }
