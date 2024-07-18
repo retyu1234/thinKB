@@ -1,5 +1,6 @@
 package com.kb.star.util;
 
+import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 
 public interface RoomDao {
@@ -13,6 +14,8 @@ public interface RoomDao {
 	void updateParticipantStage1(int roomId, int id);
 
 	boolean isParticipantsStage1(int roomId, int id);
+
+	Ideas ideaInfo(int roomId, int id);
 
 
 }
