@@ -26,7 +26,13 @@ public class ABTestDetail implements AddCommand {
 		int abTestId = Integer.parseInt(request.getParameter("abTestId"));
 		AorBDao dao=sqlSession.getMapper(AorBDao.class);
 		AorBDto dto=dao.abTestDetail(abTestId);
+		int totalVotes = dto.getResultANum() + dto.getResultBNum();
+        double aPercentage = totalVotes > 0 ? (double) dto.getResultANum() / totalVotes * 100 : 0;
+        double bPercentage = totalVotes > 0 ? (double) dto.getResultBNum() / totalVotes * 100 : 0;
 		model.addAttribute("abtest",dto);
+        model.addAttribute("aPercentage", aPercentage);
+        model.addAttribute("bPercentage", bPercentage);
+        model.addAttribute("totalVotes", totalVotes);
 	}
 
 }
