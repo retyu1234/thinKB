@@ -21,13 +21,17 @@ public class ABTestVote implements AddCommand {
 	public void execute(Model model) {
 		// TODO Auto-generated method stub
 		Map<String,Object> map=model.asMap();
-		HttpServletRequest request=(HttpServletRequest)map.get("request");
-		int userId=Integer.parseInt(request.getParameter("userId"));
+		HttpServletRequest request=(HttpServletRequest)map.get("request");	
+		int userId=(Integer)map.get("userId");
 		int abTestId=Integer.parseInt(request.getParameter("abTestId"));
 		int pick=Integer.parseInt(request.getParameter("pick"));
 		AorBDao dao=sqlSession.getMapper(AorBDao.class);
 		if(pick==1) {
 			dao.insertABResult(abTestId,userId,pick);
+			dao.voteForVariantA(abTestId);
+		}else if(pick==0) {
+			dao.insertABResult(abTestId, userId, pick);
+			dao.voteForVariantB(abTestId);
 		}
 		
 	}

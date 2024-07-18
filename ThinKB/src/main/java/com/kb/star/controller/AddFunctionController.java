@@ -76,11 +76,20 @@ public class AddFunctionController {
 	}
 	//ab테스트 투표
 	@RequestMapping("/abTestVote")
-	public String abTestVote(HttpServletRequest request,Model model) {
+	public String abTestVote(HttpSession session,HttpServletRequest request,Model model) {
+		int userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("request",request);
+		model.addAttribute("userId",userId);
 		command=new ABTestVote(sqlSession);
 		command.execute(model);
 		return "redirect:/AorBList";
 	}
-
+	//ab테스트 투표 결과
+	@RequestMapping("/completedTestDetail")
+	public String completedTestDetail(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new ABTestDetail(sqlSession);
+		command.execute(model);
+		return "/addFunction/resultABTest"; 
+	}
 }
