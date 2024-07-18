@@ -1,4 +1,4 @@
-package com.kb.star.command.login;
+package com.kb.star.command.addFunction;
 
 import java.util.Map;
 
@@ -6,28 +6,30 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.ui.Model;
 
-import com.kb.star.util.LoginDao;
+import com.kb.star.util.AorBDao;
 
-public class UpdatePassword implements LoginCommand {
+public class ABTestVote implements AddCommand {
 
 	SqlSession sqlSession;
-	
 	@Autowired
-	public UpdatePassword(SqlSession sqlSession) {
+	public ABTestVote(SqlSession sqlSession) {
 		this.sqlSession=sqlSession;
 	}
 	@Override
 	public void execute(Model model) {
 		// TODO Auto-generated method stub
-		Map<String, Object> map = model.asMap();
+		Map<String,Object> map=model.asMap();
 		HttpServletRequest request=(HttpServletRequest)map.get("request");
 		int userId=Integer.parseInt(request.getParameter("userId"));
-		String newPassword = BCrypt.hashpw(request.getParameter("newPassword"), BCrypt.gensalt());
-		LoginDao dao=sqlSession.getMapper(LoginDao.class);
-		dao.updatePassword(userId, newPassword);
+		int abTestId=Integer.parseInt(request.getParameter("abTestId"));
+		int pick=Integer.parseInt(request.getParameter("pick"));
+		AorBDao dao=sqlSession.getMapper(AorBDao.class);
+		if(pick==1) {
+			dao.insertABResult(abTestId,userId,pick);
+		}
+		
 	}
 
 }

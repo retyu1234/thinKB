@@ -3,6 +3,8 @@ package com.kb.star.command.login;
 import java.io.File;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ public class ProfileImg implements LoginCommand {
 		MultipartHttpServletRequest request = (MultipartHttpServletRequest) map.get("request");
 		int userId = Integer.parseInt(request.getParameter("userId"));
 		MultipartFile file = request.getFile("profileImg");
+		HttpSession session = request.getSession(); 
 		String fileName = null;
 		UserDao dao = sqlSession.getMapper(UserDao.class);
 		if (file != null && !file.isEmpty()) {
@@ -36,8 +39,8 @@ public class ProfileImg implements LoginCommand {
 				String uploadPath = request.getSession().getServletContext().getRealPath("/upload/");
 				File dest = new File(uploadPath + fileName);
 				file.transferTo(dest);
-				System.out.println("머지?");
 				dao.updateProfileImg(userId, fileName);
+				session.setAttribute("profileImg", fileName);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
