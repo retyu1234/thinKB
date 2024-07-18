@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../header.jsp"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ include file="../header.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -142,13 +143,82 @@ body {
     cursor: pointer;
 }
 </style>
-<script>
+</head>
+<body>
+    <input type="hidden" id="session-user-id"
+        value="${sessionScope.userId}">
+    <input type="hidden" id="session-room-id"
+        value="${sessionScope.roomId}">
+
+    <div class="idea_header">
+        <jsp:include page="../header.jsp" />
+    </div>
+    <div class="content">
+        <div class="topic-box">
+            <div class="topic-title">
+                ${meetingRoom.roomTitle} <input type="hidden" name="roomId"
+                    value="${meetingRoom.roomId}" />
+            </div>
+            <div class="topic-description">${meetingRoom.description}</div>
+        </div>
+        <div class="idea-container">
+            <c:forEach var="idea" items="${ideas}">
+                <div class="idea-item">
+                    <div class="idea-circle"
+                        onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'></div>
+                    <div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
+                        onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
+                </div>
+            </c:forEach>
+        </div>
+        <button class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+    </div>
+
+    <!-- Modal window -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>
+                <span><input type="hidden" id="modal-idea-id"></span>
+            </p>
+            <p>
+                <span><input type="hidden" id="modal-idea-title"></span>
+            </p>
+            <p>
+                User ID: <span id="modal-idea-userId"></span>
+            </p>
+            <p>
+                상세설명 : <span id="modal-idea-description"></span>
+            </p>
+            <p>질문하기</p>
+            <div class="idea-container" id="modal-idea-replies">
+                <!-- 댓글 내용이 여기에 동적으로 추가됩니다 -->
+            </div>
+            <div id="input-reply-container">
+                <input type="text" id="replyContent" placeholder="댓글을 입력하세요" />
+                <button onclick="submitReply()" id="input-button">입력</button>
+            </div>
+
+            <div id="reply-form-container" style="display: none;">
+                <p>
+                    답변할 질문: <span id="replying-to-question"></span>
+                </p>
+                <input type="hidden" id="replyToId" /> <input type="text"
+                    id="replyAnswerContent" placeholder="답변을 입력하세요" />
+                <div id="reply-button-container">
+                    <button onclick="submitReplyAnswer()" id="reply-button">답글달기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
     let selectedIdea = null;
     let selectedIdeaId = null;
     let selectedIdeaDescription = null;
     let selectedIdeaUserId = null;
 
-    function toggleSelect(element, ideaId, ideaTitle, ideaDescription, ideaUserId, isCircle){
+    function toggleSelect(element, ideaId, ideaTitle, ideaDescription, ideaUserId, isCircle) {
         if (selectedIdea) {
             selectedIdea.classList.remove('selected');
         }
@@ -170,10 +240,153 @@ body {
         }
     }
 
-    
-
     function closeModal() {
         document.getElementById("myModal").style.display = "none";
+    }
+
+    function openModal(ideaId, ideaTitle, ideaDescription, ideaUserId) {
+        document.getElementById("myModal").style.display = "block";
+        document.getElementById("modal-idea-id").innerText = ideaId;
+        document.getElementById("modal-idea-title").innerText = ideaTitle;
+        document.getElementById("modal-idea-description").innerText = ideaDescription;
+        document.getElementById("modal-idea-userId").innerText = ideaUserId;
+
+        const sessionUserId = document.getElementById("session-user-id").value;
+
+        if (Number(sessionUserId) === Number(ideaUserId)) {
+            document.getElementById("reply-button").style.display = "block";
+            document.getElementById("replyContent").style.display = "none";
+            document.getElementById("input-button").style.display = "none";
+            document.getElementById("input-button").innerText = "답변전송";
+        } else {
+            document.getElementById("reply-button").style.display = "none";
+            document.getElementById("replyContent").style.display = "block";
+            document.getElementById("input-button").style.display = "block";
+            document.getElementById("input-button").innerText = "입력";
+        }
+
+        // AJAX 요청을 통해 댓글 데이터 불러오기
+        fetch('${pageContext.request.contextPath}/getIdeaReplies?ideaId=' + ideaId)
+        .then(response => response.json())
+        .then(data => {
+            const repliesContainer = document.getElementById("modal-idea-replies");
+            repliesContainer.innerHTML = '';
+            data.forEach(reply => {
+                const replyElement = document.createElement('div');
+                replyElement.className = 'idea-box';
+                let replyHtml = reply.replyContent;
+                console.log("여기", ${reply.ideaReply});
+                replyElement.innerHTML = replyHtml;
+                replyElement.onclick = function() {
+                    const sessionUserId = document.getElementById("session-user-id").value;
+                    if (Number(sessionUserId) !== Number(reply.userId) && Number(sessionUserId) === Number(ideaUserId)) {
+                        showReplyForm(reply.ideaReply, replyHtml.replace(/"/g, '&quot;').replace(/'/g, '&#39;'));
+                    } else {
+                        hideReplyForm();
+                    }
+
+                };
+                repliesContainer.appendChild(replyElement);
+            });
+        });
+    }
+
+    function showReplyForm(replyID, replyContent) {
+        document.getElementById("reply-form-container").style.display = "block";
+        document.getElementById("replying-to-question").innerText = replyContent;
+        document.getElementById("replyToId").value = replyID;
+    }
+
+    function hideReplyForm() {
+        document.getElementById("reply-form-container").style.display = "none";
+    }
+
+    function submitReply() {
+        const replyContent = document.getElementById("replyContent").value;
+        if (replyContent.trim() === "") {
+            alert("질문 내용을 입력하세요.");
+            return;
+        }
+
+        const sessionUserId = document.getElementById("session-user-id").value;
+        const ideaUserId = document.getElementById("modal-idea-userId").innerText;
+
+        const data = new URLSearchParams();
+        data.append("replyContent", replyContent);
+        data.append("ideaId", selectedIdeaId);
+        data.append("roomId", document.getElementById("session-room-id").value);
+
+        fetch('/star/submitReply', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data.toString()
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.text(); // JSON 대신 텍스트 형식으로 응답 처리
+        })
+        .then(result => {
+            console.log("Submit Reply Result: ", result);
+            if (result === 'success') {
+                alert("댓글이 성공적으로 등록되었습니다.");
+                openModal(selectedIdeaId, document.getElementById("modal-idea-title").innerText, document.getElementById("modal-idea-description").innerText, ideaUserId); // 모달 새로고침
+            } else {
+                alert("댓글 등록에 실패하였습니다.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("댓글 등록 중 오류가 발생하였습니다.");
+        });
+    }
+
+    function submitReplyAnswer() {
+        const replyAnswerContent = document.getElementById("replyAnswerContent").value;
+        if (replyAnswerContent.trim() === "") {
+            alert("답변 내용을 입력하세요.");
+            return;
+        }
+
+        const ideaReply = document.getElementById("replyToId").value;
+
+        const data = new URLSearchParams();
+        data.append("replyContent", replyAnswerContent);
+        data.append("ideaId", selectedIdeaId);
+        data.append("roomId", document.getElementById("session-room-id").value);
+        data.append("replyStep", ideaReply);
+
+        console.log("Submitting reply answer with data: ", data.toString());
+
+        fetch('/star/submitReplyAnswer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: data.toString()
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.text(); // JSON 대신 텍스트 형식으로 응답 처리
+        })
+        .then(result => {
+            console.log("Submit Reply Answer Result: ", result);
+            if (result === 'success') {
+                alert("답글이 성공적으로 등록되었습니다.");
+                openModal(selectedIdeaId, document.getElementById("modal-idea-title").innerText, document.getElementById("modal-idea-description").innerText, '${sessionScope.userId}'); // 모달 새로고침
+            } else {
+                alert("답글 등록에 실패하였습니다.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("답글 등록 중 오류가 발생하였습니다.");
+        });
     }
 
     function submitVote() {
@@ -221,7 +434,6 @@ body {
             alert('아이디어를 선택하세요.');
         }
     }
-
     window.onload = function() {
         const Message = '${errorMessage}';
         if (Message) {
@@ -229,36 +441,6 @@ body {
         }
     }
 </script>
-</head>
-<body>
-
-    <!-- Display userId for debugging -->
-    <input type="hidden" id="session-user-id" value="${sessionScope.userId}">
-    <input type="hidden" id="session-room-id" value="${sessionScope.roomId}">
-
-    <div class="idea_header">
-        <jsp:include page="../header.jsp" />
-    </div>
-    <div class="content">
-        <div class="topic-box">
-            <div class="topic-title">
-                ${meetingRoom.roomTitle} <input type="hidden" name="roomId" value="${meetingRoom.roomId}" />
-            </div>
-            <div class="topic-description">${meetingRoom.description}</div>
-        </div>
-        <div class="idea-container">
-            <c:forEach var="idea" items="${ideas}">
-                <div class="idea-item">
-                    <div class="idea-circle" onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}", "${idea.userID}", true)'></div>
-                    <div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}" onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title}", "${idea.description.replaceAll('"', '&quot;')}", "${idea.userID}", false)'>${idea.title}</div>
-                </div>
-            </c:forEach>
-        </div>     
-        <button class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
-    </div>
-
-    <!-- 모달 창 포함 -->
-    <jsp:include page="ideaReplying.jsp" />
 
 </body>
 </html>
