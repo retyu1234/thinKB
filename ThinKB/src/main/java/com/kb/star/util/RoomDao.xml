@@ -4,30 +4,41 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kb.star.util.RoomDao">
 
-<!-- 방번호로 한개의 방 정보를 모두 가져오는 쿼리 -->
-<select id="roomDetailInfo" resultType="com.kb.star.dto.MeetingRooms">
-	select * from MeetingRooms where RoomID=#{param1}
-</select>
+	<!-- 방번호로 한개의 방 정보를 모두 가져오는 쿼리 -->
+	<select id="roomDetailInfo"
+		resultType="com.kb.star.dto.MeetingRooms">
+		select * from MeetingRooms where RoomID=#{param1}
+	</select>
 
-<select id="roomTimerInfo" resultType="String">
-	select endTime from Timer where RoomID=#{param1} and IdeaID=0
-</select>
+	<select id="roomTimerInfo" resultType="String">
+		select endTime from Timer where RoomID=#{param1} and IdeaID=0
+	</select>
 
-<insert id="submitIdea">
-	INSERT INTO Ideas (UserID,RoomID,Title,Description,IsDelete,StageID,PickNum) values 
-	(#{param1},#{param2},#{param3},#{param4},0,1,0);
-</insert>
+	<insert id="submitIdea">
+		INSERT INTO Ideas (UserID,RoomID,Title,Description,IsDelete,StageID,PickNum)
+		values
+		(#{param1},#{param2},#{param3},#{param4},0,1,0);
+	</insert>
 
-<update id="updateParticipantStage1">
-	update StageParticipation set Status=1 WHERE RoomID=#{param1} and StageID=1 and UserID=#{param2}
-</update>
+	<update id="updateParticipantStage1">
+		update StageParticipation set Status=1 WHERE RoomID=#{param1} and StageID=1
+		and UserID=#{param2}
+	</update>
 
-<select id="isParticipantsStage1" resultType="boolean">
-	SELECT Status from StageParticipation WHERE RoomID=#{param1} and UserID=#{param2} and StageID=1
-</select>
+	<select id="isParticipantsStage1" resultType="boolean">
+		SELECT Status from StageParticipation WHERE RoomID=#{param1} and
+		UserID=#{param2} and StageID=1
+	</select>
 
-<select id="ideaInfo" resultType="com.kb.star.dto.Ideas">
-	SELECT * FROM Ideas WHERE RoomID=#{param1} and UserID=#{param2} and StageID=1 and IsDelete=0
-</select>
-	
+	<select id="ideaInfo" resultType="com.kb.star.dto.Ideas">
+		SELECT * FROM Ideas WHERE RoomID=#{param1} and UserID=#{param2} and
+		StageID=1 and IsDelete=0
+	</select>
+	<!-- 스테이지 +1 -->
+	<update id="updateStage">
+		UPDATE MeetingRooms
+		SET StageID = StageID + 1
+		WHERE
+		RoomID = #{roomId};
+	</update>
 </mapper>

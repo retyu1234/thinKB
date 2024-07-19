@@ -2,6 +2,8 @@ package com.kb.star.util;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 
@@ -19,5 +21,5 @@ public interface RoomDao {
 
 	List<Ideas> ideaInfo(int roomId, int id);
 
-
+	void updateStage(@Param("roomId") int roomId);
 }
