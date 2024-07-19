@@ -64,15 +64,15 @@ public class IdeaRoomController {
 			case 1:
 				command = new StageOneCommand(sqlSession);
 				command.execute(model);
-				Map<String, Object> map = model.asMap();
-				Boolean result = (Boolean)map.get("result");
-				if(result!=null && !result) { 
-					//1단계의 status가 0이면 아이디어 등록화면으로 이동
+//				Map<String, Object> map = model.asMap();
+//				Boolean result = (Boolean)map.get("result");
+//				if(result!=null && !result) { 
+//					//1단계의 status가 0이면 아이디어 등록화면으로 이동
 					return "firstMeeting/roomStage1";
-				} else {
-					//1단계의 status가 1이면 아이디어 기다리라고 나옴
-					return "redirect:main";
-				}
+//				} else {
+//					//1단계의 status가 1이면 아이디어 기다리라고 나옴
+//					return "redirect:main";
+//				}
 			case 2:
 				return "firstMeeting/roomStage2";
 				
