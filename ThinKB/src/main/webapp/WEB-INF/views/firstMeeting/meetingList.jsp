@@ -223,7 +223,7 @@ body {
     <c:otherwise>
         <c:forEach var="li" items="${roomList}">
             <div class="idea" data-stage="${li.getStageId()}"
-            onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getTeamId()}'">
+            onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'">
                 <h2>${li.getRoomTitle()}</h2>
                 <div class="idea-details">
                     <p>종료일: ${li.getEndDate()}</p>

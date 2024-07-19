@@ -187,6 +187,21 @@ function submitForm() {
     document.getElementById('ideaForm').submit();
 }
 
+function updateForm() {
+	var myIdea = document.querySelector('input[name="myIdea"]').value;
+    var ideaDetail = document.querySelector('input[name="ideaDetail"]').value;
+
+    document.getElementById('myIdeaHidden2').value = myIdea;
+    document.getElementById('ideaDetailHidden2').value = ideaDetail;
+
+    document.getElementById('updateForm').submit();
+	
+}
+
+function nextStage() {
+	document.getElementById('nextStageForm').submit();
+}
+
 // 여기 아래부터 타이머
 // 타이머 함수
 function updateTimer() {
@@ -201,6 +216,9 @@ function updateTimer() {
         document.getElementById("ideaDetailInput").disabled = true;
         // 제출 버튼 숨기기
         document.getElementById("submitButton").style.display = "none";
+        document.getElementById("updateButton").style.display = "none";
+		// 다음 단계 버튼 표시 여부 확인
+        showNextStageButton();
         return;
     }
 
@@ -209,7 +227,7 @@ function updateTimer() {
     const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
     document.getElementById("timer").innerHTML = 
-        "남은 시간: " + 
+        "아이디어 입력 가능 시간: " + 
         (hours < 10 ? "0" : "") + hours + ":" +
         (minutes < 10 ? "0" : "") + minutes + ":" +
         (seconds < 10 ? "0" : "") + seconds;
@@ -219,6 +237,7 @@ function updateTimer() {
 document.addEventListener("DOMContentLoaded", function() {
     updateTimer();
     setInterval(updateTimer, 1000);
+    showNextStageButton();
 
     // 페이지 로드 시 이미 타이머가 종료되었는지 확인
     const endDate = new Date("${timer}").getTime();
@@ -227,8 +246,33 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById("myIdeaInput").disabled = true;
         document.getElementById("ideaDetailInput").disabled = true;
         document.getElementById("submitButton").style.display = "none";
+        document.getElementById("updateButton").style.display = "none";
+    }
+    
+    // result 값에 따라 버튼 표시 여부 결정
+    const result = ${result};
+    if (result) {
+        document.getElementById("submitButton").style.display = "none";
+        document.getElementById("updateButton").style.display = "inline-block";
+    } else {
+        document.getElementById("submitButton").style.display = "inline-block";
+        document.getElementById("updateButton").style.display = "none";
     }
 });
+
+// 타이머끝
+
+function showNextStageButton() {
+    const endDate = new Date("${timer}").getTime();
+    const now = new Date().getTime();
+    const isManager = ${userId == info.getRoomManagerId()};
+    
+    if (now >= endDate && isManager) {
+        document.getElementById("nextStageButton").style.display = "block";
+    } else {
+        document.getElementById("nextStageButton").style.display = "none";
+    }
+}
 </script>
 <body>
 	<header class="header">
@@ -238,6 +282,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	<!-- 배경 이미지를 위한 영역 -->
 	<div class="room1-content">
 		<div id="timer" class="room1-timer"></div>
+		
+		<!-- 방장만 보이는 버튼?? -->
+		<div style="text-align: right;">
+			<c:if test="${userId == info.getRoomManagerId() }">
+				<button type="button" class="yellow-button"
+				onclick="window.location.href='./managerMenu'">회의방 관리</button>
+			</c:if>
+		</div>
+		
 		<h2 class="room1-title">아이디어 회의 주제</h2>
 		<div class="room1-subject">
 			${info.getRoomTitle()}
@@ -263,15 +316,38 @@ document.addEventListener("DOMContentLoaded", function() {
 <input type="text" id="ideaDetailInput" class="room1-detail" name="ideaDetail" 
 	placeholder="여기에 작성해주세요" style="margin-bottom:100px;"
     value="${result == true ? submittedIdea.getDescription() : ''}">
-		
-		
+
+
 		<form id="ideaForm" action="./submitIdea" method="post">
 			<input type="hidden" name="roomId" value="${info.getRoomId()}">
-		 	<input type="hidden" id="myIdeaHidden" name="myIdea">
-            <input type="hidden" id="ideaDetailHidden" name="ideaDetail">
-			<div style="text-align:center;">
-				<button type="button" id="submitButton" class="yellow-button" style="margin-bottom:100px;"
-				onclick="submitForm()">아이디어 제출하기</button>
+			<input type="hidden" name="stage" value="${stage}">
+			<input type="hidden" id="myIdeaHidden" name="myIdea"> <input
+				type="hidden" id="ideaDetailHidden" name="ideaDetail">
+			<div style="text-align: center;">
+				<button type="button" id="submitButton" class="yellow-button"
+					style="margin-bottom: 100px; display: inline-block;" onclick="submitForm()">아이디어
+					제출하기</button>
+			</div>
+		</form>
+
+		<form id="updateForm" action="./updateIdea" method="post">
+			<input type="hidden" name="roomId" value="${info.getRoomId()}">
+			<input type="hidden" name="stage" value="${stage}">
+			<input type="hidden" id="myIdeaHidden2" name="myIdea"> <input
+				type="hidden" id="ideaDetailHidden2" name="ideaDetail">
+			<div style="text-align: center;">
+				<button type="button" id="updateButton" class="yellow-button"
+					style="margin-bottom: 100px; display: none;" onclick="updateForm()">아이디어
+					수정하기</button>
+			</div>
+		</form>
+
+		<form id="nextStageForm" action="./stage1Clear" method="post">
+			<input type="hidden" name="roomId" value="${info.getRoomId()}">
+			<input type="hidden" name="stage" value="${stage}">
+		<div style="text-align: right; margin-top: 20px;">
+			<button id="nextStageButton" class="yellow-button"
+				style="display: none;" onclick="nextStage()">다음 단계</button>
 		</div>
 		</form>
 	</div>
