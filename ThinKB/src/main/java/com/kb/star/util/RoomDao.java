@@ -1,5 +1,7 @@
 package com.kb.star.util;
 
+import java.util.List;
+
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 
@@ -15,7 +17,7 @@ public interface RoomDao {
 
 	boolean isParticipantsStage1(int roomId, int id);
 
-	Ideas ideaInfo(int roomId, int id);
+	List<Ideas> ideaInfo(int roomId, int id);
 
 
 }

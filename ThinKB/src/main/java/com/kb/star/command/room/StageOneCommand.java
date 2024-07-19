@@ -1,5 +1,6 @@
 package com.kb.star.command.room;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -35,8 +36,8 @@ public class StageOneCommand implements RoomCommand {
 		
 		// result가 true라면 원래 입력했던 내용을 수정할 수 있도록 model에 담기
 		if(result) {
-			Ideas dto = dao.ideaInfo(roomId, id);
-			model.addAttribute("submittedIdea", dto);
+			List<Ideas> dto = dao.ideaInfo(roomId, id);
+			model.addAttribute("submittedIdea", dto.get(0));
 		}
 	}
 
