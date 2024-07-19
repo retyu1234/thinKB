@@ -25,5 +25,9 @@
 <select id="isParticipantsStage1" resultType="boolean">
 	SELECT Status from StageParticipation WHERE RoomID=#{param1} and UserID=#{param2} and StageID=1
 </select>
+
+<select id="ideaInfo" resultType="com.kb.star.dto.Ideas">
+	SELECT * FROM Ideas WHERE RoomID=#{param1} and UserID=#{param2} and StageID=1 and IsDelete=0
+</select>
 	
 </mapper>

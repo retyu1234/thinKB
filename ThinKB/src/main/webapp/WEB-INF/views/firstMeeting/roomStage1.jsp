@@ -195,7 +195,12 @@ function updateTimer() {
     const distance = endDate - now;
 
     if (distance < 0) {
-        document.getElementById("timer").innerHTML = "시간이 종료되었습니다";
+        document.getElementById("timer").innerHTML = "아이디어를 입력할 수 있는 시간이 지났어요.";
+        // 입력 필드 비활성화
+        document.getElementById("myIdeaInput").disabled = true;
+        document.getElementById("ideaDetailInput").disabled = true;
+        // 제출 버튼 숨기기
+        document.getElementById("submitButton").style.display = "none";
         return;
     }
 
@@ -214,6 +219,15 @@ function updateTimer() {
 document.addEventListener("DOMContentLoaded", function() {
     updateTimer();
     setInterval(updateTimer, 1000);
+
+    // 페이지 로드 시 이미 타이머가 종료되었는지 확인
+    const endDate = new Date("${timer}").getTime();
+    const now = new Date().getTime();
+    if (now >= endDate) {
+        document.getElementById("myIdeaInput").disabled = true;
+        document.getElementById("ideaDetailInput").disabled = true;
+        document.getElementById("submitButton").style.display = "none";
+    }
 });
 </script>
 <body>
@@ -221,7 +235,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		<%@ include file="../header.jsp"%>
 	</header>
 	<div class="room1"></div>
-	<h1></h1>
 	<!-- 배경 이미지를 위한 영역 -->
 	<div class="room1-content">
 		<div id="timer" class="room1-timer"></div>
@@ -237,16 +250,19 @@ document.addEventListener("DOMContentLoaded", function() {
 		
 		
 		<h2 class="room1-title" style="padding-top:30px;">나의 아이디어</h2>
-		<input type="text" class="room1-subject" name="myIdea" placeholder="여기에 작성해주세요">
-		
-		<button class="kb-ai-button" onclick="showResponse()">KB ai에게 물어보기</button>
-		<div id="kb-ai-response" class="kb-ai-response">
-            <img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot" class="ai-image">
-            <span id="ai-response-text">KB ai의 응답 내용이 여기에 표시됩니다.</span>
-        </div>
-		
-		<h2 class="room1-title" style="padding-top:30px;">아이디어에 대한 상세 설명</h2>
-		<input type="text" class="room1-detail" name="ideaDetail" placeholder="여기에 작성해주세요">
+<input type="text" id="myIdeaInput" class="room1-subject" name="myIdea" placeholder="여기에 작성해주세요"
+    value="${result == true ? submittedIdea.getTitle() : ''}">
+
+<button class="kb-ai-button" onclick="showResponse()">KB ai에게 물어보기</button>
+<div id="kb-ai-response" class="kb-ai-response">
+    <img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot" class="ai-image">
+    <span id="ai-response-text">KB ai의 응답 내용이 여기에 표시됩니다.</span>
+</div>
+
+<h2 class="room1-title" style="padding-top:30px;">아이디어에 대한 상세 설명</h2>
+<input type="text" id="ideaDetailInput" class="room1-detail" name="ideaDetail" 
+	placeholder="여기에 작성해주세요" style="margin-bottom:100px;"
+    value="${result == true ? submittedIdea.getDescription() : ''}">
 		
 		
 		<form id="ideaForm" action="./submitIdea" method="post">
@@ -254,7 +270,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		 	<input type="hidden" id="myIdeaHidden" name="myIdea">
             <input type="hidden" id="ideaDetailHidden" name="ideaDetail">
 			<div style="text-align:center;">
-				<button type="button" class="yellow-button" style="margin-top:70px; margin-bottom:100px;"
+				<button type="button" id="submitButton" class="yellow-button" style="margin-bottom:100px;"
 				onclick="submitForm()">아이디어 제출하기</button>
 		</div>
 		</form>
