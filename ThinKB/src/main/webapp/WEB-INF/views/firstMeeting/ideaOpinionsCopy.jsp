@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4가지 견해 등록 1</title>
+<title>아이디어 회의</title>
 <style>
 body {
     display: flex;
@@ -16,20 +16,16 @@ body {
     background-color: #f0f0f0;
     margin: 0;
     font-family: 'Arial', sans-serif;
-    background: url('./resources/header4.jpg') no-repeat center center fixed;
-    background-size: cover;
 }
 
 .container {
     width: 80%;
-    background-color: rgba(255, 255, 255, 0.9); /* 배경이 살짝 투명한 흰색으로 변경 */
-    border: 1px solid #ccc;
+    background-color: #FFFFFF;
+    border: 1px solid #000;
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     margin-top: 50px;
-    backdrop-filter: blur(10px); /* 배경 이미지 블러 효과 */
 }
 
 h1 {
@@ -40,20 +36,18 @@ h1 {
 .tabs {
     display: flex;
     justify-content: space-around;
-    margin: 20px auto;
-    border-bottom: 2px solid #ccc;
-    position: relative;
+    margin-bottom: 20px;
 }
 
 .tab {
     padding: 15px 25px;
     cursor: pointer;
     font-weight: bold;
-    flex: 1;
-    text-align: center;
     color: #fff;
     transition: background-color 0.3s ease;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 80%);
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+    flex: 1;
+    text-align: center;
 }
 
 .tab-smart {
@@ -79,7 +73,6 @@ h1 {
 
 .tab-content {
     display: none;
-    border: 2px solid;
     padding: 20px;
     box-sizing: border-box;
     background-color: #fff;
@@ -102,19 +95,25 @@ h1 {
     display: flex;
     align-items: center;
     margin-top: 20px;
+    border-top: 1px solid #000;
+    padding-top: 10px;
+    flex-wrap: nowrap; /* 요소들이 한 줄에 유지되도록 설정 */
 }
 
 .opinion-textarea {
-    width: calc(100% - 100px);
-    height: 50px;
+    flex: 1;
+    width: calc(100% - 120px); /* 너비를 버튼 크기에 맞게 조정 */
+    height: 50px; /* 높이를 버튼과 맞춤 */
     margin-right: 10px;
     border: 1px solid #ccc;
     padding: 10px;
     border-radius: 5px;
+    box-sizing: border-box; /* 패딩 포함한 크기 조정 */
 }
 
 button {
-    height: 50px;
+    width: 100px; /* 버튼의 너비 고정 */
+    height: 50px; /* 높이를 입력란과 맞춤 */
     border: none;
     background-color: #ffc107;
     color: #000;
@@ -129,13 +128,53 @@ button:hover {
     background-color: #e0a800;
 }
 
+.idea-title-container {
+    border: 1px solid #000;
+    background-color: #EEEEEE;
+    margin-bottom: 20px;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.idea-title-inner {
+    border: 3px solid #FFCC00;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 10px;
+    text-align: center;
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+.opinion-section {
+    border: 1px solid #000;
+    background-color: #EEEEEE;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+}
+
+.opinion-entry {
+    background-color: #EEEEEE;
+    padding: 20px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    font-size: 22px;
+}
 </style>
 <script>
     window.onload = function() {
-        var urlParams = new URLSearchParams(window.location.search);
+    	var urlParams = new URLSearchParams(window.location.search);
         var currentTab = urlParams.get('currentTab');
-        if (currentTab) {
-            showTab(currentTab, getTabColor(currentTab));
+        var roomId = urlParams.get('roomId');
+        var ideaId = urlParams.get('ideaId');
+        if (currentTab && roomId && ideaId) {
+            showTab(currentTab, getTabColor(currentTab), roomId, ideaId);
         }
     };
 
@@ -149,7 +188,7 @@ button:hover {
         }
     }
 
-    function showTab(tabName, color) {
+    function showTab(tabName, color, roomId, ideaId) {
         var tabs = document.getElementsByClassName('tab-content');
         for (var i = 0; i < tabs.length; i++) {
             tabs[i].classList.remove('active');
@@ -168,19 +207,25 @@ button:hover {
         for (var k = 0; k < currentTabInputs.length; k++) {
             currentTabInputs[k].value = tabName;
         }
+
+        // URL을 업데이트하여 필요한 매개변수 포함
+        history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
     }
+</script>
 </script>
 </head>
 <body>
-    <h1>아이디어 회의를 매일 아침 10분씩 진행하기</h1>
     <div class="container">
         <div class="tabs">
-            <div class="tab tab-smart tab-smart-content" onclick="showTab('tab-smart', '#007bff')">똑똑이</div>
-            <div class="tab tab-positive tab-positive-content" onclick="showTab('tab-positive', '#ffc107')">긍정이</div>
-            <div class="tab tab-worry tab-worry-content" onclick="showTab('tab-worry', '#28a745')">걱정이</div>
-            <div class="tab tab-strict tab-strict-content" onclick="showTab('tab-strict', '#dc3545')">깐깐이</div>
+            <div class="tab tab-smart" onclick="showTab('tab-smart', '#007bff')">똑똑이</div>
+            <div class="tab tab-positive" onclick="showTab('tab-positive', '#ffc107')">긍정이</div>
+            <div class="tab tab-worry" onclick="showTab('tab-worry', '#28a745')">걱정이</div>
+            <div class="tab tab-strict" onclick="showTab('tab-strict', '#dc3545')">깐깐이</div>
         </div>
-        <div class="tab-content-container">
+        <div class="idea-title-container">
+            <div class="idea-title-inner"> ${ideaTitle} </div>
+        </div>
+        <div class="opinion-section">
             <div id="tab-smart" class="tab-content active">
                 <h2>
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
@@ -188,7 +233,7 @@ button:hover {
                 </h2>
                 <ul class="opinion-list">
                     <c:forEach var="opinion" items="${smartOpinions}">
-                        <li>${opinion.opinionText}</li>
+                        <li class="opinion-entry">${opinion.opinionText}</li>
                     </c:forEach>
                 </ul>
                 <div class="comment-section">
@@ -196,7 +241,7 @@ button:hover {
                         <form:hidden path="hatColor" value="Smart" />
                         <form:hidden path="currentTab" value="tab-smart" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="입력해주세요" />
-                        <button type="submit">등록</button>
+                        <button type="submit">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -208,7 +253,7 @@ button:hover {
                 </h2>
                 <ul class="opinion-list">
                     <c:forEach var="opinion" items="${positiveOpinions}">
-                        <li>${opinion.opinionText}</li>
+                        <li class="opinion-entry">${opinion.opinionText}</li>
                     </c:forEach>
                 </ul>
                 <div class="comment-section">
@@ -216,7 +261,7 @@ button:hover {
                         <form:hidden path="hatColor" value="Positive" />
                         <form:hidden path="currentTab" value="tab-positive" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="입력해주세요" />
-                        <button type="submit">등록</button>
+                        <button type="submit">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -228,7 +273,7 @@ button:hover {
                 </h2>
                 <ul class="opinion-list">
                     <c:forEach var="opinion" items="${worryOpinions}">
-                        <li>${opinion.opinionText}</li>
+                        <li class="opinion-entry">${opinion.opinionText}</li>
                     </c:forEach>
                 </ul>
                 <div class="comment-section">
@@ -236,7 +281,7 @@ button:hover {
                         <form:hidden path="hatColor" value="Worry" />
                         <form:hidden path="currentTab" value="tab-worry" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="입력해주세요" />
-                        <button type="submit">등록</button>
+                        <button type="submit">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -248,7 +293,7 @@ button:hover {
                 </h2>
                 <ul class="opinion-list">
                     <c:forEach var="opinion" items="${strictOpinions}">
-                        <li>${opinion.opinionText}</li>
+                        <li class="opinion-entry">${opinion.opinionText}</li>
                     </c:forEach>
                 </ul>
                 <div class="comment-section">
@@ -256,7 +301,7 @@ button:hover {
                         <form:hidden path="hatColor" value="Strict" />
                         <form:hidden path="currentTab" value="tab-strict" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="입력해주세요" />
-                        <button type="submit">등록</button>
+                        <button type="submit">작성</button>
                     </form:form>
                 </div>
             </div>

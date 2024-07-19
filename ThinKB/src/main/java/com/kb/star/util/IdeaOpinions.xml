@@ -6,11 +6,18 @@
   
 <mapper namespace="com.kb.star.util.IdeaOpinionsDao">
 
-	
-	<!-- HatColor에 따라 의견 검색 -->
-    <select id="findByHatColor" resultType="com.kb.star.dto.IdeaOpinionsDto">
-        SELECT * FROM IdeaOpinions WHERE HatColor = #{hatColor} AND IsDelete = false
+	<!-- 알림 테이블의 IdeaID컬럼으로 Ideas 테이블 정보 가져오기 -->
+    <select id="getIdeaTitleById" resultType="com.kb.star.dto.Ideas">
+        SELECT Title FROM Ideas WHERE IdeaID = #{ideaId}
     </select>
+    
+	<!-- HatColor에 따라 의견 검색 + UserID를 가지고 UserName 알아오기 -->
+    <select id="findByHatColor" resultType="com.kb.star.dto.IdeaOpinionsDto">
+	    SELECT io.*, u.UserName 
+	    FROM IdeaOpinions io
+	    JOIN Users u ON io.UserID = u.UserID
+	    WHERE io.HatColor = #{hatColor} AND io.IsDelete = false
+	</select>
 
     <!-- 의견 추가 -->
     <insert id="insertOpinion">
@@ -18,14 +25,14 @@
         VALUES (#{ideaID}, #{userID}, #{parentOpinionID}, #{opinionText}, #{hatColor}, #{likeNum}, #{isDelete}, #{createdAt})
     </insert>
 
+    <!-- 의견 삭제 -->
+    <delete id="deleteOpinion" parameterType="int">
+        DELETE FROM IdeaOpinions WHERE OpinionID = #{opinionId}
+    </delete>
+    
     <!-- 알림 읽음 상태 업데이트 -->
     <update id="updateReadStatus">
         UPDATE IdeaOpinions SET IsDelete = true WHERE OpinionID = #{notificationID}
     </update>
-
-    <!-- 의견 삭제 -->
-    <delete id="deleteNotification">
-        DELETE FROM IdeaOpinions WHERE OpinionID = #{notificationID}
-    </delete>
 
 </mapper>

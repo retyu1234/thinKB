@@ -75,6 +75,8 @@ public class IdeaRoomController {
 				}
 			case 2:
 				return "firstMeeting/roomStage2";
+			case 3:
+				return "firstMeeting/ideaOpinions";
 				
 			default:
 				return "main";

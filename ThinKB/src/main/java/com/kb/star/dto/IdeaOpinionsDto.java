@@ -12,7 +12,13 @@ public class IdeaOpinionsDto {
     private int likeNum;
     private boolean isDelete;
     private Timestamp createdAt;
-    private String currentTab; // 추가
+    
+    // 추가 필드
+    private String currentTab; // 4가지 의견중 현재 탭
+    private Integer roomId;  
+    private Integer ideaId;  
+    private Integer opinionId; // 의견 작성자의 id
+    private String userName; 
     
     // Getters and Setters
 	public int getOpinionID() {
@@ -76,6 +82,30 @@ public class IdeaOpinionsDto {
     public void setCurrentTab(String currentTab) {
         this.currentTab = currentTab;
     }
+	public Integer getRoomId() {
+		return roomId;
+	}
+	public void setRoomId(Integer roomId) {
+		this.roomId = roomId;
+	}
+	public Integer getIdeaId() {
+		return ideaId;
+	}
+	public void setIdeaId(Integer ideaId) {
+		this.ideaId = ideaId;
+	}
+	public Integer getOpinionId() {
+		return opinionId;
+	}
+	public void setOpinionId(Integer opinionId) {
+		this.opinionId = opinionId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
     
     
 	
