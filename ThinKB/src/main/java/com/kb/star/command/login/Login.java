@@ -34,7 +34,7 @@ public class Login implements LoginCommand {
 		PasswordEncoder encoder = new BCryptPasswordEncoder();
 		UsersDto dto = dao.login(userId);
 		String path = "";
-		if (dto != null&&dto.isDelete()==false) {
+		if (dto != null && dto.isDelete() == false) {
 			if (dto.isAdmin()) {
 				// isAdmin이 true일 경우, 암호화되지 않은 비밀번호로 비교
 				if (plainPassword.equals(dto.getPassword())) {

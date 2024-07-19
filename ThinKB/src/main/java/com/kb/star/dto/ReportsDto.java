@@ -9,7 +9,7 @@ public class ReportsDto {
 	private String reportContent;
 	private boolean isFinal;
 	private String createAt;
-	private String updateAy;
+	private String updateAt;
 	public int getReportId() {
 		return reportId;
 	}
@@ -52,11 +52,11 @@ public class ReportsDto {
 	public void setCreateAt(String createAt) {
 		this.createAt = createAt;
 	}
-	public String getUpdateAy() {
-		return updateAy;
+	public String getUpdateAt() {
+		return updateAt;
 	}
-	public void setUpdateAy(String updateAy) {
-		this.updateAy = updateAy;
+	public void setUpdateAt(String updateAt) {
+		this.updateAt = updateAt;
 	}
 	
 }
