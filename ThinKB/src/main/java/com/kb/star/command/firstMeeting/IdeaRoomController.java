@@ -1,4 +1,4 @@
-package com.kb.star.controller;
+package com.kb.star.command.firstMeeting;
 
 import java.util.Map;
 

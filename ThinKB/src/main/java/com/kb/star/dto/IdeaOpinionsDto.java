@@ -12,6 +12,7 @@ public class IdeaOpinionsDto {
     private int likeNum;
     private boolean isDelete;
     private Timestamp createdAt;
+    private String currentTab; // 추가
     
     // Getters and Setters
 	public int getOpinionID() {
@@ -68,7 +69,13 @@ public class IdeaOpinionsDto {
 	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
+	public String getCurrentTab() {
+        return currentTab;
+    }
 
+    public void setCurrentTab(String currentTab) {
+        this.currentTab = currentTab;
+    }
     
     
 	
