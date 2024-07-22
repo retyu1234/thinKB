@@ -11,12 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-<<<<<<< HEAD
 import com.kb.star.command.room.ManagerIdeaListCommand;
-=======
 import com.kb.star.command.report.ReportView;
->>>>>>> refs/heads/main
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
