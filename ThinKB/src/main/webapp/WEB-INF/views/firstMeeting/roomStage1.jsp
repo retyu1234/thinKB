@@ -238,6 +238,7 @@ document.addEventListener("DOMContentLoaded", function() {
     updateTimer();
     setInterval(updateTimer, 1000);
     showNextStageButton();
+    checkRejectedIdea();
 
     // 페이지 로드 시 이미 타이머가 종료되었는지 확인
     const endDate = new Date("${timer}").getTime();
@@ -273,8 +274,21 @@ function showNextStageButton() {
         document.getElementById("nextStageButton").style.display = "none";
     }
 }
+
+//반려아이디어 있는경우 알럿
+function checkRejectedIdea() {
+    const isRejected = ${submittedIdea.isReject() ? 'true' : 'false'};
+    const rejectedIdeaTitle = "${submittedIdea.getTitle()}";
+    const rejectContents = "${rejectContents}";
+    if (isRejected) {
+        alert("기존에 제출한 아이디어가 반려되었습니다.\n제출 아이디어: " + rejectedIdeaTitle + "\n반려 사유: " + rejectContents);
+    }
+}
+
+
 </script>
 <body>
+
 	<header class="header">
 		<%@ include file="../header.jsp"%>
 	</header>
