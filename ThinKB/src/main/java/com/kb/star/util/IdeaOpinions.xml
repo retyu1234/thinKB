@@ -6,6 +6,7 @@
   
 <mapper namespace="com.kb.star.util.IdeaOpinionsDao">
 
+	<!-- ideaOpinions.jsp -->
 	<!-- 알림 테이블의 IdeaID컬럼으로 Ideas 테이블 정보 가져오기 -->
     <select id="getIdeaTitleById" resultType="com.kb.star.dto.Ideas">
         SELECT Title FROM Ideas WHERE IdeaID = #{ideaId}
@@ -30,9 +31,18 @@
         DELETE FROM IdeaOpinions WHERE OpinionID = #{opinionId}
     </delete>
     
-    <!-- 알림 읽음 상태 업데이트 -->
-    <update id="updateReadStatus">
-        UPDATE IdeaOpinions SET IsDelete = true WHERE OpinionID = #{notificationID}
-    </update>
+    <!-- ideaOpinionsList.jsp -->
+    <!-- 각 모자 색상에 따른 상위 5개 의견 검색 -->
+    <select id="findTop5ByHatColor" resultType="com.kb.star.dto.IdeaOpinionsDto">
+        SELECT io.*, u.UserName
+        FROM IdeaOpinions io
+        JOIN Users u ON io.UserID = u.UserID
+        WHERE io.HatColor = #{hatColor} AND io.IsDelete = false
+        ORDER BY io.CreatedAt DESC
+        LIMIT 5
+    </select>
+    
 
 </mapper>
+
+

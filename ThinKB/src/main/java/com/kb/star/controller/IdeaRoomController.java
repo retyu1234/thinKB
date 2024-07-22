@@ -1,7 +1,5 @@
 package com.kb.star.controller;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -12,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kb.star.command.report.ReportView;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
@@ -59,27 +58,30 @@ public class IdeaRoomController {
 		model.addAttribute("id", id);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
-		
-		switch(stage) {
-			case 1:
-				command = new StageOneCommand(sqlSession);
-				command.execute(model);
-				Map<String, Object> map = model.asMap();
-				Boolean result = (Boolean)map.get("result");
-				if(result!=null && !result) { 
-					//1단계의 status가 0이면 아이디어 등록화면으로 이동
-					return "firstMeeting/roomStage1";
-				} else {
-					//1단계의 status가 1이면 아이디어 기다리라고 나옴
-					return "redirect:main";
-				}
-			case 2:
-				return "firstMeeting/roomStage2";
-			case 3:
-				return "firstMeeting/ideaOpinions";
-				
-			default:
-				return "main";
+
+		switch (stage) {
+		case 1:
+			command = new StageOneCommand(sqlSession);
+			command.execute(model);
+//				Map<String, Object> map = model.asMap();
+//				Boolean result = (Boolean)map.get("result");
+//				if(result!=null && !result) { 
+//					//1단계의 status가 0이면 아이디어 등록화면으로 이동
+			return "firstMeeting/roomStage1";
+//				} else {
+//					//1단계의 status가 1이면 아이디어 기다리라고 나옴
+//					return "redirect:main";
+//				}
+		case 2:
+			return "redirect:/roomStage2?roomId=" + roomId;
+		case 3:
+			return "firstMeeting/ideaOpinions";
+		case 7:
+			command = new ReportView(sqlSession);
+			command.execute(model);
+			return "report/roomStage7";
+		default:
+			return "main";
 		}
 	}
 	
