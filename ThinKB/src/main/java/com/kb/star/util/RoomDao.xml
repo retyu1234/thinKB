@@ -63,4 +63,24 @@
 	update Timer set StartTime=now(), endTime=${param2} where RoomID=${param1}
 </update>
 	
+<!-- 반려사유 추가 -->
+<insert id="updateRejectLog">
+	insert INTO RejectLog (RoomID,IdeaID,RejectContents) values (#{param1},#{param2},#{param3})
+</insert>
+
+<!--  -->
+<update id="isRejectUpdate">
+	update Ideas set isReject=1 where IdeaID=#{param1}
+</update>
+
+<!-- 반려사유 가져오는 쿼리 -->
+<select id="rejectLogSelect" resultType="String">
+	SELECT RejectContents FROM RejectLog WHERE IdeaID = #{param1}
+</select>
+
+<!-- 반려시 안내 알림 보내는 쿼리 -->
+<insert id="makeNotification">
+	INSERT INTO Notifications (UserID,IdeaID,Message,CreatedAt) values (#{param1},#{param2},#{param3},now())
+</insert>
+
 </mapper>

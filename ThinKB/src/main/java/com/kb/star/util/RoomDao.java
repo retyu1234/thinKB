@@ -31,6 +31,14 @@ public interface RoomDao {
 
 	void stageTwoTimerUpdate(int roomId, String formattedTime);
 
+	void updateRejectLog(int roomId, int rejectId, String rejectContents);
+
+	void isRejectUpdate(int rejectId);
+
+	String rejectLogSelect(int ideaID);
+
+	void makeNotification(Integer user, int ideaNum, String notification);
+
 
 
 }

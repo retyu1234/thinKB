@@ -9,13 +9,13 @@ public class Ideas {
     private boolean isDelete;
     private int stageID;
     private int pickNum;
-    
+    private boolean isReject;
 
     // 기본 생성자
     public Ideas() {}
 
     // 모든 필드를 포함하는 생성자
-    public Ideas(int ideaID, int userID, int roomID, String title, String description, boolean isDelete, int stageID, int pickNum) {
+    public Ideas(int ideaID, int userID, int roomID, String title, String description, boolean isDelete, int stageID, int pickNum, boolean isReject) {
         this.ideaID = ideaID;
         this.userID = userID;
         this.roomID = roomID;
@@ -24,6 +24,7 @@ public class Ideas {
         this.isDelete = isDelete;
         this.stageID = stageID;
         this.pickNum = pickNum;
+        this.isReject = isReject;
     }
 
     // Getter 및 Setter 메소드
@@ -90,8 +91,14 @@ public class Ideas {
     public void setPickNum(int pickNum) {
         this.pickNum = pickNum;
     }
-    
 
+	public boolean isReject() {
+		return isReject;
+	}
+
+	public void setReject(boolean isReject) {
+		this.isReject = isReject;
+	}
 
 	// toString 메소드 (선택 사항)
     @Override
@@ -105,6 +112,7 @@ public class Ideas {
                 ", isDelete=" + isDelete +
                 ", stageID=" + stageID +
                 ", pickNum=" + pickNum +
+                ", isReject=" + isReject +
                 '}';
     }
 
