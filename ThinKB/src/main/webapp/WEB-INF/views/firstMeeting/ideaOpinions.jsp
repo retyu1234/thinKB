@@ -274,12 +274,12 @@ button:hover {
     }
     
     // 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창
-    window.validateAndSubmitForm = function() {
-        var opinionText = document.querySelector('.opinion-textarea').value.trim();
+    window.validateAndSubmitForm = function(tabName) {
+        var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
         if (opinionText === '') {
             alert('의견을 입력해주세요!');
         } else {
-            document.querySelector('form').submit();
+            document.querySelector('#' + tabName + ' form').submit();
         }
     };
 
@@ -327,26 +327,26 @@ button:hover {
                     똑똑이 등록된 의견
                 </h2>
                 <ul class="opinion-list">
-			        <c:choose>
-			            <c:when test="${empty smartOpinions}">
-			                <li class="no-opinions">
+                    <c:choose>
+                        <c:when test="${empty smartOpinions}">
+                            <li class="no-opinions">
                                 <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
                                 <br>의견이 아직 등록되지 않았어요! <br><br>
                             </li>
-			            </c:when>
-			            <c:otherwise>
-			                <c:forEach var="opinion" items="${smartOpinions}">
-			                    <li class="opinion-entry">
-			                        <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-			                        <c:if test="${opinion.userID == userId}">
-			                            <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-smart')">삭제</button>
-			                        </c:if>
-			                        <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-			                    </li>
-			                </c:forEach>
-			            </c:otherwise>
-			        </c:choose>
-			    </ul>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="opinion" items="${smartOpinions}">
+                                <li class="opinion-entry">
+                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
+                                    <c:if test="${opinion.userID == userId}">
+                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-smart')">삭제</button>
+                                    </c:if>
+                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                </li>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
                 <div class="comment-section">
                     <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Smart" />
@@ -354,7 +354,7 @@ button:hover {
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm()">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-smart')">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -365,26 +365,26 @@ button:hover {
                     긍정이 등록된 의견
                 </h2>
                 <ul class="opinion-list">
-			        <c:choose>
-			            <c:when test="${empty positiveOpinions}">
-			                <li class="no-opinions">
+                    <c:choose>
+                        <c:when test="${empty positiveOpinions}">
+                            <li class="no-opinions">
                                 <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
                                 <br>의견이 아직 등록되지 않았어요! <br><br>
                             </li>
-			            </c:when>
-			            <c:otherwise>
-			                <c:forEach var="opinion" items="${positiveOpinions}">
-			                    <li class="opinion-entry">
-			                        <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-			                        <c:if test="${opinion.userID == userId}">
-			                            <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-positive')">삭제</button>
-			                        </c:if>
-			                        <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-			                    </li>
-			                </c:forEach>
-			            </c:otherwise>
-			        </c:choose>
-			    </ul>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="opinion" items="${positiveOpinions}">
+                                <li class="opinion-entry">
+                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
+                                    <c:if test="${opinion.userID == userId}">
+                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-positive')">삭제</button>
+                                    </c:if>
+                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                </li>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
                 <div class="comment-section">
                     <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Positive" />
@@ -392,7 +392,7 @@ button:hover {
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm()">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-positive')">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -403,26 +403,26 @@ button:hover {
                     걱정이 등록된 의견
                 </h2>
                 <ul class="opinion-list">
-			        <c:choose>
-			            <c:when test="${empty worryOpinions}">
-			                <li class="no-opinions">
+                    <c:choose>
+                        <c:when test="${empty worryOpinions}">
+                            <li class="no-opinions">
                                 <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
                                 <br>의견이 아직 등록되지 않았어요! <br><br>
                             </li>
-			            </c:when>
-			            <c:otherwise>
-			                <c:forEach var="opinion" items="${positiveOpinions}">
-			                    <li class="opinion-entry">
-			                        <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-			                        <c:if test="${opinion.userID == userId}">
-			                            <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-positive')">삭제</button>
-			                        </c:if>
-			                        <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-			                    </li>
-			                </c:forEach>
-			            </c:otherwise>
-			        </c:choose>
-			    </ul>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="opinion" items="${worryOpinions}">
+                                <li class="opinion-entry">
+                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
+                                    <c:if test="${opinion.userID == userId}">
+                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-worry')">삭제</button>
+                                    </c:if>
+                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                </li>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
                 <div class="comment-section">
                     <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Worry" />
@@ -430,7 +430,7 @@ button:hover {
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm()">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-worry')">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -441,26 +441,26 @@ button:hover {
                     깐깐이 등록된 의견
                 </h2>
                 <ul class="opinion-list">
-			        <c:choose>
-			            <c:when test="${empty strictOpinions}">
-			             	<li class="no-opinions">
+                    <c:choose>
+                        <c:when test="${empty strictOpinions}">
+                            <li class="no-opinions">
                                 <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
                                 <br>의견이 아직 등록되지 않았어요! <br><br>
                             </li>
-			            </c:when>
-			            <c:otherwise>
-			                <c:forEach var="opinion" items="${positiveOpinions}">
-			                    <li class="opinion-entry">
-			                        <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-			                        <c:if test="${opinion.userID == userId}">
-			                            <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-positive')">삭제</button>
-			                        </c:if>
-			                        <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-			                    </li>
-			                </c:forEach>
-			            </c:otherwise>
-			        </c:choose>
-			    </ul>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="opinion" items="${strictOpinions}">
+                                <li class="opinion-entry">
+                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
+                                    <c:if test="${opinion.userID == userId}">
+                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-strict')">삭제</button>
+                                    </c:if>
+                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                </li>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </ul>
                 <div class="comment-section">
                     <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Strict" />
@@ -468,7 +468,7 @@ button:hover {
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm()">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-strict')">작성</button>
                     </form:form>
                 </div>
             </div>

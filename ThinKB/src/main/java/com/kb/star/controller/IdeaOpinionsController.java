@@ -1,5 +1,8 @@
 package com.kb.star.controller;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -8,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,9 +28,10 @@ public class IdeaOpinionsController {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	// ideaOpinions.jsp
+	// http://localhost:8080/star/ideaOpinions?roomId=49&ideaId=31&currentTab=tab-smart
 	
 	// 아이디어 의견을 가져오는 메서드
-	// http://localhost:8080/star/ideaOpinions?roomId=49&ideaId=31&currentTab=tab-smart
     @RequestMapping("/ideaOpinions")
     public String getIdeaOpinions(HttpServletRequest request, @RequestParam("roomId") int roomId,
 			@RequestParam("ideaId") int ideaId,@RequestParam("currentTab") String currentTab, Model model) {
@@ -51,6 +54,9 @@ public class IdeaOpinionsController {
         
     	Integer userId = (Integer) session.getAttribute("userId");
         opinionForm.setUserID(userId);
+        
+        // 현재 시간 설정
+        opinionForm.setCreatedAt(new Timestamp(new Date().getTime()));
 
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         ideaOpinionsDao.insertOpinion(opinionForm);
@@ -73,19 +79,35 @@ public class IdeaOpinionsController {
         return "redirect:/ideaOpinions?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
     }
     
+    // ideaOpinionsList.jsp
+    // http://localhost:8080/star/ideaOpinionsList?roomId=49&ideaId=31
     
-    // 안쓰는거
-    @RequestMapping("/updateReadOpinion/{notificationId}")
-    public String updateReadOpinion(@PathVariable("notificationId") int notificationID) {
-        // MyBatis 매퍼 인터페이스를 사용하여 DAO 객체 생성
-        IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+    // 4가지 의견 한 번에 보기 
+    @RequestMapping("/ideaOpinionsList")
+    public String viewOpinions(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("ideaId", ideaId);
+        model.addAttribute("request", request);
         
-        // 알림 읽음 상태 업데이트
-        ideaOpinionsDao.updateReadStatus(notificationID);
-        
-        // 공지 사항 목록 페이지로 리디렉션
-        return "redirect:/noticeList";
+        IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
+        IdeaOpinionsCommand.execute(model);
+        return "/firstMeeting/ideaOpinionsList"; 
     }
+    
+    // http://localhost:8080/star/ideaOpinionsListcopy?roomId=49&ideaId=31
+    // 4가지 의견 한 번에 보기2
+    @RequestMapping("/deaOpinionsListcopy")
+    public String viewOpinionss(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("ideaId", ideaId);
+        model.addAttribute("request", request);
+        
+        IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
+        IdeaOpinionsCommand.execute(model);
+        return "/firstMeeting/ideaOpinionsListcopy"; 
+    }
+
+   
 }
 	
 

@@ -8,6 +8,7 @@ import com.kb.star.dto.Ideas;
 public interface IdeaOpinionsDao {
 	
 
+	// ideaOpinions.jsp
     // 알림 테이블의 IdeaID컬럼으로 Ideas 테이블 정보 가져오기
     Ideas getIdeaTitleById(int ideaId); // IdeasDto =  Ideas
     
@@ -20,10 +21,10 @@ public interface IdeaOpinionsDao {
     // 의견 삭제 메서드
     void deleteOpinion(int opinionId); // opinionId = 의견의 PK값
     
-
     
-    // 알림 읽음 상태 업데이트 메서드
-    void updateReadStatus(int notificationID);
+    // ideaOpinionsList.jsp
+    // 각 모자 색상에 따른 의견 5개 목록 검색
+    List<IdeaOpinionsDto> findTop5ByHatColor(String hatColor);
     
     
 }
