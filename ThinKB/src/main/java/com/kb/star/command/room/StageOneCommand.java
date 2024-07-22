@@ -22,6 +22,7 @@ public class StageOneCommand implements RoomCommand {
 	public void execute(Model model) {
 		Map<String, Object> map = model.asMap();
 		int roomId = (Integer) map.get("roomId");
+		int stage = (Integer) map.get("stage");
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
 		model.addAttribute("info", info);
@@ -39,6 +40,8 @@ public class StageOneCommand implements RoomCommand {
 			List<Ideas> dto = dao.ideaInfo(roomId, id);
 			model.addAttribute("submittedIdea", dto.get(0));
 		}
+		
+		model.addAttribute("stage", stage);
 	}
 
 }
