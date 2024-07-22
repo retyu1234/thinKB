@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kb.star.util.ReportDao">
+	<!-- Reports 테이블에 RoomID가 존재하는지 확인 -->
+	<select id="checkFinalReport" parameterType="int"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM Reports
+		WHERE RoomID = #{roomId} and
+		IsFinal = true
+	</select>
+	<!-- Reports 테이블에 데이터 삽입 -->
+	<insert id="insertReport">
+		INSERT INTO Reports (RoomID, UserID, ReportTitle,
+		ReportContent, IsFinal)
+		VALUES (#{roomId}, #{userId}, #{reportTitle},
+		#{reportContent}, true)
+	</insert>
+	<!-- Reports 테이블의 데이터 업데이트 -->
+	<update id="updateReport">
+		UPDATE Reports
+		SET ReportTitle = #{reportTitle},
+		ReportContent = #{reportContent},
+		UpdatedAt = CURRENT_TIMESTAMP
+		WHERE
+		RoomID = #{roomId} AND UserID = #{userId}
+	</update>
+	<!-- 최종보고서 작성 데이터 조회 기안자 빼고test -->
+	<select id="getReportDetails" resultMap="reportDetailsResultMap"
+		parameterType="int">
+		SELECT
+		r.ReportID,
+		r.RoomID,
+		r.UserID,
+		r.ReportTitle,
+		r.ReportContent,
+		r.IsFinal,
+		r.CreatedAt,
+		r.UpdatedAt,
+		d.DepartmentName,
+		t.TeamName,
+		rm.RoomTitle,
+		u.UserName AS RoomManagerName
+		FROM
+		Reports r
+		JOIN
+		MeetingRooms rm ON r.RoomID = rm.RoomID
+		JOIN
+		Departments d ON rm.DepartmentID = d.DepartmentID
+		JOIN
+		Teams t ON rm.TeamID = t.TeamID
+		JOIN
+		Users u ON rm.RoomManagerID = u.UserID
+		JOIN
+		MeetingRoomMembers mrm ON r.RoomID = mrm.RoomID
+		JOIN
+		Users mm ON mrm.UserID = mm.UserID
+		WHERE
+		r.RoomID = #{roomId}
+		LIMIT 1
+	</select>
+
+	<resultMap id="reportDetailsResultMap"
+		type="com.kb.star.dto.ReportDetailsDto">
+		<id property="reportId" column="ReportID" />
+		<result property="roomId" column="RoomID" />
+		<result property="userId" column="UserID" />
+		<result property="reportTitle" column="ReportTitle" />
+		<result property="reportContent" column="ReportContent" />
+		<result property="isFinal" column="IsFinal" />
+		<result property="createdAt" column="CreatedAt" />
+		<result property="updatedAt" column="UpdatedAt" />
+		<result property="departmentName" column="DepartmentName" />
+		<result property="teamName" column="TeamName" />
+		<result property="roomTitle" column="RoomTitle" />
+		<result property="roomManagerName" column="RoomManagerName" />
+		<result property="yesPickUserName" column="YesPickUserName" />
+	</resultMap>
+	<!-- 보고서작성 최초 입장시 데이터없을때 -->
+	<select id="getReportDetailsFirst"
+		resultMap="meetingRoomDetailsResultMap" parameterType="int">
+		SELECT
+		mr.RoomID,
+		mr.RoomTitle,
+		d.DepartmentName,
+		t.TeamName,
+		u.UserName AS RoomManagerName,
+		mm_user.UserName AS YesPickUserName
+		FROM
+		MeetingRooms mr
+		JOIN
+		Departments d ON mr.DepartmentID = d.DepartmentID
+		JOIN
+		Teams t ON mr.TeamID = t.TeamID
+		JOIN
+		Users u ON mr.RoomManagerID = u.UserID
+		LEFT JOIN
+		MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID AND mrm.Role = 'yesPick' AND
+		mrm.IsDelete = FALSE
+		LEFT JOIN
+		Users mm_user ON mrm.UserID = mm_user.UserID
+		WHERE
+		mr.IsDelete = FALSE AND mr.RoomID = #{roomId};
+	</select>
+	<resultMap id="meetingRoomDetailsResultMap"
+		type="com.kb.star.dto.ReportDetailsDto">
+		<id property="roomId" column="RoomID" />
+		<result property="roomTitle" column="RoomTitle" />
+		<result property="departmentName" column="DepartmentName" />
+		<result property="teamName" column="TeamName" />
+		<result property="roomManagerName" column="RoomManagerName" />
+		<result property="yesPickUserName" column="YesPickUserName" />
+	</resultMap>
+	<update id="update"></update>
+</mapper>

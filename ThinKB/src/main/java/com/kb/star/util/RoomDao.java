@@ -1,5 +1,8 @@
 package com.kb.star.util;
 
+import java.util.List;
+
+import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 
 public interface RoomDao {
@@ -13,6 +16,21 @@ public interface RoomDao {
 	void updateParticipantStage1(int roomId, int id);
 
 	boolean isParticipantsStage1(int roomId, int id);
+
+	List<Ideas> ideaInfo(int roomId, int id);
+
+	void isDeleteUpdate(int id, int roomId);
+
+	List<Ideas> ideaList(int roomId, int stage);
+
+	void updateParticipantStage2(int roomId);
+
+	List<Integer> RoomForUserList(int roomId);
+
+	void insertForwardStage2(Integer list, int roomId);
+
+	void stageTwoTimerUpdate(int roomId, String formattedTime);
+
 
 
 }

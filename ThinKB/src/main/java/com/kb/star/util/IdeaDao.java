@@ -27,4 +27,7 @@ public interface IdeaDao {
 
     // 참여 상태 업데이트
     void updateParticipationStatus(Map<String, Object> params);
+    
+    // RoomID로 RoomTitle 조회
+    String selectRoomTitleById(int roomId);
 }

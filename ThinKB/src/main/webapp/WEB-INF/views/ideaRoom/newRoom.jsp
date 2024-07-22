@@ -397,10 +397,7 @@
 			</div>
 		</div>
 	</div>
-<<<<<<< HEAD
 
-=======
->>>>>>> refs/heads/main
 	<script>
 		// 달력 팝업 열고 닫기 함수
 		function toggleCalendar() {

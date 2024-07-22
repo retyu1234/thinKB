@@ -88,6 +88,8 @@ public class makeRoomCommand implements RoomCommand {
 		for (String user : list) {
 			dao.insertForwardStage1(user, roomNum);
 		}
+		
+		model.addAttribute("id", id);
 
 		
 		/*

@@ -1,11 +1,12 @@
 package com.kb.star.command.room;
 
-import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.ui.Model;
 
+import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.RoomDao;
 
@@ -21,6 +22,7 @@ public class StageOneCommand implements RoomCommand {
 	public void execute(Model model) {
 		Map<String, Object> map = model.asMap();
 		int roomId = (Integer) map.get("roomId");
+		int stage = (Integer) map.get("stage");
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
 		model.addAttribute("info", info);
@@ -32,6 +34,14 @@ public class StageOneCommand implements RoomCommand {
 		int id = (Integer) map.get("id");
 		boolean result = dao.isParticipantsStage1(roomId, id);
 		model.addAttribute("result", result);
+		
+		// result가 true라면 원래 입력했던 내용을 수정할 수 있도록 model에 담기
+		if(result) {
+			List<Ideas> dto = dao.ideaInfo(roomId, id);
+			model.addAttribute("submittedIdea", dto.get(0));
+		}
+		
+		model.addAttribute("stage", stage);
 	}
 
 }
