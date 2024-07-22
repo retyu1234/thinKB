@@ -91,43 +91,43 @@ body {
 }
 
 .idea {
-    padding: 20px;
-    background-color: #ffffff;
-    border-radius: 20px;
-    margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    font-size: 1.2em;
-    width: 80%;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease;
+	padding: 20px;
+	background-color: #ffffff;
+	border-radius: 20px;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px solid #ccc;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	font-size: 1.2em;
+	width: 80%;
+	cursor: pointer;
+	transition: box-shadow 0.3s ease;
 }
 
 .idea:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 커서를 대면 그림자 추가 */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 커서를 대면 그림자 추가 */
 }
 
 .idea h2 {
-    margin: 0 0 10px 0;
-    padding: 0;
-    font-size: 1.5em;
-    width: 100%;
+	margin: 0 0 10px 0;
+	padding: 0;
+	font-size: 1.5em;
+	width: 100%;
 }
 
 .idea-details {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
-    width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	text-align: right;
+	width: 100%;
 }
 
 .idea-details p {
-    margin: 0;
+	margin: 0;
 }
 
 .idea-left {
@@ -178,9 +178,9 @@ body {
 }
 
 .no-rooms .img {
-    width: 100px; /* 이미지 너비 조정 */
-    height: auto; /* 높이 자동 조정 */
-    margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
+	width: 100px; /* 이미지 너비 조정 */
+	height: auto; /* 높이 자동 조정 */
+	margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
 }
 </style>
 </head>
@@ -191,70 +191,76 @@ body {
 		<img src="./resources/header2.jpg" alt="Header Image">
 	</div>
 	<div class="content">
-	<div class="button-container">
-		<button class="yellow-button" onclick="location.href='./newIdeaRoom'">+
-			아이디어 회의방 만들기</button>
-	</div>
-	<div class="progress-header-container">
-		<h2 class="progress-header">진행중인 단계</h2>
-	</div>
-	<div class="progress-container">
-		<div class="progress">
-			<!-- data-stage 수정 필요 이 부분 수정이 필요해. 체크박스를 눌렀을 때 해당 단계인 아이디어만 보여지게 하는건 맞지만, 이후 데이터베이스에서 반복문을 통해 데이터를 가져올거기 때문에 지금 코드처럼  data-stage="draft" 이렇게 작성하면 안돼. 재사용 가능하도록 수정하고싶어-->
-		 	<label><input type="checkbox" data-stage="1,2" onchange="filterIdeas()"> 아이디어 초안</label>
-	        <label><input type="checkbox" data-stage="3,4" onchange="filterIdeas()"> 1차 의견</label>
-	        <label><input type="checkbox" data-stage="5,6" onchange="filterIdeas()"> 2차 의견</label>
-	        <label><input type="checkbox" data-stage="7" onchange="filterIdeas()"> 보고서 작성</label>
-	        <label><input type="checkbox" data-stage="8" onchange="filterIdeas()"> 완료</label>
+		<div class="button-container">
+			<button class="yellow-button" onclick="location.href='./newIdeaRoom'">+
+				아이디어 회의방 만들기</button>
 		</div>
-	</div>
+		<div class="progress-header-container">
+			<h2 class="progress-header">진행중인 단계</h2>
+		</div>
+		<div class="progress-container">
+			<div class="progress">
+				<!-- data-stage 수정 필요 이 부분 수정이 필요해. 체크박스를 눌렀을 때 해당 단계인 아이디어만 보여지게 하는건 맞지만, 이후 데이터베이스에서 반복문을 통해 데이터를 가져올거기 때문에 지금 코드처럼  data-stage="draft" 이렇게 작성하면 안돼. 재사용 가능하도록 수정하고싶어-->
+				<label><input type="checkbox" data-stage="1,2"
+					onchange="filterIdeas()"> 아이디어 초안</label> <label><input
+					type="checkbox" data-stage="3,4" onchange="filterIdeas()">
+					1차 의견</label> <label><input type="checkbox" data-stage="5,6"
+					onchange="filterIdeas()"> 2차 의견</label> <label><input
+					type="checkbox" data-stage="7" onchange="filterIdeas()">
+					보고서 작성</label> <label><input type="checkbox" data-stage="8"
+					onchange="filterIdeas()"> 완료</label>
+			</div>
+		</div>
 
-	<div class="ideas">
-	
-	<c:choose>
-    <c:when test="${empty roomList}">
-        <div class="no-room">
-            <img src="./resources/noContents.png" alt="no Contents" style="width: 100px; height: auto; margin-bottom: 10px;">
-            <div class="contents">참여했던 회의방이 없어요.</div>
-            <div class="contents">아이디어 회의방 만들기를 통해 아이디어를 쉽게 도출해보세요!</div>
-        </div>
-    </c:when>
-    
-    <c:otherwise>
-        <c:forEach var="li" items="${roomList}">
-            <div class="idea" data-stage="${li.getStageId()}"
-            onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getTeamId()}'">
-                <h2>${li.getRoomTitle()}</h2>
-                <div class="idea-details">
-                    <p>종료일: ${li.getEndDate()}</p>
-                    <p>주최 팀명: 
-                        <c:forEach var="team" items="${teamInfo}">
-                            <c:if test="${team.getTeamId() == li.getTeamId()}">
+		<div class="ideas">
+
+			<c:choose>
+				<c:when test="${empty roomList}">
+					<div class="no-room">
+						<img src="./resources/noContents.png" alt="no Contents"
+							style="width: 100px; height: auto; margin-bottom: 10px;">
+						<div class="contents">참여했던 회의방이 없어요.</div>
+						<div class="contents">아이디어 회의방 만들기를 통해 아이디어를 쉽게 도출해보세요!</div>
+					</div>
+				</c:when>
+
+				<c:otherwise>
+					<c:forEach var="li" items="${roomList}">
+						<div class="idea" data-stage="${li.getStageId()}"
+							onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'">
+							<h2>${li.getRoomTitle()}</h2>
+							<div class="idea-details">
+								<p>종료일: ${li.getEndDate()}</p>
+								<p>
+									주최 팀명:
+									<c:forEach var="team" items="${teamInfo}">
+										<c:if test="${team.getTeamId() == li.getTeamId()}">
                                 ${team.getTeamName()}
                             </c:if>
-                        </c:forEach>
-                    </p>
-                    <p>단계: 
-                        <c:choose>
-                            <c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
-                            <c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
-                            <c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-                            <c:when test="${li.getStageId() == 4}">1차 의견 투표중</c:when>
-                            <c:when test="${li.getStageId() == 5}">2차 의견 작성중</c:when>
-                            <c:when test="${li.getStageId() == 6}">2차 의견 투표중</c:when>
-                            <c:when test="${li.getStageId() == 7}">최종보고서 작성중</c:when>
-                            <c:when test="${li.getStageId() == 8}">아이디어 회의 완료</c:when>
-                        </c:choose>
-                    </p>
-                </div>
-            </div>
-        </c:forEach>
-    </c:otherwise>
-</c:choose>
+									</c:forEach>
+								</p>
+								<p>
+									단계:
+									<c:choose>
+										<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+										<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+										<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+										<c:when test="${li.getStageId() == 4}">1차 의견 투표중</c:when>
+										<c:when test="${li.getStageId() == 5}">2차 의견 작성중</c:when>
+										<c:when test="${li.getStageId() == 6}">2차 의견 투표중</c:when>
+										<c:when test="${li.getStageId() == 7}">최종보고서 작성중</c:when>
+										<c:when test="${li.getStageId() == 8}">아이디어 회의 완료</c:when>
+									</c:choose>
+								</p>
+							</div>
+						</div>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
 
-	
-	</div>
-	<!-- <div class="ideas">
+
+		</div>
+		<!-- <div class="ideas">
 		<div class="idea first-review active">
 			<div class="idea-left">
 				<h3>회의방 제목 1</h3>
@@ -289,39 +295,43 @@ body {
 </body>
 
 <script>
-function filterIdeas() {
-    var checkboxes = document.querySelectorAll('.progress input');
-    var ideas = document.querySelectorAll('.idea');
-    var anyChecked = false;
+	function filterIdeas() {
+		var checkboxes = document.querySelectorAll('.progress input');
+		var ideas = document.querySelectorAll('.idea');
+		var anyChecked = false;
 
-    checkboxes.forEach(function(checkbox) {
-        if (checkbox.checked) {
-            anyChecked = true;
-        }
-    });
+		checkboxes.forEach(function(checkbox) {
+			if (checkbox.checked) {
+				anyChecked = true;
+			}
+		});
 
-    if (!anyChecked) {
-        ideas.forEach(function(idea) {
-            idea.style.display = 'flex';
-        });
-    } else {
-        ideas.forEach(function(idea) {
-            idea.style.display = 'none';
-        });
+		if (!anyChecked) {
+			ideas.forEach(function(idea) {
+				idea.style.display = 'flex';
+			});
+		} else {
+			ideas.forEach(function(idea) {
+				idea.style.display = 'none';
+			});
 
-        checkboxes.forEach(function(checkbox) {
-            if (checkbox.checked) {
-                var stages = checkbox.getAttribute('data-stage').split(',');
-                ideas.forEach(function(idea) {
-                    var ideaStage = idea.getAttribute('data-stage');
-                    if (stages.includes(ideaStage)) {
-                        idea.style.display = 'flex';
-                    }
-                });
-            }
-        });
-    }
-}
+			checkboxes
+					.forEach(function(checkbox) {
+						if (checkbox.checked) {
+							var stages = checkbox.getAttribute('data-stage')
+									.split(',');
+							ideas
+									.forEach(function(idea) {
+										var ideaStage = idea
+												.getAttribute('data-stage');
+										if (stages.includes(ideaStage)) {
+											idea.style.display = 'flex';
+										}
+									});
+						}
+					});
+		}
+	}
 
 	document.addEventListener('DOMContentLoaded', function() {
 		var checkboxes = document.querySelectorAll('.progress input');
