@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
@@ -201,35 +200,118 @@ button:hover {
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-	$(document).ready(function() {
-    function formatTimestamp(timestamp) {
-        const date = new Date(timestamp);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
+    $(document).ready(function() {
+        function formatTimestamp(timestamp) {
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
 
-        const formattedMonth = (month < 10 ? '0' + month : month);
-        const formattedDay = (day < 10 ? '0' + day : day);
-        const formattedHours = (hours < 10 ? '0' + hours : hours);
-        const formattedMinutes = (minutes < 10 ? '0' + minutes : minutes);
+            const formattedMonth = (month < 10 ? '0' + month : month);
+            const formattedDay = (day < 10 ? '0' + day : day);
+            const formattedHours = (hours < 10 ? '0' + hours : hours);
+            const formattedMinutes = (minutes < 10 ? '0' + minutes : minutes);
 
-        return year + '.' + formattedMonth + '.' + formattedDay + ' ' + formattedHours + ':' + formattedMinutes;
-    }
-
-    // 포맷된 날짜를 표시하기 위해 createdAt 값을 변환
-    $('.date').each(function() {
-        const timestamp = $(this).text().trim();
-        const date = new Date(timestamp);
-        if (!isNaN(date.getTime())) {
-            $(this).text(formatTimestamp(date));
-        } else {
-            $(this).text(timestamp);
+            return year + '.' + formattedMonth + '.' + formattedDay + ' ' + formattedHours + ':' + formattedMinutes;
         }
-    });
-    
-    window.onload = function() {
+
+        // 포맷된 날짜를 표시하기 위해 createdAt 값을 변환
+        $('.date').each(function() {
+            const timestamp = $(this).text().trim();
+            const date = new Date(timestamp);
+            if (!isNaN(date.getTime())) {
+                $(this).text(formatTimestamp(date));
+            } else {
+                $(this).text(timestamp);
+            }
+        });
+        
+        window.onload = function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var currentTab = urlParams.get('currentTab');
+            var roomId = urlParams.get('roomId');
+            var ideaId = urlParams.get('ideaId');
+            if (currentTab && roomId && ideaId) {
+                showTab(currentTab, getTabColor(currentTab), roomId, ideaId);
+            }
+        };
+
+        function getTabColor(tabName) {
+            switch(tabName) {
+                case 'tab-smart': return '#007bff';
+                case 'tab-positive': return '#ffc107';
+                case 'tab-worry': return '#28a745';
+                case 'tab-strict': return '#dc3545';
+                default: return '#007bff';
+            }
+        }
+
+        window.showTab = function(tabName, color, roomId, ideaId) {
+            var tabs = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector('.tab-content.active').style.borderColor = color;
+
+            var allTabs = document.getElementsByClassName('tab');
+            for (var j = 0; j < allTabs.length; j++) {
+                allTabs[j].style.borderBottom = 'none';
+            }
+            document.querySelector('.tab.' + tabName).style.borderBottom = '5px solid ' + color;
+
+            // 폼의 currentTab 값을 업데이트
+            var currentTabInputs = document.querySelectorAll('input[name="currentTab"]');
+            for (var k = 0; k < currentTabInputs.length; k++) {
+                currentTabInputs[k].value = tabName;
+            }
+
+            // URL을 업데이트하여 필요한 매개변수 포함
+            history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
+        }
+
+        
+    	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창
+        window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount) {
+            var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
+            if (opinionText === '') {
+                alert('의견을 입력해주세요!');
+            } else if (currentOpinionCount >= maxComments) {
+                alert('댓글 작성 제한 인원을 초과하였습니다. \n다른 의견 탭에 댓글을 작성해주세요');
+            } else {
+                document.querySelector('#' + tabName + ' form').submit();
+            }
+        };
+/*     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창 + 2개 이상 작성시 추가 댓글 가능
+        window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount, userOpinionCount) {
+		    var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
+		    if (opinionText === '') {
+		        alert('의견을 입력해주세요!');
+		    } else if (userOpinionCount < 2 && currentOpinionCount >= maxComments) {
+		        alert('댓글 작성 제한 인원을 초과하였습니다.\n다른 의견 탭에 댓글을 작성해주세요');
+		    } else {
+		        document.querySelector('#' + tabName + ' form').submit();
+		    }
+		}; */
+
+        window.deleteOpinion = function(opinionId, currentTab) {
+            var roomId = '<c:out value="${roomId}" />';
+            var ideaId = '<c:out value="${ideaId}" />';
+            
+            // opinionId와 currentTab이 올바른지 확인
+            if (!opinionId || !currentTab) {
+                alert('삭제할 의견 정보가 잘못되었습니다.');
+                return;
+            }
+            
+            if (confirm('정말로 이 의견을 삭제하시겠습니까?')) {
+                var url = 'deleteOpinion?opinionId=' + opinionId + '&currentTab=' + currentTab + '&roomId=' + roomId + '&ideaId=' + ideaId;
+                window.location.href = url;
+            }
+        };
+
         var urlParams = new URLSearchParams(window.location.search);
         var currentTab = urlParams.get('currentTab');
         var roomId = urlParams.get('roomId');
@@ -237,76 +319,9 @@ button:hover {
         if (currentTab && roomId && ideaId) {
             showTab(currentTab, getTabColor(currentTab), roomId, ideaId);
         }
-    };
-
-    function getTabColor(tabName) {
-        switch(tabName) {
-            case 'tab-smart': return '#007bff';
-            case 'tab-positive': return '#ffc107';
-            case 'tab-worry': return '#28a745';
-            case 'tab-strict': return '#dc3545';
-            default: return '#007bff';
-        }
-    }
-
-    window.showTab = function(tabName, color, roomId, ideaId) {
-        var tabs = document.getElementsByClassName('tab-content');
-        for (var i = 0; i < tabs.length; i++) {
-            tabs[i].classList.remove('active');
-        }
-        document.getElementById(tabName).classList.add('active');
-        document.querySelector('.tab-content.active').style.borderColor = color;
-
-        var allTabs = document.getElementsByClassName('tab');
-        for (var j = 0; j < allTabs.length; j++) {
-            allTabs[j].style.borderBottom = 'none';
-        }
-        document.querySelector('.tab.' + tabName).style.borderBottom = '5px solid ' + color;
-
-        // 폼의 currentTab 값을 업데이트
-        var currentTabInputs = document.querySelectorAll('input[name="currentTab"]');
-        for (var k = 0; k < currentTabInputs.length; k++) {
-            currentTabInputs[k].value = tabName;
-        }
-
-        // URL을 업데이트하여 필요한 매개변수 포함
-        history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
-    }
+    });
     
-    // 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창
-    window.validateAndSubmitForm = function(tabName) {
-        var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
-        if (opinionText === '') {
-            alert('의견을 입력해주세요!');
-        } else {
-            document.querySelector('#' + tabName + ' form').submit();
-        }
-    };
-
-    window.deleteOpinion = function(opinionId, currentTab) {
-        var roomId = '<c:out value="${roomId}" />';
-        var ideaId = '<c:out value="${ideaId}" />';
-        
-        // opinionId와 currentTab이 올바른지 확인
-        if (!opinionId || !currentTab) {
-            alert('삭제할 의견 정보가 잘못되었습니다.');
-            return;
-        }
-        
-        if (confirm('정말로 이 의견을 삭제하시겠습니까?')) {
-            var url = 'deleteOpinion?opinionId=' + opinionId + '&currentTab=' + currentTab + '&roomId=' + roomId + '&ideaId=' + ideaId;
-            window.location.href = url;
-        }
-    };
-
-    var urlParams = new URLSearchParams(window.location.search);
-    var currentTab = urlParams.get('currentTab');
-    var roomId = urlParams.get('roomId');
-    var ideaId = urlParams.get('ideaId');
-    if (currentTab && roomId && ideaId) {
-        showTab(currentTab, getTabColor(currentTab), roomId, ideaId);
-    }
-});
+    
 </script>
 </head>
 <body>
@@ -325,6 +340,9 @@ button:hover {
                 <h2>
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
                     똑똑이 등록된 의견
+                    <span style="float: right; font-size: 16px;">
+                        현재 댓글 갯수: ${smartOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
+                    </span>
                 </h2>
                 <ul class="opinion-list">
                     <c:choose>
@@ -348,13 +366,16 @@ button:hover {
                     </c:choose>
                 </ul>
                 <div class="comment-section">
+                    <c:if test="${not empty error}">
+                        <div class="error-message">${error}</div>
+                    </c:if>
                     <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Smart" />
                         <form:hidden path="currentTab" value="tab-smart" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-smart')">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -363,6 +384,9 @@ button:hover {
                 <h2>
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
                     긍정이 등록된 의견
+                    <span style="float: right; font-size: 16px;">
+                        현재 댓글 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - positiveOpinionCount}
+                    </span>
                 </h2>
                 <ul class="opinion-list">
                     <c:choose>
@@ -386,13 +410,16 @@ button:hover {
                     </c:choose>
                 </ul>
                 <div class="comment-section">
+                    <c:if test="${not empty error}">
+                        <div class="error-message">${error}</div>
+                    </c:if>
                     <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Positive" />
                         <form:hidden path="currentTab" value="tab-positive" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-positive')">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount})">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -401,6 +428,9 @@ button:hover {
                 <h2>
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
                     걱정이 등록된 의견
+                    <span style="float: right; font-size: 16px;">
+                        현재 댓글 갯수: ${worryOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - worryOpinionCount}
+                    </span>
                 </h2>
                 <ul class="opinion-list">
                     <c:choose>
@@ -424,13 +454,16 @@ button:hover {
                     </c:choose>
                 </ul>
                 <div class="comment-section">
+                    <c:if test="${not empty error}">
+                        <div class="error-message">${error}</div>
+                    </c:if>
                     <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Worry" />
                         <form:hidden path="currentTab" value="tab-worry" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-worry')">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount})">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -439,6 +472,9 @@ button:hover {
                 <h2>
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
                     깐깐이 등록된 의견
+                    <span style="float: right; font-size: 16px;">
+                        현재 댓글 갯수: ${strictOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - strictOpinionCount}
+                    </span>
                 </h2>
                 <ul class="opinion-list">
                     <c:choose>
@@ -462,17 +498,21 @@ button:hover {
                     </c:choose>
                 </ul>
                 <div class="comment-section">
+                    <c:if test="${not empty error}">
+                        <div class="error-message">${error}</div>
+                    </c:if>
                     <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Strict" />
                         <form:hidden path="currentTab" value="tab-strict" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-strict')">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount})">작성</button>
                     </form:form>
                 </div>
             </div>
         </div>
     </div>
 </body>
+
 </html>

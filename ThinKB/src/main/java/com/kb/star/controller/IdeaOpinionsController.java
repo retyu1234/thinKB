@@ -2,6 +2,7 @@ package com.kb.star.controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kb.star.command.addFunction.AddCommand;
+import com.kb.star.command.room.IdeaOpinions2Command;
 import com.kb.star.command.room.IdeaOpinionsCommand;
 import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.util.IdeaOpinionsDao;
@@ -28,6 +30,22 @@ public class IdeaOpinionsController {
 	@Autowired
 	private SqlSession sqlSession;
 	
+    // ideaOpinionsList.jsp
+    // http://localhost:8080/star/ideaOpinionsList?roomId=49&ideaId=31
+    
+    // 4가지 의견 한 번에 보기 
+    @RequestMapping("/ideaOpinionsList")
+    public String viewOpinions(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("ideaId", ideaId);
+        model.addAttribute("request", request);
+        
+        IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
+        IdeaOpinionsCommand.execute(model);
+        return "/firstMeeting/ideaOpinionsList"; 
+    }
+    
+    
 	// ideaOpinions.jsp
 	// http://localhost:8080/star/ideaOpinions?roomId=49&ideaId=31&currentTab=tab-smart
 	
@@ -46,21 +64,50 @@ public class IdeaOpinionsController {
 
         return "/firstMeeting/ideaOpinions";
     }
-
+    
+    private String getHatColor(String currentTab) {
+        switch (currentTab) {
+            case "tab-smart": return "Smart";
+            case "tab-positive": return "Positive";
+            case "tab-worry": return "Worry";
+            case "tab-strict": return "Strict";
+            default: return "Smart";
+        }
+    }
+    
     // 의견 작성시 추가
     @RequestMapping("/addOpinion")
     public String addOpinion(@ModelAttribute IdeaOpinionsDto opinionForm, HttpSession session, 
-                             @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId) {
+                             @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId, Model model) {
         
-    	Integer userId = (Integer) session.getAttribute("userId");
+        Integer userId = (Integer) session.getAttribute("userId");
+        Integer teamId = (Integer) session.getAttribute("teamId"); 
         opinionForm.setUserID(userId);
-        
-        // 현재 시간 설정
-        opinionForm.setCreatedAt(new Timestamp(new Date().getTime()));
+        opinionForm.setIdeaID(ideaId);  
+        opinionForm.setCreatedAt(new Timestamp(new Date().getTime())); 
 
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
-        ideaOpinionsDao.insertOpinion(opinionForm);
         
+        String hatColor = getHatColor(currentTab);
+        opinionForm.setHatColor(hatColor);
+
+        int userCount = ideaOpinionsDao.getUserCountByTeamId(teamId); // 팀별 인원 수
+        int maxComments = (int) Math.ceil((userCount * 2) / 4.0); // 견해별 작성 가능한 최대 의견 수
+        int currentOpinionCount = ideaOpinionsDao.getOpinionCountByHatColorAndIdeaId(ideaId, hatColor); // 현재 견해별 의견 수
+        // int userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId); // 각 사용자별 등록한 댓글 갯수(아이디어별)
+
+        if (currentOpinionCount >= maxComments) {
+            model.addAttribute("error", "댓글 작성 제한 인원을 초과하였습니다.");
+            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+        }
+        
+//        if (userOpinionCount < 2 && currentOpinionCount >= maxComments) {
+//            model.addAttribute("error", "댓글 작성 제한 인원을 초과하였습니다.");
+//            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+//        } else {
+//            ideaOpinionsDao.insertOpinion(opinionForm);
+//        }
+
         return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
     }
 
@@ -79,32 +126,76 @@ public class IdeaOpinionsController {
         return "redirect:/ideaOpinions?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
     }
     
-    // ideaOpinionsList.jsp
-    // http://localhost:8080/star/ideaOpinionsList?roomId=49&ideaId=31
+
+    // ideaOpinions2.jsp
+    // http://localhost:8080/star/ideaOpinions2?roomId=49&ideaId=31&currentTab=tab-smart
     
-    // 4가지 의견 한 번에 보기 
-    @RequestMapping("/ideaOpinionsList")
-    public String viewOpinions(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
+    // 기존 의견들 불러오기
+    @RequestMapping("/ideaOpinions2")
+    public String viewIdeaDetails(HttpServletRequest request, Model model,
+    							@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, @RequestParam("currentTab") String currentTab) {
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
+        model.addAttribute("currentTab", currentTab);
         model.addAttribute("request", request);
-        
-        IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
-        IdeaOpinionsCommand.execute(model);
-        return "/firstMeeting/ideaOpinionsList"; 
+
+        IdeaOpinions2Command ideaOpinions2Command = new IdeaOpinions2Command(sqlSession);
+        ideaOpinions2Command.execute(model);
+
+
+        return "/firstMeeting/ideaOpinions2";
     }
     
-    // http://localhost:8080/star/ideaOpinionsListcopy?roomId=49&ideaId=31
-    // 4가지 의견 한 번에 보기2
-    @RequestMapping("/deaOpinionsListcopy")
-    public String viewOpinionss(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
-        model.addAttribute("roomId", roomId);
-        model.addAttribute("ideaId", ideaId);
-        model.addAttribute("request", request);
+    // 의견 작성시 추가 + 현재 의견들 불러오기
+    @RequestMapping("/addOpinion2")
+    public String addOpinion2(@ModelAttribute IdeaOpinionsDto opinionForm, HttpSession session, 
+                             @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId) {
         
-        IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
-        IdeaOpinionsCommand.execute(model);
-        return "/firstMeeting/ideaOpinionsListcopy"; 
+        Integer userId = (Integer) session.getAttribute("userId");
+        opinionForm.setUserID(userId);
+        opinionForm.setIdeaID(ideaId); 
+        opinionForm.setStep(2);
+        opinionForm.setCreatedAt(new Timestamp(new Date().getTime()));  // 작성 시간을 설정합니다.
+        
+        // currentTab에 따라 HatColor를 설정합니다.
+        String hatColor;
+        switch (currentTab) {
+            case "tab-smart":
+                hatColor = "Smart";
+                break;
+            case "tab-positive":
+                hatColor = "Positive";
+                break;
+            case "tab-worry":
+                hatColor = "Worry";
+                break;
+            case "tab-strict":
+                hatColor = "Strict";
+                break;
+            default:
+                hatColor = "Smart";
+        }
+        opinionForm.setHatColor(hatColor);  // HatColor 값을 설정합니다.
+
+        IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+        ideaOpinionsDao.insertOpinion2(opinionForm);
+        
+        return "redirect:/ideaOpinions2?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+    }
+    
+    // 의견 삭제(자신이 작성한 의견일 경우)
+    @RequestMapping("/deleteOpinion2")
+    public String deleteOpinion2(@RequestParam int opinionId, 
+                                @RequestParam String currentTab,
+                                @RequestParam int roomId,
+                                @RequestParam int ideaId) {
+        IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+        
+        // 의견 삭제 처리
+        ideaOpinionsDao.deleteOpinion(opinionId);
+        
+        // 현재 탭과 roomId, ideaId를 포함하여 리다이렉트
+        return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
     }
 
    

@@ -32,24 +32,40 @@ public class IdeaOpinionsCommand implements RoomCommand {
 
         HttpSession session = request.getSession();
         int userId = (Integer) session.getAttribute("userId");
+        int teamId = (Integer) session.getAttribute("teamId");
         model.addAttribute("userId", userId);
         
 
         // 방 제목
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         Ideas idea = ideaOpinionsDao.getIdeaTitleById(ideaId);
+        
         model.addAttribute("ideaTitle", idea.getTitle());
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
+        
+        String[] hatColors = {"Smart", "Positive", "Worry", "Strict"};
+        for (String hatColor : hatColors) {
+            model.addAttribute(hatColor.toLowerCase() + "Opinions", ideaOpinionsDao.findByHatColor(ideaId, hatColor));
+        }
 
+        // 팀별 인원 수
+        int userCount = ideaOpinionsDao.getUserCountByTeamId(teamId);
+        // 견해별 작성 가능한 최대 의견 갯수
+        int maxComments = (int) Math.ceil((userCount * 2) / 4.0); // 올림 처리
+        model.addAttribute("maxComments", maxComments);
+        
+        // 각 사용자별 작성한 댓글 갯수(IdeaId별)
+        // int userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId);
+        // model.addAttribute("userOpinionCount", userOpinionCount);
 
-        // 각 모자 색상에 따른 의견 목록을 모델에 추가
-        model.addAttribute("smartOpinions", ideaOpinionsDao.findByHatColor("Smart"));
-        model.addAttribute("positiveOpinions", ideaOpinionsDao.findByHatColor("Positive"));
-        model.addAttribute("worryOpinions", ideaOpinionsDao.findByHatColor("Worry"));
-        model.addAttribute("strictOpinions", ideaOpinionsDao.findByHatColor("Strict"));
+        for (String hatColor : hatColors) {
+            int opinionCount = ideaOpinionsDao.getOpinionCountByHatColorAndIdeaId(ideaId, hatColor);
+            model.addAttribute(hatColor.toLowerCase() + "OpinionCount", opinionCount);
+            
+        }
 
-        // 새로운 의견 작성 폼 객체를 모델에 추가
         model.addAttribute("opinionForm", new IdeaOpinionsDto());
+
     }
 }

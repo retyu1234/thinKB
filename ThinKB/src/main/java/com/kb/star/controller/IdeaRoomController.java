@@ -76,6 +76,8 @@ public class IdeaRoomController {
 			return "redirect:/roomStage2?roomId=" + roomId;
 		case 3:
 			return "firstMeeting/ideaOpinions";
+		case 4:
+			return "firstMeeting/ideaOpinions2";
 		case 7:
 			command = new ReportView(sqlSession);
 			command.execute(model);

@@ -6,7 +6,7 @@ public class IdeaOpinionsDto {
 	private int opinionID;
     private int ideaID;
     private int userID;
-    private Integer parentOpinionID;
+    private Integer step;
     private String opinionText;
     private String hatColor;
     private int likeNum;
@@ -39,11 +39,12 @@ public class IdeaOpinionsDto {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	public Integer getParentOpinionID() {
-		return parentOpinionID;
+
+	public Integer getStep() {
+		return step;
 	}
-	public void setParentOpinionID(Integer parentOpinionID) {
-		this.parentOpinionID = parentOpinionID;
+	public void setStep(Integer step) {
+		this.step = step;
 	}
 	public String getOpinionText() {
 		return opinionText;
