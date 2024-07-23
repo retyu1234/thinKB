@@ -35,6 +35,7 @@ public interface UserDao {
 
 	int roomNumConfirm(String id);
 
+
 	void insertNewTimer(int roomNum, String formattedTime);
 
 	void insertUserIntoRoom(int roomNum, String id);
@@ -51,10 +52,10 @@ public interface UserDao {
 
 	List<MeetingRooms> myMeetingRoom(int id);
 
-
 	List<Teams> myDepartmentTeams(String department);
 
 	List<MeetingRooms> myAllMeetingRoom(int id);
+	
 
 	// 검색된 직원 목록 조회
 	List<UserListDto> searchEmployees(Map<String, Object> params);
