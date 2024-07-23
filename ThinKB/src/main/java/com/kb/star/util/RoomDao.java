@@ -2,8 +2,13 @@ package com.kb.star.util;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRoomMembers;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.TimersDto;
+import com.kb.star.dto.UserListDto;
 
 public interface RoomDao {
 
@@ -19,6 +24,9 @@ public interface RoomDao {
 
 	List<Ideas> ideaInfo(int roomId, int id);
 
+
+	void updateStage(@Param("roomId") int roomId);
+
 	void isDeleteUpdate(int id, int roomId);
 
 	List<Ideas> ideaList(int roomId, int stage);
@@ -30,6 +38,20 @@ public interface RoomDao {
 	void insertForwardStage2(Integer list, int roomId);
 
 	void stageTwoTimerUpdate(int roomId, String formattedTime);
+	
+	MeetingRooms selectRoomId(@Param("roomId") int roomId);
+	
+	List<TimersDto> selectTimersByRoomId(@Param("roomId") int roomId);
+
+	List<Ideas> selectIdeasByRoomId(@Param("roomId") int roomId);
+	
+	void roomMangeTimerUpdate(int roomId,String formattedTime,String ideaId);
+	
+	void updateRoomInfo(String title,String Description, String endDate,int roomId);
+	
+	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId);
+	
+	List<UserListDto>selectAvailableEmployees(@Param("roomId") int roomId,@Param("departmentId") int departmentId);
 
 	void updateRejectLog(int roomId, int rejectId, String rejectContents);
 
@@ -38,7 +60,6 @@ public interface RoomDao {
 	String rejectLogSelect(int ideaID);
 
 	void makeNotification(Integer user, int ideaNum, String notification);
-
 
 
 }
