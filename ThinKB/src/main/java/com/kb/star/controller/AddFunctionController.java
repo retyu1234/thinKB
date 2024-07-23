@@ -42,15 +42,6 @@ public class AddFunctionController {
 
 	AddCommand command;
 
-
-	// 나의 보고서 목록
-	@RequestMapping("/myReportList")
-	public String myReportList(Model model) {
-		System.out.println("AddFunctionController - myReportList");
-		return "/addFunction/myReportList";
-	}
-
-
 	// A/B테스트 목록
 	@RequestMapping("/AorBList")
 	public String AorBList(HttpSession session, HttpServletRequest request, Model model) {

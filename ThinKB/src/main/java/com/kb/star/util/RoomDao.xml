@@ -84,11 +84,7 @@
 		(0,2,#{param1},0,#{param2})
 	</insert>
 
-	<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->
-	<update id="stageTwoTimerUpdate">
-		update Timer set StartTime=now(), endTime=${param2}
-		where RoomID=${param1}
-	</update>
+
 	<!-- roomid별 방정보 -->
 	<select id="selectRoomId" parameterType="int"
 		resultType="com.kb.star.dto.MeetingRooms">
@@ -143,28 +139,34 @@
 	</select>
 	<select id="selectAvailableEmployees"
 		resultType="com.kb.star.dto.UserListDto">
-		SELECT u.UserID, u.UserName, u.Email, d.DepartmentName, t.TeamName
+		SELECT u.UserID, u.UserName, u.Email, d.DepartmentName,
+		t.TeamName
 		FROM Users u
-		JOIN Departments d ON u.DepartmentID = d.DepartmentID
+		JOIN Departments d ON u.DepartmentID =
+		d.DepartmentID
 		JOIN Teams t ON u.TeamID = t.TeamID
-		WHERE u.UserID NOT IN (
+		WHERE u.UserID NOT IN
+		(
 		SELECT m.UserID
 		FROM MeetingRoomMembers m
 		WHERE m.RoomID = #{roomId}
 		AND m.IsDelete = 0
 		)
 		AND u.IsDelete = 0
-		AND u.DepartmentID = #{departmentId}
+		AND u.DepartmentID =
+		#{departmentId}
 	</select>
 
 	<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->
 	<update id="stageTwoTimerUpdate">
-		update Timer set StartTime=now(), endTime=${param2} where RoomID=${param1}
+		update Timer set StartTime=now(), endTime=${param2}
+		where RoomID=${param1}
 	</update>
 
 	<!-- 반려사유 추가 -->
 	<insert id="updateRejectLog">
-		insert INTO RejectLog (RoomID,IdeaID,RejectContents) values
+		insert INTO RejectLog (RoomID,IdeaID,RejectContents)
+		values
 		(#{param1},#{param2},#{param3})
 	</insert>
 
@@ -175,12 +177,14 @@
 
 	<!-- 반려사유 가져오는 쿼리 -->
 	<select id="rejectLogSelect" resultType="String">
-		SELECT RejectContents FROM RejectLog WHERE IdeaID = #{param1}
+		SELECT RejectContents
+		FROM RejectLog WHERE IdeaID = #{param1}
 	</select>
 
 	<!-- 반려시 안내 알림 보내는 쿼리 -->
 	<insert id="makeNotification">
-		INSERT INTO Notifications (UserID,IdeaID,Message,CreatedAt) values
+		INSERT INTO Notifications
+		(UserID,IdeaID,Message,CreatedAt) values
 		(#{param1},#{param2},#{param3},now())
 	</insert>
 
