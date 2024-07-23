@@ -76,7 +76,7 @@
                 <a href="./noticeList">알림함</a> 
                 <a href="#">마이페이지</a>
                 <a href="./AorBList">A/B테스트</a> 
-                <a href="./vote">투표</a>
+                <a href="./voteList">투표</a>
             </div>
             <div class="profile">
             <a href="<c:url value='./mypage'/>">
