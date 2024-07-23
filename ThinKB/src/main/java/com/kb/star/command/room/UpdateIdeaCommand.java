@@ -8,12 +8,12 @@ import org.springframework.ui.Model;
 
 import com.kb.star.util.RoomDao;
 
-public class SubmitIdeaCommand implements RoomCommand {
+public class UpdateIdeaCommand implements RoomCommand {
 	
 	SqlSession sqlSession;
 
 	@Autowired
-	public SubmitIdeaCommand(SqlSession sqlSession) {
+	public UpdateIdeaCommand(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
 
@@ -25,12 +25,11 @@ public class SubmitIdeaCommand implements RoomCommand {
 		String title = (String) map.get("myIdea");
 		String contents = (String) map.get("ideaDetail");
 		int stage = (Integer) map.get("stage");
-		System.out.println("아이디어 정보 오는지 " + title + " / " + contents);
 		
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
+		dao.isDeleteUpdate(id,roomId);
 		dao.submitIdea(id,roomId,title,contents);
-		dao.updateParticipantStage1(roomId, id);
-		
+
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
 	}

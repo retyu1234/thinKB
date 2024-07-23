@@ -20,6 +20,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* 다른 요소들보다 위에 오도록 설정 */
         }
 
         .logo {
