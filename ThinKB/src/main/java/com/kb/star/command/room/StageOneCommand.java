@@ -39,6 +39,11 @@ public class StageOneCommand implements RoomCommand {
 		if(result) {
 			List<Ideas> dto = dao.ideaInfo(roomId, id);
 			model.addAttribute("submittedIdea", dto.get(0));
+			
+			if(dto.get(0).isReject()) {
+				String rejectContents = dao.rejectLogSelect(dto.get(0).getIdeaID());
+				model.addAttribute("rejectContents", rejectContents);
+			}
 		}
 		
 		model.addAttribute("stage", stage);

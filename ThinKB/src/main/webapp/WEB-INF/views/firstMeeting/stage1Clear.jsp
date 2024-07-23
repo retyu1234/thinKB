@@ -151,58 +151,56 @@ select {
 
 	<div style="text-align: center;">
 		<form id="ideaForm" action="./goReset" method="post">
-			<input type="hidden" name="roomId" value="${roomId}">
-			<input type="hidden" name="stage" value="${stage}">
-			
-            <c:forEach var="li" items="${ideaList}" varStatus="status">
-                <div class="idea-box" onclick="openModal(${status.index})">
-                   <div class="idea-title" onclick="openModal(${status.index})">${li.getTitle()}</div>
-                    <select name="reason${status.index}" onclick="event.stopPropagation()">
-                        <option value="">아이디어 반려 사유를 선택해주세요.</option>
-                        <option value="1">기시행중인 유사 서비스 존재</option>
-                        <option value="2">서비스 효용 대비 비용과다</option>
-                        <option value="3">주제 범위에 벗어나거나 상관없는 아이디어</option>
-                        <option value="4">그냥 싫음</option>
-                        <option value="5">내가 생각한걸 맞춰라</option>
-                    </select>
-                </div>
-                <div id="modal${status.index}" class="modal">
-                    <div class="modal-content">
-                        <span class="close" onclick="closeModal(${status.index})">&times;</span>
-                        <h2>아이디어 상세설명</h2>
-                        <p>${li.getDescription()}</p>
-                    </div>
-                </div>
-            </c:forEach>
-            <h2 style="text-align: left; margin-top:50px;">아이디어 입력 타이머 재설정</h2>
-				<div>
-					<input type="number" class="timer-input" name="timer_hours" min="0"
-						max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp; <input
-						type="number" class="timer-input" name="timer_minutes" min="0"
-						max="59" placeholder="MM">&nbsp;분&nbsp;&nbsp;&nbsp; <input
-						type="number" class="timer-input" name="timer_seconds" min="0"
-						max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp; <span
-						class="error-message" id="timerError"></span>
-				</div>
-            <button type="button" id="submitButton" class="button">다시 받기</button>
-        </form>
+    <input type="hidden" name="roomId" value="${roomId}">
+    <input type="hidden" name="stage" value="${stage}">
+    
+    <c:forEach var="li" items="${ideaList}" varStatus="status">
+        <div class="idea-box" onclick="openModal(${status.index})">
+            <div class="idea-title" onclick="openModal(${status.index})">${li.getTitle()}</div>
+            <input type="hidden" name="rejectLog[${status.index}].ideaId" value="${li.getIdeaID()}">
+            <select name="rejectLog[${status.index}].rejectContents" onclick="event.stopPropagation()">
+                <option value="">아이디어 반려 사유를 선택해주세요.</option>
+                <option value="기시행중인 유사 서비스 존재">기시행중인 유사 서비스 존재</option>
+                <option value="서비스 효용 대비 비용과다">서비스 효용 대비 비용과다</option>
+                <option value="주제 범위에 벗어나거나 상관없는 아이디어">주제 범위에 벗어나거나 상관없는 아이디어</option>
+                <option value="그냥 싫음">그냥 싫음</option>
+                <option value="내가 생각한걸 맞춰라">내가 생각한걸 맞춰라</option>
+            </select>
+        </div>
+        <div id="modal${status.index}" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal(${status.index})">&times;</span>
+                <h2>아이디어 상세설명</h2>
+                <p>${li.getDescription()}</p>
+            </div>
+        </div>
+    </c:forEach>
+
+    <h2 style="text-align: left; margin-top:50px;">아이디어 입력 타이머 재설정</h2>
+    <div>
+        <input type="number" class="timer-input" name="timer_hours" min="0" max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp;
+        <input type="number" class="timer-input" name="timer_minutes" min="0" max="59" placeholder="MM">&nbsp;분&nbsp;&nbsp;&nbsp;
+        <input type="number" class="timer-input" name="timer_seconds" min="0" max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp;
+        <span class="error-message" id="timerError"></span>
+    </div>
+    <button type="button" id="submitButton" class="button">다시 받기</button>
+</form>
 
 			<form action="./goStage2" id="goStageForm" method="post">
 				<input type="hidden" name="roomId" value="${roomId}">
 				<input type="hidden" name="stage" value="${stage}">
 				<h2 style="text-align: left; margin-top:50px;">아이디어 투표 진행시 타이머 설정</h2>
 				<div>
-					<input type="number" class="timer-input" name="timer_hours" min="0"
+					<input type="number" class="timer-input" name="timer_hours1" min="0"
 						max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp; <input
-						type="number" class="timer-input" name="timer_minutes" min="0"
+						type="number" class="timer-input" name="timer_minutes1" min="0"
 						max="59" placeholder="MM">&nbsp;분&nbsp;&nbsp;&nbsp; <input
-						type="number" class="timer-input" name="timer_seconds" min="0"
+						type="number" class="timer-input" name="timer_seconds1" min="0"
 						max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp; <span
 						class="error-message" id="timerError"></span>
 				</div>
 				
-				<button onclick="document.getElementById('goStageForm').submit();"
-					class="button">투표하기</button>
+				<button type="submit" class="button">투표하기</button>
 			</form>
 
 
@@ -234,7 +232,7 @@ select {
     document.getElementById('submitButton').addEventListener('click', function(e) {
         e.preventDefault(); // 기본 제출 동작 방지
         
-        var selects = document.querySelectorAll('select[name^="reason"]');
+        var selects = document.querySelectorAll('select[name^="rejectLog"]');
         var allSelected = true;
         
         selects.forEach(function(select) {
@@ -271,6 +269,31 @@ select {
             if (!timerInputted) {
                 alert('타이머 설정을 위해 최소한 하나의 시간 단위를 입력해주세요.');
             }
+        }
+    });
+    
+    document.getElementById('goStageForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // 항상 기본 제출을 막습니다.
+
+        var timerHours = this.querySelector('input[name="timer_hours1"]').value;
+        var timerMinutes = this.querySelector('input[name="timer_minutes1"]').value;
+        var timerSeconds = this.querySelector('input[name="timer_seconds1"]').value;
+        
+        if (timerHours === "" && timerMinutes === "" && timerSeconds === "") {
+            alert('타이머 설정을 위해 최소한 하나의 시간 단위를 입력해주세요.');
+            
+            // 입력 필드 강조
+            this.querySelectorAll('input[type="number"]').forEach(function(input) {
+                input.style.border = "2px solid red";
+            });
+        } else {
+            // 정상 상태로 복원
+            this.querySelectorAll('input[type="number"]').forEach(function(input) {
+                input.style.border = "";
+            });
+            
+            // 모든 조건이 만족되면 폼을 수동으로 제출합니다.
+            this.submit();
         }
     });
     </script>

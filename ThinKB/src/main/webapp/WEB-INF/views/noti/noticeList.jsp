@@ -227,7 +227,9 @@
 	    <c:forEach var="notification" items="${notifications}">
 	        <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
 	            <div class="notification-content">
-	                <div class="title">아이디어: [${notification.idea.title}]</div>
+	            <c:if test="${notification.getIdeaID() != 0}">
+	                <div class="title">대상 아이디어: [${notification.idea.title}]</div>
+	            </c:if>
 	                <div><p>${notification.message}</p></div>
 	                <div>회의방 제목: ${notification.roomTitle}</div>
 	            </div>

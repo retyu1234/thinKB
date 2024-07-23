@@ -228,6 +228,7 @@ input.room1-detail:focus {
 		const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
 		const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+
 		document.getElementById("timer").innerHTML = "아이디어 입력 가능 시간: "
 				+ (hours < 10 ? "0" : "") + hours + ":"
 				+ (minutes < 10 ? "0" : "") + minutes + ":"
@@ -254,11 +255,7 @@ input.room1-detail:focus {
 						}
 
 						// result 값에 따라 버튼 표시 여부 결정
-						const result = $
-						{
-							result
-						}
-						;
+						const result = ${result};
 						if (result) {
 							document.getElementById("submitButton").style.display = "none";
 							document.getElementById("updateButton").style.display = "inline-block";
@@ -273,20 +270,27 @@ input.room1-detail:focus {
 	function showNextStageButton() {
 		const endDate = new Date("${timer}").getTime();
 		const now = new Date().getTime();
-		const isManager = $
-		{
-			userId == info.getRoomManagerId()
-		}
-		;
-
+		const isManager = ${userId == info.getRoomManagerId()};
 		if (now >= endDate && isManager) {
 			document.getElementById("nextStageButton").style.display = "block";
 		} else {
 			document.getElementById("nextStageButton").style.display = "none";
 		}
 	}
+
+//반려아이디어 있는경우 알럿
+function checkRejectedIdea() {
+    const isRejected = ${submittedIdea.isReject() ? 'true' : 'false'};
+    const rejectedIdeaTitle = "${submittedIdea.getTitle()}";
+    const rejectContents = "${rejectContents}";
+    if (isRejected) {
+        alert("기존에 제출한 아이디어가 반려되었습니다.\n제출 아이디어: " + rejectedIdeaTitle + "\n반려 사유: " + rejectContents);
+    }
+}
+
 </script>
 <body>
+
 	<header class="header">
 		<%@ include file="../header.jsp"%>
 	</header>

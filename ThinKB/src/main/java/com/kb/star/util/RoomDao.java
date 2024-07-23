@@ -52,4 +52,14 @@ public interface RoomDao {
 	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId);
 	
 	List<UserListDto>selectAvailableEmployees(@Param("roomId") int roomId,@Param("departmentId") int departmentId);
+
+	void updateRejectLog(int roomId, int rejectId, String rejectContents);
+
+	void isRejectUpdate(int rejectId);
+
+	String rejectLogSelect(int ideaID);
+
+	void makeNotification(Integer user, int ideaNum, String notification);
+
+
 }

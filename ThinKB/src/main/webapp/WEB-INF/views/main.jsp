@@ -340,21 +340,26 @@
 		
 			<!-- 알림함 -->
 			<div class="section-wrapper" style="width: 43%;">
-			    <div class="section-title">알림함</div>
-			    <div class="notifications">
-			        <div style="text-align: right;">
-			            <button class="more-button" onclick="location.href='<c:url value="/noticeList"/>';">+ 더보기</button>
-			        </div>
-			        <c:forEach var="notification" items="${notifications}">
-			            <div class="notification ${notification.read ? 'read' : 'unread'}" onclick="location.href='<c:url value="/noticeList"/>';">
-			                <p class="notification-time">
-			                    <fmt:formatDate value="${notification.createdAt}" pattern="yyyy-MM-dd HH:mm" />
-			                </p>
-			                <p class="notification-content">[${notification.idea.title}]&nbsp;&nbsp;${notification.message}</p>
-			            </div>
-			        </c:forEach>
-			    </div>
-			</div>
+    <div class="section-title">알림함</div>
+    <div class="notifications">
+        <div style="text-align: right;">
+            <button class="more-button" onclick="location.href='<c:url value="/noticeList"/>';">+ 더보기</button>
+        </div>
+        <c:forEach var="notification" items="${notifications}">
+            <div class="notification ${notification.read ? 'read' : 'unread'}" onclick="location.href='<c:url value="/noticeList"/>';">
+                <p class="notification-time">
+                    <fmt:formatDate value="${notification.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+                </p>
+                <p class="notification-content">
+                    <c:if test="${notification.getIdeaID() != 0}">
+                        *${notification.idea.title}*&nbsp;&nbsp;
+                    </c:if>
+                    ${notification.message}
+                </p>
+            </div>
+        </c:forEach>
+    </div>
+</div>
 			
 			<!-- 팝업창 추가 -->
 			<div class="popup-overlay">
