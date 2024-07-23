@@ -4,63 +4,184 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kb.star.util.RoomDao">
 
-<!-- 방번호로 한개의 방 정보를 모두 가져오는 쿼리 -->
-<select id="roomDetailInfo" resultType="com.kb.star.dto.MeetingRooms">
-	select * from MeetingRooms where RoomID=#{param1}
-</select>
+	<!-- 방번호로 한개의 방 정보를 모두 가져오는 쿼리 -->
+	<select id="roomDetailInfo"
+		resultType="com.kb.star.dto.MeetingRooms">
+		select * from MeetingRooms where RoomID=#{param1}
+	</select>
 
-<select id="roomTimerInfo" resultType="String">
-	select endTime from Timer where RoomID=#{param1} and IdeaID=0
-</select>
+	<select id="roomTimerInfo" resultType="String">
+		select endTime from Timer
+		where RoomID=#{param1} and IdeaID=0
+	</select>
 
-<insert id="submitIdea">
-	INSERT INTO Ideas (UserID,RoomID,Title,Description,IsDelete,StageID,PickNum) values 
-	(#{param1},#{param2},#{param3},#{param4},0,1,0);
-</insert>
+	<insert id="submitIdea">
+		INSERT INTO Ideas
+		(UserID,RoomID,Title,Description,IsDelete,StageID,PickNum)
+		values
+		(#{param1},#{param2},#{param3},#{param4},0,1,0);
+	</insert>
 
-<update id="updateParticipantStage1">
-	update StageParticipation set Status=1 WHERE RoomID=#{param1} and StageID=1 and UserID=#{param2}
-</update>
+	<update id="updateParticipantStage1">
+		update StageParticipation set Status=1 WHERE
+		RoomID=#{param1} and StageID=1
+		and UserID=#{param2}
+	</update>
 
-<!-- stage1인 방에 참여 했는지 안했는지 참여자별로 확인하는 쿼리 -->
-<select id="isParticipantsStage1" resultType="boolean">
-	SELECT Status from StageParticipation WHERE RoomID=#{param1} and UserID=#{param2} and StageID=1
-</select>
+	<!-- stage1인 방에 참여 했는지 안했는지 참여자별로 확인하는 쿼리 -->
+	<select id="isParticipantsStage1" resultType="boolean">
+		SELECT Status from
+		StageParticipation WHERE RoomID=#{param1} and
+		UserID=#{param2} and
+		StageID=1
+	</select>
 
-<!-- 이전에 냈던 초안이 있는지 조회해서 있으면 화면에 보여주고 수정할 수 있도록 -->
-<select id="ideaInfo" resultType="com.kb.star.dto.Ideas">
-	SELECT * FROM Ideas WHERE RoomID=#{param1} and UserID=#{param2} and StageID=1 and IsDelete=0
-</select>
+	<!-- 스테이지 +1 -->
+	<update id="updateStage">
+		UPDATE MeetingRooms
+		SET StageID = StageID + 1
+		WHERE
+		RoomID = #{roomId};
+	</update>
 
-<!-- 아이디어 수정시 기존 아이디어의 삭제여부 여로 업데이트 -->
-<update id="isDeleteUpdate">
-	UPDATE Ideas set IsDelete=1 WHERE UserID=#{param1} and RoomID=#{param2} and IsDelete=0 and StageID=1
-</update>
+	<!-- 이전에 냈던 초안이 있는지 조회해서 있으면 화면에 보여주고 수정할 수 있도록 -->
+	<select id="ideaInfo" resultType="com.kb.star.dto.Ideas">
+		SELECT * FROM Ideas WHERE
+		RoomID=#{param1} and UserID=#{param2} and
+		StageID=1 and IsDelete=0
+	</select>
 
-<!-- 초안작성 단계의 타이머 끝나면 방장한테는 아이디어 목록을 보여주는 쿼리 -->
-<select id="ideaList" resultType="com.kb.star.dto.Ideas">
-	SELECT * FROM Ideas WHERE RoomID=#{param1} and IsDelete=0 and StageID=#{param2};
-</select>
+	<!-- 아이디어 수정시 기존 아이디어의 삭제여부 여로 업데이트 -->
+	<update id="isDeleteUpdate">
+		UPDATE Ideas set IsDelete=1 WHERE UserID=#{param1}
+		and RoomID=#{param2} and
+		IsDelete=0 and StageID=1
+	</update>
 
-<!-- 방번호로 stage를 1에서 2로 업데이트 하는 쿼리 -->
-<update id="updateParticipantStage2">
-	UPDATE MeetingRooms set StageID=2 WHERE RoomID=#{param1}
-</update>
+	<!-- 초안작성 단계의 타이머 끝나면 방장한테는 아이디어 목록을 보여주는 쿼리 -->
+	<select id="ideaList" resultType="com.kb.star.dto.Ideas">
+		SELECT * FROM Ideas WHERE
+		RoomID=#{param1} and IsDelete=0 and
+		StageID=#{param2};
+	</select>
 
-<!-- 방번호로 참여자 목록 가져오는 쿼리 -->
-<select id="RoomForUserList" resultType="Integer">
-	SELECT UserID from MeetingRoomMembers WHERE RoomID=#{param1}
-</select>
+	<!-- 방번호로 stage를 1에서 2로 업데이트 하는 쿼리 -->
+	<update id="updateParticipantStage2">
+		UPDATE MeetingRooms set StageID=2 WHERE
+		RoomID=#{param1}
+	</update>
 
-<!-- 초안 투표 진행하기 누르면 모든 참여자의 stage2의 참여여부 0인것 생성하는 쿼리 -->
-<insert id="insertForwardStage2">
-	INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) values
-	(0,2,#{param1},0,#{param2})
-</insert>
+	<!-- 방번호로 참여자 목록 가져오는 쿼리 -->
+	<select id="RoomForUserList" resultType="Integer">
+		SELECT UserID from
+		MeetingRoomMembers WHERE RoomID=#{param1}
+	</select>
 
-<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->
-<update id="stageTwoTimerUpdate">
-	update Timer set StartTime=now(), endTime=${param2} where RoomID=${param1}
-</update>
-	
+	<!-- 초안 투표 진행하기 누르면 모든 참여자의 stage2의 참여여부 0인것 생성하는 쿼리 -->
+	<insert id="insertForwardStage2">
+		INSERT into StageParticipation
+		(IdeaID,StageID,UserID,Status,RoomID) values
+		(0,2,#{param1},0,#{param2})
+	</insert>
+
+	<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->
+	<update id="stageTwoTimerUpdate">
+		update Timer set StartTime=now(), endTime=${param2}
+		where RoomID=${param1}
+	</update>
+	<!-- roomid별 방정보 -->
+	<select id="selectRoomId" parameterType="int"
+		resultType="com.kb.star.dto.MeetingRooms">
+		SELECT *
+		FROM MeetingRooms
+		WHERE RoomID = #{roomId}
+	</select>
+	<!-- 룸아이디 타이머정보 -->
+	<select id="selectTimersByRoomId" parameterType="int"
+		resultType="com.kb.star.dto.TimersDto">
+		SELECT t.RoomID, t.IdeaID, t.StartTime, t.endTime, i.Title,
+		i.Description
+		FROM Timer t
+		LEFT JOIN Ideas i ON t.IdeaID = i.IdeaID
+		WHERE t.RoomID = #{roomId}
+	</select>
+	<!-- 아이디어 목록 가져오기 -->
+	<select id="selectIdeasByRoomId" parameterType="int"
+		resultType="com.kb.star.dto.Ideas">
+		SELECT IdeaID, Title, Description
+		FROM Ideas
+		WHERE RoomID =
+		#{roomId} AND IsDelete = false
+	</select>
+	<!-- 방관리 타이머수정 -->
+	<update id="roomMangeTimerUpdate">
+		update Timer set endTime =#{param2} where RoomID =
+		#{param1} and IdeaID =
+		#{param3}
+	</update>
+	<!-- 방관리 회의방 내용 수정 -->
+	<update id="updateRoomInfo">
+		update MeetingRooms set
+		RoomTitle=#{param1},Description=#{param2},EndDate=#{param3} where
+		RoomID=#{param4}
+	</update>
+	<!-- 방별 참여자 리스트 -->
+	<select id="selectCurrentMembers"
+		resultType="com.kb.star.dto.MeetingRoomMembers">
+		SELECT u.UserID, u.UserName, u.Email, m.ContributionCnt,
+		d.DepartmentName, t.TeamName
+		FROM MeetingRoomMembers m
+		JOIN Users u ON
+		m.UserID = u.UserID
+		JOIN Departments d ON u.DepartmentID =
+		d.DepartmentID
+		JOIN Teams t ON u.TeamID = t.TeamID
+		WHERE m.RoomID =
+		#{param1}
+		AND m.IsDelete = 0
+		AND u.IsDelete = 0
+	</select>
+	<select id="selectAvailableEmployees"
+		resultType="com.kb.star.dto.UserListDto">
+		SELECT u.UserID, u.UserName, u.Email, d.DepartmentName, t.TeamName
+		FROM Users u
+		JOIN Departments d ON u.DepartmentID = d.DepartmentID
+		JOIN Teams t ON u.TeamID = t.TeamID
+		WHERE u.UserID NOT IN (
+		SELECT m.UserID
+		FROM MeetingRoomMembers m
+		WHERE m.RoomID = #{roomId}
+		AND m.IsDelete = 0
+		)
+		AND u.IsDelete = 0
+		AND u.DepartmentID = #{departmentId}
+	</select>
+
+	<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->
+	<update id="stageTwoTimerUpdate">
+		update Timer set StartTime=now(), endTime=${param2} where RoomID=${param1}
+	</update>
+
+	<!-- 반려사유 추가 -->
+	<insert id="updateRejectLog">
+		insert INTO RejectLog (RoomID,IdeaID,RejectContents) values
+		(#{param1},#{param2},#{param3})
+	</insert>
+
+	<!-- -->
+	<update id="isRejectUpdate">
+		update Ideas set isReject=1 where IdeaID=#{param1}
+	</update>
+
+	<!-- 반려사유 가져오는 쿼리 -->
+	<select id="rejectLogSelect" resultType="String">
+		SELECT RejectContents FROM RejectLog WHERE IdeaID = #{param1}
+	</select>
+
+	<!-- 반려시 안내 알림 보내는 쿼리 -->
+	<insert id="makeNotification">
+		INSERT INTO Notifications (UserID,IdeaID,Message,CreatedAt) values
+		(#{param1},#{param2},#{param3},now())
+	</insert>
+
 </mapper>

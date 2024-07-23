@@ -2,6 +2,10 @@ package com.kb.star.controller;
 
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.kb.star.command.room.ManagerIdeaListCommand;
+
 import com.kb.star.command.report.ReportView;
+import com.kb.star.command.room.ManagerIdeaListCommand;
+import com.kb.star.command.room.ResetCommand;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
@@ -20,6 +26,10 @@ import com.kb.star.command.room.UpdateIdeaCommand;
 import com.kb.star.command.room.UpdateStageTwoCommand;
 import com.kb.star.command.room.UserListCommand;
 import com.kb.star.command.room.makeRoomCommand;
+import com.kb.star.command.roomManger.RoomManagement;
+import com.kb.star.command.roomManger.UpdateRoomInfo;
+import com.kb.star.command.roomManger.UserManagement;
+import com.kb.star.dto.RejectLog;
 
 @Controller
 public class IdeaRoomController {
@@ -149,6 +159,42 @@ public class IdeaRoomController {
 		command.execute(model);
 		
 		return "redirect:main";
+	}
+	//방관리화면
+	@RequestMapping("/roomManagement")
+	public String roomManagement(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new RoomManagement(sqlSession);
+		command.execute(model);
+		return "ideaRoom/roomManagement";
+	}
+	//방정보 수정
+	@RequestMapping("/updateRoomInfo")
+	public String updateRoomInfo(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new UpdateRoomInfo(sqlSession);
+		command.execute(model);
+		return "redirect:/roomManagement";
+	}
+	//참여자관리화면 방장
+	@RequestMapping("userManagement")
+	public String userManagement(HttpSession session,HttpServletRequest request,Model model) {
+		Integer departmentId = (Integer)session.getAttribute("departmentId");
+		model.addAttribute("request",request);
+		model.addAttribute("departmentId",departmentId);
+		command=new UserManagement(sqlSession);
+		command.execute(model);
+		return "ideaRoom/userManagement";
+	}
+	
+	//리셋버튼 눌렀을때
+	@RequestMapping("/goReset")
+	public String goReset(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);	
+		command = new ResetCommand(sqlSession);
+		command.execute(model);
+
+	    return "redirect:meetingList";
 	}
 
 	/*

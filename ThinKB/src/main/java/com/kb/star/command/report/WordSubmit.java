@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.kb.star.util.ReportDao;
+import com.kb.star.util.RoomDao;
 
 public class WordSubmit implements ReportCommand {
 
@@ -38,6 +39,7 @@ public class WordSubmit implements ReportCommand {
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		ReportDao dao = sqlSession.getMapper(ReportDao.class);
+		RoomDao stageDao=sqlSession.getMapper(RoomDao.class);
 		String reportTitle = request.getParameter("reportTitle");
 		String reportContent = request.getParameter("reportContent");
 		int userId = Integer.parseInt(request.getParameter("userId"));
@@ -50,7 +52,7 @@ public class WordSubmit implements ReportCommand {
 
 		String realPath = servletContext.getRealPath("/upload");
 		String inputPath = realPath + File.separator + "formTemplate.docx";
-		String outputPath = realPath + File.separator + "formData_" + date + userId + ".docx";
+		String outputPath = realPath + File.separator + "formData_" + roomId + ".docx";
 
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
@@ -65,6 +67,8 @@ public class WordSubmit implements ReportCommand {
 					yesPickUserName);
 			//DB업데이트추가하는 부분
 			dao.updateReport(roomId, userId, reportTitle, reportContent);
+			//스테이지 + 1
+			stageDao.updateStage(roomId);
 
 			fos = new FileOutputStream(outputPath);
 			document.write(fos);

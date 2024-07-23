@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kb.star.util.AddVoteDao">
+
+	<insert id="insertNewVote">
+		INSERT INTO AddVote
+		(Title, DepartmentID, EndDate,
+		IsCompleted)
+		values (#{param1},#{param2},#{param3},0)
+	</insert>
+
+	<select id="voteIdConfirm" resultType="int">
+		select max(AddVoteID) from
+		AddVote where DepartmentID=#{param1}
+	</select>
+
+	<!-- 투표 참여인원 테이블에 추가 -->
+	<insert id="insertUserIntoVote">
+		INSERT INTO VoteParticipations
+		(AddVoteID, UserID,
+		OptionID) values
+		(#{param1},#{param2},0)
+	</insert>
+
+	<select id="myAllVote" resultType="com.kb.star.dto.AddVoteDto">
+		SELECT ad.* from AddVote ad
+		inner join
+		VoteParticipations vp on ad.AddVoteID = vp.AddVoteID
+		where
+		ad.IsDelete = 0
+		and vp.UserID = #{param1} order by ad.AddVoteID desc;
+	</select>
+
+
+	<select id="selectVoteByAddVoteId"
+		resultType="com.kb.star.dto.AddVoteDto">
+		SELECT * from AddVote
+		where AddVoteID = #{addVoteId}
+	</select>
+
+
+	<select id="voteOptions"
+		resultType="com.kb.star.dto.AddVoteOptionsDto">
+		SELECT * from AddVoteOptions
+		where
+		AddVoteId = #{param1}
+		order by OptionID desc;
+	</select>
+
+	<select id="voteOptionsAfter"
+		resultType="com.kb.star.dto.AddVoteOptionsDto">
+		SELECT * from AddVoteOptions
+		where
+		AddVoteId = #{param1}
+		order by VoteCount desc;
+	</select>
+
+	<!-- 투표 참여여부 확인하기 -->
+	<select id="checkVoteParticipation" parameterType="map"
+		resultType="Integer">
+		SELECT OptionID from VoteParticipations
+		where
+		AddVoteID =
+		#{addVoteId} AND UserID = #{userId};
+	</select>
+
+	<insert id="insertVoteOption">
+		INSERT INTO AddVoteOptions (AddVoteID, OptionText)
+		VALUES (#{param1}, #{param2})
+	</insert>
+
+
+
+	<!-- 투표 참여자의 optionId 업데이트 -->
+	<update id="updateVoteParticipation">
+		UPDATE VoteParticipations
+		SET OptionID = #{optionId},
+		VotedAt = NOW()
+		WHERE AddVoteID = #{addVoteId} AND UserID = #{userId}
+	</update>
+
+
+	<!-- 선택된 옵션의 voteCount 증가 -->
+	<update id="incrementVoteCount">
+		UPDATE AddVoteOptions
+		SET VoteCount = VoteCount + 1
+		WHERE OptionID = #{optionId}
+	</update>
+
+	<update id="updateCompletedStatus">
+    <![CDATA[
+    UPDATE AddVote
+    SET IsCompleted = 1
+    WHERE EndDate < CURDATE()
+    ]]>
+	</update>
+
+	<select id="getUserOptionIdForVote" parameterType="map"
+		resultType="Integer">
+		SELECT OptionID
+		FROM VoteParticipations
+		WHERE UserID = #{userId} AND AddVoteID = #{addVoteId}
+	</select>
+
+
+</mapper>
