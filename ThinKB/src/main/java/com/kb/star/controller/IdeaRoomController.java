@@ -2,10 +2,6 @@ package com.kb.star.controller;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,19 +13,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kb.star.command.report.ReportView;
+import com.kb.star.command.room.AfterVoteCommand;
 import com.kb.star.command.room.ManagerIdeaListCommand;
 import com.kb.star.command.room.ResetCommand;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
+import com.kb.star.command.room.TimerTestCommand;
 import com.kb.star.command.room.UpdateIdeaCommand;
+import com.kb.star.command.room.UpdateStageThreeCommand;
 import com.kb.star.command.room.UpdateStageTwoCommand;
 import com.kb.star.command.room.UserListCommand;
 import com.kb.star.command.room.makeRoomCommand;
+import com.kb.star.command.roomManger.AddParticipants;
+import com.kb.star.command.roomManger.RemoveParticipant;
 import com.kb.star.command.roomManger.RoomManagement;
 import com.kb.star.command.roomManger.UpdateRoomInfo;
 import com.kb.star.command.roomManger.UserManagement;
-import com.kb.star.dto.RejectLog;
 
 @Controller
 public class IdeaRoomController {
@@ -87,6 +87,11 @@ public class IdeaRoomController {
 //					return "redirect:main";
 //				}
 		case 2:
+//			model.addAttribute("request", request);
+//		    command = new StageTwoCommand(sqlSession);
+//		    command.execute(model);
+//
+//		    return "firstMeeting/ideaMeeting";
 			return "redirect:/roomStage2?roomId=" + roomId;
 		case 7:
 			command = new ReportView(sqlSession);
@@ -177,7 +182,7 @@ public class IdeaRoomController {
 		return "redirect:/roomManagement";
 	}
 	//참여자관리화면 방장
-	@RequestMapping("userManagement")
+	@RequestMapping("/userManagement")
 	public String userManagement(HttpSession session,HttpServletRequest request,Model model) {
 		Integer departmentId = (Integer)session.getAttribute("departmentId");
 		model.addAttribute("request",request);
@@ -186,6 +191,22 @@ public class IdeaRoomController {
 		command.execute(model);
 		return "ideaRoom/userManagement";
 	}
+	//참여자 추가 방장
+	@RequestMapping("/addParticipants")
+	public String addParticipants(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new AddParticipants(sqlSession);
+		command.execute(model);
+		return "redirect:/userManagement";
+	}
+	//참여자 삭제 방장
+	@RequestMapping("/removeParticipant")
+	public String removeParticipant(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new RemoveParticipant(sqlSession);
+		command.execute(model);
+		return "redirect:/userManagement";
+	}
 	
 	//리셋버튼 눌렀을때
 	@RequestMapping("/goReset")
@@ -193,8 +214,39 @@ public class IdeaRoomController {
 		model.addAttribute("request", request);	
 		command = new ResetCommand(sqlSession);
 		command.execute(model);
-
 	    return "redirect:meetingList";
+	}
+	
+	// 타이머 테스용입니다!
+	@RequestMapping("/timer")
+	public String timer(@RequestParam("roomId") int roomId, Model model, HttpServletRequest request) {
+		model.addAttribute("roomId", roomId);
+		command = new TimerTestCommand(sqlSession);
+		command.execute(model);
+		return "TimerTest";
+	}
+	
+	//
+	@RequestMapping("/stage2Clear")
+	public String stage2Clear(HttpServletRequest request, Model model) {
+		int roomId = Integer.parseInt((String) request.getParameter("roomId"));
+		int stage = Integer.parseInt((String) request.getParameter("stage"));
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("stage", stage);
+		
+		command = new AfterVoteCommand(sqlSession);
+		command.execute(model);
+		
+		return "firstMeeting/stage2Clear";
+	}
+	
+	@RequestMapping("/goStage3")
+	public String goStage3(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);	
+		command = new UpdateStageThreeCommand(sqlSession);
+		command.execute(model);
+		
+		return "redirect:main";
 	}
 
 	/*

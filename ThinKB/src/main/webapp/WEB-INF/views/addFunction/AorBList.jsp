@@ -196,7 +196,7 @@
 	</div>
 	<div class="ideas">
 		<div class="abtestMake">
-			<button>abtest만들기</button>
+			<a href="./makeAorB"><button>abtest만들기</button></a>
 		</div>
 		<c:forEach var="test" items="${abTests}">
 			<div
