@@ -57,15 +57,8 @@
     .column {
         width: 45%;
     }
-    .preOpinion-list {
+    .preOpinion-list, .currentOpinion-list {
         width: 100%;
-        margin-right: 2.5%;
-        list-style-type: none;
-        padding: 0;
-    }
-    .currentOpinion-list {
-        width: 100%;
-        margin-left: 2.5%;
         list-style-type: none;
         padding: 0;
     }
@@ -96,33 +89,71 @@
         padding: 10px;
         border-radius: 10px;
         margin-bottom: 10px;
-        font-size: 22px;
+        font-size: 20px;
         position: relative;
         text-align: left;
     }
-    .opinion-text {
-        display: inline-block;
+    .opinion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; /* 세로 정렬을 위쪽에 맞추기 위해 flex-start 사용 */
+    }
+    .opinion-header .name-date {
+        display: flex;
+        align-items: center;
+    }
+    .name {
         margin-right: 10px;
+        font-weight: bold;
     }
     .date {
         font-size: 12px;
         color: #777;
-        margin-top: 5px;
     }
-    .delete-button {
-        background-color: #dc3545;
-        color: #fff;
+    .opinion-text {
+        margin: 10px 0;
+    }
+    
+    /* 좋아요 */
+     /* 좋아요 */
+    .like-section {
+        display: flex;
+        flex-direction: column; /* 좋아요 버튼과 좋아요 수를 다른 줄로 배치 */
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+    .like-button {
+        background: none;
         border: none;
-        padding: 5px 10px;
-        border-radius: 5px;
         cursor: pointer;
-        position: absolute;
-        right: 10px;
-        top: 10px;
+        margin-right: 5px;
     }
-    .delete-button:hover {
+    .like-button img {
+        width: 20px;
+        height: 20px;
+    }
+    .like-count {
+	    margin-top: 5px; /* 좋아요 수를 이미지 아래에 약간의 간격을 둠 */
+	    font-size: 16px;
+	    font-weight: bold;
+	}
+
+    
+    .delete-button {
+        /* background-color: #dc3545; */
+        color: #777 !important;
+        text-align: left; /* 좌측 정렬 */
+        border: none;
+        cursor: pointer; 
+        font-weight: bold;
+        font-weight: bold;
+        
+    }
+/*     .delete-button:hover {
         background-color: #c82333;
-    }
+    } */
+    
     .comment-section {
         display: flex;
         align-items: center;
@@ -142,25 +173,25 @@
         font-weight: bold;
         font-size: 16px;
     }
-    button {
-        width: 100px;
-        height: 50px;
-        border: none;
-        background-color: #ffc107;
-        color: #000;
-        font-weight: bold;
-        padding: 0 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-    button:hover {
-        background-color: #e0a800;
-    }
+   .write-button {
+	    width: 100px;
+	    height: 50px;
+	    border: none;
+	    background-color: #ffc107;
+	    color: #000;
+	    font-weight: bold;
+	    padding: 0 20px;
+	    border-radius: 5px;
+	    cursor: pointer;
+	    transition: background-color 0.3s ease;
+	}
+	
+	.write-button:hover {
+	    background-color: #e0a800;
+	}
     .idea-title-container {
         border: 1px solid #000;
         background-color: #EEEEEE;
-        margin-bottom: 20px;
         padding: 20px;
         width: 100%;
         box-sizing: border-box;
@@ -178,31 +209,27 @@
     }
 </style>
 <script>
-function updateTimer() {
-    const endDate = new Date("${timer}").getTime();
-    const now = new Date().getTime();
-    const distance = endDate - now;
+window.onload = function() {
+    <c:if test="${alreadyWritten}">
+        alert('이미 해당 탭에 의견을 작성하셨습니다.');
+    </c:if>
+};
 
-    if (distance < 0) {
-        document.getElementById("timer").innerHTML = "시간이 종료되었습니다";
-        return;
+function validateAndSubmitForm() {
+    var opinionText = document.querySelector('.opinion-textarea').value.trim();
+    
+    if (opinionText === '') {
+        alert('의견을 입력해주세요!');
+        return false; // 폼 제출 방지
     }
 
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("timer").innerHTML = 
-        "남은 시간: " + 
-        (hours < 10 ? "0" : "") + hours + ":" +
-        (minutes < 10 ? "0" : "") + minutes + ":" +
-        (seconds < 10 ? "0" : "") + seconds;
+    // 서버 측에서 중복 검사를 수행하기 위해 폼을 제출
+    return true;
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    updateTimer();
-    setInterval(updateTimer, 1000);
-});
+function confirmDelete() {
+    return confirm('정말로 이 의견을 삭제하시겠습니까?');
+}
 </script>
 </head>
 <body>
@@ -228,8 +255,13 @@ document.addEventListener("DOMContentLoaded", function() {
                         <c:otherwise>
                             <c:forEach var="opinion" items="${previousOpinions}" varStatus="status">
                                 <li class="opinion-entry">
-                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                    <div class="opinion-header">
+                                        <div class="name-date">
+                                            <span class="name">${opinion.userName}</span>
+                                            <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
+                                        </div>
+                                    </div>
+                                    <div class="opinion-text">${opinion.opinionText}</div>
                                 </li>
                             </c:forEach>
                         </c:otherwise>
@@ -237,42 +269,73 @@ document.addEventListener("DOMContentLoaded", function() {
                 </ul>
             </div>
             
-            <div class="column">
-		        <h2>현재 의견들</h2>
-		        <ul class="currentOpinion-list">
-		            <c:choose>
-		                <c:when test="${empty currentOpinions}">
-		                    <li class="no-opinions">
-		                        <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle;">
-		                        <br>의견이 아직 등록되지 않았어요! <br><br>
+			<div class="column">
+		    <h2>현재 의견들</h2>
+		    <ul class="currentOpinion-list">
+		        <c:choose>
+		            <c:when test="${empty currentOpinions}">
+		                <li class="no-opinions">
+		                    <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle;">
+		                    <br>의견이 아직 등록되지 않았어요! <br><br>
+		                </li>
+		            </c:when>
+		            <c:otherwise>
+		                <c:forEach var="opinion" items="${currentOpinions}" varStatus="status">
+		                    <li class="opinion-entry">
+		                        <div class="opinion-header">
+                                    <div class="name-date">
+                                        <span class="name">${opinion.userName}</span>
+                                        <div class="date">
+                                            <fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+                                        </div>
+                                    </div>
+                                    <div class="like-section">
+									    <form action="likeOpinion" method="post" style="display: inline;">
+									        <input type="hidden" name="opinionId" value="${opinion.opinionID}" />
+									        <input type="hidden" name="userId" value="${userId}" />
+									        <input type="hidden" name="like" value="${opinion.likedByCurrentUser ? false : true}" />
+									        <input type="hidden" name="roomId" value="${roomId}" />
+									        <input type="hidden" name="ideaId" value="${ideaId}" />
+									        <input type="hidden" name="currentTab" value="${currentTab}" />
+									        <button type="submit" class="like-button">
+									            <c:choose>
+									                <c:when test="${opinion.likedByCurrentUser}">
+									                    <img src="./resources/filled_heart.png" alt="Filled Heart">
+									                </c:when>
+									                <c:otherwise>
+									                    <img src="./resources/empty_heart.png" alt="Empty Heart">
+									                </c:otherwise>
+									            </c:choose>
+									        </button>
+									    </form>
+									    <div class="like-count">
+									        <span>${opinion.likeNum}</span>
+									    </div>
+									</div>
+                                </div>
+                                <div class="opinion-text">${opinion.opinionText}</div>
+                                <c:if test="${opinion.userID == userId}">
+                                    <form action="deleteOpinion2" method="post" onsubmit="return confirmDelete();" style="display: inline;">
+                                        <input type="hidden" name="opinionId" value="${opinion.opinionID}" />
+                                        <input type="hidden" name="ideaId" value="${ideaId}" />
+                                        <input type="hidden" name="roomId" value="${roomId}" />
+                                        <input type="hidden" name="currentTab" value="${currentTab}" />
+                                        <button type="submit" class="delete-button" >삭제</button>
+                                    </form>
+                                </c:if>
 		                    </li>
-		                </c:when>
-		                <c:otherwise>
-                            <c:forEach var="opinion" items="${currentOpinions}" varStatus="status">
-                                <li class="opinion-entry">
-                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-                                    <c:if test="${opinion.userID == userId}">
-                                        <form action="deleteOpinion2" method="post" style="display: inline;">
-                                            <input type="hidden" name="opinionId" value="${opinion.opinionID}" />
-                                            <input type="hidden" name="ideaId" value="${ideaId}" />
-                                            <input type="hidden" name="roomId" value="${roomId}" />
-                                            <input type="hidden" name="currentTab" value="${currentTab}" />
-                                            <button type="submit" class="delete-button">삭제</button>
-                                        </form>
-                                    </c:if>
-                                </li>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-                <form action="addOpinion2" method="post" class="comment-section">
-                    <input type="hidden" name="ideaId" value="${ideaId}" />
-                    <input type="hidden" name="roomId" value="${roomId}" />
-                    <input type="hidden" name="currentTab" value="${currentTab}" />
-                    <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력하세요"></textarea>
-                    <button type="submit">작성</button>
-                </form>
+		                </c:forEach>
+		            </c:otherwise>
+		        </c:choose>
+		    </ul>
+		    <form action="addOpinion2" method="post" class="comment-section" onsubmit="return validateAndSubmitForm();">
+		        <input type="hidden" name="ideaId" value="${ideaId}" />
+		        <input type="hidden" name="roomId" value="${roomId}" />
+		        <input type="hidden" name="currentTab" value="${currentTab}" />
+		        <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력하세요"></textarea>
+		        <button type="submit" class="write-button">작성</button>
+                <!-- <button type="button" onclick="validateAndSubmitForm('opinionForm')">작성</button> -->
+            </form>
 		    </div>
 		</div>
     </div>
