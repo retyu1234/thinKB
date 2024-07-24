@@ -10,6 +10,21 @@ public class ReportsDto {
 	private boolean isFinal;
 	private String createAt;
 	private String updateAt;
+    private int stageId;
+    private String status;
+    
+	public int getStageId() {
+		return stageId;
+	}
+	public void setStageId(int stageId) {
+		this.stageId = stageId;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 	public int getReportId() {
 		return reportId;
 	}
