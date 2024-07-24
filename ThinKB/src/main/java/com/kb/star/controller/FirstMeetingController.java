@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.kb.star.command.firstMeeting.FirstMeeting;
 import com.kb.star.command.firstMeeting.FirstMeetingCommand;
 import com.kb.star.command.firstMeeting.MeetingRoomListCommand;
+import com.kb.star.command.room.StageTwoCommand;
 import com.kb.star.dto.IdeaReplys;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
@@ -54,12 +55,12 @@ public class FirstMeetingController {
 	// 아이디어 회의 목록 표시 페이지
 	@RequestMapping("/roomStage2")
 	public String roomStage2(@RequestParam("roomId") int roomId, Model model, HttpSession session) {
-	    // roomStage2 메서드의 로직을 여기에 작성
-	    String roomTitle = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectRoomTitleById", roomId);
-	    model.addAttribute("roomTitle", roomTitle);
+//	    // roomStage2 메서드의 로직을 여기에 작성
+//	    String roomTitle = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectRoomTitleById", roomId);
+//	    model.addAttribute("roomTitle", roomTitle);
 	    
-	    // 기존 FirstMeetingController의 로직을 가져와서 여기에 추가합니다.
-	    MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectByTitle", roomTitle);
+	    // 기존 FirstMeetingController의 로직을 가져와서 여기에 추가합니다.(나중에 returnType을 수정)
+	    MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectRoomTitleById", roomId);
 	    model.addAttribute("meetingRoom", meetingRoom);
 
 	    // 아이디어 목록을 RoomID로 조회하여 모델에 추가
@@ -89,11 +90,14 @@ public class FirstMeetingController {
 	        model.addAttribute("errorMessage", errorMessage);
 	        session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
 	    }
+	    
+	    // 타이머 모델에 담기(내은추가)
+	    String timer = sqlSession.selectOne("com.kb.star.util.RoomDao.roomTimer", params);
+	    model.addAttribute("timer", timer);
 
+	    
 	    return "firstMeeting/ideaMeeting";
 	}
-
-
 
 
     // 아이디어 투표 버튼 클릭시 수행 로직

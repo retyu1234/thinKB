@@ -301,6 +301,7 @@ function checkRejectedIdea() {
 	<div class="room1"></div>
 	<!-- 배경 이미지를 위한 영역 -->
 	<div class="room1-content">
+	<%-- <%@ include file="../Timer.jsp" %> --%>
 		<div id="timer" class="room1-timer"></div>
 
 		<!-- 방장만 보이는 버튼?? -->
@@ -370,6 +371,7 @@ function checkRejectedIdea() {
 					style="display: none;" onclick="nextStage()">다음 단계</button>
 			</div>
 		</form>
+		
 	</div>
 
 </body>

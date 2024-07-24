@@ -191,11 +191,11 @@ select {
 				<input type="hidden" name="stage" value="${stage}">
 				<h2 style="text-align: left; margin-top:50px;">아이디어 투표 진행시 타이머 설정</h2>
 				<div>
-					<input type="number" class="timer-input" name="timer_hours1" min="0"
+					<input type="number" class="timer-input" name="timer_hours" min="0"
 						max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp; <input
-						type="number" class="timer-input" name="timer_minutes1" min="0"
+						type="number" class="timer-input" name="timer_minutes" min="0"
 						max="59" placeholder="MM">&nbsp;분&nbsp;&nbsp;&nbsp; <input
-						type="number" class="timer-input" name="timer_seconds1" min="0"
+						type="number" class="timer-input" name="timer_seconds" min="0"
 						max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp; <span
 						class="error-message" id="timerError"></span>
 				</div>
@@ -275,9 +275,9 @@ select {
     document.getElementById('goStageForm').addEventListener('submit', function(e) {
         e.preventDefault(); // 항상 기본 제출을 막습니다.
 
-        var timerHours = this.querySelector('input[name="timer_hours1"]').value;
-        var timerMinutes = this.querySelector('input[name="timer_minutes1"]').value;
-        var timerSeconds = this.querySelector('input[name="timer_seconds1"]').value;
+        var timerHours = this.querySelector('input[name="timer_hours"]').value;
+        var timerMinutes = this.querySelector('input[name="timer_minutes"]').value;
+        var timerSeconds = this.querySelector('input[name="timer_seconds"]').value;
         
         if (timerHours === "" && timerMinutes === "" && timerSeconds === "") {
             alert('타이머 설정을 위해 최소한 하나의 시간 단위를 입력해주세요.');

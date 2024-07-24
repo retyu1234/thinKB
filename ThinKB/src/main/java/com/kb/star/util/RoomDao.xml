@@ -15,12 +15,15 @@
 		where RoomID=#{param1} and IdeaID=0
 	</select>
 
-	<insert id="submitIdea">
-		INSERT INTO Ideas
-		(UserID,RoomID,Title,Description,IsDelete,StageID,PickNum)
-		values
-		(#{param1},#{param2},#{param3},#{param4},0,1,0);
-	</insert>
+<select id="roomTimer" resultType="String">
+	select endTime from Timer where RoomID=#{roomId} and IdeaID=0
+</select>
+
+<insert id="submitIdea">
+	INSERT INTO Ideas (UserID,RoomID,Title,Description,IsDelete,StageID,PickNum) values 
+	(#{param1},#{param2},#{param3},#{param4},0,1,0);
+</insert>
+
 
 	<update id="updateParticipantStage1">
 		update StageParticipation set Status=1 WHERE
@@ -187,5 +190,10 @@
 		(UserID,IdeaID,Message,CreatedAt) values
 		(#{param1},#{param2},#{param3},now())
 	</insert>
+
+<!-- 투표 끝난뒤에 목록 확인 -->
+<select id="ideaPickNum" resultType="com.kb.star.dto.Ideas">
+	SELECT * FROM Ideas WHERE RoomID=#{param1} and IsDelete=0 and StageID=1 and isReject=0 order by PickNum desc
+</select>
 
 </mapper>
