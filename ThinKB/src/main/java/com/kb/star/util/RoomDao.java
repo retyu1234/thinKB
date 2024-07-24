@@ -10,6 +10,9 @@ public interface RoomDao {
 	MeetingRooms roomDetailInfo(int roomId);
 
 	String roomTimerInfo(int roomId);
+	
+	// 새로 추가
+	String roomTimer(int roomId);
 
 	void submitIdea(int id, int roomId, String title, String contents);
 
@@ -38,6 +41,8 @@ public interface RoomDao {
 	String rejectLogSelect(int ideaID);
 
 	void makeNotification(Integer user, int ideaNum, String notification);
+
+	List<Ideas> ideaPickNum(int roomId);
 
 
 

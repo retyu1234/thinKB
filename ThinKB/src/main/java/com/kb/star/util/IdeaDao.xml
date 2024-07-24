@@ -34,8 +34,8 @@
     </update>
 
     <!-- RoomID로 RoomTitle 조회하기 -->
-    <select id="selectRoomTitleById" parameterType="int" resultType="String">
-        SELECT RoomTitle
+    <select id="selectRoomTitleById" parameterType="int" resultType="com.kb.star.dto.MeetingRooms">
+        SELECT *
         FROM MeetingRooms
         WHERE RoomID = #{roomId}
     </select>
