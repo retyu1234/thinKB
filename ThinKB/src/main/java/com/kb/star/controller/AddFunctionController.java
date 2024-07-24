@@ -121,33 +121,33 @@ public class AddFunctionController {
 
 	// 진행 중인 투표 목록
 	@RequestMapping("/voteList")
-    public String voteList(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession();
-        int userId = (Integer) session.getAttribute("userId");
-        model.addAttribute("id", userId);
+	public String voteList(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		int userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("id", userId);
 
-        // 기존의 voteListCommand 실행
-        command = new VoteListCommand(sqlSession);
-        command.execute(model);
+		// 기존의 voteListCommand 실행
+		command = new VoteListCommand(sqlSession);
+		command.execute(model);
 
-        // VoteParticipations에서 사용자의 투표 참여 여부 확인
-        AddVoteDao dao = sqlSession.getMapper(AddVoteDao.class);
+		// VoteParticipations에서 사용자의 투표 참여 여부 확인
+		AddVoteDao dao = sqlSession.getMapper(AddVoteDao.class);
 
-        List<AddVoteDto> voteList = (List<AddVoteDto>) model.asMap().get("voteList");
+		List<AddVoteDto> voteList = (List<AddVoteDto>) model.asMap().get("voteList");
 
-        for (AddVoteDto vote : voteList) {
-            Map<String, Object> params = new HashMap<String, Object>();
-            params.put("userId", userId);
-            params.put("addVoteId", vote.getAddVoteId());
+		for (AddVoteDto vote : voteList) {
+			Map<String, Object> params = new HashMap<String, Object>();
+			params.put("userId", userId);
+			params.put("addVoteId", vote.getAddVoteId());
 
-            Integer optionId = dao.getUserOptionIdForVote(params);
-            vote.setVotedOptionId(optionId); // AddVoteDto에 votedOptionId 필드 추가
-        }
+			Integer optionId = dao.getUserOptionIdForVote(params);
+			vote.setVotedOptionId(optionId); // AddVoteDto에 votedOptionId 필드 추가
+		}
+		updateCompletedStatus();
+		model.addAttribute("voteList", voteList);
 
-        model.addAttribute("voteList", voteList);
-
-        return "addFunction/voteList";
-    }
+		return "addFunction/voteList";
+	}
 
 	// 투표 완료 상태 업데이트 메소드
 	public void updateCompletedStatus() {
