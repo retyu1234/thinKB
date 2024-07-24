@@ -1,5 +1,3 @@
-ideaMeeting.jsp
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../header.jsp"%>
@@ -201,6 +199,7 @@ body {
 </style>
 </head>
 <body>
+<div id="timer-section" style="margin-top:100px;"><%@ include file="../Timer.jsp"%></div>
 	<input type="hidden" id="session-user-id"
 		value="${sessionScope.userId}">
 	<input type="hidden" id="session-room-id"
@@ -238,7 +237,18 @@ body {
 		</div>
 		<!-- 		</section> -->
 
-		<button class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+		<button id="voteButton" class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+    
+    <!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
+    <form id="nextStageForm" action="./stage2Clear" method="post">
+			<input type="hidden" name="roomId" value="${meetingRoom.getRoomId()}">
+			<input type="hidden" name="stage" value="${meetingRoom.getStageId()}">
+		<div style="text-align: right; margin-top: 20px;">
+			<button id="nextStepButton" class="vote-button"
+				style="display: none;" onclick="goToNextStep()">다음 단계</button>
+		</div>
+		</form>
+	
 	</div>
 
 	<!-- Modal window -->
@@ -507,6 +517,23 @@ body {
             alert(Message);
         }
     }
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        initializeTimer();
+    });
+    
+    //타이머 종료시 함수
+    function onTimerEnd() {
+	if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
+        document.getElementById("nextStepButton").style.display = "block";
+        document.getElementById("voteButton").style.display = "none";
+    }
+}
+
+function goToNextStep() {
+	document.getElementById('nextStageForm').submit();
+}
+
 </script>
 </body>
 </html>

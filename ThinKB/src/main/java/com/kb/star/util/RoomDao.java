@@ -15,6 +15,9 @@ public interface RoomDao {
 	MeetingRooms roomDetailInfo(int roomId);
 
 	String roomTimerInfo(int roomId);
+	
+	// 새로 추가
+	String roomTimer(int roomId);
 
 	void submitIdea(int id, int roomId, String title, String contents);
 
@@ -23,7 +26,6 @@ public interface RoomDao {
 	boolean isParticipantsStage1(int roomId, int id);
 
 	List<Ideas> ideaInfo(int roomId, int id);
-
 
 	void updateStage(@Param("roomId") int roomId);
 
@@ -64,4 +66,7 @@ public interface RoomDao {
 	void addMeetingRoomMembers(@Param("roomId") int roomId, @Param("userIds") List<Integer> userIds);
 	
 	void deleteMembers(int roomId, int userId);
+
+	List<Ideas> ideaPickNum(int roomId);
+
 }
