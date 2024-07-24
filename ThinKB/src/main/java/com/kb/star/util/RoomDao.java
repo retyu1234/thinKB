@@ -63,7 +63,10 @@ public interface RoomDao {
 
 	void makeNotification(Integer user, int ideaNum, String notification);
 
-	List<Ideas> ideaPickNum(int roomId);
+	void addMeetingRoomMembers(@Param("roomId") int roomId, @Param("userIds") List<Integer> userIds);
+	
+	void deleteMembers(int roomId, int userId);
 
+	List<Ideas> ideaPickNum(int roomId);
 
 }

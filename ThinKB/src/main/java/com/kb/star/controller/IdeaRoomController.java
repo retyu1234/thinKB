@@ -25,10 +25,11 @@ import com.kb.star.command.room.UpdateStageThreeCommand;
 import com.kb.star.command.room.UpdateStageTwoCommand;
 import com.kb.star.command.room.UserListCommand;
 import com.kb.star.command.room.makeRoomCommand;
+import com.kb.star.command.roomManger.AddParticipants;
+import com.kb.star.command.roomManger.RemoveParticipant;
 import com.kb.star.command.roomManger.RoomManagement;
 import com.kb.star.command.roomManger.UpdateRoomInfo;
 import com.kb.star.command.roomManger.UserManagement;
-import com.kb.star.dto.RejectLog;
 
 @Controller
 public class IdeaRoomController {
@@ -181,7 +182,7 @@ public class IdeaRoomController {
 		return "redirect:/roomManagement";
 	}
 	//참여자관리화면 방장
-	@RequestMapping("userManagement")
+	@RequestMapping("/userManagement")
 	public String userManagement(HttpSession session,HttpServletRequest request,Model model) {
 		Integer departmentId = (Integer)session.getAttribute("departmentId");
 		model.addAttribute("request",request);
@@ -190,6 +191,22 @@ public class IdeaRoomController {
 		command.execute(model);
 		return "ideaRoom/userManagement";
 	}
+	//참여자 추가 방장
+	@RequestMapping("/addParticipants")
+	public String addParticipants(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new AddParticipants(sqlSession);
+		command.execute(model);
+		return "redirect:/userManagement";
+	}
+	//참여자 삭제 방장
+	@RequestMapping("/removeParticipant")
+	public String removeParticipant(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new RemoveParticipant(sqlSession);
+		command.execute(model);
+		return "redirect:/userManagement";
+	}
 	
 	//리셋버튼 눌렀을때
 	@RequestMapping("/goReset")
@@ -197,7 +214,6 @@ public class IdeaRoomController {
 		model.addAttribute("request", request);	
 		command = new ResetCommand(sqlSession);
 		command.execute(model);
-
 	    return "redirect:meetingList";
 	}
 	
