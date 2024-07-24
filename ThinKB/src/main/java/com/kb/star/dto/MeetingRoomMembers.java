@@ -2,17 +2,25 @@ package com.kb.star.dto;
 
 public class MeetingRoomMembers {
 
-    private int userID;
+    private int userId;
     private String userName;
     private String email;
     private int contributionCnt;
     private String departmentName;
     private String teamName;
-	public int getUserID() {
-		return userID;
+    private int roomId;
+    
+	public int getRoomId() {
+		return roomId;
 	}
-	public void setUserID(int userID) {
-		this.userID = userID;
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
+	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserID(int userId) {
+		this.userId = userId;
 	}
 	public String getUserName() {
 		return userName;

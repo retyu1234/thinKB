@@ -351,7 +351,17 @@
 	font-size: 0.9em;
 }
 </style>
-<!-- 타이머 -->
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    var roomId = '${meetingRoom.roomId}';
+    var links = document.querySelectorAll('.side-menu a');
+    links.forEach(function(link) {
+        var url = new URL(link.href);
+        url.searchParams.set('roomId', roomId);
+        link.href = url.toString();
+    });
+});
+</script>
 </head>
 <body>
 
