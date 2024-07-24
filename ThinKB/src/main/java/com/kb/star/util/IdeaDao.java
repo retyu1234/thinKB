@@ -30,4 +30,7 @@ public interface IdeaDao {
     
     // RoomID로 RoomTitle 조회
     String selectRoomTitleById(int roomId);
+    
+    //기여도 추가
+    void contributionUpdate(int roomId, int userId);
 }

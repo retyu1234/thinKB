@@ -18,6 +18,7 @@ import com.kb.star.command.room.ManagerIdeaListCommand;
 import com.kb.star.command.room.ResetCommand;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
+import com.kb.star.command.room.StageThreeCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
 import com.kb.star.command.room.TimerTestCommand;
 import com.kb.star.command.room.UpdateIdeaCommand;
@@ -92,6 +93,10 @@ public class IdeaRoomController {
 //
 //		    return "firstMeeting/ideaMeeting";
 			return "redirect:/roomStage2?roomId=" + roomId;
+		case 3:
+			command = new StageThreeCommand(sqlSession);
+			command.execute(model);
+			return "firstMeeting/roomStage3";
 		case 7:
 			command = new ReportView(sqlSession);
 			command.execute(model);
@@ -162,7 +167,7 @@ public class IdeaRoomController {
 		command = new UpdateStageTwoCommand(sqlSession);
 		command.execute(model);
 		
-		return "redirect:main";
+		return "redirect:/roomDetail";
 	}
 	//방관리화면
 	@RequestMapping("/roomManagement")
@@ -190,6 +195,7 @@ public class IdeaRoomController {
 		command.execute(model);
 		return "ideaRoom/userManagement";
 	}
+	
 	
 	//리셋버튼 눌렀을때
 	@RequestMapping("/goReset")
@@ -224,13 +230,14 @@ public class IdeaRoomController {
 		return "firstMeeting/stage2Clear";
 	}
 	
+	//아이디어 투표완료, 다음단계(아이디어별 의견수보) 진행
 	@RequestMapping("/goStage3")
 	public String goStage3(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);	
 		command = new UpdateStageThreeCommand(sqlSession);
 		command.execute(model);
 		
-		return "redirect:main";
+		return "redirect:/roomDetail";
 	}
 
 	/*

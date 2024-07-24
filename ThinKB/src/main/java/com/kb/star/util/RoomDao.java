@@ -65,5 +65,19 @@ public interface RoomDao {
 
 	List<Ideas> ideaPickNum(int roomId);
 
+	void contributionUpdate(int roomId, int id);
+
+	void updateIdeaStage3(int firstIdeaId);
+
+	int pickedIdeaUser(int firstIdeaId, int roomId);
+
+	void updateYesPickNContribution(int roomId, int userId1);
+
+	void insertNewTimerForIdea(int roomId, int firstIdeaId, String formattedTime);
+
+	void insertForwardStage3(int firstIdeaId, Integer list, int roomId);
+
+	List<Ideas> yesPickIdeaList(int roomId);
+
 
 }
