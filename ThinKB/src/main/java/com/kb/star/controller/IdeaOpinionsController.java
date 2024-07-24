@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kb.star.command.addFunction.AddCommand;
@@ -159,7 +160,7 @@ public class IdeaOpinionsController {
     
     // 의견 작성시 추가 + 현재 의견들 불러오기
     @RequestMapping("/addOpinion2")
-    public String addOpinion2(@ModelAttribute IdeaOpinionsDto opinionForm, HttpSession session, 
+    public String addOpinion2(@ModelAttribute IdeaOpinionsDto opinionForm, HttpSession session, Model model,
                              @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId) {
         
         Integer userId = (Integer) session.getAttribute("userId");
@@ -189,6 +190,15 @@ public class IdeaOpinionsController {
         opinionForm.setHatColor(hatColor);  // HatColor 값을 설정합니다.
 
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+        
+        // 사용자가 이미 이 탭에 의견을 작성했는지 확인
+        int existingOpinions = ideaOpinionsDao.countUserOpinionsInTab(userId, ideaId, hatColor, 2);
+        int existingOpinions2 = ideaOpinionsDao.countUserOpinionsInTab(userId, ideaId, currentTab, 2);
+        if (existingOpinions2 > 0) {
+            model.addAttribute("alreadyWritten", true);
+        }
+
+        
         ideaOpinionsDao.insertOpinion2(opinionForm);
         
         return "redirect:/ideaOpinions2?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
@@ -202,11 +212,43 @@ public class IdeaOpinionsController {
                                 @RequestParam int ideaId) {
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
+        // 해당 의견에 대한 모든 좋아요 삭제 처리
+        ideaOpinionsDao.deleteLike(opinionId);
+        
         // 의견 삭제 처리
         ideaOpinionsDao.deleteOpinion(opinionId);
         
         // 현재 탭과 roomId, ideaId를 포함하여 리다이렉트
         return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
+    }
+    
+    // 좋아요 
+    @RequestMapping(value = "/likeOpinion", method = RequestMethod.POST)
+    public String likeOpinion(@RequestParam("opinionId") int opinionId, @RequestParam("like") boolean like, @RequestParam("userId") int userId,
+                              @RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, @RequestParam("currentTab") String currentTab, Model model) {
+
+        IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+
+        // 좋아요 수 증가 또는 감소
+        if (like) {
+            ideaOpinionsDao.increaseLikeNum(opinionId);  // 좋아요 수 증가
+            ideaOpinionsDao.addUserLike(userId, opinionId);  // 좋아요 추가
+        } else {
+            ideaOpinionsDao.decreaseLikeNum(opinionId);  // 좋아요 수 감소
+            ideaOpinionsDao.removeUserLike(userId, opinionId);  // 좋아요 제거
+        }
+
+        int updatedLikeNum = ideaOpinionsDao.getLikeNum(opinionId);
+        model.addAttribute("updatedLikeNum", updatedLikeNum);
+
+        return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
+    }
+
+    // 사용자가 특정 의견에 좋아요를 눌렀는지 확인하는 메서드
+    private boolean checkIfUserLikedOpinion(int userId, int opinionId) {
+    	
+    	IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+        return ideaOpinionsDao.checkUserLikedOpinion(userId, opinionId);
     }
 
    
