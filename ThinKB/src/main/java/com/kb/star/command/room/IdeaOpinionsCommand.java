@@ -1,5 +1,6 @@
 package com.kb.star.command.room;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,17 +56,30 @@ public class IdeaOpinionsCommand implements RoomCommand {
         int maxComments = (int) Math.ceil((userCount * 2) / 4.0); // 올림 처리
         model.addAttribute("maxComments", maxComments);
         
-        // 각 사용자별 작성한 댓글 갯수(IdeaId별)
-        // int userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId);
-        // model.addAttribute("userOpinionCount", userOpinionCount);
-
         for (String hatColor : hatColors) {
             int opinionCount = ideaOpinionsDao.getOpinionCountByHatColorAndIdeaId(ideaId, hatColor);
             model.addAttribute(hatColor.toLowerCase() + "OpinionCount", opinionCount);
-            
         }
 
         model.addAttribute("opinionForm", new IdeaOpinionsDto());
+        model.addAttribute("userOpinions", ideaOpinionsDao.getUserCommentedTabs(userId, ideaId));
+        
+        
+        
+//        List<String> userCommentedTabs = ideaOpinionsDao.getUserCommentedTabs(userId, ideaId);
+//        model.addAttribute("userCommentedTabs", userCommentedTabs);
+//        
+//        // 각 사용자별 작성한 댓글 갯수(IdeaId별)
+//        // int userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId);
+//        // model.addAttribute("userOpinionCount", userOpinionCount);
+//
+//        for (String hatColor : hatColors) {
+//            int opinionCount = ideaOpinionsDao.getOpinionCountByHatColorAndIdeaId(ideaId, hatColor);
+//            model.addAttribute(hatColor.toLowerCase() + "OpinionCount", opinionCount);
+//            
+//        }
+//
+//        model.addAttribute("opinionForm", new IdeaOpinionsDto());
 
     }
 }

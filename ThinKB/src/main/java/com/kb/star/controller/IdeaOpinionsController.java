@@ -96,6 +96,15 @@ public class IdeaOpinionsController {
         int currentOpinionCount = ideaOpinionsDao.getOpinionCountByHatColorAndIdeaId(ideaId, hatColor); // 현재 견해별 의견 수
         // int userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId); // 각 사용자별 등록한 댓글 갯수(아이디어별)
 
+        
+        // 사용자가 작성한 댓글 수와 작성한 탭 목록을 가져옴
+        List<String> userCommentedTabs = ideaOpinionsDao.getUserCommentedTabs(userId, ideaId);
+        if (userCommentedTabs.contains(hatColor)) {
+            model.addAttribute("error", "이미 이 탭에 의견을 작성했습니다.");
+            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+        }
+        
+        
         if (currentOpinionCount >= maxComments) {
             model.addAttribute("error", "댓글 작성 제한 인원을 초과하였습니다.");
             return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
@@ -108,6 +117,8 @@ public class IdeaOpinionsController {
 //            ideaOpinionsDao.insertOpinion(opinionForm);
 //        }
 
+        ideaOpinionsDao.insertOpinion(opinionForm);
+        
         return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
     }
 

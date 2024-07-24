@@ -38,6 +38,9 @@ public interface IdeaOpinionsDao {
     // 각 사용자가 작성한 전체 의견 수
     // int getUserOpinionCount(@Param("userId") int userId, @Param("ideaId") int ideaId);
     
+    // 사용자가 각 탭에 작성한 댓글 수
+    List<String> getUserCommentedTabs(@Param("userId") int userId, @Param("ideaId") int ideaId);
+    
     
     
     

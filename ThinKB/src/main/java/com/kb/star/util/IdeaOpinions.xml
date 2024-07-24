@@ -62,6 +62,13 @@
     <!-- <select id="getUserOpinionCount" resultType="int">
 	    SELECT COUNT(*) FROM IdeaOpinions WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND IsDelete = false
 	</select> -->
+	
+	<!-- 사용자가 각 탭에 작성한 댓글 수 -->
+	<select id="getUserCommentedTabs" resultType="String">
+	    SELECT DISTINCT HatColor FROM IdeaOpinions 
+	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND IsDelete = false
+	</select>
+    
     
     
     
