@@ -6,26 +6,159 @@
   
 <mapper namespace="com.kb.star.util.IdeaOpinionsDao">
 
-	
-	<!-- HatColor에 따라 의견 검색 -->
-    <select id="findByHatColor" resultType="com.kb.star.dto.IdeaOpinionsDto">
-        SELECT * FROM IdeaOpinions WHERE HatColor = #{hatColor} AND IsDelete = false
+	<!-- ideaOpinionsList.jsp -->
+    <!-- 각 모자 색상에 따른 상위 5개 의견 검색 -->
+    <select id="findTop5ByHatColor" resultType="com.kb.star.dto.IdeaOpinionsDto">
+        SELECT io.*, u.UserName
+        FROM IdeaOpinions io
+        JOIN Users u ON io.UserID = u.UserID
+        WHERE io.HatColor = #{hatColor} AND io.IsDelete = false
+        ORDER BY io.CreatedAt DESC
+        LIMIT 5
+    </select>
+    
+    
+	<!-- ideaOpinions.jsp -->
+	<!-- 알림 테이블의 IdeaID컬럼으로 Ideas 테이블 정보 가져오기 -->
+    <select id="getIdeaTitleById" resultType="com.kb.star.dto.Ideas">
+        SELECT Title 
+        FROM Ideas 
+        WHERE IdeaID = #{ideaId}
+    </select>
+    
+	<!-- HatColor에 따라 의견 검색 + UserID를 가지고 UserName 알아오기 -->
+	<select id="findByHatColor" resultType="com.kb.star.dto.IdeaOpinionsDto">
+        SELECT io.*, u.UserName 
+        FROM IdeaOpinions io
+        JOIN Users u ON io.UserID = u.UserID
+        WHERE io.IdeaID = #{ideaId} 
+          AND io.HatColor = #{hatColor} 
+          AND io.Step = 1 
+          AND io.IsDelete = false
     </select>
 
     <!-- 의견 추가 -->
-    <insert id="insertOpinion">
-        INSERT INTO IdeaOpinions (IdeaID, UserID, ParentOpinionID, OpinionText, HatColor, LikeNum, IsDelete, CreatedAt)
-        VALUES (#{ideaID}, #{userID}, #{parentOpinionID}, #{opinionText}, #{hatColor}, #{likeNum}, #{isDelete}, #{createdAt})
+    <insert id="insertOpinion"> 
+        INSERT INTO IdeaOpinions (IdeaID, UserID, OpinionText, HatColor, LikeNum, IsDelete, CreatedAt)
+        VALUES (#{ideaID}, #{userID}, #{opinionText}, #{hatColor}, #{likeNum}, #{isDelete}, #{createdAt})
     </insert>
 
-    <!-- 알림 읽음 상태 업데이트 -->
-    <update id="updateReadStatus">
-        UPDATE IdeaOpinions SET IsDelete = true WHERE OpinionID = #{notificationID}
+    <!-- 의견 삭제 -->
+    <delete id="deleteOpinion" parameterType="int">
+        DELETE FROM IdeaOpinions WHERE OpinionID = #{opinionId}
+    </delete>
+    
+    <!-- 팀별 인원 수 -->
+    <select id="getUserCountByTeamId" resultType="int">
+        SELECT COUNT(*) FROM Users WHERE TeamID = #{teamId}
+    </select>
+    
+    <!-- ideaId, 견해별 작성된 의견 수 -->
+    <select id="getOpinionCountByHatColorAndIdeaId" resultType="int">
+        SELECT COUNT(*) FROM IdeaOpinions WHERE IdeaID = #{ideaId} AND HatColor = #{hatColor} AND Step = 1 AND IsDelete = false
+    </select>
+    
+    <!-- 각 사용자가 작성한 전체 의견 수 -->
+    <!-- <select id="getUserOpinionCount" resultType="int">
+	    SELECT COUNT(*) FROM IdeaOpinions WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND IsDelete = false
+	</select> -->
+	
+	<!-- 사용자가 각 탭에 작성한 댓글 수 -->
+	<select id="getUserCommentedTabs" resultType="String">
+	    SELECT DISTINCT HatColor FROM IdeaOpinions 
+	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND IsDelete = false
+	</select>
+    
+    
+    
+    
+    <!-- ideaOpinions2.jsp -->
+    <!-- 특정 아이디어의 의견을 가져오는 쿼리 -->
+    <select id="findOpinionsByIdeaId" parameterType="int" resultType="com.kb.star.dto.IdeaOpinionsDto">
+        SELECT * FROM IdeaOpinions WHERE IdeaID = #{ideaId} AND IsDelete = false
+    </select>
+    
+    <!-- 이전 의견을 가져오는 SQL 쿼리 -->
+    <select id="getPreviousOpinionsByHatColor" parameterType="map" resultType="com.kb.star.dto.IdeaOpinionsDto">
+	    SELECT io.*, u.UserName 
+	    FROM IdeaOpinions io
+	    JOIN Users u ON io.UserID = u.UserID
+	    WHERE io.IdeaID = #{ideaId} AND io.HatColor = #{hatColor} AND io.Step = 1  AND io.IsDelete = false
+        <!-- SELECT * FROM IdeaOpinions WHERE IdeaID = #{ideaId} AND HatColor = #{hatColor} ORDER BY CreatedAt DESC -->
+    </select>
+    
+    <!-- 의견 추가2 -->
+    <insert id="insertOpinion2" parameterType="com.kb.star.dto.IdeaOpinionsDto">
+        INSERT INTO IdeaOpinions (IdeaID, UserID, Step, OpinionText, HatColor, LikeNum, IsDelete, CreatedAt)
+        VALUES (#{ideaID}, #{userID}, #{step}, #{opinionText}, #{hatColor}, #{likeNum}, #{isDelete}, #{createdAt})
+    </insert>
+    
+    <!-- 의견 중복작성방지차 이미 작성한 의견 있는지 확인 -->
+    <select id="countUserOpinionsInTab" resultType="int">
+	    SELECT COUNT(*)
+	    FROM IdeaOpinions
+	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND HatColor = #{hatColor} AND Step = #{step}
+	</select>
+
+    <!-- 모자 색상에 따라 현재 의견을 가져오는 SQL 쿼리 -->
+    <select id="getCurrentOpinionsByHatColor" parameterType="map" resultType="com.kb.star.dto.IdeaOpinionsDto">
+        SELECT io.*, u.UserName 
+        FROM IdeaOpinions io
+        JOIN Users u ON io.UserID = u.UserID
+        WHERE io.IdeaID = #{ideaId} AND io.HatColor = #{hatColor} AND io.Step = 2 AND io.IsDelete = false
+        ORDER BY io.LikeNum DESC
+    </select>
+    
+    <!-- 특정 의견에 대한 모든 좋아요 삭제 -->
+	<delete id="deleteLike" parameterType="int">
+	    DELETE FROM LikeVotes WHERE OpinionID = #{opinionId}
+	</delete>
+    <!-- 의견 삭제2 -->
+    <delete id="deleteOpinion2" parameterType="int">
+        DELETE FROM IdeaOpinions WHERE OpinionID = #{opinionId}
+    </delete>
+    
+    <!-- 좋아요 수 증가 -->
+    <update id="increaseLikeNum">
+        UPDATE IdeaOpinions 
+        SET LikeNum = LikeNum + 1 
+        WHERE OpinionID = #{opinionId}
     </update>
 
-    <!-- 의견 삭제 -->
-    <delete id="deleteNotification">
-        DELETE FROM IdeaOpinions WHERE OpinionID = #{notificationID}
+    <!-- 좋아요 수 감소 -->
+    <update id="decreaseLikeNum">
+        UPDATE IdeaOpinions 
+        SET LikeNum = LikeNum - 1 
+        WHERE OpinionID = #{opinionId}
+    </update>
+
+    <!-- 현재 좋아요 수 가져오기 -->
+    <select id="getLikeNum" resultType="int">
+        SELECT LikeNum 
+        FROM IdeaOpinions 
+        WHERE OpinionID = #{opinionId}
+    </select>
+    
+    <!-- 사용자가 특정 의견에 좋아요를 눌렀는지 확인 -->
+    <select id="checkUserLikedOpinion" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM LikeVotes
+        WHERE UserID = #{userId} AND OpinionID = #{opinionId} AND IsLike = true
+    </select>
+
+    <!-- 좋아요 추가 -->
+    <insert id="addUserLike">
+        INSERT INTO LikeVotes (UserID, OpinionID, IsLike)
+        VALUES (#{userId}, #{opinionId}, true)
+    </insert>
+
+    <!-- 좋아요 제거 -->
+    <delete id="removeUserLike">
+        DELETE FROM LikeVotes
+        WHERE UserID = #{userId} AND OpinionID = #{opinionId}
     </delete>
+    
 
 </mapper>
+
+

@@ -63,7 +63,9 @@ public interface RoomDao {
 
 	void makeNotification(Integer user, int ideaNum, String notification);
 
-	List<Ideas> ideaPickNum(int roomId);
+	void addMeetingRoomMembers(@Param("roomId") int roomId, @Param("userIds") List<Integer> userIds);
+	
+	void deleteMembers(int roomId, int userId);
 
 	void contributionUpdate(int roomId, int id);
 
@@ -78,6 +80,8 @@ public interface RoomDao {
 	void insertForwardStage3(int firstIdeaId, Integer list, int roomId);
 
 	List<Ideas> yesPickIdeaList(int roomId);
+
+	List<Ideas> ideaPickNum(int roomId);
 
 
 }

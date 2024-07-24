@@ -128,7 +128,7 @@
 	<select id="selectCurrentMembers"
 		resultType="com.kb.star.dto.MeetingRoomMembers">
 		SELECT u.UserID, u.UserName, u.Email, m.ContributionCnt,
-		d.DepartmentName, t.TeamName
+		d.DepartmentName, t.TeamName, m.RoomID
 		FROM MeetingRoomMembers m
 		JOIN Users u ON
 		m.UserID = u.UserID
@@ -140,6 +140,7 @@
 		AND m.IsDelete = 0
 		AND u.IsDelete = 0
 	</select>
+	<!-- 참여자제외 한 유저리스트 -->
 	<select id="selectAvailableEmployees"
 		resultType="com.kb.star.dto.UserListDto">
 		SELECT u.UserID, u.UserName, u.Email, d.DepartmentName,
@@ -159,7 +160,22 @@
 		AND u.DepartmentID =
 		#{departmentId}
 	</select>
-
+	<!-- 참여자 추가(방장) -->
+	<insert id="addMeetingRoomMembers">
+    INSERT INTO MeetingRoomMembers (RoomID, UserID, Role, ContributionCnt, IsDelete)
+    VALUES
+    <foreach collection="userIds" item="userId" separator=",">
+        (#{roomId}, #{userId}, 'noPick', 0, false)
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+        Role = VALUES(Role),
+        ContributionCnt = VALUES(ContributionCnt),
+        IsDelete = VALUES(IsDelete)
+	</insert>
+	<!-- 참여자 삭제 -->
+	<update id="deleteMembers">
+	update MeetingRoomMembers set IsDelete=true where RoomId=#{param1} and UserID=#{param2};
+	</update>
 	<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->
 	<update id="stageTwoTimerUpdate">
 		update Timer set StartTime=now(), endTime=#{param2}
@@ -172,7 +188,6 @@
 		values
 		(#{param1},#{param2},#{param3})
 	</insert>
-
 	<!-- -->
 	<update id="isRejectUpdate">
 		update Ideas set isReject=1 where IdeaID=#{param1}
