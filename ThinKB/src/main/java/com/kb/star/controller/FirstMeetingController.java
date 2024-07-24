@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.kb.star.command.firstMeeting.FirstMeeting;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.kb.star.command.firstMeeting.FirstMeeting;
 import com.kb.star.command.firstMeeting.FirstMeetingCommand;
 import com.kb.star.command.firstMeeting.MeetingRoomListCommand;
+import com.kb.star.command.room.StageTwoCommand;
 import com.kb.star.dto.IdeaReplys;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
@@ -50,102 +52,100 @@ public class FirstMeetingController {
 	}
 
 
-    // 아이디어 회의 목록 표시 페이지
-    @RequestMapping("/roomStage2")
-    public String ideaMeeting(@RequestParam("roomId") int roomId, Model model, HttpSession session) {
+	// 아이디어 회의 목록 표시 페이지
+	@RequestMapping("/roomStage2")
+	public String roomStage2(@RequestParam("roomId") int roomId, Model model, HttpSession session) {
+//	    // roomStage2 메서드의 로직을 여기에 작성
+//	    String roomTitle = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectRoomTitleById", roomId);
+//	    model.addAttribute("roomTitle", roomTitle);
+	    
+	    // 기존 FirstMeetingController의 로직을 가져와서 여기에 추가합니다.(나중에 returnType을 수정)
+	    MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectRoomTitleById", roomId);
+	    model.addAttribute("meetingRoom", meetingRoom);
 
-        MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectById", roomId);
-        model.addAttribute("meetingRoom", meetingRoom);
+	    // 아이디어 목록을 RoomID로 조회하여 모델에 추가
+	    Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("roomId", meetingRoom.getRoomId());
 
-        // 아이디어 목록을 RoomID로 조회하여 모델에 추가
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("roomId", meetingRoom.getRoomId());
+	    session.setAttribute("roomId", meetingRoom.getRoomId());
 
-        session.setAttribute("roomId", meetingRoom.getRoomId());
+	    List<Ideas> ideas = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeas", params);
+	    model.addAttribute("ideas", ideas);
 
-        List<Ideas> ideas = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeas", params);
-        model.addAttribute("ideas", ideas);
+	    List<IdeaReplys> ideaReplys = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeaReplys", params);
+	    model.addAttribute("ideaReplys", ideaReplys);
 
-        List<IdeaReplys> ideaReplys = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeaReplys", params);
-        model.addAttribute("ideaReplys", ideaReplys);
+	    // 투표 상태 확인
+	    Integer userId = (Integer) session.getAttribute("userId");
+	    params.put("userId", userId);
+	    params.put("stageId", 2);
+	    Integer votedIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
+	    model.addAttribute("votedIdeaId", votedIdeaId);
+	    boolean hasVoted = votedIdeaId != null;
+	    model.addAttribute("hasVoted", hasVoted);
 
-        // 투표 상태 확인
-        Integer userId = (Integer) session.getAttribute("userId");
-        params.put("userId", userId);
-        params.put("stageId", 2);
-        Integer votedIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
-        model.addAttribute("votedIdeaId", votedIdeaId);
-        boolean hasVoted = votedIdeaId != null;
-        model.addAttribute("hasVoted", hasVoted);
+	    // 세션에서 에러 메시지를 가져와서 모델에 추가
+	    String errorMessage = (String) session.getAttribute("Message");
+	    if (errorMessage != null) {
+	        model.addAttribute("errorMessage", errorMessage);
+	        session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
+	    }
+	    
+	    // 타이머 모델에 담기(내은추가)
+	    String timer = sqlSession.selectOne("com.kb.star.util.RoomDao.roomTimer", params);
+	    model.addAttribute("timer", timer);
 
-        // 세션에서 에러 메시지를 가져와서 모델에 추가
-        String errorMessage = (String) session.getAttribute("Message");
-        if (errorMessage != null) {
-            model.addAttribute("errorMessage", errorMessage);
-            session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
-        }
+	    
+	    return "firstMeeting/ideaMeeting";
+	}
 
-        command.execute(model);
-        return "/firstMeeting/ideaMeeting";
-    }
 
     // 아이디어 투표 버튼 클릭시 수행 로직
-    @RequestMapping(value = "/submitVote", method = RequestMethod.POST)
-    public String submitVote(@RequestParam("ideaId") int ideaId, @RequestParam("roomTitle") String roomTitle,
-                             @RequestParam("selectedIdea") String selectedIdea, @RequestParam("roomId") int roomId, HttpSession session,
-                             Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
+	@RequestMapping(value = "/submitVote", method = RequestMethod.POST)
+	public String submitVote(@RequestParam("ideaId") int ideaId, @RequestParam("roomTitle") String roomTitle,
+	                         @RequestParam("selectedIdea") String selectedIdea, @RequestParam("roomId") int roomId, HttpSession session,
+	                         Model model) {
+	    Integer userId = (Integer) session.getAttribute("userId");
 
-        System.out.println("출력");
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ideaId", ideaId);
-        params.put("stageId", 2);
-        params.put("roomId", roomId);
-        params.put("userId", userId);
+	    System.out.println("출력");
+	    Map<String, Object> params = new HashMap<String, Object>();
+	    params.put("ideaId", ideaId);
+	    params.put("stageId", 2);
+	    params.put("roomId", roomId);
+	    params.put("userId", userId);
 
-        // 현재 사용자가 선택한 기존 아이디어 조회
-        Integer previousIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
+	    // 현재 사용자가 선택한 기존 아이디어 조회
+	    Integer previousIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
 
-        Integer status = sqlSession.selectOne("com.kb.star.util.IdeaDao.checkParticipationStatus", params);
+	    Integer status = sqlSession.selectOne("com.kb.star.util.IdeaDao.checkParticipationStatus", params);
 
-        System.out.println("여기까지");
+	    System.out.println("여기까지");
 
-        if (status != null && status == 1) {
-            session.setAttribute("Message", "선택한 아이디어 :" + selectedIdea);
-            System.out.println(session.getAttribute("Message"));
+	    if (status != null && status == 1) {
+	        session.setAttribute("Message", "선택한 아이디어 :" + selectedIdea);
+	        System.out.println(session.getAttribute("Message"));
 
-            // 기존 아이디어 투표 수 감소
-            if (previousIdeaId != null) {
-                sqlSession.update("com.kb.star.util.IdeaDao.decrementPickNum", previousIdeaId);
-            }
-            // 새로운 아이디어 투표 수 증가
-            sqlSession.update("com.kb.star.util.IdeaDao.incrementPickNum", selectedIdea);
-            sqlSession.update("com.kb.star.util.IdeaDao.updateParticipationStatus", params);
+	        // 기존 아이디어 투표 수 감소
+	        if (previousIdeaId != null) {
+	            sqlSession.update("com.kb.star.util.IdeaDao.decrementPickNum", previousIdeaId);
+	        }
+	        // 새로운 아이디어 투표 수 증가
+	        sqlSession.update("com.kb.star.util.IdeaDao.incrementPickNum", ideaId);
+	        sqlSession.update("com.kb.star.util.IdeaDao.updateParticipationStatus", params);
 
-            try {
-                String encodedRoomTitle = URLEncoder.encode(roomTitle, "UTF-8");
-                return "redirect:/roomStage2?roomTitle=" + encodedRoomTitle; // 에러 메시지와 함께 리다이렉트
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                System.out.println(session.getAttribute("Message"));
-                return "redirect:/roomStage2?roomTitle=" + roomTitle; // 인코딩 오류 발생 시 기본 리다이렉트
-            }
-        } else {
-            session.setAttribute("Message", "선택한 아이디어 :" + selectedIdea); // 선택한 아이디어 알림
-            System.out.println(session.getAttribute("Message"));
-            sqlSession.update("com.kb.star.util.IdeaDao.incrementPickNum", selectedIdea);
-            sqlSession.update("com.kb.star.util.IdeaDao.updateParticipationStatus", params);
+	        return "redirect:/roomStage2?roomId=" + roomId; // roomId로 리다이렉트
+	    } else {
+	        session.setAttribute("Message", "선택한 아이디어 :" + selectedIdea); // 선택한 아이디어 알림
+	        System.out.println(session.getAttribute("Message"));
+	        sqlSession.update("com.kb.star.util.IdeaDao.incrementPickNum", ideaId);
+	        sqlSession.update("com.kb.star.util.IdeaDao.updateParticipationStatus", params);
 
-            try {
-                String encodedRoomTitle = URLEncoder.encode(roomTitle, "UTF-8");
-                return "redirect:/roomStage2?roomTitle=" + encodedRoomTitle; // 투표 후 다시 리스트 페이지로 리다이렉트
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                System.out.println(session.getAttribute("Message"));
-                return "redirect:/roomStage2?roomTitle=" + roomTitle; // 인코딩 오류 발생 시 기본 리다이렉트
-            }
-        }
-    }
+	        return "redirect:/roomStage2?roomId=" + roomId; // roomId로 리다이렉트
+	    }
+	}
+
+
+
 
     // 아이디어에 달린 질문 가져오기
     @RequestMapping(value = "/getIdeaReplies", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")

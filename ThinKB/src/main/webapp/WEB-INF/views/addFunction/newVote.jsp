@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Insert title here</title>
+<title>투표 하기</title>
 <style>
 .newRoom-body {
 	margin: 0;
@@ -42,6 +42,7 @@
 	/* 기본 테두리 색상 */
 	border-color: #666;
 	font-size: 16px; /* 글자 크기 설정 */
+	margin-bottom: 20px;
 }
 
 /* 입력 중에는 노란색 테두리로 변경 */
@@ -286,7 +287,6 @@
 	font-size: 0.9em;
 }
 
-
 </style>
 </head>
 <body>
@@ -296,22 +296,24 @@
 	</div>
 
 	<div class="content">
-		<form action="./makeRoom" method="post"
+		<form action="./makeVote" method="post"
 			onsubmit="return validateForm()">
 			<input type="hidden" name="id" value="${userId}" /> <input
-				type="hidden" name="departmentId" value="${departmentId}" /> <input
-				type="hidden" name="teamId" value="${teamId}" />
+				type="hidden" name="departmentId" value="${departmentId}" />
 
-			<div class="title">아이디어 회의 주제</div>
+			<div class="title">투표 주제</div>
 			<input type="text" class="custom-input" name="title"
 				placeholder="여기에 입력하세요">
 
-			<div class="title" style="margin-top: 70px;">회의 상세설명</div>
-			<input type="text" class="custom-input" style="height: 70px;"
-				name="content"
-				placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">
+			<div class="title">투표 항목</div>
+			<div id="optionsContainer">
+				<input type="text" class="custom-input" name="optionText"
+					placeholder="여기에 입력하세요">
+			</div>
+			<button type="button" class="btn" onclick="addOption()">+
+				선택지 추가</button>
 
-			<div class="title" style="margin-top: 70px;">회의 종료일</div>
+			<div class="title" style="margin-top: 70px;">투표 종료일</div>
 			<div class="date-input-container">
 				<div class="date-input-wrapper">
 					<input type="text" class="date-input" name="endDate"
@@ -321,7 +323,6 @@
 				<div class="error-message-container">
 					<span class="error-message" id="endDateError"></span>
 				</div>
-
 				<div class="calendar-popup" id="calendarPopup">
 					<div class="calendar-nav">
 						<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
@@ -339,32 +340,21 @@
 								<th>토</th>
 							</tr>
 						</thead>
-						<tbody id="calendarBody">
-						</tbody>
+						<tbody id="calendarBody"></tbody>
 					</table>
 				</div>
 			</div>
 
-			<div class="title" style="margin-top: 70px;">타이머 설정</div>
-			<div>
-				<input type="number" class="timer-input" name="timer_hours" min="0"
-					max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp; <input
-					type="number" class="timer-input" name="timer_minutes" min="0"
-					max="59" placeholder="MM">&nbsp;분&nbsp;&nbsp;&nbsp; <input
-					type="number" class="timer-input" name="timer_seconds" min="0"
-					max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp; <span
-					class="error-message" id="timerError"></span>
-			</div>
 			<div class="title" style="margin-top: 70px;">참여자 선택</div>
 			<div class="btn" id="openModalBtn">직원 조회</div>
-			<div id="selectedEmployees">
-				<!-- 선택된 직원들이 여기에 표시됩니다 -->
-			</div>
+			<div id="selectedEmployees"></div>
 			<input type="hidden" id="selectedEmployeeIds" name="users">
+
 			<div style="margin: 70px; text-align: center;">
 				<button class="btn" type="submit">만들기</button>
 			</div>
 		</form>
+
 	</div>
 	<!-- 모달창 -->
 	<!-- 직원 목록 모달 -->
@@ -401,6 +391,17 @@
 	</div>
 
 	<script>
+		// 투표 항목 추가하기
+		function addOption() {
+			var optionsContainer = document.getElementById('optionsContainer');
+			var newOptionInput = document.createElement('input');
+			newOptionInput.type = 'text';
+			newOptionInput.className = 'custom-input';
+			newOptionInput.name = 'optionText';
+			newOptionInput.placeholder = '여기에 입력하세요';
+			optionsContainer.appendChild(newOptionInput);
+		}
+
 		// 달력 팝업 열고 닫기 함수
 		function toggleCalendar() {
 			var calendarPopup = document.getElementById("calendarPopup");
@@ -671,8 +672,6 @@
 			let isValid = true;
 
 			const titleInput = document.querySelector('input[name="title"]');
-			const contentInput = document
-					.querySelector('input[name="content"]');
 			const endDateInput = document
 					.querySelector('input[name="endDate"]');
 			const selectedEmployeeIdsInput = document
@@ -694,17 +693,9 @@
 				clearError(titleInput);
 			}
 
-			// Validate content
-			if (!contentInput.value.trim()) {
-				showError(contentInput, '(필수)설명을 입력해주세요');
-				isValid = false;
-			} else {
-				clearError(contentInput);
-			}
-
 			// Validate end date
 			if (!endDateInput.value.trim()) {
-				document.getElementById('endDateError').textContent = '(필수)회의 종료일을 선택해주세요';
+				document.getElementById('endDateError').textContent = '(필수)투표 종료일을 선택해주세요';
 				isValid = false;
 			} else {
 				document.getElementById('endDateError').textContent = '';
@@ -760,24 +751,6 @@
 			}
 		}
 
-		// 타이머 입력 오류 제거 함수
-		function clearTimerError() {
-			let timerHours = document
-					.querySelector('input[name="timer_hours"]').value.trim();
-			let timerMinutes = document
-					.querySelector('input[name="timer_minutes"]').value.trim();
-			let timerSeconds = document
-					.querySelector('input[name="timer_seconds"]').value.trim();
-			let errorElement = document.getElementById('timerError');
-
-			if (timerHours !== '' || timerMinutes !== '' || timerSeconds !== '') {
-				if (errorElement
-						&& errorElement.classList.contains('error-message')) {
-					errorElement.textContent = '';
-				}
-			}
-		}
-
 		// 이벤트 리스너 설정 (새로 추가)
 		document
 				.addEventListener(
@@ -793,18 +766,6 @@
 												input.addEventListener('input',
 														function() {
 															clearError(this);
-														});
-											});
-
-							// 타이머 입력 필드에 대한 이벤트 리스너 추가
-							document
-									.querySelectorAll(
-											'input[name="timer_hours"], input[name="timer_minutes"], input[name="timer_seconds"]')
-									.forEach(
-											function(input) {
-												input.addEventListener('input',
-														function() {
-															clearTimerError(); // 타이머 입력 필드에 입력이 있을 때마다 호출
 														});
 											});
 

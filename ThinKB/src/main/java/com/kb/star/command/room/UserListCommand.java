@@ -7,10 +7,11 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.dto.UsersDto;
 import com.kb.star.util.UserDao;
 // session에 담긴 id로 나와 같은 부서 사람들 목록을 찾아서 model에 담는 service
-public class UserListCommand implements RoomCommand {
+public class UserListCommand implements RoomCommand, AddCommand {
 	
 	SqlSession sqlSession;
 	

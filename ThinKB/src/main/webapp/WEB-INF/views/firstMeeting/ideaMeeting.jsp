@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file="../header.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	pageEncoding="UTF-8"%>
+<%@ include file="../header.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,210 +9,287 @@
 <title>아이디어 투표</title>
 <style>
 body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
+	font-family: 'Inter', sans-serif;
+	margin-top: 50px;
+	padding: 0;
 }
 
 .idea_header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
 }
 
 .content {
-    margin-top: 60px; /* 헤더 높이만큼 여백 추가 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+	margin-top: 60px; /* 헤더 높이만큼 여백 추가 */
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .topic-box {
-    width: 962px;
-    height: 150px;
-    background-color: #EEEEEE;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: left;
-    margin-top: 90px;
+	width: 962px;
+	height: 100%;
+	position: absolute;
+	margin: 0 !important;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
+		rgba(0, 0, 0, 0.25);
+	border-radius: var(- -br-31xl) 0 var(- -br-31xl) 0;
+	background-color: rgba(255, 255, 255, 0.36);
+	border: 1px solid #7f6000;
+	box-sizing: border-box;
 }
 
 .topic-title {
-    font-size: 25px;
-    text-align: left;
-    margin-left: 20px;
+	width: 50px;
+	position: relative;
+	font-weight: 600;
+	display: inline-block;
+	z-index: 1;
 }
 
 .topic-description {
-    font-size: 20px;
-    text-align: left;
-    margin-left: 30px;
+	flex: 1;
+	position: relative;
+	display: inline-block;
+	max-width: 100%;
+	z-index: 1;
 }
 
 .idea-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.modal-idea-container {
+	width: 100%;
+	height: 87px;
+/* 	position: absolute;
+	margin: 0 !important; */
+	top: 0;
+	right: 0;
+	left: 0;
+	border-radius: var(- -br-11xl);
+	background-color: var(- -color-white);
+	border: 5px solid var(- -color-gold);
+	z-index: 1;
 }
 
 .idea-item {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
 }
 
 .idea-circle {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    background-color: #EEEEEE;
-    margin-right: 10px;
-    cursor: pointer;
+	width: 96px;
+	height: 96px;
+	border-radius: 50%;
+	background-color: #EEEEEE;
+	margin-right: 10px;
+	cursor: pointer;
 }
 
 .idea-circle.selected {
-    background-color: #FFCE20;
+	background-color: #FFCE20;
 }
 
 .idea-box {
-    width: 849px;
-    height: 96px;
-    background-color: #EEEEEE;
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-    cursor: pointer;
+	width: 849px;
+	height: 96px;
+	background-color: #EEEEEE;
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 20px;
+	cursor: pointer;
 }
 
 .idea-box.selected {
-    background-color: #FFCE20;
+	align-self: stretch;
+	flex: 1;
+	position: relative;
+	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
+		rgba(0, 0, 0, 0.25);
+	border-radius: var(- -br-31xl);
+	background-color: #ffc000;
+	max-width: 100%;
 }
 
 .idea-box.voted {
-    background-color: #A9A9A9;
+	align-self: stretch;
+	flex: 1;
+	position: relative;
+	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
+		rgba(0, 0, 0, 0.25);
+	border-radius: var(- -br-31xl);
+	background-color: #A9A9A9;
+	max-width: 100%;
 }
 
 .vote-button {
-    width: 216px;
-    height: 53px;
-    background-color: #FFCE20;
-    border: none;
-    border-radius: 10px;
-    font-size: 20px;
-    cursor: pointer;
-    margin-top: 20px;
+	width: 216px;
+	height: 53px;
+	background-color: #FFCE20;
+	border: none;
+	border-radius: 10px;
+	font-size: 20px;
+	cursor: pointer;
+	margin-top: 20px;
 }
 
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-    padding-top: 60px;
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgb(0, 0, 0);
+	background-color: rgba(0, 0, 0, 0.4);
+	padding-top: 60px;
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+	background-color: #fefefe;
+	margin: 5% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
 }
 
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
 }
 
 .close:hover, .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
 }
+
+.wrapper {
+	align-self: stretch;
+	display: flex;
+	align-items: flex-start;
+	justify-content: flex-start;
+	box-sizing: border-box;
+	max-width: 100%;
+}
+
+.selected-option {
+	flex-direction: column;
+	padding: 26px 0 27px 77px;
+	position: relative;
+	gap: 11px;
+}
+.
 </style>
 </head>
 <body>
-    <input type="hidden" id="session-user-id"
-        value="${sessionScope.userId}">
-    <input type="hidden" id="session-room-id"
-        value="${sessionScope.roomId}">
+<div id="timer-section" style="margin-top:100px;"><%@ include file="../Timer.jsp"%></div>
+	<input type="hidden" id="session-user-id"
+		value="${sessionScope.userId}">
+	<input type="hidden" id="session-room-id"
+		value="${sessionScope.roomId}">
 
-    <div class="idea_header">
-        <jsp:include page="../header.jsp" />
-    </div>
-    <div class="content">
-        <div class="topic-box">
-            <div class="topic-title">
-                ${meetingRoom.roomTitle} <input type="hidden" name="roomId"
-                    value="${meetingRoom.roomId}" />
-            </div>
-            <div class="topic-description">${meetingRoom.description}</div>
-        </div>
-        <div class="idea-container">
-            <c:forEach var="idea" items="${ideas}">
-                <div class="idea-item">
-                    <div class="idea-circle"
-                        onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'></div>
-                    <div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-                        onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
-                </div>
-            </c:forEach>
-        </div>
-        <button class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
-    </div>
+	<div class="idea_header">
+		<jsp:include page="../header.jsp" />
+	</div>
+	<div class="content">
+		<div class="div">
+			<!-- 		<section class="selected-option-parent"> -->
+			<div class="selected-option">
+				<div class="topic-box"></div>
+				<div class="topic-title">
+					${meetingRoom.roomTitle} <input type="hidden" name="roomId"
+						value="${meetingRoom.roomId}">
+				</div>
+				<div class="wrapper">
+					<div class="topic-description">${meetingRoom.description}</div>
 
-    <!-- Modal window -->
-    <div id="myModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <p>
-                <span><input type="hidden" id="modal-idea-id"></span>
-            </p>
-            <p>
-                <span><input type="hidden" id="modal-idea-title"></span>
-            </p>
-            <p>
-                User ID: <span id="modal-idea-userId"></span>
-            </p>
-            <p>
-                상세설명 : <span id="modal-idea-description"></span>
-            </p>
-            <p>질문하기</p>
-            <div class="idea-container" id="modal-idea-replies">
-                <!-- 댓글 내용이 여기에 동적으로 추가됩니다 -->
-            </div>
-            <div id="input-reply-container">
-                <input type="text" id="replyContent" placeholder="댓글을 입력하세요" />
-                <button onclick="submitReply()" id="input-button">입력</button>
-            </div>
+				</div>
+			</div>
+			<div class="idea-container">
+				<c:forEach var="idea" items="${ideas}">
+					<div class="idea-item">
+						<div
+							class="idea-circle ${votedIdeaId == idea.ideaID ? 'selected' : ''}"
+							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'></div>
+						<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
+							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
+					</div>
+				</c:forEach>
 
-            <div id="reply-form-container" style="display: none;">
-                <p>
-                    답변할 질문: <span id="replying-to-question"></span>
-                </p>
-                <input type="hidden" id="replyToId" /> <input type="text"
-                    id="replyAnswerContent" placeholder="답변을 입력하세요" />
-                <div id="reply-button-container">
-                    <button onclick="submitReplyAnswer()" id="reply-button">답글달기</button>
-                </div>
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+		<!-- 		</section> -->
 
-    <script>
+		<button id="voteButton" class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+    
+    <!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
+    <form id="nextStageForm" action="./stage2Clear" method="post">
+			<input type="hidden" name="roomId" value="${meetingRoom.getRoomId()}">
+			<input type="hidden" name="stage" value="${meetingRoom.getStageId()}">
+		<div style="text-align: right; margin-top: 20px;">
+			<button id="nextStepButton" class="vote-button"
+				style="display: none;" onclick="goToNextStep()">다음 단계</button>
+		</div>
+		</form>
+	
+	</div>
+
+	<!-- Modal window -->
+	<div id="myModal" class="modal">
+		<div class="modal-content">
+			<span class="close" onclick="closeModal()">&times;</span>
+			<p>
+				<span><input type="hidden" id="modal-idea-id"></span>
+			</p>
+			<p>
+				<span><input type="hidden" id="modal-idea-title"></span>
+			</p>
+			<p>
+				User ID: <span id="modal-idea-userId"></span>
+			</p>
+			<p>
+				상세설명 : <span id="modal-idea-description"></span>
+			</p>
+			<p>질문하기</p>
+			<div class="modal-idea-container" id="modal-idea-replies">
+				<!-- 댓글 내용이 여기에 동적으로 추가됩니다 -->
+			</div>
+			<div id="input-reply-container">
+				<input type="text" id="replyContent" placeholder="댓글을 입력하세요" />
+				<button onclick="submitReply()" id="input-button">입력</button>
+			</div>
+
+			<div id="reply-form-container" style="display: none;">
+				<p>
+					답변할 질문: <span id="replying-to-question"></span>
+				</p>
+				<input type="hidden" id="replyToId" /> <input type="text"
+					id="replyAnswerContent" placeholder="답변을 입력하세요" />
+				<div id="reply-button-container">
+					<button onclick="submitReplyAnswer()" id="reply-button">답글달기</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
     let selectedIdea = null;
     let selectedIdeaId = null;
     let selectedIdeaDescription = null;
@@ -440,7 +517,23 @@ body {
             alert(Message);
         }
     }
-</script>
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        initializeTimer();
+    });
+    
+    //타이머 종료시 함수
+    function onTimerEnd() {
+	if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
+        document.getElementById("nextStepButton").style.display = "block";
+        document.getElementById("voteButton").style.display = "none";
+    }
+}
 
+function goToNextStep() {
+	document.getElementById('nextStageForm').submit();
+}
+
+</script>
 </body>
 </html>

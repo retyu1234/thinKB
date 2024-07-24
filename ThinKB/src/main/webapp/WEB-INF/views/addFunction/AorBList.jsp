@@ -124,6 +124,9 @@
 .idea-complete {
 	background-color: #CEFBC9; /* 완료 상태 배경색 */
 }
+.idea-complete:hover {
+	background-color: #CEFBA9; /* 완료 상태 호버 배경색 */
+}
 
 .idea-incomplete {
 	background-color: #EAEAEA; /* 미완료 상태 배경색 */
@@ -193,7 +196,7 @@
 	</div>
 	<div class="ideas">
 		<div class="abtestMake">
-			<button>abtest만들기</button>
+			<a href="./makeAorB"><button>abtest만들기</button></a>
 		</div>
 		<c:forEach var="test" items="${abTests}">
 			<div

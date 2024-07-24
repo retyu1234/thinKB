@@ -20,6 +20,7 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* 다른 요소들보다 위에 오도록 설정 */
         }
 
         .logo {
@@ -76,7 +77,7 @@
                 <a href="./noticeList">알림함</a> 
                 <a href="#">마이페이지</a>
                 <a href="./AorBList">A/B테스트</a> 
-                <a href="./vote">투표</a>
+                <a href="./voteList">투표</a>
             </div>
             <div class="profile">
             <a href="<c:url value='./mypage'/>">
