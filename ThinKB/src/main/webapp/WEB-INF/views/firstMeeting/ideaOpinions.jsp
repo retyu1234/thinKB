@@ -294,26 +294,6 @@ button:hover {
             }
         };
         
-        window.validateAndSubmitForm3 = function(tabName, maxComments, currentOpinionCount, userOpinions) {
-            var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
-            var userId = document.querySelector('input[name="userID"]').value;
-
-            if (opinionText === '') {
-                alert('의견을 입력해주세요!');
-            } else if (currentOpinionCount >= maxComments) {
-                alert('댓글 작성 제한 인원을 초과하였습니다.\n다른 의견 탭에 댓글을 작성해주세요.');
-            } else {
-                var alreadyCommented = userOpinions.some(function(opinion) {
-                    return opinion.hatColor === tabName.split('-')[1].charAt(0).toUpperCase() + tabName.split('-')[1].slice(1);
-                });
-
-                if (alreadyCommented) {
-                    alert('이미 이 탭에 댓글을 작성했습니다. 다른 탭에 댓글을 작성해주세요.');
-                } else {
-//                     document.querySelector('#' + tabName + ' form').submit();
-                }
-            }
-        };
 
         window.deleteOpinion = function(opinionId, currentTab) {
             var roomId = '<c:out value="${roomId}" />';
@@ -485,7 +465,7 @@ button:hover {
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:hidden path="userID" value="${userId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" disabled="${maxComments - worryOpinionCount <= 0}" />
-                        <button type="button" onclick='validateAndSubmitForm3("tab-worry", ${maxComments}, ${worryOpinionCount}, ${userOpinions})' disabled="${maxComments - worryOpinionCount <= 0}">작성</button>
+                        <button type="button" onclick='validateAndSubmitForm("tab-worry", ${maxComments}, ${worryOpinionCount}, ${userOpinions})' disabled="${maxComments - worryOpinionCount <= 0}">작성</button>
                     </form:form>
                 </div>
             </div>

@@ -178,31 +178,19 @@
     }
 </style>
 <script>
-function updateTimer() {
-    const endDate = new Date("${timer}").getTime();
-    const now = new Date().getTime();
-    const distance = endDate - now;
-
-    if (distance < 0) {
-        document.getElementById("timer").innerHTML = "시간이 종료되었습니다";
-        return;
+window.validateAndSubmitForm = function(formId) {
+    var form = document.getElementById(formId);
+    var opinionText = form.querySelector('.opinion-textarea').value.trim();
+    var userId = form.querySelector('input[name="userID"]').value;
+    
+    if (opinionText === '') {
+        alert('의견을 입력해주세요!');
+        return false; // 폼 제출 방지
     }
 
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    document.getElementById("timer").innerHTML = 
-        "남은 시간: " + 
-        (hours < 10 ? "0" : "") + hours + ":" +
-        (minutes < 10 ? "0" : "") + minutes + ":" +
-        (seconds < 10 ? "0" : "") + seconds;
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-    updateTimer();
-    setInterval(updateTimer, 1000);
-});
+    // 서버 측에서 중복 검사를 수행하기 위해 폼을 제출
+    form.submit();
+};
 </script>
 </head>
 <body>
@@ -271,7 +259,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     <input type="hidden" name="roomId" value="${roomId}" />
                     <input type="hidden" name="currentTab" value="${currentTab}" />
                     <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력하세요"></textarea>
-                    <button type="submit">작성</button>
+                    <!-- <button type="submit">작성</button> -->
+                    <button type="button" onclick="validateAndSubmitForm('opinionForm')">작성</button>
                 </form>
 		    </div>
 		</div>

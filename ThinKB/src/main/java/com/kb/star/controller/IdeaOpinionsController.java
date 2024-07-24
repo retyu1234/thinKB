@@ -79,7 +79,7 @@ public class IdeaOpinionsController {
     @RequestMapping("/addOpinion")
     public String addOpinion(@ModelAttribute IdeaOpinionsDto opinionForm, HttpSession session, 
                              @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId, Model model) {
-        
+        System.out.println("addOpinion들어옴");
         Integer userId = (Integer) session.getAttribute("userId");
         Integer teamId = (Integer) session.getAttribute("teamId"); 
         opinionForm.setUserID(userId);
