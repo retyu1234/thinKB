@@ -65,7 +65,7 @@ public class UpdateStageTwoCommand implements RoomCommand {
 		dao.stageTwoTimerUpdate(roomId,formattedTime);		
 		
 		model.addAttribute("roomId", roomId);
-		model.addAttribute("stage", stage);
+		model.addAttribute("stage", 2);
 	}
 
 }

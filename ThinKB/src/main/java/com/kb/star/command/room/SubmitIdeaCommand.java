@@ -31,6 +31,9 @@ public class SubmitIdeaCommand implements RoomCommand {
 		dao.submitIdea(id,roomId,title,contents);
 		dao.updateParticipantStage1(roomId, id);
 		
+		//기여도 +1 추가
+		dao.contributionUpdate(roomId, id);
+		
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
 	}

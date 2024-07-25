@@ -80,5 +80,10 @@
         INSERT INTO IdeaReply (IdeaID, UserID, RoomID, ReplyStep, IsDelete, ReplyContent)
         VALUES (#{ideaId}, #{userId}, #{roomId}, #{replyStep}, 0, #{replyContent})
     </insert>
+    
+    <!-- 기여도 +1 -->
+	<update id="contributionUpdate">
+		UPDATE MeetingRoomMembers set ContributionCnt = ContributionCnt+1 where RoomID=${roomId} AND UserID=${userId}
+	</update>
 
 </mapper>
