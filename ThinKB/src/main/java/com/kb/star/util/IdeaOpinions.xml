@@ -44,13 +44,18 @@
     </insert>
 
     <!-- 의견 삭제 -->
-    <delete id="deleteOpinion" parameterType="int">
+<!--     <delete id="deleteOpinion" parameterType="int">
         DELETE FROM IdeaOpinions WHERE OpinionID = #{opinionId}
-    </delete>
+    </delete> -->
+    <update id="deleteOpinion" parameterType="int">
+        UPDATE IdeaOpinions 
+        SET IsDelete = true
+        WHERE OpinionID = #{opinionId}
+    </update>
     
-    <!-- 팀별 인원 수 -->
-    <select id="getUserCountByTeamId" resultType="int">
-        SELECT COUNT(*) FROM Users WHERE TeamID = #{teamId}
+    <!-- 회의방 참여자 수 -->
+    <select id="getUserCount" resultType="int">
+        SELECT COUNT(*) FROM MeetingRoomMembers WHERE RoomID = #{roomId}
     </select>
     
     <!-- ideaId, 견해별 작성된 의견 수 -->
@@ -58,16 +63,23 @@
         SELECT COUNT(*) FROM IdeaOpinions WHERE IdeaID = #{ideaId} AND HatColor = #{hatColor} AND Step = 1 AND IsDelete = false
     </select>
     
-    <!-- 각 사용자가 작성한 전체 의견 수 -->
-    <!-- <select id="getUserOpinionCount" resultType="int">
-	    SELECT COUNT(*) FROM IdeaOpinions WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND IsDelete = false
-	</select> -->
-	
 	<!-- 사용자가 각 탭에 작성한 댓글 수 -->
 	<select id="getUserCommentedTabs" resultType="String">
 	    SELECT DISTINCT HatColor FROM IdeaOpinions 
 	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND IsDelete = false
 	</select>
+	
+	<!-- 각 사용자가 작성한 전체 의견 수 -->
+    <select id="getUserOpinionCount" resultType="int">
+	    SELECT COUNT(*) FROM IdeaOpinions WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND Step=1 AND IsDelete = false
+	</select>
+	
+	<!-- 2개 이상 의견 작성시 StageParticipation테이블의 status 업데이트 -->
+    <update id="updateStatus">
+	    UPDATE StageParticipation
+	    SET Status = 1
+	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
+	</update>
     
     
     
@@ -114,9 +126,14 @@
 	    DELETE FROM LikeVotes WHERE OpinionID = #{opinionId}
 	</delete>
     <!-- 의견 삭제2 -->
-    <delete id="deleteOpinion2" parameterType="int">
+<!--     <delete id="deleteOpinion2" parameterType="int">
         DELETE FROM IdeaOpinions WHERE OpinionID = #{opinionId}
-    </delete>
+    </delete> -->
+    <update id="deleteOpinion2" parameterType="int">
+        UPDATE IdeaOpinions 
+        SET IsDelete = true
+        WHERE OpinionID = #{opinionId}
+    </update>
     
     <!-- 좋아요 수 증가 -->
     <update id="increaseLikeNum">

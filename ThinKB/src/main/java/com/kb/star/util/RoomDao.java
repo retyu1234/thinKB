@@ -87,5 +87,7 @@ public interface RoomDao {
 	
 	int selectTop2IdeasForRoom(@Param("roomId") int roomId);
 
+	
+
 
 }

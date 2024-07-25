@@ -29,17 +29,20 @@ public interface IdeaOpinionsDao {
     // 의견 삭제 메서드
     void deleteOpinion(int opinionId); // opinionId = 의견의 PK값
     
-    // 팀별 인원 수
-    int getUserCountByTeamId(int teamId);
+    // 회의방 참여자 수
+    int getUserCount(int roomId);
     
     // ideaId, 견해별 작성된 의견 수
     int getOpinionCountByHatColorAndIdeaId(@Param("ideaId") int ideaId, @Param("hatColor") String hatColor);
     
-    // 각 사용자가 작성한 전체 의견 수
-    // int getUserOpinionCount(@Param("userId") int userId, @Param("ideaId") int ideaId);
-    
     // 사용자가 각 탭에 작성한 댓글 수
     List<String> getUserCommentedTabs(@Param("userId") int userId, @Param("ideaId") int ideaId);
+    
+    // 각 사용자가 작성한 전체 의견 수
+    int getUserOpinionCount(@Param("userId") int userId, @Param("ideaId") int ideaId);
+    
+    // 2개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
+    void updateStatus(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId);
     
     
     

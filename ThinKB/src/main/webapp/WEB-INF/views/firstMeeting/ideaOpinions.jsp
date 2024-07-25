@@ -236,6 +236,10 @@ button:hover {
             if (currentTab && roomId && ideaId) {
                 showTab(currentTab, getTabColor(currentTab), roomId, ideaId);
             }
+         	// 메시지 처리
+            <c:if test="${not empty message}">
+                alert('${message}');
+            </c:if>
         };
 
         function getTabColor(tabName) {
@@ -336,12 +340,14 @@ button:hover {
             <div class="idea-title-inner">${ideaTitle}</div>
         </div>
         <div class="opinion-section">
+        
             <div id="tab-smart" class="tab-content active">
                 <h2>
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
                     똑똑이 등록된 의견
                     <span style="float: right; font-size: 16px;">
-                        현재 댓글 갯수: ${smartOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
+                    	내가 추가로 달 수 있는 댓글 수: ${2-userOpinionCount}/2 <br>
+                        현재 탭에 전체 댓글 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
                     </span>
                 </h2>
                 <ul class="opinion-list">
@@ -369,17 +375,17 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                    <div id="tab-smart" class="tab-content active">
-                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
+                    <!-- <div id="tab-smart" class="tab-content active"> -->
+                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
+                   onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Smart" />
                         <form:hidden path="currentTab" value="tab-smart" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
-
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})">작성</button>
                     </form:form>
-                    </div>
+                    <!-- </div> -->
                 </div>
             </div>
 
@@ -388,7 +394,8 @@ button:hover {
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
                     긍정이 등록된 의견
                     <span style="float: right; font-size: 16px;">
-                        현재 댓글 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - positiveOpinionCount}
+                    	내가 추가로 달 수 있는 댓글 수: ${2-userOpinionCount}/2 <br>
+                        현재 탭에 전체 댓글 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - positiveOpinionCount}
                     </span>
                 </h2>
                 <ul class="opinion-list">
@@ -416,13 +423,14 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
+                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
+                   onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Positive" />
                         <form:hidden path="currentTab" value="tab-positive" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount})">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount}, ${userOpinionCount})">작성</button>
                     </form:form>
                 </div>
             </div>
@@ -432,7 +440,8 @@ button:hover {
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
                     걱정이 등록된 의견
                     <span style="float: right; font-size: 16px;">
-                        현재 댓글 갯수: ${worryOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - worryOpinionCount}
+                    	내가 추가로 달 수 있는 댓글 수: ${2-userOpinionCount}/2 <br>
+                        현재 탭에 전체 댓글 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - worryOpinionCount}
                     </span>
                 </h2>
                 <ul class="opinion-list">
@@ -460,13 +469,14 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                    <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-worry', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
+                    <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
+                    onsubmit="return validateAndSubmitForm('tab-worry', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Worry" />
                         <form:hidden path="currentTab" value="tab-worry" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount})">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount}, ${userOpinionCount})">작성</button>
 
                     </form:form>
                 </div>
@@ -477,7 +487,8 @@ button:hover {
                     <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
                     깐깐이 등록된 의견
                     <span style="float: right; font-size: 16px;">
-                        현재 댓글 갯수: ${strictOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - strictOpinionCount}
+                   		내가 추가로 달 수 있는 댓글 수: ${2-userOpinionCount}/2 <br>
+                        현재 탭에 전체 댓글 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - strictOpinionCount}
                     </span>
                 </h2>
                 <ul class="opinion-list">
@@ -505,14 +516,15 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-strict', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
+                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
+                   onsubmit="return validateAndSubmitForm('tab-strict', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Strict" />
                         <form:hidden path="currentTab" value="tab-strict" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
 
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount})">작성</button>
+                        <button type="button" onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount}, ${userOpinionCount})">작성</button>
 
                     </form:form>
                 </div>
