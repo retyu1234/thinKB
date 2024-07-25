@@ -28,6 +28,8 @@ import com.kb.star.command.roomManger.RemoveParticipant;
 import com.kb.star.command.roomManger.RoomManagement;
 import com.kb.star.command.roomManger.UpdateRoomInfo;
 import com.kb.star.command.roomManger.UserManagement;
+import com.kb.star.dto.MeetingRooms;
+import com.kb.star.util.RoomDao;
 
 @Controller
 public class IdeaRoomController {
@@ -70,6 +72,9 @@ public class IdeaRoomController {
 		model.addAttribute("id", id);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
+		RoomDao dao=sqlSession.getMapper(RoomDao.class);
+		MeetingRooms info = dao.roomDetailInfo(roomId);
+		model.addAttribute("meetingRoom", info);
 
 		switch (stage) {
 		case 1:
