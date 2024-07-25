@@ -42,7 +42,7 @@
 	<div class="side-menu">
 		<h4>Room Manager</h4>
 		<hr />
-		<a href="./roomManagement?roomId=${roomId}">회의방 관리</a> <a href="./userManagement?roomId=${roomId}">참여자 관리</a>
+		<a href="./roomManagement?roomId=${roomId}">회의방 관리</a> <a href="./userManagement?roomId=${roomId}">참여자 관리</a><a href="./sendNotifications?roomId=${roomId}">알림 관리</a>
 	</div>
 </body>
 </html>

@@ -94,8 +94,6 @@
 		values (#{param1},#{param2},#{param3},#{param4},#{param5},1,#{param6})
 	</insert>
 
-
-
 	<select id="roomNumConfirm" resultType="int">
 		select max(RoomID) from
 		MeetingRooms where RoomManagerID=#{param1}
@@ -197,5 +195,9 @@
 		OR t.TeamName LIKE CONCAT('%', #{searchTerm}, '%'))
 	</select>
 
+	<select id="userDepartmentId" resultType="int">
+		select DepartmentID from
+		Users where UserId=#{param1}
+	</select>
 
 </mapper>

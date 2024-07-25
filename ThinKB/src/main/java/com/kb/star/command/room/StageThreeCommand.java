@@ -3,6 +3,8 @@ package com.kb.star.command.room;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -10,12 +12,12 @@ import org.springframework.ui.Model;
 import com.kb.star.dto.Ideas;
 import com.kb.star.util.RoomDao;
 
-public class AfterVoteCommand implements RoomCommand {
+public class StageThreeCommand implements RoomCommand {
 	
 	SqlSession sqlSession;
-	
+
 	@Autowired
-	public AfterVoteCommand(SqlSession sqlSession) {
+	public StageThreeCommand(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
 
@@ -29,9 +31,13 @@ public class AfterVoteCommand implements RoomCommand {
 		
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		
-		// PickNum높은 순으로 idea목록 담아오기
-		List<Ideas> dto = dao.ideaPickNum(roomId);
-		model.addAttribute("list", dto);
+		//첫번째 아이디어 id model에 담기
+		List<Ideas> list = dao.yesPickIdeaList(roomId);
+		model.addAttribute("ideaId", list.get(0).getIdeaID()); //선택된것중에 첫번째꺼 ideaId담기
+		
+		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
+		List<Ideas> dto = dao.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", dto);
 	}
 
 }

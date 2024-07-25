@@ -1,6 +1,9 @@
 package com.kb.star.util;
 
 import java.util.Map;
+
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
@@ -30,4 +33,11 @@ public interface IdeaDao {
     
     // RoomID로 RoomTitle 조회
     String selectRoomTitleById(int roomId);
+    
+    //기여도 추가
+    void contributionUpdate(int roomId, int userId);
+
+    void insertIdeaAnswerReply(@Param("replyStep") int replyStep, @Param("replyContent") String replyContent, 
+            @Param("userId") int userId, @Param("roomId") int roomId, @Param("ideaId") int ideaId);
+
 }
