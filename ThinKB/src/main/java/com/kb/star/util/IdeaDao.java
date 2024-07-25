@@ -34,6 +34,10 @@ public interface IdeaDao {
     // RoomID로 RoomTitle 조회
     String selectRoomTitleById(int roomId);
     
+    //기여도 추가
+    void contributionUpdate(int roomId, int userId);
+
     void insertIdeaAnswerReply(@Param("replyStep") int replyStep, @Param("replyContent") String replyContent, 
             @Param("userId") int userId, @Param("roomId") int roomId, @Param("ideaId") int ideaId);
+
 }
