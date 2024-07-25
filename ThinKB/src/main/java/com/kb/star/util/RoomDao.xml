@@ -65,7 +65,7 @@
 	<select id="ideaList" resultType="com.kb.star.dto.Ideas">
 		SELECT * FROM Ideas WHERE
 		RoomID=#{param1} and IsDelete=0 and
-		StageID=#{param2};
+		StageID=#{param2}
 	</select>
 
 	<!-- 방번호로 stage를 1에서 2로 업데이트 하는 쿼리 -->
@@ -267,6 +267,33 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 <!-- stage3인(=투표로 선택된) 아이디어만 찾는 쿼리 -->
 <select id="yesPickIdeaList" resultType="com.kb.star.dto.Ideas">
 	SELECT * from Ideas WHERE RoomID=#{param1} and StageID=3
+</select>
+
+<!-- 반려된 내용 제거하고 방장이 보는 리스트 -->
+<select id="ideaListUnreject" resultType="com.kb.star.dto.Ideas">
+	SELECT * FROM Ideas WHERE RoomID=#{param1} and IsDelete=0 and StageID=#{param2} and isReject=0
+</select>
+
+<select id="alreadySubmitIdea" resultType="com.kb.star.dto.Ideas">
+	SELECT * FROM Ideas where RoomID = #{param1} and UserID = #{param2} and IsDelete=0 and isReject=0
+</select>
+
+<select id="rejectedIdea" resultType="com.kb.star.dto.Ideas">
+	SELECT * FROM Ideas where RoomID = #{param1} and UserID = #{param2} and isReject=1 ORDER by IdeaID desc limit 1
+</select>
+
+<select id="whatsRejectLog" resultType="com.kb.star.dto.RejectLog">
+	SELECT * FROM RejectLog WHERE IdeaID = #{param1}
+</select>
+
+<!-- 방에 총 몇명인지 -->
+<select id="totalRoomUsers" resultType="int">
+	SELECT count(UserID) from MeetingRoomMembers WHERE RoomID = #{param1}
+</select>
+
+<!-- 아이디어 제출건수 몇갠지 -->
+<select id="submitRoomUser" resultType="int">
+	SELECT count(IdeaID) from Ideas WHERE RoomID = #{param1} and IsDelete = 0 and isReject = 0
 </select>
 
 </mapper>
