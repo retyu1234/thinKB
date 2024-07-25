@@ -6,13 +6,20 @@ public class IdeaOpinionsDto {
 	private int opinionID;
     private int ideaID;
     private int userID;
-    private Integer parentOpinionID;
+    private Integer step;
     private String opinionText;
     private String hatColor;
     private int likeNum;
     private boolean isDelete;
     private Timestamp createdAt;
-    private String currentTab; // 추가
+    
+    // 추가 필드
+    private String currentTab; // 4가지 의견중 현재 탭
+    private Integer roomId;  
+    private Integer ideaId;  
+    private Integer opinionId; // 의견 작성자의 id
+    private String userName; 
+    private boolean likedByCurrentUser; // 특정 사용자가 특정 의견에 대해 좋아요를 눌렀는지 여부
     
     // Getters and Setters
 	public int getOpinionID() {
@@ -33,11 +40,12 @@ public class IdeaOpinionsDto {
 	public void setUserID(int userID) {
 		this.userID = userID;
 	}
-	public Integer getParentOpinionID() {
-		return parentOpinionID;
+
+	public Integer getStep() {
+		return step;
 	}
-	public void setParentOpinionID(Integer parentOpinionID) {
-		this.parentOpinionID = parentOpinionID;
+	public void setStep(Integer step) {
+		this.step = step;
 	}
 	public String getOpinionText() {
 		return opinionText;
@@ -76,6 +84,39 @@ public class IdeaOpinionsDto {
     public void setCurrentTab(String currentTab) {
         this.currentTab = currentTab;
     }
+	public Integer getRoomId() {
+		return roomId;
+	}
+	public void setRoomId(Integer roomId) {
+		this.roomId = roomId;
+	}
+	public Integer getIdeaId() {
+		return ideaId;
+	}
+	public void setIdeaId(Integer ideaId) {
+		this.ideaId = ideaId;
+	}
+	public Integer getOpinionId() {
+		return opinionId;
+	}
+	public void setOpinionId(Integer opinionId) {
+		this.opinionId = opinionId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public boolean isLikedByCurrentUser() {
+		return likedByCurrentUser;
+	}
+	public void setLikedByCurrentUser(boolean likedByCurrentUser) {
+		this.likedByCurrentUser = likedByCurrentUser;
+	}
+
+
+	
     
     
 	
