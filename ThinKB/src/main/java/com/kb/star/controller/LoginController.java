@@ -106,4 +106,9 @@ public class LoginController {
 		return "redirect:/loginView";
 	}
 	
+	@RequestMapping("/guide")
+	public String guide(HttpServletRequest request,Model model) {
+		return "guide";
+	}
+	
 }

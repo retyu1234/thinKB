@@ -65,6 +65,8 @@ public interface RoomDao {
 
 	void addMeetingRoomMembers(@Param("roomId") int roomId, @Param("userIds") List<Integer> userIds);
 	
+	void insertStageParticipations(@Param("roomId") int roomId,@Param("stageId") int stageId, @Param("userIds") List<Integer> userIds);
+	
 	void deleteMembers(int roomId, int userId);
 
 	void contributionUpdate(int roomId, int id);
@@ -82,6 +84,8 @@ public interface RoomDao {
 	List<Ideas> yesPickIdeaList(int roomId);
 
 	List<Ideas> ideaPickNum(int roomId);
+	
+	int selectTop2IdeasForRoom(@Param("roomId") int roomId);
 
 
 }

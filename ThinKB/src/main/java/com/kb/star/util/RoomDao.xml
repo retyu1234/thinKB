@@ -172,6 +172,26 @@
         ContributionCnt = VALUES(ContributionCnt),
         IsDelete = VALUES(IsDelete)
 	</insert>
+
+	<!-- 참여자 추가(방장)/참여테이블에 추가 -->
+<insert id="insertStageParticipations" parameterType="map">
+    <foreach collection="userIds" item="userId" separator=";">
+        INSERT INTO StageParticipation (IdeaID, StageID, UserID, Status, RoomID)
+        SELECT IdeaID, #{stageId}, #{userId}, 0, #{roomId}
+        FROM (
+            SELECT IdeaID
+            FROM StageParticipation
+            WHERE RoomID = #{roomId}
+            ORDER BY IdeaID DESC
+            LIMIT 2
+        ) AS TopIdeas
+        ON DUPLICATE KEY UPDATE
+            IdeaID = VALUES(IdeaID),
+            Status = VALUES(Status);
+    </foreach>
+</insert>
+
+
 	<!-- 참여자 삭제 -->
 	<update id="deleteMembers">
 	update MeetingRoomMembers set IsDelete=true where RoomId=#{param1} and UserID=#{param2};

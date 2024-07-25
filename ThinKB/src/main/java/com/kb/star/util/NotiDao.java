@@ -1,5 +1,6 @@
 package com.kb.star.util;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import com.kb.star.dto.Ideas;
@@ -23,5 +24,6 @@ public interface NotiDao {
     // 알림 삭제
 	void deleteNotification(int notificationID);
     
-    
+    //실시간 알림
+	List<NotiDto> findNewNotifications(int userId, Timestamp lastCheckTime);
 }
