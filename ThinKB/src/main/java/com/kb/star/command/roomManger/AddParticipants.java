@@ -29,7 +29,9 @@ public class AddParticipants implements RoomCommand {
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		int roomId = Integer.parseInt(request.getParameter("roomId"));
+		int stageId = Integer.parseInt(request.getParameter("stageId"));
 		model.addAttribute("roomId", roomId);
+		System.out.println(roomId+"/"+stageId);
 		String[] selectedEmployeesArray = request.getParameterValues("selectedEmployees");
 
 		if (selectedEmployeesArray != null && selectedEmployeesArray.length > 0) {
@@ -43,6 +45,7 @@ public class AddParticipants implements RoomCommand {
 
 			// 한 번의 호출로 전체 리스트를 처리
 			dao.addMeetingRoomMembers(roomId, selectedEmployees);
+			dao.insertStageParticipations(roomId, stageId, selectedEmployees);
 
 		}
 	}

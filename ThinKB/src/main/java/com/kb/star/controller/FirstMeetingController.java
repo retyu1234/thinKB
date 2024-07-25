@@ -139,6 +139,9 @@ public class FirstMeetingController {
 	        System.out.println(session.getAttribute("Message"));
 	        sqlSession.update("com.kb.star.util.IdeaDao.incrementPickNum", ideaId);
 	        sqlSession.update("com.kb.star.util.IdeaDao.updateParticipationStatus", params);
+	        
+	        // 맨 처음 투표일때만 기여도 추가(내은추가)
+	        sqlSession.update("com.kb.star.util.IdeaDao.contributionUpdate", params);
 
 	        return "redirect:/roomStage2?roomId=" + roomId; // roomId로 리다이렉트
 	    }
