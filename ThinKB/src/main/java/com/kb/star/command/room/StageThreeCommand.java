@@ -31,6 +31,10 @@ public class StageThreeCommand implements RoomCommand {
 		
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		
+		//첫번째 아이디어 id model에 담기
+		List<Ideas> list = dao.yesPickIdeaList(roomId);
+		model.addAttribute("ideaId", list.get(0).getIdeaID()); //선택된것중에 첫번째꺼 ideaId담기
+		
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);

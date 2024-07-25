@@ -86,6 +86,8 @@ public class UpdateStageThreeCommand implements RoomCommand {
 		// roomId, stage값 다시 model에 넣기
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", 3);
+		
+		model.addAttribute("ideaId", firstIdeaId);
 	}
 
 }

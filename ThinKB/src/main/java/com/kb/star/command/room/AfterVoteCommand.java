@@ -29,9 +29,6 @@ public class AfterVoteCommand implements RoomCommand {
 		
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		
-		// ideas 테이블에서 각 아이디어의 stage를 1 -> 2 로 올림(이거 투표 진행되면 그떄 하기)
-//		dao.stageOnetoTwo(roomId);
-		
 		// PickNum높은 순으로 idea목록 담아오기
 		List<Ideas> dto = dao.ideaPickNum(roomId);
 		model.addAttribute("list", dto);
