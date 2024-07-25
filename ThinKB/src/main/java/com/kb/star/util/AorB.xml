@@ -49,20 +49,52 @@
 	<!-- 개인투표 insert -->
 	<insert id="insertABResult">
 		INSERT INTO ABResult (ABTestID, UserID, Pick)
-		VALUES (#{abTestId}, #{userId}, #{pick})
+		VALUES
+		(#{abTestId}, #{userId}, #{pick})
 	</insert>
 	<!-- A 버전 선택시 -->
 	<update id="voteForVariantA" parameterType="int">
 		UPDATE ABTests
-		SET ResultANum = ResultANum + 1
+		SET
+		ResultANum = ResultANum + 1
 		WHERE ABTestID = #{abTestId}
 	</update>
 	<!-- B 버전 선택시 -->
 	<update id="voteForVariantB" parameterType="int">
 		UPDATE ABTests
-		SET ResultBNum = ResultBNum + 1
+		SET
+		ResultBNum = ResultBNum + 1
 		WHERE ABTestID = #{abTestId}
 	</update>
 
+	<!--11:08 추가 -->
 
+	<!-- A/B테스트 피드백 목록 가져오기 -->
+	<select id="getAorBFeedbackList"
+        resultType="com.kb.star.dto.AorBDto">
+    SELECT
+        t.ABTestID,
+        t.TestName,
+        t.VariantA,
+        t.VariantB,
+        t.ResultANum,
+        t.ResultBNum,
+        t.CreatedAt,
+        IF(t.ResultANum > (SELECT
+        COUNT(*) / 2 + 1 FROM Users WHERE DepartmentID =
+        #{departmentId})
+        OR
+        t.ResultBNum > (SELECT COUNT(*) / 2 + 1 FROM Users WHERE DepartmentID =
+        #{departmentId}), 1, 0) AS participated
+    FROM
+        ABTests t
+    WHERE
+        (t.ResultANum > (SELECT COUNT(*) / 2 + 1 FROM Users WHERE DepartmentID =
+        #{departmentId})
+        OR t.ResultBNum > (SELECT COUNT(*) / 2 + 1 FROM Users
+        WHERE DepartmentID =
+        #{departmentId}))
+    ORDER BY
+        t.CreatedAt DESC
+</select>
 </mapper>

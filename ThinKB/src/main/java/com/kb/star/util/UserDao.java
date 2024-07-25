@@ -62,6 +62,9 @@ public interface UserDao {
 
 	// 검색된 직원 수 조회
 	int countEmployees(Map<String, Object> params);
+	
+	//11:23 추가
+	int userDepartmentId (int id);
 
 
 }

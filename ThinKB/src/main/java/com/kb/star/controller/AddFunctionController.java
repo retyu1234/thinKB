@@ -19,16 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.kb.star.command.addFunction.ABFeedbackDetailCommand;
+import com.kb.star.command.addFunction.ABFeedbackListCommand;
 import com.kb.star.command.addFunction.ABTestDetail;
 import com.kb.star.command.addFunction.ABTestList;
 import com.kb.star.command.addFunction.ABTestVote;
 import com.kb.star.command.addFunction.AddCommand;
-import com.kb.star.command.addFunction.AddVoteCommand;
 import com.kb.star.command.addFunction.AddVoteOptionsCommand;
 import com.kb.star.command.addFunction.MakeAorBCommand;
 import com.kb.star.command.addFunction.MakeVoteCommand;
 import com.kb.star.command.addFunction.VoteListCommand;
-import com.kb.star.command.firstMeeting.MeetingRoomListCommand;
 import com.kb.star.command.room.UserListCommand;
 import com.kb.star.dto.AddVoteDto;
 import com.kb.star.util.AddVoteDao;
@@ -207,4 +207,15 @@ public class AddFunctionController {
 		command.execute(model);
 		return "addFunction/addVoteAfter";
 	}
+
+	@RequestMapping("/AorBFeedbackList")
+	public String AorBFeedbackList(HttpSession session, HttpServletRequest request, Model model) {
+		int userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("request", request);
+		model.addAttribute("userId", userId);
+		command = new ABFeedbackListCommand(sqlSession);
+		command.execute(model);
+		return "/addFunction/AorBFeedbackList";
+	}
+
 }
