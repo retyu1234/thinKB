@@ -228,6 +228,7 @@ button {
 			<form id="addParticipantForm" action="./addParticipants"
 				method="POST">
 				<input type="hidden" name="roomId" value="${roomId}">
+				<input type="hidden" name="stageId" value="${meetingRoom.stageId}">
 				<div class="employee-lists">
 					<div class="employee-list">
 						<h3>전체 직원</h3>
