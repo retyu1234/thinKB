@@ -275,15 +275,18 @@ button:hover {
         
     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창
         window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount) {
-            var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
-            if (opinionText === '') {
-                alert('의견을 입력해주세요!');
-            } else if (currentOpinionCount >= maxComments) {
-                alert('댓글 작성 제한 인원을 초과하였습니다. \n다른 의견 탭에 댓글을 작성해주세요');
-            } else {
-                document.querySelector('#' + tabName + ' form').submit();
-            }
-        };
+	        var formElement = document.getElementById(tabName);
+	        var opinionText = formElement.querySelector('.opinion-textarea').value.trim();
+	        if (opinionText === '') {
+	            alert('의견을 입력해주세요!');
+	            return false; // Prevent form submission
+	        } else if (currentOpinionCount >= maxComments) {
+	            alert('댓글 작성 제한 인원을 초과하였습니다. \n다른 의견 탭에 댓글을 작성해주세요');
+	            return false; // Prevent form submission
+	        } else {
+	            return true; // Allow form submission
+	        }
+	    };
 /*     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창 + 2개 이상 작성시 추가 댓글 가능
         window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount, userOpinionCount) {
 		    var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
@@ -369,13 +372,15 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                    <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
+                    <%-- <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;"> --%>
+                    <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;" id="tab-positive" onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount});">
                         <form:hidden path="hatColor" value="Smart" />
                         <form:hidden path="currentTab" value="tab-smart" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성</button>
+                        <button type="submit">작성</button>
+                        <%-- <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성</button> --%>
                     </form:form>
                 </div>
             </div>
