@@ -71,7 +71,7 @@
                 <a href="<c:url value='./main'/>"> <img src="<c:url value='./resources/logo1.png'/>" alt="Logo"> </a>
             </div>
             <div class="menu">
-                <a href="#">사용가이드</a> 
+                <a href="./guide">사용가이드</a> 
                 <a href="./meetingList">회의방</a> 
                 <a href="./myReportList">내 보고서</a> 
                 <a href="./noticeList">알림함</a> 
