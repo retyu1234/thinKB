@@ -272,7 +272,7 @@ button:hover {
             history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
         }
 
-        
+
     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창
         window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount) {
             var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
@@ -369,14 +369,17 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                    <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
+                    <div id="tab-smart" class="tab-content active">
+                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Smart" />
                         <form:hidden path="currentTab" value="tab-smart" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
+
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
                         <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성</button>
                     </form:form>
+                    </div>
                 </div>
             </div>
 
@@ -413,7 +416,7 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                    <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
+                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Positive" />
                         <form:hidden path="currentTab" value="tab-positive" />
                         <form:hidden path="roomId" value="${roomId}" />
@@ -457,13 +460,14 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                    <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
+                    <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-worry', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Worry" />
                         <form:hidden path="currentTab" value="tab-worry" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
                         <button type="button" onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount})">작성</button>
+
                     </form:form>
                 </div>
             </div>
@@ -501,13 +505,15 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                    <form:form method="post" action="addOpinion" modelAttribute="opinionForm" style="display: flex; align-items: center; width: 100%;">
+                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-strict', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Strict" />
                         <form:hidden path="currentTab" value="tab-strict" />
                         <form:hidden path="roomId" value="${roomId}" />
                         <form:hidden path="ideaId" value="${ideaId}" />
+
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
                         <button type="button" onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount})">작성</button>
+
                     </form:form>
                 </div>
             </div>
