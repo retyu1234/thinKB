@@ -198,8 +198,8 @@
 	</update>
 	<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->
 	<update id="stageTwoTimerUpdate">
-		update Timer set StartTime=now(), endTime=${param2}
-		where RoomID=${param1}
+		update Timer set StartTime=now(), endTime=#{param2}
+		where RoomID=#{param1}
 	</update>
 
 	<!-- 반려사유 추가 -->
@@ -226,9 +226,47 @@
 		(#{param1},#{param2},#{param3},now())
 	</insert>
 
-<!-- 투표 끝난뒤에 목록 확인 -->
+<!-- 투표 끝난뒤에 목록 확인// 아이디어 제공자의 전체 누적 기여도 조건 추가 -->
 <select id="ideaPickNum" resultType="com.kb.star.dto.Ideas">
-	SELECT * FROM Ideas WHERE RoomID=#{param1} and IsDelete=0 and StageID=1 and isReject=0 order by PickNum desc
+	SELECT t.IdeaID, t.UserID, t.RoomID, t.Title, t.Description, t.IsDelete, t.StageID, t.PickNum, t.isReject from
+	(SELECT i.*, COALESCE(SUM(m.ContributionCnt), 0) AS TotalContribution FROM Ideas i LEFT JOIN MeetingRoomMembers m 
+	ON i.UserID = m.UserID WHERE i.RoomID = #{param1} AND i.IsDelete = 0 AND i.StageID = 1 AND i.isReject = 0 GROUP BY i.UserID, i.IdeaID
+	ORDER by PickNum desc, TotalContribution desc) t
+</select>
+
+<!-- 기여도 +1 -->
+<update id="contributionUpdate">
+	UPDATE MeetingRoomMembers set ContributionCnt = ContributionCnt+1 where RoomID=#{param1} AND UserID=#{param2}
+</update>
+
+<!-- 투표로 선택된 2개 아이디어에 대해 StageID 1 -> 3 으로 변경 -->
+<update id="updateIdeaStage3">
+	UPDATE Ideas set StageID=3 WHERE IdeaID=#{param1}
+</update>
+
+<!-- 선택된 아이디어 누구껀지 id조회 -->
+<select id="pickedIdeaUser" resultType="int">
+SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{param1}
+</select>
+
+<!-- 선택되면 yesPick으로 바꾸고 기여도 +1 -->
+<update id="updateYesPickNContribution">
+	UPDATE MeetingRoomMembers SET Role='yesPick', ContributionCnt=ContributionCnt+1 
+	WHERE RoomID=#{param1} and UserID=#{param2}
+</update>
+
+<!-- 선택된 아이디어별로 타이머 신규 생성 -->
+<insert id="insertNewTimerForIdea">
+	INSERT INTO Timer values (#{param1},#{param2},now(),#{param3})
+</insert>
+
+<insert id="insertForwardStage3">
+	INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) values (#{param1},3,#{param2},0,#{param3})
+</insert>
+
+<!-- stage3인(=투표로 선택된) 아이디어만 찾는 쿼리 -->
+<select id="yesPickIdeaList" resultType="com.kb.star.dto.Ideas">
+	SELECT * from Ideas WHERE RoomID=#{param1} and StageID=3
 </select>
 
 </mapper>

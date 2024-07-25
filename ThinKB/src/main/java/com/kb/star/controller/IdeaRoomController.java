@@ -16,6 +16,7 @@ import com.kb.star.command.room.ManagerIdeaListCommand;
 import com.kb.star.command.room.ResetCommand;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
+import com.kb.star.command.room.StageThreeCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
 import com.kb.star.command.room.TimerTestCommand;
 import com.kb.star.command.room.UpdateIdeaCommand;
@@ -81,7 +82,7 @@ public class IdeaRoomController {
 			return "redirect:/roomStage2?roomId=" + roomId;
 			
 		case 3:
-//			command = new StageThreeCommand(sqlSession);
+			command = new StageThreeCommand(sqlSession);
 			command.execute(model);
 			return "redirect:/ideaOpinionsList";
 			
