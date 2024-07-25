@@ -19,6 +19,7 @@ public class IdeaOpinionsDto {
     private Integer ideaId;  
     private Integer opinionId; // 의견 작성자의 id
     private String userName; 
+    private boolean likedByCurrentUser; // 특정 사용자가 특정 의견에 대해 좋아요를 눌렀는지 여부
     
     // Getters and Setters
 	public int getOpinionID() {
@@ -107,6 +108,15 @@ public class IdeaOpinionsDto {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	public boolean isLikedByCurrentUser() {
+		return likedByCurrentUser;
+	}
+	public void setLikedByCurrentUser(boolean likedByCurrentUser) {
+		this.likedByCurrentUser = likedByCurrentUser;
+	}
+
+
+	
     
     
 	

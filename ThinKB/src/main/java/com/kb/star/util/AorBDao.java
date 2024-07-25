@@ -5,19 +5,38 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.kb.star.dto.AorBDto;
+import com.kb.star.dto.UserCommentsDto;
 
 public interface AorBDao {
 
-	//  A/B테스트 목록(모든정보) 가져오기
-	public List<AorBDto> getAorBList(@Param("userId")int userId);
-	// A/B테스트 생성 
-	void makeAorB(@Param("testName") String testName, @Param("variantA") String variantA, @Param("variantB") String variantB);
+	// A/B테스트 목록(모든정보) 가져오기
+	public List<AorBDto> getAorBList(@Param("userId") int userId);
+
+	// A/B테스트 생성
+	void makeAorB(@Param("testName") String testName, @Param("variantA") String variantA,
+			@Param("variantB") String variantB);
+
 	// ab테스트 개별방리스트
 	AorBDto abTestDetail(int ABTestID);
-	//abtest 결과 insert
+
+	// abtest 결과 insert
 	void insertABResult(@Param("abTestId") int abTestId, @Param("userId") int userId, @Param("pick") int pick);
-	//A선택시 update
+
+	// A선택시 update
 	void voteForVariantA(@Param("abTestId") int abTestId);
-	//B선택시 update
+
+	// B선택시 update
 	void voteForVariantB(@Param("abTestId") int abTestId);
+
+	// 11:08 추가
+	List<AorBDto> getAorBFeedbackList(@Param("departmentId") int departmentId);
+
+	// 좌표 삽입
+	void insertCoordinate(@Param("x") int x, @Param("y") int y, @Param("abTestId") int abTestId,
+			@Param("userId") int userId);
+
+	// 댓글 삽입
+	void insertComment(@Param("x") int x, @Param("y") int y, @Param("abTestId") int abTestId,
+			@Param("userId") int userId, @Param("commentText") String commentText);
+
 }

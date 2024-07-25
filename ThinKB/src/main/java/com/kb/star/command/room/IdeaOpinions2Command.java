@@ -1,6 +1,5 @@
 package com.kb.star.command.room;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +69,12 @@ public class IdeaOpinions2Command implements RoomCommand {
         }
         
         List<IdeaOpinionsDto> currentOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, hatColor);
+        
+        // 사용자가 특정 의견에 좋아요를 눌렀는지 확인하여 설정
+        for (IdeaOpinionsDto opinion : currentOpinions) {
+            opinion.setLikedByCurrentUser(ideaOpinionsDao.checkUserLikedOpinion(userId, opinion.getOpinionID()));
+        }
+
 
         model.addAttribute("previousSmartOpinions", previousSmartOpinions);
         model.addAttribute("previousPositiveOpinions", previousPositiveOpinions);
