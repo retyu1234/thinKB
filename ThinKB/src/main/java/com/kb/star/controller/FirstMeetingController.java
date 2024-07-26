@@ -1,13 +1,12 @@
 package com.kb.star.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ibatis.session.SqlSession;
@@ -19,26 +18,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kb.star.command.firstMeeting.FirstMeeting;
 import com.kb.star.command.firstMeeting.FirstMeetingCommand;
 import com.kb.star.command.firstMeeting.MeetingRoomListCommand;
+import com.kb.star.command.firstMeeting.RoomStage2Command;
+import com.kb.star.command.firstMeeting.RoomStage2VoteCommand;
+import com.kb.star.command.firstMeeting.SubmitReplyAnswerCommand;
+import com.kb.star.command.firstMeeting.SubmitReplyCommand;
 import com.kb.star.command.room.StageTwoCommand;
 import com.kb.star.dto.IdeaReplys;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 
 @Controller
-public class FirstMeetingController {
+public class FirstMeetingController<Command> {
 
-    private FirstMeetingCommand command;
-    private SqlSession sqlSession;
+	private FirstMeetingCommand command;
+	private SqlSession sqlSession;
 
-    @Autowired
-    public void setSqlSession(SqlSession sqlSession) {
-        this.sqlSession = sqlSession;
-        this.command = new FirstMeeting(sqlSession); // SqlSession을 사용하여 FirstMeetingCommand 구현체를 생성
-    }
+	@Autowired
+	public void setSqlSession(SqlSession sqlSession) {
+		this.sqlSession = sqlSession;
+		this.command = new FirstMeeting(sqlSession); // SqlSession을 사용하여 FirstMeetingCommand 구현체를 생성
+	}
 
 	// 진행 중인 회의 및 단계 + 희의정보 불러오는거 추가함
 	@RequestMapping("/meetingList")
@@ -51,204 +55,89 @@ public class FirstMeetingController {
 		return "/firstMeeting/meetingList";
 	}
 
-
-	// 아이디어 회의 목록 표시 페이지
-	@RequestMapping("/roomStage2")
-	public String roomStage2(@RequestParam("roomId") int roomId, Model model, HttpSession session) {
-//	    // roomStage2 메서드의 로직을 여기에 작성
-//	    String roomTitle = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectRoomTitleById", roomId);
-//	    model.addAttribute("roomTitle", roomTitle);
-	    
-	    // 기존 FirstMeetingController의 로직을 가져와서 여기에 추가합니다.(나중에 returnType을 수정)
-	    MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.IdeaDao.selectRoomTitleById", roomId);
-	    model.addAttribute("meetingRoom", meetingRoom);
-
-	    // 아이디어 목록을 RoomID로 조회하여 모델에 추가
-	    Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("roomId", meetingRoom.getRoomId());
-
-	    session.setAttribute("roomId", meetingRoom.getRoomId());
-
-	    List<Ideas> ideas = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeas", params);
-	    model.addAttribute("ideas", ideas);
-
-	    List<IdeaReplys> ideaReplys = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeaReplys", params);
-	    model.addAttribute("ideaReplys", ideaReplys);
-
-	    // 투표 상태 확인
-	    Integer userId = (Integer) session.getAttribute("userId");
-	    params.put("userId", userId);
-	    params.put("stageId", 2);
-	    Integer votedIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
-	    model.addAttribute("votedIdeaId", votedIdeaId);
-	    boolean hasVoted = votedIdeaId != null;
-	    model.addAttribute("hasVoted", hasVoted);
-
-	    // 세션에서 에러 메시지를 가져와서 모델에 추가
-	    String errorMessage = (String) session.getAttribute("Message");
-	    if (errorMessage != null) {
-	        model.addAttribute("errorMessage", errorMessage);
-	        session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
-	    }
-	    
-	    // 타이머 모델에 담기(내은추가)
-	    String timer = sqlSession.selectOne("com.kb.star.util.RoomDao.roomTimer", params);
-	    model.addAttribute("timer", timer);
-
-	    
-	    return "firstMeeting/ideaMeeting";
-	}
-
-
-    // 아이디어 투표 버튼 클릭시 수행 로직
+	// 아이디어 투표하기
+	// selectedIdea : 선택한 아이디어의 설명
 	@RequestMapping(value = "/submitVote", method = RequestMethod.POST)
-	public String submitVote(@RequestParam("ideaId") int ideaId, @RequestParam("roomTitle") String roomTitle,
-	                         @RequestParam("selectedIdea") String selectedIdea, @RequestParam("roomId") int roomId, HttpSession session,
-	                         Model model) {
-	    Integer userId = (Integer) session.getAttribute("userId");
+	public String submitVote(@RequestParam("ideaId") int ideaId, @RequestParam("selectedIdea") String selectedIdea,
+			@RequestParam("roomId") int roomId, HttpSession session, Model model,
+			RedirectAttributes redirectAttributes) {
+		Integer userId = (Integer) session.getAttribute("userId");
 
-	    System.out.println("출력");
-	    Map<String, Object> params = new HashMap<String, Object>();
-	    params.put("ideaId", ideaId);
-	    params.put("stageId", 2);
-	    params.put("roomId", roomId);
-	    params.put("userId", userId);
+		model.addAttribute("ideaId", ideaId);
+		System.out.println("뽑은 아이디어 컨트롤러에 전달된거" + ideaId);
+		model.addAttribute("selectedIdea", selectedIdea);
+		System.out.println("전달된 selectedIdea 값:" + selectedIdea);
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("userId", userId);
+		model.addAttribute("session", session);
 
-	    // 현재 사용자가 선택한 기존 아이디어 조회
-	    Integer previousIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
+		RoomStage2VoteCommand command = new RoomStage2VoteCommand(sqlSession);
+		command.execute(model);
 
-	    Integer status = sqlSession.selectOne("com.kb.star.util.IdeaDao.checkParticipationStatus", params);
+		String redirectUrl = (String) model.asMap().get("redirectUrl");
+		String message = (String) model.asMap().get("Message");
 
-	    System.out.println("여기까지");
+		redirectAttributes.addFlashAttribute("Message", message);
 
-	    if (status != null && status == 1) {
-	        session.setAttribute("Message", "선택한 아이디어 :" + selectedIdea);
-	        System.out.println(session.getAttribute("Message"));
-
-	        // 기존 아이디어 투표 수 감소
-	        if (previousIdeaId != null) {
-	            sqlSession.update("com.kb.star.util.IdeaDao.decrementPickNum", previousIdeaId);
-	        }
-	        // 새로운 아이디어 투표 수 증가
-	        sqlSession.update("com.kb.star.util.IdeaDao.incrementPickNum", ideaId);
-	        sqlSession.update("com.kb.star.util.IdeaDao.updateParticipationStatus", params);
-
-	        return "redirect:/roomStage2?roomId=" + roomId; // roomId로 리다이렉트
-	    } else {
-	        session.setAttribute("Message", "선택한 아이디어 :" + selectedIdea); // 선택한 아이디어 알림
-	        System.out.println(session.getAttribute("Message"));
-	        sqlSession.update("com.kb.star.util.IdeaDao.incrementPickNum", ideaId);
-	        sqlSession.update("com.kb.star.util.IdeaDao.updateParticipationStatus", params);
-	        
-	        // 맨 처음 투표일때만 기여도 추가(내은추가)
-	        sqlSession.update("com.kb.star.util.IdeaDao.contributionUpdate", params);
-
-	        return "redirect:/roomStage2?roomId=" + roomId; // roomId로 리다이렉트
-	    }
+		return "redirect:" + redirectUrl;
 	}
 
+	// 아이디어에 달린 질문 가져오기
+	@RequestMapping(value = "/getIdeaReplies", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String getIdeaReplies(@RequestParam("ideaId") int ideaId) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("ideaId", ideaId);
 
+		List<IdeaReplys> ideaReplies = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeaReplysByIdeaId",
+				params);
 
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			return mapper.writeValueAsString(ideaReplies);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return "[]";
+		}
+	}
 
-    // 아이디어에 달린 질문 가져오기
-    @RequestMapping(value = "/getIdeaReplies", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
-    @ResponseBody
-    public String getIdeaReplies(@RequestParam("ideaId") int ideaId) {
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ideaId", ideaId);
+	// 아이디어에 질문 등록하기
+	@RequestMapping(value = "/submitReply", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded", produces = "text/plain")
+	@ResponseBody
+	public String submitReply(@RequestParam Map<String, String> payload, HttpSession session, Model model) {
+		Integer userId = (Integer) session.getAttribute("userId");
 
-        List<IdeaReplys> ideaReplies = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeaReplysByIdeaId",
-                params);
+		// 콘솔에 전달받은 payload 출력
+		System.out.println("Received payload: " + payload);
 
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            return mapper.writeValueAsString(ideaReplies);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return "[]";
-        }
-    }
+		model.addAttribute("userId", userId);
+		model.addAttribute("ideaId", payload.get("ideaId"));
+		model.addAttribute("roomId", payload.get("roomId"));
+		model.addAttribute("replyContent", payload.get("replyContent"));
 
-    // 아이디어에 질문 등록하기
-    @RequestMapping(value = "/submitReply", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded", produces = "text/plain")
-    @ResponseBody
-    public String submitReply(@RequestParam Map<String, String> payload, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("userId");
+		SubmitReplyCommand command = new SubmitReplyCommand(sqlSession);
+		command.execute(model);
 
-        // 콘솔에 전달받은 payload 출력
-        System.out.println("Received payload: " + payload);
+		return (String) model.asMap().get("result");
+	}
 
-        Integer ideaId = Integer.parseInt(payload.get("ideaId"));
-        Integer roomId = Integer.parseInt(payload.get("roomId"));
-        String replyContent = payload.get("replyContent");
+	// 질문에 답변 등록하기
+	@RequestMapping(value = "/submitReplyAnswer", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded", produces = "text/plain")
+	@ResponseBody
+	public String submitReplyAnswer(@RequestParam Map<String, String> payload, HttpSession session, Model model) {
+		Integer userId = (Integer) session.getAttribute("userId");
+		// 콘솔에 전달받은 payload 출력
+		System.out.println("Received payload: " + payload);
 
-        // 콘솔에 각 변수의 값 출력
-        System.out.println("User ID: " + userId);
-        System.out.println("Idea ID: " + ideaId);
-        System.out.println("Room ID: " + roomId);
-        System.out.println("Reply Content: " + replyContent);
+		model.addAttribute("userId", userId);
+		model.addAttribute("ideaId", payload.get("ideaId"));
+		model.addAttribute("roomId", payload.get("roomId"));
+		model.addAttribute("replyStep", payload.get("replyStep"));
+		model.addAttribute("replyContent", payload.get("replyContent"));
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ideaId", ideaId);
-        params.put("roomId", roomId);
-        params.put("userId", userId);
-        params.put("replyContent", replyContent);
-        params.put("replyStep", 0);
+		SubmitReplyAnswerCommand command = new SubmitReplyAnswerCommand(sqlSession);
+		command.execute(model);
 
-        // 콘솔에 params 출력
-        System.out.println("Params: " + params);
-
-        try {
-            sqlSession.insert("com.kb.star.util.IdeaDao.insertIdeaReply", params);
-            System.out.println("Reply inserted successfully");
-            return "success";
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error inserting reply");
-            return "failure";
-        }
-    }
-
-    // 질문에 답변 등록하기
-    @RequestMapping(value = "/submitReplyAnswer", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded", produces = "text/plain")
-    @ResponseBody
-    public String submitReplyAnswer(@RequestParam Map<String, String> payload, HttpSession session) {
-        Integer userId = (Integer) session.getAttribute("userId");
-
-        // 콘솔에 전달받은 payload 출력
-        System.out.println("Received payload for answer: " + payload);
-
-        Integer ideaId = Integer.parseInt(payload.get("ideaId"));
-        Integer roomId = Integer.parseInt(payload.get("roomId"));
-        Integer replyStep = Integer.parseInt(payload.get("replyStep"));
-        String replyContent = payload.get("replyContent");
-
-        // 콘솔에 각 변수의 값 출력
-        System.out.println("User ID: " + userId);
-        System.out.println("Idea ID: " + ideaId);
-        System.out.println("Room ID: " + roomId);
-        System.out.println("Reply Content: " + replyContent);
-        System.out.println("Reply Step: " + replyStep);
-
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("ideaId", ideaId);
-        params.put("roomId", roomId);
-        params.put("userId", userId);
-        params.put("replyContent", replyContent);
-        params.put("replyStep", replyStep);
-
-        // 콘솔에 params 출력
-        System.out.println("Params for answer: " + params);
-
-        try {
-            sqlSession.insert("com.kb.star.util.IdeaDao.insertIdeaAnswerReply", params);
-            System.out.println("Reply inserted successfully");
-            return "success";
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error inserting reply");
-            return "failure";
-        }
-    }
+		return (String) model.asMap().get("result");
+	}
 }
-

@@ -15,6 +15,9 @@ public interface IdeaDao {
 
     // 사용자가 투표한 아이디어 ID 조회
     Integer getVotedIdeaId(Map<String, Object> params);
+    
+    // 사용자가 등록한 아이디어 ID 조회
+    Integer getUserIdeaId(Map<String, Object> params);
 
     // 아이디어 투표 수 감소
     void decrementPickNum(int ideaId);
