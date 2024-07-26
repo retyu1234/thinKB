@@ -226,7 +226,7 @@
 
 .popup-message {
     font-size: 1.3em;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
     /* font-weight: bold; */ /* 글자를 두껍게 설정 */
 }
 .popup-footer {
@@ -387,6 +387,7 @@
 			    	</div>
 			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
 			        <p class="popup-message"></p>
+			        <div style="text-align: right; margin-bottom: 5px;"><a href="./noticeList">알림함 바로가기</a></div>
 			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
 			        <button class="popup-close">닫기</button>
 			    </div>
