@@ -48,13 +48,6 @@ th {
 	background-color: #f2f2f2;
 }
 
-button {
-	padding: 8px 12px;
-	border: none;
-	border-radius: 4px;
-	color: #fff;
-	cursor: pointer;
-}
 
 .btn-danger {
 	background-color: #e74c3c;
@@ -172,6 +165,24 @@ button {
 	margin: 5px;
 }
 </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 전체 선택 체크박스
+            $("#selectAll").click(function() {
+                $("input[type=checkbox]").prop('checked', this.checked);
+            });
+
+            // 입력 내용을 textarea에 추가
+            $("#addTextButton").click(function() {
+                var inputText = $("#inputField").val();
+                if (inputText) {
+                    $("#notificationTextarea").val($("#notificationTextarea").val() + inputText + "\n");
+                    $("#inputField").val('');
+                }
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -183,7 +194,7 @@ button {
 	</c:if>
 
 	<div class="content">
-		<h2>참여자 관리</h2>
+		<h2>알림 발송</h2>
 
 		<table>
 			<thead>
@@ -205,5 +216,25 @@ button {
 				</c:forEach>
 			</tbody>
 		</table>
+	<div id="sendNotiModal" class="modal1">
+		<div class="modal-content1">
+			<div class="modal-header1">
+				<h2>알림 발송</h2>
+				<span class="close1" onclick="closeModal1()">&times;</span>
+			</div>
+			<div class="notification-container">
+				<textarea id="notificationTextarea" rows="5" cols="50" placeholder="여기에 알림 내용을 작성하세요..."></textarea>
+			</div>
+			<div class="input-container">
+				<input type="text" id="inputField" placeholder="추가할 내용을 입력하세요">
+				<button id="addTextButton">입력 내용 추가</button>
+			</div>
+			<div class="selected-user-list" id="selectedUserList"></div>
+			<div class="modal-footer1 button-container">
+				<button id="sendNotificationButton">발송</button>
+				<button id="remindNonParticipantsButton">미참여자 독촉</button>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

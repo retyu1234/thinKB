@@ -245,11 +245,9 @@ body {
 										<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
 										<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
 										<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-										<c:when test="${li.getStageId() == 4}">1차 의견 투표중</c:when>
-										<c:when test="${li.getStageId() == 5}">2차 의견 작성중</c:when>
-										<c:when test="${li.getStageId() == 6}">2차 의견 투표중</c:when>
-										<c:when test="${li.getStageId() == 7}">최종보고서 작성중</c:when>
-										<c:when test="${li.getStageId() == 8}">아이디어 회의 완료</c:when>
+										<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+										<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+										<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
 									</c:choose>
 								</p>
 							</div>

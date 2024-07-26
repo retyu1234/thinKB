@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.dto.MeetingRoomMembers;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.StageParticipationIdeas;
 import com.kb.star.dto.UserListDto;
 import com.kb.star.util.RoomDao;
 
@@ -33,9 +34,11 @@ public class UserManagement implements RoomCommand {
 		List<MeetingRoomMembers> dto = dao.selectCurrentMembers(roomId);
 		List<UserListDto> dto1 = dao.selectAvailableEmployees(roomId, departmentId);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
+		List<StageParticipationIdeas> statusList= dao.getStatusIdeasTitle(roomId); 
 		model.addAttribute("meetingRoom", info);
 		model.addAttribute("members",dto);
 		model.addAttribute("addUser",dto1);
 		model.addAttribute("roomId",roomId);
+		model.addAttribute("statusList",statusList);
 	}
 }

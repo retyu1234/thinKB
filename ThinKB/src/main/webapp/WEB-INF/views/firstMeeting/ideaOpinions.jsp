@@ -369,7 +369,7 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-                    <div id="tab-smart" class="tab-content active">
+  
                    <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
                         <form:hidden path="hatColor" value="Smart" />
                         <form:hidden path="currentTab" value="tab-smart" />
@@ -379,7 +379,7 @@ button:hover {
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
                         <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성</button>
                     </form:form>
-                    </div>
+                    
                 </div>
             </div>
 
