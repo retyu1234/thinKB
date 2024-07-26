@@ -29,25 +29,51 @@ public interface IdeaOpinionsDao {
     // 의견 삭제 메서드
     void deleteOpinion(int opinionId); // opinionId = 의견의 PK값
     
-    // 팀별 인원 수
-    int getUserCountByTeamId(int teamId);
+    // 회의방 참여자 수
+    int getUserCount(int roomId);
     
     // ideaId, 견해별 작성된 의견 수
     int getOpinionCountByHatColorAndIdeaId(@Param("ideaId") int ideaId, @Param("hatColor") String hatColor);
     
-    // 각 사용자가 작성한 전체 의견 수
-    // int getUserOpinionCount(@Param("userId") int userId, @Param("ideaId") int ideaId);
-    
     // 사용자가 각 탭에 작성한 댓글 수
     List<String> getUserCommentedTabs(@Param("userId") int userId, @Param("ideaId") int ideaId);
     
+    // 각 사용자가 작성한 전체 의견 수
+    int getUserOpinionCount(@Param("userId") int userId, @Param("ideaId") int ideaId);
     
+    // 2개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
+    void updateStatus(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId, @Param("status") boolean status);
+    
+    // 타이머
+    String getEndTime(@Param("roomId") int roomId, @Param("ideaId") int ideaId);
+    
+    // MeetingRooms테이블에서 방장ID 가져오기
+    int getRoomManagerId(@Param("roomId") int roomId);
+    
+    
+    
+    // 다음단계
+	// Timer 시간 새로 insert 해주기
+	void updateNewTimer(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("formattedTime") String formattedTime);
+    
+    // MeetingRooms에서 stage 4로 변경
+    void updateStage(@Param("roomId") int roomId);
+    
+    // Ideas에서 아이디어 StageID 4로 변경
+	void updateIdeaStage(@Param("ideaId") int ideaId);
+	
+	// 방번호별 userList
+	List<Integer> RoomForUserList(@Param("roomId") int roomId);
+	// StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기
+	void insertStageParticipation(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("list") Integer list);
+    
+
+	
     
     
     // ideaOpinions2.jsp
     // 이전 단계 의견을 가져오는 메서드
     List<IdeaOpinionsDto> getPreviousOpinionsByHatColor(@Param("ideaId") int ideaId, @Param("hatColor") String hatColor);
-    
     
     // 의견 추가2
     void insertOpinion2(IdeaOpinionsDto opinion);
@@ -56,11 +82,9 @@ public interface IdeaOpinionsDao {
     // 모자 색상에 따라 현재 의견을 가져오는 메서드
     List<IdeaOpinionsDto> getCurrentOpinionsByHatColor(@Param("ideaId") int ideaId, @Param("hatColor") String hatColor);
     
-    
     // 의견 삭제2 메서드 (opinionId = 의견의 PK값)
     void deleteLike(int opinionId); // 좋아요 삭제
     void deleteOpinion2(int opinionId); // 의견 삭제 
-    
     
     // 좋아요 수 증가
     void increaseLikeNum(@Param("opinionId") int opinionId);
@@ -74,6 +98,9 @@ public interface IdeaOpinionsDao {
     void addUserLike(@Param("userId") int userId, @Param("opinionId") int opinionId);
     // 좋아요 제거
     void removeUserLike(@Param("userId") int userId, @Param("opinionId") int opinionId);
+
+
+
     
 }
 
