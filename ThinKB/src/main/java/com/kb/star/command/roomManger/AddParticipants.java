@@ -23,30 +23,38 @@ public class AddParticipants implements RoomCommand {
 		this.sqlSession = sqlSession;
 	}
 
-	@Override
 	public void execute(Model model) {
-		// TODO Auto-generated method stub
-		Map<String, Object> map = model.asMap();
-		HttpServletRequest request = (HttpServletRequest) map.get("request");
-		int roomId = Integer.parseInt(request.getParameter("roomId"));
-		int stageId = Integer.parseInt(request.getParameter("stageId"));
-		model.addAttribute("roomId", roomId);
-		System.out.println(roomId+"/"+stageId);
-		String[] selectedEmployeesArray = request.getParameterValues("selectedEmployees");
-
-		if (selectedEmployeesArray != null && selectedEmployeesArray.length > 0) {
-			List<Integer> selectedEmployees = new ArrayList<Integer>();
-			for (String employeeId : selectedEmployeesArray) {
-				selectedEmployees.add(Integer.parseInt(employeeId));
-			}
-
-			// MeetingRoomMemberDao 인스턴스를 가져오는 방법에 따라 이 부분을 수정해야 할 수 있습니다.
-			RoomDao dao = sqlSession.getMapper(RoomDao.class);
-
-			// 한 번의 호출로 전체 리스트를 처리
-			dao.addMeetingRoomMembers(roomId, selectedEmployees);
-			dao.insertStageParticipations(roomId, stageId, selectedEmployees);
-
-		}
+	    Map<String, Object> map = model.asMap();
+	    HttpServletRequest request = (HttpServletRequest) map.get("request");
+	    int roomId = Integer.parseInt(request.getParameter("roomId"));
+	    int stageId = Integer.parseInt(request.getParameter("stageId"));
+	    model.addAttribute("roomId", roomId);
+	    RoomDao dao = sqlSession.getMapper(RoomDao.class);
+	    String[] selectedEmployeesArray = request.getParameterValues("selectedEmployees");
+	    List<Integer> topIdeaIds = dao.getTopIdeaIds(roomId);
+	    List<Integer> selectedEmployees = new ArrayList<Integer>();
+        if (selectedEmployeesArray != null) {
+            for (String employeeId : selectedEmployeesArray) {
+                selectedEmployees.add(Integer.parseInt(employeeId));
+            }
+        }
+        
+        // 각 IdeaID에 대해 선택된 직원 처리
+        for (int ideaId : topIdeaIds) {
+            for (int userId : selectedEmployees) {
+                int count = dao.checkExistingEntry(ideaId, stageId, userId, roomId);
+                System.out.println("count"+count);
+                if (count > 0) {
+                    dao.updateParticipation(ideaId, stageId, userId, roomId);
+                } else {
+                    dao.insertParticipation(ideaId, stageId, userId, roomId);
+                }
+            }
+        }
+        
+        // 회의실 멤버 추가
+        if (!selectedEmployees.isEmpty()) {
+            dao.addMeetingRoomMembers(roomId, selectedEmployees);
+        }
 	}
 }

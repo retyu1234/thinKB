@@ -1,5 +1,6 @@
 package com.kb.star.command.login;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +46,7 @@ public class Login implements LoginCommand {
 					session.setAttribute("departmentId", dto.getDepartmentId());
 					session.setAttribute("teamId", dto.getTeamId());
 					session.setAttribute("isAdmin", dto.isAdmin());
+					 session.setAttribute("loginTime", new Timestamp(System.currentTimeMillis()));
 					model.addAttribute("loginSuccess", true);
 
 				} else {
@@ -67,6 +69,7 @@ public class Login implements LoginCommand {
 					session.setAttribute("teamId", dto.getTeamId());
 					session.setAttribute("isAdmin", dto.isAdmin());
 					session.setAttribute("profileImg", dto.getProfileImg());
+					 session.setAttribute("loginTime", new Timestamp(System.currentTimeMillis()));
 					model.addAttribute("loginSuccess", true);
 
 				} else {

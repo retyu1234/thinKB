@@ -1,78 +1,81 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>실시간 알림</title>
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
-</head>
-<body>
-    <h1>실시간 알림 예제</h1>
-    <div id="notificationContainer"></div>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        #notificationIcon { 
+            cursor: pointer;
+            display: none;
+        }
+
+        #notificationIcon.blink {
+            animation: blink 1s linear infinite;
+        }
+
+        #notificationDropdown { 
+            display: none; 
+            position: absolute; 
+            background-color: #f9f9f9; 
+            min-width: 160px; 
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); 
+            z-index: 1; 
+        }
+
+        #notificationDropdown li { 
+            padding: 12px 16px; 
+        }
+    </style>
     <script>
-        var currentUserId = ${sessionScope.userId};
-        
-        $.ajaxSetup({
-            beforeSend: function(xhr) {
-                var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
-                if (token && header) {
-                    xhr.setRequestHeader(header, token);
-                }
-            }
-        });
-
-        function checkNotifications() {
-            var lastCheckTime = localStorage.getItem('lastCheckTime') || 0;
-            
-            $.ajax({
-                url: '<c:url value="/notifications"/>',
-                method: 'GET',
-                data: {
-                    userId: currentUserId,
-                    lastCheckTime: lastCheckTime
-                },
-                dataType: 'json',  // JSON으로 응답을 기대
-                success: function(response) {
-                    var notifications = response.notifications;
-                    if (notifications && notifications.length > 0) {
-                        displayNotifications(notifications);
-                        localStorage.setItem('lastCheckTime', Date.now());
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("알림을 가져오는 중 오류 발생:", error);
-                    console.error("상태:", status);
-                    console.error("XHR 객체:", xhr);
-                    if (xhr.responseText) {
-                        console.error("응답 텍스트:", xhr.responseText);
-                    } else {
-                        console.error("응답이 없습니다.");
-                    }
-                },
-                complete: function() {
-                    setTimeout(checkNotifications, 5000);
-                }
-            });
-
-        }
-
-        function displayNotifications(notifications) {
-            var container = $('#notificationContainer');
-            notifications.forEach(function(notification) {
-                var notificationElement = $('<div class="notification"></div>');
-                notificationElement.text(notification.message);
-                container.prepend(notificationElement);
-            });
-            $('.notification:gt(4)').remove();
-        }
-
         $(document).ready(function() {
-            checkNotifications();
+            function updateNotifications() {
+                $.get("${pageContext.request.contextPath}/getUnreadNotifications", function(notifications) {
+                    var count = notifications.length;
+                    $("#notificationCount").text(count);
+                    var notificationList = $("#notificationDropdown");
+                    notificationList.empty();
+                    notifications.forEach(function(notification) {
+                        notificationList.append("<li>" + notification.message + "</li>");
+                    });
+
+                    // 알림이 있을 때 아이콘을 표시하고 반짝이게 함
+                    if (count > 0) {
+                        $("#notificationIcon").show().addClass('blink');
+                    } else {
+                        $("#notificationIcon").hide().removeClass('blink');
+                    }
+                });
+            }
+
+            setInterval(updateNotifications, 3000); // 3초마다 업데이트
+
+            $("#notificationIcon").click(function() {
+                $("#notificationDropdown").toggle();
+                // 클릭 시 반짝임 효과 제거
+                $(this).removeClass('blink');
+            });
         });
     </script>
+</head>
+<body>
+    <div id="notificationIcon">
+        🔔 <span id="notificationCount">0</span>
+    </div>
+    <ul id="notificationDropdown">
+    <h1>Notifications</h1>
+    <div id="notificationList">
+        <c:forEach items="${notifications}" var="notification">
+            <li>${notification.message}</li>
+        </c:forEach>
+    </div></ul>
+
 </body>
 </html>

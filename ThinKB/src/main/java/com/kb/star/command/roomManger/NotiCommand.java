@@ -1,8 +1,8 @@
 package com.kb.star.command.roomManger;
 
-import java.util.Map;
+import org.springframework.ui.Model;
 
 public interface NotiCommand {
 
-	void execute(Map<String, Object> model);
+	void execute(Model model);
 }
