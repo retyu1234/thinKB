@@ -40,5 +40,10 @@
         AND CreatedAt > #{loginTime}
         ORDER BY CreatedAt DESC
     </select>
+    
+    <!-- 알림 모두 읽기 -->
+    <update id="allReadNotification" parameterType="int">
+		UPDATE Notifications SET IsRead=1 WHERE UserID=#{param1} AND IsRead=0 
+    </update>
 
 </mapper>

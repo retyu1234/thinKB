@@ -30,4 +30,7 @@ public interface NotiDao {
 	List<NotiDto> findNewNotifications(int userId, Timestamp lastCheckTime);
 	
 	 List<NotiDto> getUnreadNotificationsSinceLogin(@Param("userId")int userId,@Param("loginTime") Timestamp loginTime);
+
+	//알림 모두 읽기
+	public int allReadNotification(int userId);
 }

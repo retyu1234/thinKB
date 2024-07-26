@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.star.command.addFunction.AddCommand;
+import com.kb.star.command.roomManger.AllReadCommand;
 import com.kb.star.command.roomManger.NotiCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
@@ -123,6 +125,22 @@ public class NotiController {
     	return "notiTest";
     }
 
-	
+
+    // 알림 모두 읽음기능
+    @RequestMapping("/allRead")
+    public String allRead(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+    	model.addAttribute("request", request);
+    	command = new AllReadCommand(sqlSession);
+    	command.execute(model);
+    	
+    	 int updatedRows = (int) model.asMap().get("updatedRows");
+    	    if (updatedRows > 0) {
+    	        redirectAttributes.addFlashAttribute("message", updatedRows + "개의 알림을 읽음 상태로 변경했어요.");
+    	    } else {
+    	        redirectAttributes.addFlashAttribute("message", "읽지않은 알림이 없습니다.");
+    	    }
+    	    
+    	return "redirect:/noticeList";
+    }
 
 }
