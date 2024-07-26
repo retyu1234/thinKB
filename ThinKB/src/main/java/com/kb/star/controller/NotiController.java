@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kb.star.command.addFunction.AddCommand;
+import com.kb.star.command.roomManger.AllReadCommand;
 import com.kb.star.command.roomManger.CheckNoti;
 import com.kb.star.command.roomManger.NotiCommand;
 import com.kb.star.dto.Ideas;
@@ -134,6 +136,24 @@ public class NotiController {
         Map<String, Object> errorResponse = new HashMap<>();
         errorResponse.put("error", "서버 오류: " + e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    
+    // 알림 모두 읽음기능
+    @RequestMapping("/allRead")
+    public String allRead(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+    	model.addAttribute("request", request);
+    	command = new AllReadCommand(sqlSession);
+    	command.execute(model);
+    	
+    	 int updatedRows = (int) model.asMap().get("updatedRows");
+    	    if (updatedRows > 0) {
+    	        redirectAttributes.addFlashAttribute("message", updatedRows + "개의 알림을 읽음 상태로 변경했어요.");
+    	    } else {
+    	        redirectAttributes.addFlashAttribute("message", "읽지않은 알림이 없습니다.");
+    	    }
+    	    
+    	return "redirect:/noticeList";
     }
 	
 

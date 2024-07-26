@@ -26,7 +26,8 @@ public class ManagerIdeaListCommand implements RoomCommand {
 		int stage = (Integer) map.get("stage");
 		
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
-		List<Ideas> dto = dao.ideaList(roomId, stage);
+//		List<Ideas> dto = dao.ideaList(roomId, stage);
+		List<Ideas> dto = dao.ideaListUnreject(roomId, stage); // 리젝트된것 제거
 		model.addAttribute("ideaList", dto);
 
 	}

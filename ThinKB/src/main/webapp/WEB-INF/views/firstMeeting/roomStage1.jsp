@@ -155,27 +155,6 @@ input.room1-detail:focus {
 		const responseText = document.getElementById("ai-response-text");
 		responseDiv.style.display = "flex"; // "block" 대신 "flex" 사용
 		responseText.innerText = "api써서 받아온 응답이 보여집니다.";
-
-		// 밑에부터 fetch를 사용하여 서버에 데이터 전송
-		/*   const myIdea = document.querySelector('input[name="myIdea"]').value;
-
-		  fetch('./saveAiLog', {
-		      method: 'POST',
-		      headers: {
-		          'Content-Type': 'application/json',
-		      },
-		      body: JSON.stringify({
-		          myIdea: myIdea
-		      }),
-		  })
-		  .then(response => response.json())
-		  .then(data => {
-		      console.log("서버 응답:", data);
-		      // 여기서 서버 응답에 따른 추가 처리를 할 수 있습니다.
-		  })
-		  .catch(error => {
-		      console.error("요청 중 오류 발생:", error);
-		  }); */
 	}
 
 	function submitForm() {
@@ -205,7 +184,8 @@ input.room1-detail:focus {
 
 	// 여기 아래부터 타이머
 	// 타이머 함수
-	function updateTimer() {
+/* 	function updateTimer() {
+		console.log("updateTimer function called");
 		const endDate = new Date("${timer}").getTime();
 		const now = new Date().getTime();
 		const distance = endDate - now;
@@ -240,9 +220,11 @@ input.room1-detail:focus {
 			.addEventListener(
 					"DOMContentLoaded",
 					function() {
+						console.log("DOMContentLoaded event fired");
 						updateTimer();
 						setInterval(updateTimer, 1000);
 						showNextStageButton();
+						checkRejectedIdea();
 
 						// 페이지 로드 시 이미 타이머가 종료되었는지 확인
 						const endDate = new Date("${timer}").getTime();
@@ -255,23 +237,31 @@ input.room1-detail:focus {
 						}
 
 						// result 값에 따라 버튼 표시 여부 결정
-						const result = ${result};
-						if (result) {
+						/*const result = ${result};  
+						if (${result}) {
 							document.getElementById("submitButton").style.display = "none";
 							document.getElementById("updateButton").style.display = "inline-block";
 						} else {
 							document.getElementById("submitButton").style.display = "inline-block";
 							document.getElementById("updateButton").style.display = "none";
 						}
-					});
+					}); */
 
 	// 타이머끝
+	
+	// 타이머 종료 시 호출될 함수
+    function onTimerEnd() {
+        console.log("Timer ended");
+        document.getElementById("myIdeaInput").disabled = true;
+        document.getElementById("ideaDetailInput").disabled = true;
+        document.getElementById("submitButton").style.display = "none";
+        document.getElementById("updateButton").style.display = "none";
+        showNextStageButton();
+    }
 
 	function showNextStageButton() {
-		const endDate = new Date("${timer}").getTime();
-		const now = new Date().getTime();
 		const isManager = ${userId == info.getRoomManagerId()};
-		if (now >= endDate && isManager) {
+		if (isManager) {
 			document.getElementById("nextStageButton").style.display = "block";
 		} else {
 			document.getElementById("nextStageButton").style.display = "none";
@@ -279,14 +269,31 @@ input.room1-detail:focus {
 	}
 
 //반려아이디어 있는경우 알럿
-function checkRejectedIdea() {
-    const isRejected = ${submittedIdea.isReject() ? 'true' : 'false'};
-    const rejectedIdeaTitle = "${submittedIdea.getTitle()}";
-    const rejectContents = "${rejectContents}";
-    if (isRejected) {
-        alert("기존에 제출한 아이디어가 반려되었습니다.\n제출 아이디어: " + rejectedIdeaTitle + "\n반려 사유: " + rejectContents);
+	function checkRejectedIdea() {
+	    const rejectContents = ${rejectResult ? 'true' : 'false'};
+	    const newAlredyIdea = ${result ? 'true' : 'false'};
+	    
+	    if (rejectContents && !newAlredyIdea) {
+	        const rejectedIdeaTitle = "${rejectIdeaTitle}";
+	        const rejectReason = "${rejectContents.getRejectContents()}";
+	        
+	        alert("기존에 제출한 아이디어가 반려되었습니다.\n제출 아이디어: " + rejectedIdeaTitle + "\n반려 사유: " + rejectReason);
+	    }
+	}
+
+	document.addEventListener("DOMContentLoaded", function() {
+    	showNextStageButton();
+    	checkRejectedIdea();
+
+    // result 값에 따라 버튼 표시 여부 결정
+    if (${result}) {
+        document.getElementById("submitButton").style.display = "none";
+        document.getElementById("updateButton").style.display = "inline-block";
+    } else {
+        document.getElementById("submitButton").style.display = "inline-block";
+        document.getElementById("updateButton").style.display = "none";
     }
-}
+});
 
 </script>
 <body>
@@ -301,16 +308,25 @@ function checkRejectedIdea() {
 	<div class="room1"></div>
 	<!-- 배경 이미지를 위한 영역 -->
 	<div class="room1-content">
-	<%-- <%@ include file="../Timer.jsp" %> --%>
-		<div id="timer" class="room1-timer"></div>
+	<div>
+	<h2 class="room1-title">아이디어 입력 가능 시간</h2>
+		<%@ include file="../Timer.jsp"%>
+	</div>
+	
+		<form id="nextStageForm" action="./stage1Clear" method="post">
+		    <input type="hidden" name="roomId" value="${info.getRoomId()}">
+		    <input type="hidden" name="stage" value="${stage}">
+		    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+		        <c:if test="${userId == info.getRoomManagerId()}">
+		        <div>
+		            <h2 class="room1-title">현재 아이디어 제출인원 : ${submit}명 / ${total}명</h2>
+		        </div>
+		            <button id="nextStageButton" class="yellow-button" onclick="nextStage()">다음 단계</button>
+		        </c:if>
+		    </div>
+		</form>
 
-		<!-- 방장만 보이는 버튼?? -->
-		<div style="text-align: right;">
-			<c:if test="${userId == info.getRoomManagerId() }">
-				<button type="button" class="yellow-button"
-					onclick="window.location.href='./managerMenu'">회의방 관리</button>
-			</c:if>
-		</div>
+		<!-- <div id="timer" class="room1-timer"></div> -->
 
 		<h2 class="room1-title">아이디어 회의 주제</h2>
 		<div class="room1-subject">${info.getRoomTitle()}</div>
@@ -363,16 +379,7 @@ function checkRejectedIdea() {
 			</div>
 		</form>
 
-		<form id="nextStageForm" action="./stage1Clear" method="post">
-			<input type="hidden" name="roomId" value="${info.getRoomId()}">
-			<input type="hidden" name="stage" value="${stage}">
-			<div style="text-align: right; margin-top: 20px;">
-				<button id="nextStageButton" class="yellow-button"
-					style="display: none;" onclick="nextStage()">다음 단계</button>
-			</div>
-		</form>
-		
 	</div>
-
+	
 </body>
 </html>
