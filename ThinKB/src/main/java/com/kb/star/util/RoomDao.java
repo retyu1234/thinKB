@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRoomMembers;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.RejectLog;
 import com.kb.star.dto.TimersDto;
 import com.kb.star.dto.UserListDto;
 
@@ -86,6 +87,18 @@ public interface RoomDao {
 	List<Ideas> ideaPickNum(int roomId);
 	
 	int selectTop2IdeasForRoom(@Param("roomId") int roomId);
+
+	List<Ideas> ideaListUnreject(int roomId, int stage);
+
+	Ideas alreadySubmitIdea(int roomId, int id);
+
+	Ideas rejectedIdea(int roomId, int id);
+
+	RejectLog whatsRejectLog(int ideaID);
+
+	int totalRoomUsers(int roomId);
+
+	int submitRoomUser(int roomId);
 
 
 }

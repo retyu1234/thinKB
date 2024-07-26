@@ -71,30 +71,30 @@
 
 	<!-- A/B테스트 피드백 목록 가져오기 -->
 	<select id="getAorBFeedbackList"
-        resultType="com.kb.star.dto.AorBDto">
-    SELECT
-        t.ABTestID,
-        t.TestName,
-        t.VariantA,
-        t.VariantB,
-        t.ResultANum,
-        t.ResultBNum,
-        t.CreatedAt,
-        IF(t.ResultANum > (SELECT
-        COUNT(*) / 2 + 1 FROM Users WHERE DepartmentID =
-        #{departmentId})
-        OR
-        t.ResultBNum > (SELECT COUNT(*) / 2 + 1 FROM Users WHERE DepartmentID =
-        #{departmentId}), 1, 0) AS participated
-    FROM
-        ABTests t
-    WHERE
-        (t.ResultANum > (SELECT COUNT(*) / 2 + 1 FROM Users WHERE DepartmentID =
-        #{departmentId})
-        OR t.ResultBNum > (SELECT COUNT(*) / 2 + 1 FROM Users
-        WHERE DepartmentID =
-        #{departmentId}))
-    ORDER BY
-        t.CreatedAt DESC
-</select>
+		resultType="com.kb.star.dto.AorBDto">
+		SELECT
+		t.ABTestID,
+		t.TestName,
+		t.VariantA,
+		t.VariantB,
+		t.ResultANum,
+		t.ResultBNum,
+		t.CreatedAt,
+		IF(t.ResultANum > (SELECT
+		COUNT(*) / 2 FROM Users WHERE DepartmentID =
+		#{departmentId})
+		OR
+		t.ResultBNum > (SELECT COUNT(*) / 2 FROM Users WHERE DepartmentID =
+		#{departmentId}), 1, 0) AS participated
+		FROM
+		ABTests t
+		WHERE
+		(t.ResultANum > (SELECT COUNT(*) / 2 FROM Users WHERE DepartmentID =
+		#{departmentId})
+		OR t.ResultBNum > (SELECT COUNT(*) / 2 FROM Users
+		WHERE DepartmentID =
+		#{departmentId}))
+		ORDER BY
+		t.CreatedAt DESC
+	</select>
 </mapper>

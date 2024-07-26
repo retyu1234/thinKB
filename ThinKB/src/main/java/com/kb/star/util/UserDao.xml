@@ -154,7 +154,7 @@
 		SELECT mr.* from MeetingRooms mr inner join
 		MeetingRoomMembers mrm on mr.RoomID = mrm.RoomID
 		where mr.IsDelete = 0
-		and mrm.UserID = #{param1} order by mr.RoomID desc;
+		and mrm.UserID = #{param1} order by mr.RoomID desc
 	</select>
 
 	<!-- 회원삭제 -->
@@ -198,6 +198,25 @@
 	<select id="userDepartmentId" resultType="int">
 		select DepartmentID from
 		Users where UserId=#{param1}
+	</select>
+	
+	<!-- 페이지네이션 -->
+	<select id="myAllMeetingRoomPaginated" resultType="com.kb.star.dto.MeetingRooms">
+	    SELECT mr.*
+	    FROM MeetingRooms mr
+	    INNER JOIN MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID
+	    WHERE mr.IsDelete = 0
+	      AND mrm.UserID = #{userId}
+	    ORDER BY mr.RoomID DESC
+	    LIMIT #{start}, #{pageSize}
+	</select>
+
+    <select id="countMyAllMeetingRooms" resultType="int">
+	    SELECT COUNT(DISTINCT mr.RoomID)
+	    FROM MeetingRooms mr
+	    INNER JOIN MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID
+	    WHERE mr.IsDelete = 0
+	      AND mrm.UserID = #{userId}
 	</select>
 
 </mapper>

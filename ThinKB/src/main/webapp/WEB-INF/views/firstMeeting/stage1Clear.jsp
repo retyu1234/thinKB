@@ -164,7 +164,7 @@ select {
                 <option value="서비스 효용 대비 비용과다">서비스 효용 대비 비용과다</option>
                 <option value="주제 범위에 벗어나거나 상관없는 아이디어">주제 범위에 벗어나거나 상관없는 아이디어</option>
                 <option value="그냥 싫음">그냥 싫음</option>
-                <option value="내가 생각한걸 맞춰라">내가 생각한걸 맞춰라</option>
+                <option value="좋은 아이디어로 확장, 구체화해서 재제출 요청">좋은 아이디어로 확장, 구체화해서 재제출 요청</option>
             </select>
         </div>
         <div id="modal${status.index}" class="modal">
