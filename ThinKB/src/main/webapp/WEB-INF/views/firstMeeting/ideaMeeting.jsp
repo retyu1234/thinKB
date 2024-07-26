@@ -26,6 +26,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	margin-bottom: 100px;
 }
 
 .topic-box {
@@ -45,7 +46,7 @@ body {
 }
 
 .topic-title {
-	width: 50px;
+	width: 90%;
 	position: relative;
 	font-weight: 600;
 	display: inline-block;
@@ -218,15 +219,50 @@ body {
     background-color: #EEEEEE;
 }
 
+.vote-info-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto; /* 중앙 정렬 */
+    padding: 0 15%; /* 좌우에 15%씩 패딩 추가 */
+    box-sizing: border-box; /* 패딩을 너비에 포함 */
+    margin-bottom: 10px;
+}
+
+.vote-info {
+    text-align: left;
+}
+
+.next-step-container {
+    text-align: right;
+}
+
 </style>
 </head>
 <body>
-	<div id="timer-section" style="margin-top: 100px;"><%@ include
+	<div id="timer-section" style="margin-top: 100px; margin-left: 15%; margin-right: 15%;"><%@ include
 			file="../Timer.jsp"%></div>
 	<input type="hidden" id="session-user-id"
 		value="${sessionScope.userId}">
 	<input type="hidden" id="session-room-id"
 		value="${sessionScope.roomId}">
+		
+    <!-- 방장인 경우에만 "다음 단계" 버튼을 표시 -->
+    <div class="vote-info-container">
+    <c:if test="${userId == meetingRoom.getRoomManagerId()}">
+    <div class="vote-info">
+        <h2>현재 투표 참여인원 : ${voteCnt}명 / ${total}명</h2>
+    </div>
+    
+        <div class="next-step-container">
+            <form id="nextStageForm" action="./stage2Clear" method="post">
+                <input type="hidden" name="roomId" value="${meetingRoom.roomId}">
+                <input type="hidden" name="stage" value="${meetingRoom.stageId}">
+                <button id="nextStepButton" class="vote-button" onclick="goToNextStep()">다음 단계</button>
+            </form>
+        </div>
+    </c:if>
+</div>
 
 	<div class="idea_header">
 		<jsp:include page="../header.jsp" />
@@ -260,15 +296,6 @@ body {
 		</div>
 		<button id="voteButton" class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
 
-		<!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
-		<form id="nextStageForm" action="./stage2Clear" method="post">
-			<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
-			<input type="hidden" name="stage" value="${meetingRoom.stageId}">
-			<div style="text-align: right; margin-top: 20px;">
-				<button id="nextStepButton" class="vote-button"
-					style="display: none;" onclick="goToNextStep()">다음 단계</button>
-			</div>
-		</form>
 	</div>
 
 	<!-- Modal window -->
@@ -548,11 +575,11 @@ body {
     });
     
     //타이머 종료시 함수
-    function onTimerEnd() {
-	if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
+function onTimerEnd() {
+    document.getElementById("voteButton").style.display = "none";
+/*     if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
         document.getElementById("nextStepButton").style.display = "block";
-        document.getElementById("voteButton").style.display = "none";
-    }
+    } */
 }
 
 function goToNextStep() {

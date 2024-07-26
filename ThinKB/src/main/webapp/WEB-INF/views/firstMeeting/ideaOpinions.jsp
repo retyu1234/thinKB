@@ -414,15 +414,11 @@ button:hover {
                     <c:if test="${not empty error}">
                         <div class="error-message">${error}</div>
                     </c:if>
-<<<<<<< HEAD
                     <!-- <div id="tab-smart" class="tab-content active"> -->
                    <c:if test="${2 - userOpinionCount > 0}">
                    <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
                    		onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
-=======
-  
-                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinions})" style="display: flex; align-items: center; width: 100%;">
->>>>>>> branch 'main' of https://github.com/retyu1234/thinKB.git
+
                         <form:hidden path="hatColor" value="Smart" />
                         <form:hidden path="currentTab" value="tab-smart" />
                         <form:hidden path="roomId" value="${roomId}" />
@@ -430,15 +426,11 @@ button:hover {
                         <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
                         <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})">작성</button>
                     </form:form>
-<<<<<<< HEAD
                     </c:if>
                     <!-- </div> -->
                     <c:if test="${2 - userOpinionCount == 0}">
 			            <div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
 			        </c:if>
-=======
-                    
->>>>>>> branch 'main' of https://github.com/retyu1234/thinKB.git
                 </div>
                 <div class="comment-ended" style="display: none;">
 				    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.

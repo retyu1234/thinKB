@@ -13,6 +13,7 @@ import com.kb.star.command.room.RoomCommand;
 import com.kb.star.dto.IdeaReplys;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.util.RoomDao;
 
 public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
 
@@ -58,5 +59,13 @@ public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
 		// 타이머 모델에 담기
 		String timer = sqlSession.selectOne("com.kb.star.util.RoomDao.roomTimer", params);
 		model.addAttribute("timer", timer);
+		
+		// 방장 투표인원 확인용
+		RoomDao dao = sqlSession.getMapper(RoomDao.class);
+		int total = dao.totalRoomUsers(roomId);
+		model.addAttribute("total", total);
+		
+		int voteCnt = dao.voteRoomUsers(roomId);
+		model.addAttribute("voteCnt", voteCnt);
 	}
 }

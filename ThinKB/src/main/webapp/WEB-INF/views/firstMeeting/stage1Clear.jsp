@@ -139,6 +139,11 @@ select {
 	<header class="header">
 		<%@ include file="../header.jsp"%>
 	</header>
+	
+	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
+		<%@ include file="../sideBar.jsp"%>
+	</c:if>
+	
 	<div class="room1"></div>
 	<!-- 배경 이미지를 위한 영역 -->
 	<div class="room1-content">

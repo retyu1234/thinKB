@@ -334,4 +334,9 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 	SELECT count(IdeaID) from Ideas WHERE RoomID = #{param1} and IsDelete = 0 and isReject = 0
 </select>
 
+<!-- 투표인원 몇명인지 -->
+<select id="voteRoomUsers" resultType="int">
+	SELECT count(*) from StageParticipation WHERE RoomID = #{param1} and StageID =2 and Status =1
+</select>
+
 </mapper>
