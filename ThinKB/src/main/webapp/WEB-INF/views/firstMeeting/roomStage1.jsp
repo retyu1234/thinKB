@@ -181,73 +181,6 @@ input.room1-detail:focus {
 	function nextStage() {
 		document.getElementById('nextStageForm').submit();
 	}
-
-	// 여기 아래부터 타이머
-	// 타이머 함수
-/* 	function updateTimer() {
-		console.log("updateTimer function called");
-		const endDate = new Date("${timer}").getTime();
-		const now = new Date().getTime();
-		const distance = endDate - now;
-
-		if (distance < 0) {
-			document.getElementById("timer").innerHTML = "아이디어를 입력할 수 있는 시간이 지났어요.";
-			// 입력 필드 비활성화
-			document.getElementById("myIdeaInput").disabled = true;
-			document.getElementById("ideaDetailInput").disabled = true;
-			// 제출 버튼 숨기기
-			document.getElementById("submitButton").style.display = "none";
-			document.getElementById("updateButton").style.display = "none";
-			// 다음 단계 버튼 표시 여부 확인
-			showNextStageButton();
-			return;
-		}
-
-		const hours = Math.floor((distance % (1000 * 60 * 60 * 24))
-				/ (1000 * 60 * 60));
-		const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-		const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-
-		document.getElementById("timer").innerHTML = "아이디어 입력 가능 시간: "
-				+ (hours < 10 ? "0" : "") + hours + ":"
-				+ (minutes < 10 ? "0" : "") + minutes + ":"
-				+ (seconds < 10 ? "0" : "") + seconds;
-	}
-
-	// 페이지 로드 시 타이머 시작
-	document
-			.addEventListener(
-					"DOMContentLoaded",
-					function() {
-						console.log("DOMContentLoaded event fired");
-						updateTimer();
-						setInterval(updateTimer, 1000);
-						showNextStageButton();
-						checkRejectedIdea();
-
-						// 페이지 로드 시 이미 타이머가 종료되었는지 확인
-						const endDate = new Date("${timer}").getTime();
-						const now = new Date().getTime();
-						if (now >= endDate) {
-							document.getElementById("myIdeaInput").disabled = true;
-							document.getElementById("ideaDetailInput").disabled = true;
-							document.getElementById("submitButton").style.display = "none";
-							document.getElementById("updateButton").style.display = "none";
-						}
-
-						// result 값에 따라 버튼 표시 여부 결정
-						/*const result = ${result};  
-						if (${result}) {
-							document.getElementById("submitButton").style.display = "none";
-							document.getElementById("updateButton").style.display = "inline-block";
-						} else {
-							document.getElementById("submitButton").style.display = "inline-block";
-							document.getElementById("updateButton").style.display = "none";
-						}
-					}); */
-
-	// 타이머끝
 	
 	// 타이머 종료 시 호출될 함수
     function onTimerEnd() {
@@ -260,40 +193,77 @@ input.room1-detail:focus {
     }
 
 	function showNextStageButton() {
-		const isManager = ${userId == info.getRoomManagerId()};
-		if (isManager) {
-			document.getElementById("nextStageButton").style.display = "block";
+		console.log("showNextStageButton 함수 실행");
+		const nextStageButton = document.getElementById("nextStageButton");
+		if (nextStageButton) {
+			const isManager = ${userId == info.getRoomManagerId()};
+			nextStageButton.style.display = isManager ? "block" : "none";
 		} else {
-			document.getElementById("nextStageButton").style.display = "none";
+			console.log("nextStageButton 요소를 찾을 수 없습니다.");
 		}
 	}
 
-//반려아이디어 있는경우 알럿
+	//반려아이디어 있는경우 알럿
 	function checkRejectedIdea() {
+	    console.log("checkRejectedIdea 함수 실행");
 	    const rejectContents = ${rejectResult ? 'true' : 'false'};
 	    const newAlredyIdea = ${result ? 'true' : 'false'};
 	    
-	    if (rejectContents && !newAlredyIdea) {
-	        const rejectedIdeaTitle = "${rejectIdeaTitle}";
-	        const rejectReason = "${rejectContents.getRejectContents()}";
-	        
-	        alert("기존에 제출한 아이디어가 반려되었습니다.\n제출 아이디어: " + rejectedIdeaTitle + "\n반려 사유: " + rejectReason);
+	    console.log("rejectContents:", rejectContents);
+	    console.log("newAlredyIdea:", newAlredyIdea);
+	    
+	    if(rejectContents) {
+	        console.log("반려된 아이디어가 있습니다.");
+	        if(!newAlredyIdea) {
+	            console.log("새 아이디어가 제출되지 않았습니다.");
+	            const rejectedIdeaTitle = "${rejectIdeaTitle}";
+	            const rejectReason = "${rejectContents.getRejectContents()}";
+	            
+	            console.log("rejectedIdeaTitle:", rejectedIdeaTitle);
+	            console.log("rejectReason:", rejectReason);
+	            
+	            console.log("alert 표시 직전");
+	            alert("기존에 제출한 아이디어가 반려되었습니다.\n제출 아이디어: " + rejectedIdeaTitle + "\n반려 사유: " + rejectReason);
+	            console.log("alert 표시 후");
+	        } else {
+	            console.log("새 아이디어가 이미 제출되었습니다.");
+	        }
+	    } else {
+	        console.log("반려된 아이디어가 없습니다.");
 	    }
 	}
 
 	document.addEventListener("DOMContentLoaded", function() {
-    	showNextStageButton();
-    	checkRejectedIdea();
-
-    // result 값에 따라 버튼 표시 여부 결정
-    if (${result}) {
-        document.getElementById("submitButton").style.display = "none";
-        document.getElementById("updateButton").style.display = "inline-block";
-    } else {
-        document.getElementById("submitButton").style.display = "inline-block";
-        document.getElementById("updateButton").style.display = "none";
-    }
-});
+	    console.log("DOMContentLoaded 이벤트 발생");
+	    
+	    try {
+	        showNextStageButton();
+	    } catch (error) {
+	        console.error("showNextStageButton 함수 실행 중 오류 발생:", error);
+	    }
+	    
+	    try {
+	        checkRejectedIdea();
+	    } catch (error) {
+	        console.error("checkRejectedIdea 함수 실행 중 오류 발생:", error);
+	    }
+	
+	    try {
+	        if (${result}) {
+	            const submitButton = document.getElementById("submitButton");
+	            const updateButton = document.getElementById("updateButton");
+	            if (submitButton) submitButton.style.display = "none";
+	            if (updateButton) updateButton.style.display = "inline-block";
+	        } else {
+	            const submitButton = document.getElementById("submitButton");
+	            const updateButton = document.getElementById("updateButton");
+	            if (submitButton) submitButton.style.display = "inline-block";
+	            if (updateButton) updateButton.style.display = "none";
+	        }
+	    } catch (error) {
+	        console.error("버튼 표시 설정 중 오류 발생:", error);
+	    }
+	});
 
 </script>
 <body>
@@ -380,6 +350,5 @@ input.room1-detail:focus {
 		</form>
 
 	</div>
-	
 </body>
 </html>
