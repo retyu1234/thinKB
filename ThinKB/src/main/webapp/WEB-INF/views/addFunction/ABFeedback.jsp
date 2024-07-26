@@ -138,11 +138,22 @@ body, html {
         submitButton.onclick = function() { submitComment(x, y, textarea.value); };
         form.appendChild(submitButton);
 
+        var closeButton = document.createElement("button");
+        closeButton.innerHTML = "Close";
+        closeButton.onclick = function() { closeCommentForm(form); };
+        form.appendChild(closeButton);
+
         document.body.appendChild(form);
         form.style.display = "block";
 
         // 기존 댓글 표시
         displayCommentsAtPosition(x, y, form);
+    }
+
+    function closeCommentForm(form) {
+        document.body.removeChild(form);
+        // 페이지 새로고침
+        location.reload();
     }
 
     function submitComment(x, y, commentText) {

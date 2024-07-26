@@ -70,7 +70,7 @@ body {
 .modal-idea-container {
 	width: 100%;
 	height: 87px;
-/* 	position: absolute;
+	/* 	position: absolute;
 	margin: 0 !important; */
 	top: 0;
 	right: 0;
@@ -153,7 +153,7 @@ body {
 	top: 0;
 	width: 100%;
 	height: 100%;
-	overflow: auto;
+ overflow-y: auto;
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
 	padding-top: 60px;
@@ -165,6 +165,7 @@ body {
 	padding: 20px;
 	border: 1px solid #888;
 	width: 80%;
+	overflow-y: auto;
 }
 
 .close {
@@ -195,11 +196,33 @@ body {
 	position: relative;
 	gap: 11px;
 }
-.
+
+.modal-idea-container {
+	alignt-items: center;
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+	background-color: var(- -color-white);
+	border: 5px solid var(- -color-gold);
+	border-radius: var(- -br-11xl);
+	box-sizing: border-box;
+	padding: 10px; /* Add padding if needed */
+}
+
+/* 추가된 CSS 스타일 */
+.idea-box.reply {
+    background-color: #FFCE20; /* 노란색 */
+}
+
+.idea-box.reply-answer {
+    background-color: #EEEEEE;
+}
+
 </style>
 </head>
 <body>
-<div id="timer-section" style="margin-top:100px;"><%@ include file="../Timer.jsp"%></div>
+	<div id="timer-section" style="margin-top: 100px;"><%@ include
+			file="../Timer.jsp"%></div>
 	<input type="hidden" id="session-user-id"
 		value="${sessionScope.userId}">
 	<input type="hidden" id="session-room-id"
@@ -209,8 +232,10 @@ body {
 		<jsp:include page="../header.jsp" />
 	</div>
 	<div class="content">
+		<c:if test="${not empty sessionScope.Message}">
+			<div class="alert">${sessionScope.Message}</div>
+		</c:if>
 		<div class="div">
-			<!-- 		<section class="selected-option-parent"> -->
 			<div class="selected-option">
 				<div class="topic-box"></div>
 				<div class="topic-title">
@@ -219,36 +244,31 @@ body {
 				</div>
 				<div class="wrapper">
 					<div class="topic-description">${meetingRoom.description}</div>
-
 				</div>
 			</div>
 			<div class="idea-container">
 				<c:forEach var="idea" items="${ideas}">
 					<div class="idea-item">
 						<div
-							class="idea-circle ${votedIdeaId == idea.ideaID ? 'selected' : ''}"
+							class="idea-circle <%-- ${votedIdeaId == idea.ideaID ? 'selected' : ''} --%>"
 							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'></div>
 						<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
 							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
 					</div>
 				</c:forEach>
-
 			</div>
 		</div>
-		<!-- 		</section> -->
-
 		<button id="voteButton" class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
-    
-    <!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
-    <form id="nextStageForm" action="./stage2Clear" method="post">
-			<input type="hidden" name="roomId" value="${meetingRoom.getRoomId()}">
-			<input type="hidden" name="stage" value="${meetingRoom.getStageId()}">
-		<div style="text-align: right; margin-top: 20px;">
-			<button id="nextStepButton" class="vote-button"
-				style="display: none;" onclick="goToNextStep()">다음 단계</button>
-		</div>
+
+		<!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
+		<form id="nextStageForm" action="./stage2Clear" method="post">
+			<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
+			<input type="hidden" name="stage" value="${meetingRoom.stageId}">
+			<div style="text-align: right; margin-top: 20px;">
+				<button id="nextStepButton" class="vote-button"
+					style="display: none;" onclick="goToNextStep()">다음 단계</button>
+			</div>
 		</form>
-	
 	</div>
 
 	<!-- Modal window -->
@@ -262,7 +282,7 @@ body {
 				<span><input type="hidden" id="modal-idea-title"></span>
 			</p>
 			<p>
-				User ID: <span id="modal-idea-userId"></span>
+				<span><input type="hidden" id="modal-idea-userId"></span>
 			</p>
 			<p>
 				상세설명 : <span id="modal-idea-description"></span>
@@ -288,6 +308,7 @@ body {
 			</div>
 		</div>
 	</div>
+
 
 	<script>
     let selectedIdea = null;
@@ -319,6 +340,7 @@ body {
 
     function closeModal() {
         document.getElementById("myModal").style.display = "none";
+        hideReplyForm(); // Hide the reply form container when the modal is closed
     }
 
     function openModal(ideaId, ideaTitle, ideaDescription, ideaUserId) {
@@ -351,8 +373,12 @@ body {
             data.forEach(reply => {
                 const replyElement = document.createElement('div');
                 replyElement.className = 'idea-box';
+                if (reply.replyStep === 0) {
+                    replyElement.classList.add('reply');
+                } else {
+                    replyElement.classList.add('reply-answer');
+                }
                 let replyHtml = reply.replyContent;
-                console.log("여기", ${reply.ideaReply});
                 replyElement.innerHTML = replyHtml;
                 replyElement.onclick = function() {
                     const sessionUserId = document.getElementById("session-user-id").value;
@@ -361,7 +387,6 @@ body {
                     } else {
                         hideReplyForm();
                     }
-
                 };
                 repliesContainer.appendChild(replyElement);
             });
@@ -391,7 +416,7 @@ body {
         const data = new URLSearchParams();
         data.append("replyContent", replyContent);
         data.append("ideaId", selectedIdeaId);
-        data.append("roomId", document.getElementById("session-room-id").value);
+        data.append("roomId", ${meetingRoom.roomId});
 
         fetch('/star/submitReply', {
             method: 'POST',
@@ -433,7 +458,7 @@ body {
         const data = new URLSearchParams();
         data.append("replyContent", replyAnswerContent);
         data.append("ideaId", selectedIdeaId);
-        data.append("roomId", document.getElementById("session-room-id").value);
+        data.append("roomId", ${meetingRoom.roomId});
         data.append("replyStep", ideaReply);
 
         console.log("Submitting reply answer with data: ", data.toString());
