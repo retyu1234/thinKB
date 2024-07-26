@@ -3,6 +3,8 @@ package com.kb.star.util;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.Teams;
 import com.kb.star.dto.UserListDto;
@@ -66,5 +68,8 @@ public interface UserDao {
 	//11:23 추가
 	int userDepartmentId (int id);
 
+	//페이지네이션
+	List<MeetingRooms> myAllMeetingRoomPaginated(@Param("userId") int userId, @Param("start") int start, @Param("pageSize") int pageSize);
+	int countMyAllMeetingRooms(@Param("userId") int userId);
 
 }

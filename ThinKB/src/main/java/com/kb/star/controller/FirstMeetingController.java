@@ -40,16 +40,18 @@ public class FirstMeetingController {
         this.command = new FirstMeeting(sqlSession); // SqlSession을 사용하여 FirstMeetingCommand 구현체를 생성
     }
 
-	// 진행 중인 회의 및 단계 + 희의정보 불러오는거 추가함
-	@RequestMapping("/meetingList")
-	public String meetingList(HttpServletRequest request, Model model) {
-		HttpSession session = request.getSession();
-		int id = (Integer) session.getAttribute("userId");
-		model.addAttribute("id", id);
-		command = new MeetingRoomListCommand(sqlSession);
-		command.execute(model);
-		return "/firstMeeting/meetingList";
-	}
+	// 진행 중인 회의 및 단계 + 희의정보 불러오는거 추가함 + 페이지네이션 추가
+    @RequestMapping("/meetingList")
+    public String meetingList(HttpServletRequest request, Model model, 
+                              @RequestParam(defaultValue = "1") int page) {
+        HttpSession session = request.getSession();
+        int id = (Integer) session.getAttribute("userId");
+        model.addAttribute("id", id);
+        model.addAttribute("page", page);
+        command = new MeetingRoomListCommand(sqlSession);
+        command.execute(model);
+        return "/firstMeeting/meetingList";
+    }
 
 
 	// 아이디어 회의 목록 표시 페이지
