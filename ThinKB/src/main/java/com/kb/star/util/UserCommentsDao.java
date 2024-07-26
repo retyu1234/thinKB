@@ -14,4 +14,7 @@ public interface UserCommentsDao {
 
     // 특정 AbTestId에 대한 모든 댓글 가져오기
     List<UserCommentsDto> getCommentsByAbTestId(@Param("abTestId") int abTestId);
+
+    // 코멘트 삭제
+    boolean deleteComment(@Param("commentId") String commentId);
 }

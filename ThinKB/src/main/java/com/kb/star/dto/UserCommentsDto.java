@@ -13,8 +13,21 @@ public class UserCommentsDto {
     private Timestamp timestamp;
     private int roomId;
     private int ideaId;
+    private boolean isDelete;
 
-    // Getters and Setters
+    public boolean isDelete() {
+		return isDelete;
+	}
+
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
+
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
+	}
+
+	// Getters and Setters
     public int getCommentId() {
         return commentId;
     }

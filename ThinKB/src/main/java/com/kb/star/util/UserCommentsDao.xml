@@ -6,22 +6,38 @@
 
 <mapper namespace="com.kb.star.util.UserCommentsDao">
 
-    <insert id="insertCoordinate">
-        INSERT INTO UserComments (X, Y, AbTestID, UserID, UserName)
-        SELECT #{x}, #{y}, #{abTestId}, #{userId}, u.userName
-        FROM Users u
-        WHERE u.userID = #{userId}
-    </insert>
+	<!-- 좌표 찍기 -->
+	<insert id="insertCoordinate">
+		INSERT INTO UserComments (X, Y, AbTestID, UserID,
+		UserName)
+		SELECT #{x}, #{y}, #{abTestId}, #{userId}, u.userName
+		FROM
+		Users u
+		WHERE u.userID = #{userId}
+	</insert>
 
-    <insert id="insertComment">
-        INSERT INTO UserComments (X, Y, AbTestID, UserID, UserName, CommentText)
-        SELECT #{x}, #{y}, #{abTestId}, #{userId}, u.userName, #{commentText}
-        FROM Users u
-        WHERE u.userID = #{userId}
-    </insert>
+	<!-- 좌표에 메모 남기기 -->
+	<insert id="insertComment">
+		INSERT INTO UserComments (X, Y, AbTestID, UserID,
+		UserName, CommentText)
+		SELECT #{x}, #{y}, #{abTestId}, #{userId},
+		u.userName, #{commentText}
+		FROM Users u
+		WHERE u.userID = #{userId}
+	</insert>
 
-    <select id="getCommentsByAbTestId" resultType="com.kb.star.dto.UserCommentsDto">
-        SELECT * FROM UserComments WHERE AbTestID=#{abTestId}
-    </select>
+	<!-- AbTestId로 메모 가져오기 -->
+	<select id="getCommentsByAbTestId"
+		resultType="com.kb.star.dto.UserCommentsDto">
+		SELECT * FROM UserComments WHERE AbTestID=#{abTestId} AND IsDelete=0
+	</select>
+
+	<!-- 개별 메모 삭제하기 -->
+	<update id="deleteComment">
+        UPDATE UserComments
+        SET IsDelete = 1
+        WHERE CommentID = #{commentId}
+    </update>
+
 </mapper>
 
