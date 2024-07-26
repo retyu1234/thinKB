@@ -124,6 +124,7 @@
 .idea-complete {
 	background-color: #CEFBC9; /* 완료 상태 배경색 */
 }
+
 .idea-complete:hover {
 	background-color: #CEFBA9; /* 완료 상태 호버 배경색 */
 }
@@ -155,23 +156,24 @@
 .vote-button:hover {
 	background-color: #e0a800;
 }
-.abtestMake{
-	display: flex;
-	justify-content:end;
-	margin-right:10%;
-}
-.abtestMake button {
-    padding: 15px 30px;  /* 패딩을 더 크게 설정 */
-    background-color: #ffcc00;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 20px;  /* 폰트 크기를 더 크게 설정 */
-    font-weight: bold;
-    margin-bottom: 5px;
-    transition: background-color 0.3s;
 
+.abtestMake {
+	display: flex;
+	justify-content: end;
+	margin-right: 10%;
+}
+
+.abtestMake button {
+	padding: 15px 30px; /* 패딩을 더 크게 설정 */
+	background-color: #ffcc00;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 20px; /* 폰트 크기를 더 크게 설정 */
+	font-weight: bold;
+	margin-bottom: 5px;
+	transition: background-color 0.3s;
 }
 </style>
 </head>
@@ -196,7 +198,8 @@
 	</div>
 	<div class="ideas">
 		<div class="abtestMake">
-			<a href="./makeAorB"><button>abtest만들기</button></a>
+			<a href="./AorBFeedbackList"><button>결과 피드백</button></a> <a
+				href="./makeAorB"><button>abtest만들기</button></a>
 		</div>
 		<c:forEach var="test" items="${abTests}">
 			<div

@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kb.star.command.firstMeeting.RoomStage2Command;
 import com.kb.star.command.report.ReportView;
 import com.kb.star.command.room.AfterVoteCommand;
 import com.kb.star.command.room.ManagerIdeaListCommand;
@@ -79,13 +80,24 @@ public class IdeaRoomController {
 			return "firstMeeting/roomStage1";
 
 		case 2:
-			return "redirect:/roomStage2?roomId=" + roomId;
-			
+			command = new RoomStage2Command(sqlSession);
+			command.execute(model);
+
+			// 세션에서 에러 메시지를 가져와서 모델에 추가
+			String errorMessage = (String) model.asMap().get("Message");
+			System.out.println("이게 메세지다: " + errorMessage);
+			if (errorMessage != null) {
+				model.addAttribute("errorMessage", errorMessage);
+				session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
+			}
+			return "firstMeeting/ideaMeeting";
+		/* return "redirect:/roomStage2?roomId=" + roomId; */
+
 		case 3:
 			command = new StageThreeCommand(sqlSession);
 			command.execute(model);
 			return "redirect:/ideaOpinionsList";
-			
+
 		case 4:
 			return "firstMeeting/ideaOpinions2";
 
@@ -93,7 +105,7 @@ public class IdeaRoomController {
 			command = new ReportView(sqlSession);
 			command.execute(model);
 			return "report/roomStage7";
-			
+
 		default:
 			return "main";
 		}
@@ -116,78 +128,80 @@ public class IdeaRoomController {
 		return "redirect:/roomDetail";
 	}
 
-	
-	//아이디어 초안 타이머 시간내 수정하기
-		@RequestMapping("/updateIdea")
-		public String updateIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
-				@RequestParam("myIdea") String myIdea, @RequestParam("ideaDetail") String ideaDetail,
-				@RequestParam("stage") int stage, Model model) {
-			HttpSession session = request.getSession();
-			int userId = (Integer) session.getAttribute("userId");
-			model.addAttribute("userId", userId);
-			model.addAttribute("roomId", roomId);
-			model.addAttribute("myIdea", myIdea);
-			model.addAttribute("ideaDetail", ideaDetail);
-			model.addAttribute("stage", stage);
-			command = new UpdateIdeaCommand(sqlSession);
-			command.execute(model);
-			return "redirect:/roomDetail";
-		}
-		
-		//방정보 수정
-		@RequestMapping("/updateRoomInfo")
-		public String updateRoomInfo(HttpServletRequest request,Model model) {
-			model.addAttribute("request",request);
-			command=new UpdateRoomInfo(sqlSession);
-			command.execute(model);
-			return "redirect:/roomManagement";
-		}
-		//참여자관리화면 방장
-		@RequestMapping("/userManagement")
-		public String userManagement(HttpSession session,HttpServletRequest request,Model model) {
-			Integer departmentId = (Integer)session.getAttribute("departmentId");
-			model.addAttribute("request",request);
-			model.addAttribute("departmentId",departmentId);
-			command=new UserManagement(sqlSession);
-			command.execute(model);
-			return "ideaRoom/userManagement";
-		}
-		//참여자 추가 방장
-		@RequestMapping("/addParticipants")
-		public String addParticipants(HttpServletRequest request,Model model) {
-			model.addAttribute("request",request);
-			command=new AddParticipants(sqlSession);
-			command.execute(model);
-			return "redirect:/userManagement";
-		}
-		//참여자 삭제 방장
-		@RequestMapping("/removeParticipant")
-		public String removeParticipant(HttpServletRequest request,Model model) {
-			model.addAttribute("request",request);
-			command=new RemoveParticipant(sqlSession);
-			command.execute(model);
-			return "redirect:/userManagement";
-		}
-		//참여자 알림발송화면 방장
-		@RequestMapping("/sendNotifications")
-		public String sendNotifications(HttpSession session,HttpServletRequest request,Model model) {
-			Integer departmentId = (Integer)session.getAttribute("departmentId");
-			model.addAttribute("request",request);
-			model.addAttribute("departmentId",departmentId);
-			command=new UserManagement(sqlSession);
-			command.execute(model);
-			return "ideaRoom/notiSendRoom";
-		}
-		
-		// 타이머 테스용입니다!
-		@RequestMapping("/timer")
-		public String timer(@RequestParam("roomId") int roomId, Model model, HttpServletRequest request) {
-			model.addAttribute("roomId", roomId);
-			command = new TimerTestCommand(sqlSession);
-			command.execute(model);
-			return "TimerTest";
-		}
-		
+	// 아이디어 초안 타이머 시간내 수정하기
+	@RequestMapping("/updateIdea")
+	public String updateIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
+			@RequestParam("myIdea") String myIdea, @RequestParam("ideaDetail") String ideaDetail,
+			@RequestParam("stage") int stage, Model model) {
+		HttpSession session = request.getSession();
+		int userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("userId", userId);
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("myIdea", myIdea);
+		model.addAttribute("ideaDetail", ideaDetail);
+		model.addAttribute("stage", stage);
+		command = new UpdateIdeaCommand(sqlSession);
+		command.execute(model);
+		return "redirect:/roomDetail";
+	}
+
+	// 방정보 수정
+	@RequestMapping("/updateRoomInfo")
+	public String updateRoomInfo(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		command = new UpdateRoomInfo(sqlSession);
+		command.execute(model);
+		return "redirect:/roomManagement";
+	}
+
+	// 참여자관리화면 방장
+	@RequestMapping("/userManagement")
+	public String userManagement(HttpSession session, HttpServletRequest request, Model model) {
+		Integer departmentId = (Integer) session.getAttribute("departmentId");
+		model.addAttribute("request", request);
+		model.addAttribute("departmentId", departmentId);
+		command = new UserManagement(sqlSession);
+		command.execute(model);
+		return "ideaRoom/userManagement";
+	}
+
+	// 참여자 추가 방장
+	@RequestMapping("/addParticipants")
+	public String addParticipants(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		command = new AddParticipants(sqlSession);
+		command.execute(model);
+		return "redirect:/userManagement";
+	}
+
+	// 참여자 삭제 방장
+	@RequestMapping("/removeParticipant")
+	public String removeParticipant(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		command = new RemoveParticipant(sqlSession);
+		command.execute(model);
+		return "redirect:/userManagement";
+	}
+
+	// 참여자 알림발송화면 방장
+	@RequestMapping("/sendNotifications")
+	public String sendNotifications(HttpSession session, HttpServletRequest request, Model model) {
+		Integer departmentId = (Integer) session.getAttribute("departmentId");
+		model.addAttribute("request", request);
+		model.addAttribute("departmentId", departmentId);
+		command = new UserManagement(sqlSession);
+		command.execute(model);
+		return "ideaRoom/notiSendRoom";
+	}
+
+	// 타이머 테스용입니다!
+	@RequestMapping("/timer")
+	public String timer(@RequestParam("roomId") int roomId, Model model, HttpServletRequest request) {
+		model.addAttribute("roomId", roomId);
+		command = new TimerTestCommand(sqlSession);
+		command.execute(model);
+		return "TimerTest";
+	}
 
 	// 방장 메뉴
 	@RequestMapping("/managerMenu")
