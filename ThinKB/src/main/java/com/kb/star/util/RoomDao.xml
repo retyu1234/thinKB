@@ -174,28 +174,66 @@
 	</insert>
 
 	<!-- 참여자 추가(방장)/참여테이블에 추가 -->
-<insert id="insertStageParticipations" parameterType="map">
-    <foreach collection="userIds" item="userId" separator=";">
-        INSERT INTO StageParticipation (IdeaID, StageID, UserID, Status, RoomID)
-        SELECT IdeaID, #{stageId}, #{userId}, 0, #{roomId}
-        FROM (
-            SELECT IdeaID
-            FROM StageParticipation
-            WHERE RoomID = #{roomId}
-            ORDER BY IdeaID DESC
-            LIMIT 2
-        ) AS TopIdeas
-        ON DUPLICATE KEY UPDATE
-            IdeaID = VALUES(IdeaID),
-            Status = VALUES(Status);
-    </foreach>
+<insert id="insertParticipation" >
+    INSERT INTO StageParticipation (IdeaID, StageID, UserID, Status, RoomID)
+    VALUES (#{ideaId}, #{stageId}, #{userId}, 0, #{roomId})
 </insert>
-
+<update id="updateParticipation">
+    UPDATE StageParticipation
+    SET Status = 0, StageID = #{stageId}
+    WHERE RoomID = #{roomId} AND IdeaID = #{ideaId} AND UserID = #{userId}
+</update>
+<!-- 참여자 추가할 때 ideaId 조회 -->
+<select id="getTopIdeaIds" parameterType="int" resultType="int">
+    SELECT DISTINCT IdeaID
+    FROM StageParticipation
+    WHERE RoomID = #{roomId}
+    ORDER BY IdeaID DESC
+    LIMIT 2
+</select>
+<!-- 이전에 방에 참여한 사람인지 조회 -->
+<select id="checkExistingEntry" resultType="int">
+        SELECT COUNT(*)
+    FROM StageParticipation
+    WHERE RoomID = #{roomId} AND IdeaID = #{ideaId} AND UserID = #{userId} AND StageID = #{stageId}
+</select>
 
 	<!-- 참여자 삭제 -->
 	<update id="deleteMembers">
 	update MeetingRoomMembers set IsDelete=true where RoomId=#{param1} and UserID=#{param2};
 	</update>
+	<!-- 회의방 참여상태+아이디어제목 조회  -->
+	  <select id="getStatusIdeasTitle" resultType="com.kb.star.dto.StageParticipationIdeas">
+    SELECT 
+      sp.*, 
+      i.Title
+    FROM 
+      StageParticipation sp
+    JOIN 
+      Ideas i ON sp.IdeaID = i.IdeaID
+    WHERE 
+      sp.RoomID = #{roomId}
+  </select>
+  <!-- 미참여자 알림 -->
+  <insert id="insertNotifiNonParti">
+    INSERT INTO Notifications (UserID, IdeaID, Message, IsRead, IsDelete, CreatedAt)
+    SELECT sp.UserID, sp.IdeaID, 
+           CONCAT(i.Title, ' - ', #{stageId}, '단계 미참여입니다! 참여해주세요'), 
+           0, 0, NOW()
+    FROM StageParticipation sp
+    JOIN Ideas i ON sp.IdeaID = i.IdeaID
+    WHERE sp.RoomID = #{roomId}
+      AND sp.StageID = #{stageId}
+      AND sp.Status = 0  <!-- 0은 미참여 상태를 나타낸다고 가정 -->
+</insert>
+<!-- 개별 알림 -->
+<insert id="insertNotifications">
+    INSERT INTO Notifications (UserID, IdeaID, Message, IsRead, IsDelete, CreatedAt)
+    VALUES
+    <foreach collection="userIdList" item="userId" index="index" separator=",">
+            (#{userId}, 0, #{message}, 0, 0, NOW())
+    </foreach>
+</insert>
 	<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->
 	<update id="stageTwoTimerUpdate">
 		update Timer set StartTime=now(), endTime=#{param2}

@@ -272,7 +272,7 @@ input.room1-detail:focus {
 		<%@ include file="../header.jsp"%>
 	</header>
 	<!-- 방장 sideBar -->
-	<c:if test="${userId == info.getRoomManagerId() }">
+	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
 		<%@ include file="../sideBar.jsp"%>
 	</c:if>
 	<div class="room1"></div>

@@ -3,6 +3,8 @@ package com.kb.star.util;
 import java.sql.Timestamp;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
@@ -26,6 +28,8 @@ public interface NotiDao {
     
     //실시간 알림
 	List<NotiDto> findNewNotifications(int userId, Timestamp lastCheckTime);
+	
+	 List<NotiDto> getUnreadNotificationsSinceLogin(@Param("userId")int userId,@Param("loginTime") Timestamp loginTime);
 
 	//알림 모두 읽기
 	public int allReadNotification(int userId);

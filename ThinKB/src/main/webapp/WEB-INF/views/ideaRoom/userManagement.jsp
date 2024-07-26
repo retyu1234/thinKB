@@ -171,6 +171,139 @@ button {
 .transfer-buttons button {
 	margin: 5px;
 }
+
+/* 추가된 스타일 */
+.notification-container {
+    margin-bottom: 10px;
+}
+
+#notificationTextarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+}
+
+.input-container {
+    margin-bottom: 10px;
+    display: flex;
+    gap: 10px;
+}
+
+#inputField {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#addTextButton {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#addTextButton:hover {
+    background-color: #0056b3;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+}
+
+#sendNotificationButton, #remindNonParticipantsButton {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#sendNotificationButton:hover, #remindNonParticipantsButton:hover {
+    background-color: #218838;
+}
+
+#remindNonParticipantsButton {
+    background-color: #dc3545;
+}
+
+#remindNonParticipantsButton:hover {
+    background-color: #c82333;
+}
+
+.modal1 {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	overflow: auto;
+}
+
+.modal-content1 {
+	background-color: #fff;
+	margin: 5% auto;
+	padding: 20px;
+	border: 1px solid #ddd;
+	width: 80%;
+	max-width: 600px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header1, .modal-footer1 {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.modal-header1 {
+	border-bottom: 1px solid #ddd;
+}
+
+.modal-footer1 {
+	border-top: 1px solid #ddd;
+}
+
+.close1 {
+	color: #333;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.close1:hover {
+	color: #000;
+}
+
+.selected-user-list {
+	margin-top: 10px;
+	border: 1px solid #ddd;
+	padding: 10px;
+	border-radius: 4px;
+}
+
+.selected-user-item {
+	padding: 5px 0;
+	border-bottom: 1px solid #ddd;
+}
+
+.selected-user-item:last-child {
+	border-bottom: none;
+}
 </style>
 </head>
 <body>
@@ -188,6 +321,7 @@ button {
 		<table>
 			<thead>
 				<tr>
+					<th><input type="checkbox" id="selectAll"> 전체 선택</th>
 					<th>참여자</th>
 					<th>이메일</th>
 					<th>기여도 점수</th>
@@ -197,6 +331,7 @@ button {
 			<tbody>
 				<c:forEach var="member" items="${members}">
 					<tr>
+						<td><input type="checkbox" name="selectedUsers" value="${member.userId}"></td>
 						<td>${member.userName}(${member.departmentName})-
 							${member.teamName}</td>
 						<td>${member.email}</td>
@@ -210,6 +345,9 @@ button {
 
 		<div class="add-participant">
 			<button class="btn-primary" onclick="openModal()">참가자 추가</button>
+		</div>
+		<div class="send-noti">
+			<button class="btn-primary" onclick="openModal1()">알림발송</button>
 		</div>
 
 		<!-- 기여도 차트 -->
@@ -227,8 +365,8 @@ button {
 			</div>
 			<form id="addParticipantForm" action="./addParticipants"
 				method="POST">
-				<input type="hidden" name="roomId" value="${roomId}">
-				<input type="hidden" name="stageId" value="${meetingRoom.stageId}">
+				<input type="hidden" name="roomId" value="${roomId}"> <input
+					type="hidden" name="stageId" value="${meetingRoom.stageId}">
 				<div class="employee-lists">
 					<div class="employee-list">
 						<h3>전체 직원</h3>
@@ -257,9 +395,34 @@ button {
 			</form>
 		</div>
 	</div>
+	<div>
+<div id="sendNotiModal" class="modal1">
+    <div class="modal-content1">
+        <div class="modal-header1">
+            <h2>알림 발송</h2>
+            <span class="close1" onclick="closeModal1()">&times;</span>
+        </div>
+        <form id="sendNotiForm" action="./sendNotiUser" method="POST">
+        				<input type="hidden" name="roomId" value="${roomId}"> <input
+					type="hidden" name="stageId" value="${meetingRoom.stageId}">
+            <div class="notification-container">
+                <textarea id="notificationTextarea" name="notificationMessage" rows="5" cols="50" placeholder="여기에 알림 내용을 작성하세요..."></textarea>
+            </div>
+            <div class="input-container">
+                <input type="text" id="inputField" placeholder="추가할 내용을 입력하세요">
+                <button type="button" id="addTextButton">입력 내용 추가</button>
+            </div>
+            <div class="selected-user-list" id="selectedUserList"></div>
+            <div class="modal-footer1 button-container">
+                <button type="submit" id="sendNotificationButton">발송</button>
+                <button type="button" id="remindNonParticipantsButton">미참여자 독촉</button>
+            </div>
+        </form>
+    </div>
+</div>
 
-
-	<script>
+		<script>
+		
 	function removeParticipant(userId, roomId) {
 	    // 지정된 URL로 userId를 쿼리 파라미터로 포함하여 페이지 이동
 	    window.location.href = './removeParticipant?id=' + encodeURIComponent(userId) + '&roomId=' + encodeURIComponent(roomId);
@@ -299,13 +462,76 @@ document.getElementById('addParticipantForm').addEventListener('submit', functio
     // 폼 제출
     this.submit();
 });
+//sendNoti
+document.getElementById('sendNotiForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
+    // 선택된 사용자 ID를 hidden input으로 추가
+    const selectedCheckboxes = document.querySelectorAll('input[name="selectedUsers"]:checked');
+    selectedCheckboxes.forEach(checkbox => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'selectedUsers';
+        input.value = checkbox.value;
+        this.appendChild(input);
+    });
+
+    // 폼 제출
+    this.submit();
+});
+document.getElementById('remindNonParticipantsButton').addEventListener('click', function() {
+    const roomId = document.querySelector('input[name="roomId"]').value;
+    const stageId = document.querySelector('input[name="stageId"]').value;
+
+    if (!stageId) {
+        console.error('Stage ID is missing or empty');
+        alert('Stage ID가 설정되지 않았습니다.');
+        return;
+    }
+
+    const url = new URL('./noPartiNoti', window.location.href);
+    url.searchParams.append('roomId', roomId);
+    url.searchParams.append('stageId', stageId);
+
+    fetch(url, {
+        method: 'GET',
+    }).then(response => {
+        if (response.ok) {
+            alert('미참여자에게 독촉 알림을 보냈습니다.');
+            closeModal1();
+        } else {
+            alert('알림을 보내는 데 실패했습니다.');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        alert('오류가 발생했습니다.');
+    });
+});
 function openModal() {
     document.getElementById('addParticipantModal').style.display = 'block';
 }
+function openModal1() {
+    const selectedCheckboxes = document.querySelectorAll('input[name="selectedUsers"]:checked');
+    const selectedUserList = document.getElementById('selectedUserList');
+    selectedUserList.innerHTML = '';
+
+    selectedCheckboxes.forEach(checkbox => {
+        const userName = checkbox.closest('tr').querySelector('td:nth-child(2)').innerText;
+        const div = document.createElement('div');
+        div.className = 'selected-user-item';
+        div.innerText = userName;
+        selectedUserList.appendChild(div);
+    });
+
+    document.getElementById('sendNotiModal').style.display = 'block';
+}
+
 
 function closeModal() {
     document.getElementById('addParticipantModal').style.display = 'none';
+}
+function closeModal1() {
+    document.getElementById('sendNotiModal').style.display = 'none';
 }
 
 // 모달 외부 클릭 시 닫기
@@ -314,7 +540,37 @@ window.onclick = function(event) {
     if (event.target == modal) {
         closeModal();
     }
+    var modal1 = document.getElementById('sendNotiModal');
+    if (event.target == modal1) {
+        closeModal1();
+    }
 }
+document.getElementById('selectAll').addEventListener('change', function() {
+    const checkboxes = document.querySelectorAll('input[name="selectedUsers"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = this.checked;
+    });
+});
+
+document.getElementById('addTextButton').addEventListener('click', function() {
+    const inputField = document.getElementById('inputField');
+    const notificationTextarea = document.getElementById('notificationTextarea');
+    if (inputField.value.trim() !== '') {
+        notificationTextarea.value += '\n' + inputField.value;
+        inputField.value = '';
+    }
+});
+
+document.getElementById('sendNotificationButton').addEventListener('click', function() {
+    const notificationText = document.getElementById('notificationTextarea').value;
+    alert('발송할 알림 내용:\n' + notificationText);
+    closeModal1();
+});
+
+document.getElementById('remindNonParticipantsButton').addEventListener('click', function() {
+    alert('미참여자에게 독촉 알림을 보냅니다.');
+    closeModal1();
+});
     document.addEventListener('DOMContentLoaded', function() {
         var labels = [
             <c:forEach var="member" items="${members}" varStatus="status">

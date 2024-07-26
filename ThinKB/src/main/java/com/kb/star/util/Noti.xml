@@ -31,11 +31,13 @@
         UPDATE Notifications SET IsDelete = true WHERE NotificationID = #{notificationID}
     </update>
     <!-- 실시간 알림 생성시간에 따라 -->
-    <select id="findNewNotifications" resultType="com.kb.star.dto.NotiDto">
-        SELECT * FROM Notifications
-        WHERE UserID = #{param1}
-        AND CreatedAt > #{param2}
-        AND IsDelete = 0
+    
+    <select id="getUnreadNotificationsSinceLogin" resultType="com.kb.star.dto.NotiDto">
+        SELECT * FROM Notifications 
+        WHERE UserID = #{userId} 
+        AND IsRead = 0 
+        AND IsDelete = 0 
+        AND CreatedAt > #{loginTime}
         ORDER BY CreatedAt DESC
     </select>
     

@@ -26,10 +26,14 @@ import com.kb.star.command.room.UpdateStageTwoCommand;
 import com.kb.star.command.room.UserListCommand;
 import com.kb.star.command.room.makeRoomCommand;
 import com.kb.star.command.roomManger.AddParticipants;
+import com.kb.star.command.roomManger.NoPartiNoti;
 import com.kb.star.command.roomManger.RemoveParticipant;
 import com.kb.star.command.roomManger.RoomManagement;
+import com.kb.star.command.roomManger.SendNotiUser;
 import com.kb.star.command.roomManger.UpdateRoomInfo;
 import com.kb.star.command.roomManger.UserManagement;
+import com.kb.star.dto.MeetingRooms;
+import com.kb.star.util.RoomDao;
 
 @Controller
 public class IdeaRoomController {
@@ -72,6 +76,9 @@ public class IdeaRoomController {
 		model.addAttribute("id", id);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
+		RoomDao dao=sqlSession.getMapper(RoomDao.class);
+		MeetingRooms info = dao.roomDetailInfo(roomId);
+		model.addAttribute("meetingRoom", info);
 
 		switch (stage) {
 		case 1:
@@ -127,7 +134,6 @@ public class IdeaRoomController {
 		command.execute(model);
 		return "redirect:/roomDetail";
 	}
-
 	// 아이디어 초안 타이머 시간내 수정하기
 	@RequestMapping("/updateIdea")
 	public String updateIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
@@ -194,13 +200,21 @@ public class IdeaRoomController {
 		return "ideaRoom/notiSendRoom";
 	}
 
-	// 타이머 테스용입니다!
-	@RequestMapping("/timer")
-	public String timer(@RequestParam("roomId") int roomId, Model model, HttpServletRequest request) {
-		model.addAttribute("roomId", roomId);
-		command = new TimerTestCommand(sqlSession);
+	//참여자별 알림발송
+	@RequestMapping("/sendNotiUser")
+	public String sendNotiUser(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new SendNotiUser(sqlSession);
 		command.execute(model);
-		return "TimerTest";
+		return "redirect:/sendNotifications";
+	}
+	//미참여자 알림발송
+	@RequestMapping("/noPartiNoti")
+	public String noPartiNoti(HttpServletRequest request,Model model) {
+		model.addAttribute("request",request);
+		command=new NoPartiNoti(sqlSession);
+		command.execute(model);
+		return "redirect:/sendNotifications";
 	}
 
 	// 방장 메뉴

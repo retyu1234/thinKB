@@ -1,31 +1,28 @@
 package com.kb.star.controller;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.roomManger.AllReadCommand;
-import com.kb.star.command.roomManger.CheckNoti;
 import com.kb.star.command.roomManger.NotiCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
@@ -40,7 +37,7 @@ public class NotiController {
 	NotiCommand notiCommand;
 	@Autowired
 	private SqlSession sqlSession;
-	
+
 	// 알림 목록 페이지
 	@RequestMapping("/noticeList")
 	public String noticeList(HttpServletRequest request, Model model, HttpSession session) {
@@ -103,42 +100,32 @@ public class NotiController {
         return "redirect:/noticeList"; // 알림 삭제 후 알림 목록 페이지로 리다이렉트
     }
     //실시간 알림
-    @RequestMapping(value = "/notifications", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/getUnreadNotifications", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> streamNotifications(
-            @RequestParam("userId") int userId,
-            @RequestParam("lastCheckTime") long lastCheckTime) {
-        try {
-            Map<String, Object> model = new HashMap<>();
-            model.put("userId", userId);
-            model.put("lastCheckTime", lastCheckTime);
-            
-            CheckNoti notiCommand = new CheckNoti(sqlSession);
-            notiCommand.execute(model);
-            
-            Map<String, Object> response = new HashMap<>();
-            response.put("notifications", model.get("notifications"));
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "서버 오류: " + e.getMessage());
-            return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    public void getUnreadNotifications(HttpSession session, HttpServletResponse response) throws Exception {
+        Integer userId = (Integer) session.getAttribute("userId");
+        Timestamp loginTime = (Timestamp) session.getAttribute("loginTime");
+        if (userId == null || loginTime == null) {
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write("[]");
+            return;
         }
+
+        NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
+        List<NotiDto> notifications = notiDao.getUnreadNotificationsSinceLogin(userId, loginTime);
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonResponse = mapper.writeValueAsString(notifications);
+
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(jsonResponse);
     }
 
     @RequestMapping("/notiTest")
-    public String notiTest() {
-        return "notiTest";
+    public String notiTest(HttpSession session, Model model) {
+    	return "notiTest";
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleException(Exception e) {
-        Map<String, Object> errorResponse = new HashMap<>();
-        errorResponse.put("error", "서버 오류: " + e.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    
-    
+
     // 알림 모두 읽음기능
     @RequestMapping("/allRead")
     public String allRead(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
@@ -155,6 +142,5 @@ public class NotiController {
     	    
     	return "redirect:/noticeList";
     }
-	
 
 }
