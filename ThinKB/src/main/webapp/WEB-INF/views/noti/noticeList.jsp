@@ -204,6 +204,23 @@
 .modal-button:hover {
     background-color: #e0a800;
 }
+
+.yellow-button {
+	background-color: #e6b800; /* 진한 노란색 배경색 */
+	color: black; /* 텍스트 색상 */
+	padding: 10px 20px; /* 버튼의 여백 */
+	border: none; /* 테두리 없음 */
+	border-radius: 10px; /* 라운드 처리 */
+	font-size: 20px; /* 텍스트 크기 */
+	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #696969;
+	color: white;
+}
+
 </style>
 </head>
 <body>
@@ -217,6 +234,22 @@
             <c:set var="userName" value="${sessionScope.userName}" />
             <div class="user">${userName}님</div> <!-- 세션의 userName 출력 -->
         </div>
+     <!-- 모두읽음 버튼 추가 -->   
+	<div style="margin: 20px;">
+        <form id="allReadForm" action="./allRead" method="post">
+		    <input type="hidden" name="userId" value="${userId}">
+		    <div style="text-align: right;">
+		        <button type="submit" class="yellow-button">모두 읽음</button>
+		    </div>
+		</form>
+	</div>
+	
+	<c:if test="${not empty message}">
+	    <script>
+	        alert("${message}");
+	    </script>
+	</c:if>
+        
         <div class="tabs">
          	<div id="allTab" class="tab active">전체</div>
             <div id="unreadTab" class="tab">미확인</div>
@@ -258,7 +291,6 @@
         </div>
     </div>
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

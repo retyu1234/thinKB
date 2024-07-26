@@ -26,4 +26,7 @@ public interface NotiDao {
     
     //실시간 알림
 	List<NotiDto> findNewNotifications(int userId, Timestamp lastCheckTime);
+
+	//알림 모두 읽기
+	public int allReadNotification(int userId);
 }
