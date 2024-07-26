@@ -238,17 +238,9 @@ public class IdeaOpinionsController {
                 hatColor = "Smart";
         }
         opinionForm.setHatColor(hatColor);  // HatColor 값을 설정합니다.
+        
 
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
-        
-        // 사용자가 이미 이 탭에 의견을 작성했는지 확인
-        int existingOpinions = ideaOpinionsDao.countUserOpinionsInTab(userId, ideaId, hatColor, 2);
-        int existingOpinions2 = ideaOpinionsDao.countUserOpinionsInTab(userId, ideaId, currentTab, 2);
-        if (existingOpinions2 > 0) {
-            model.addAttribute("alreadyWritten", true);
-        }
-
-        
         ideaOpinionsDao.insertOpinion2(opinionForm);
         
         return "redirect:/ideaOpinions2?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;

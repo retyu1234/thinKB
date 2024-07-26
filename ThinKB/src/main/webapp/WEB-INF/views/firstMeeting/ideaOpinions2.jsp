@@ -2,6 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -208,22 +209,41 @@
         margin: 10px 0;
     }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 window.onload = function() {
-    <c:if test="${alreadyWritten}">
-        alert('이미 해당 탭에 의견을 작성하셨습니다.');
-    </c:if>
+    var currentTab = '${currentTab}';
+    
+    var currentHatColor = '${currentHatColor}';
+    var userCommentedTabs = ${userCommentedTabs}; 
+    var alreadyWritten = ${alreadyWritten};
+    
+    /* if (alreadyWritten === true || userCommentedTabs.includes(getHatColorFromTab(currentTab))) { */
+    if (alreadyWritten === true || userCommentedTabs.includes(currentHatColor) { 
+        alert('이미 해당 탭에 의견을 작성하셨습니다.\n다른 탭에 의견을 추가 작성해주세요.');
+        document.querySelector('.opinion-textarea').disabled = true;
+        document.querySelector('.write-button').disabled = true;
+    }
 };
+
+function getHatColorFromTab(tab) {
+    switch (tab) {
+        case "tab-smart": return "Smart";
+        case "tab-positive": return "Positive";
+        case "tab-worry": return "Worry";
+        case "tab-strict": return "Strict";
+        default: return "Smart";
+    }
+}
 
 function validateAndSubmitForm() {
     var opinionText = document.querySelector('.opinion-textarea').value.trim();
     
     if (opinionText === '') {
         alert('의견을 입력해주세요!');
-        return false; // 폼 제출 방지
+        return false;
     }
 
-    // 서버 측에서 중복 검사를 수행하기 위해 폼을 제출
     return true;
 }
 
@@ -254,7 +274,7 @@ function confirmNextStep() {
     if (confirm("정말로 다음 페이지로 넘어가시겠습니까?")) {
     	const roomId = "${roomId}";
         const ideaId = "${ideaId}";
-        window.location.href = "./ideaOpinionsClear?roomId=" + roomId + "&ideaId=" + ideaId;
+        window.location.href = "./ideaOpinions2Clear?roomId=" + roomId + "&ideaId=" + ideaId;
     }
 }
 	
@@ -262,14 +282,20 @@ function confirmNextStep() {
 </head>
 <body>
 <%@ include file="../header.jsp"%>
+<c:if test="${userId == meetingRoom.roomManagerId}">
+<%@ include file="../sideBar.jsp"%></c:if>
+
     <div class="container">
     	<!-- 타이머 -->
 	    <div id="timer-section" style="margin-top:100px;">
 	    	<%@ include file="../Timer.jsp"%>
 	    </div>
 	    <c:if test="${userId == roomManagerId}">
-		    <!-- <button id="nextStepButton" style="display:none;">다음 단계로</button> -->
 		    <button id="nextStepButton" onclick="confirmNextStep()">다음 단계로</button>
+		    
+		    <span style="float: right; font-size: 16px;">
+            	현재 단계 완료 참여자 수: ${doneUserCount}/${userCount} <br>
+            </span>
 		</c:if>
 		
         <h1>${ideaTitle}</h1>
@@ -309,6 +335,7 @@ function confirmNextStep() {
             
 			<div class="column">
 		    <h2>현재 의견들</h2>
+		    <p>내가 작성한 의견 수: ${userOpinionCount}/4(탭당 1개)</p>
 		    <ul class="currentOpinion-list">
 		        <c:choose>
 		            <c:when test="${empty currentOpinions}">
@@ -366,16 +393,20 @@ function confirmNextStep() {
 		            </c:otherwise>
 		        </c:choose>
 		    </ul>
+		    <c:if test="${4 - userOpinionCount > 0}">
 		    <form action="addOpinion2" method="post" class="comment-section" onsubmit="return validateAndSubmitForm();">
 		        <input type="hidden" name="ideaId" value="${ideaId}" />
 		        <input type="hidden" name="roomId" value="${roomId}" />
 		        <input type="hidden" name="currentTab" value="${currentTab}" />
 		        <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력하세요"></textarea>
-		        <button type="submit" class="write-button">작성</button>
-                <!-- <button type="button" onclick="validateAndSubmitForm('opinionForm')">작성</button> -->
+		        <button type="submit" onclick="validateAndSubmitForm()" class="write-button">작성</button>
             </form>
+            </c:if>
+            <c:if test="${4 - userOpinionCount <= 0}">
+	            <div>최대 작성 가능 의견 4개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+	        </c:if>
             <div class="comment-ended" style="display: none;">
-				    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
+				타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
 			</div>
 		    </div>
 		</div>

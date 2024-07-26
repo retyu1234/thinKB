@@ -18,6 +18,7 @@
     </select>
     
     
+    
 	<!-- ideaOpinions.jsp -->
 	<!-- 알림 테이블의 IdeaID컬럼으로 Ideas 테이블 정보 가져오기 -->
     <select id="getIdeaTitleById" resultType="com.kb.star.dto.Ideas">
@@ -44,9 +45,6 @@
     </insert>
 
     <!-- 의견 삭제 -->
-<!--     <delete id="deleteOpinion" parameterType="int">
-        DELETE FROM IdeaOpinions WHERE OpinionID = #{opinionId}
-    </delete> -->
     <update id="deleteOpinion" parameterType="int">
         UPDATE IdeaOpinions 
         SET IsDelete = true
@@ -93,6 +91,13 @@
         SELECT RoomManagerID
         FROM MeetingRooms
         WHERE RoomID = #{roomId}
+    </select>
+    
+    <!-- 방장전용 - stage3 완료자 수 -->
+    <select id="getDoneUserCount" resultType="int">
+        SELECT count(*)
+        FROM StageParticipation
+        WHERE RoomID = #{roomId} AND IdeaID = #{ideaId} AND StageID = 3 AND Status = 1;
     </select>
     
     
@@ -152,12 +157,33 @@
         VALUES (#{ideaID}, #{userID}, #{step}, #{opinionText}, #{hatColor}, #{likeNum}, #{isDelete}, #{createdAt})
     </insert>
     
-    <!-- 의견 중복작성방지차 이미 작성한 의견 있는지 확인 -->
+
+	<!-- 중복작성 방지 -->    
+     <!-- 사용자가 각 탭에 작성한 댓글 수 -->
+    <select id="getUserCommentedTabs2" resultType="String">
+        SELECT distinct HatColor 
+        FROM IdeaOpinions 
+        WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND Step=2 AND IsDelete = false
+    </select>
+    <!-- 사용자가 작성한 전체 의견 수 -->
+    <select id="getUserOpinionCount2" resultType="int">
+        SELECT COUNT(*) 
+        FROM IdeaOpinions 
+        WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND Step=2 AND IsDelete = false
+    </select>
+    <!-- 1개 이상 의견 작성시 StageParticipation테이블의 status 업데이트 -->
+    <update id="updateStatus2">
+        UPDATE StageParticipation
+        SET Status = #{status}
+        WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
+    </update>
+    <!-- 사용자별 특정 탭에 이미 작성한 의견이 있는지 확인하는 메서드(중복작성방지) -->
     <select id="countUserOpinionsInTab" resultType="int">
 	    SELECT COUNT(*)
 	    FROM IdeaOpinions
-	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND HatColor = #{hatColor} AND Step = #{step}
-	</select>
+	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND HatColor = #{hatColor} AND Step = 2
+	</select> 
+
 
     <!-- 모자 색상에 따라 현재 의견을 가져오는 SQL 쿼리 -->
     <select id="getCurrentOpinionsByHatColor" parameterType="map" resultType="com.kb.star.dto.IdeaOpinionsDto">
@@ -222,6 +248,12 @@
         WHERE UserID = #{userId} AND OpinionID = #{opinionId}
     </delete>
     
+    <!-- 방장전용 - stage4 완료자 수 -->
+    <select id="getDoneUserCount2" resultType="int">
+        SELECT count(*)
+        FROM StageParticipation
+        WHERE RoomID = #{roomId} AND IdeaID = #{ideaId} AND StageID = 4 AND Status = 1;
+    </select>
 
 </mapper>
 

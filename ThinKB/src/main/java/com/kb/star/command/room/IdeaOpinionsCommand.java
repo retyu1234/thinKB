@@ -1,7 +1,5 @@
 package com.kb.star.command.room;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +11,9 @@ import org.springframework.ui.Model;
 
 import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.IdeaOpinionsDao;
+import com.kb.star.util.RoomDao;
 
 public class IdeaOpinionsCommand implements RoomCommand {
 
@@ -51,6 +51,7 @@ public class IdeaOpinionsCommand implements RoomCommand {
 
         // 회의방 참여자 수
         int userCount = ideaOpinionsDao.getUserCount(roomId);
+        model.addAttribute("userCount", userCount);
         // 견해별 작성 가능한 최대 의견 갯수
         int maxComments = (int) Math.ceil((userCount * 2) / 4.0); // 올림 처리
         model.addAttribute("maxComments", maxComments);
@@ -77,6 +78,15 @@ public class IdeaOpinionsCommand implements RoomCommand {
         // 방장 ID 가져오기
         int roomManagerId = ideaOpinionsDao.getRoomManagerId(roomId);
         model.addAttribute("roomManagerId", roomManagerId);
+        
+        // 방장전용 - stage3 완료자 수
+        int doneUserCount = ideaOpinionsDao.getDoneUserCount(roomId, ideaId);
+        model.addAttribute("doneUserCount", doneUserCount);
+        
+        // 방장 사이드탭
+        RoomDao dao=sqlSession.getMapper(RoomDao.class);
+        MeetingRooms info = dao.roomDetailInfo(roomId);
+        model.addAttribute("meetingRoom", info);
         
 		//기여도 +1 추가
         // RoomDao roomDao = sqlSession.getMapper(RoomDao.class);
