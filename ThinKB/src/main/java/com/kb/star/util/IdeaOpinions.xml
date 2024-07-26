@@ -77,9 +77,56 @@
 	<!-- 2개 이상 의견 작성시 StageParticipation테이블의 status 업데이트 -->
     <update id="updateStatus">
 	    UPDATE StageParticipation
-	    SET Status = 1
+	    SET Status = #{status}
 	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
 	</update>
+	
+	<!-- 타이머 종료시간 -->
+    <select id="getEndTime" parameterType="map" resultType="string">
+        SELECT endTime
+        FROM Timer
+        WHERE RoomID = #{roomId} AND IdeaID = #{ideaId}
+    </select>
+    
+    <!-- MeetingRooms테이블에서 방장ID 가져오기 -->
+    <select id="getRoomManagerId" parameterType="int" resultType="int">
+        SELECT RoomManagerID
+        FROM MeetingRooms
+        WHERE RoomID = #{roomId}
+    </select>
+    
+    
+    
+    
+    <!-- 다음 단계 -->
+    <!-- Timer 시간 새로 insert 해주기 -->
+    <update id="updateNewTimer">
+    	UPDATE Timer SET StartTime = now(), endTime = #{formattedTime}
+		WHERE RoomID = #{roomId} and IdeaID = #{ideaId};
+	</update>
+	
+   	<!-- MeetingRooms에서 stage 4로 변경 -->
+	<update id="updateStage">
+		UPDATE MeetingRooms SET StageID = 4
+		WHERE RoomID = #{roomId};
+	</update>
+	
+    <!-- Ideas에서 아이디어 StageID 4로 변경 -->
+    <update id="updateIdeaStage">
+		UPDATE Ideas SET StageID = 4
+		WHERE IdeaID = #{ideaId};
+	</update>
+    
+    <!-- 방번호별 userList -->
+	<select id="RoomForUserList" resultType="Integer">
+		SELECT UserID from
+		MeetingRoomMembers WHERE RoomID=#{param1}
+	</select>
+	
+	<!-- StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기 -->
+	<insert id="insertStageParticipation">
+		INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) values (#{ideaId},4,#{list},0,#{roomId})
+	</insert>
     
     
     

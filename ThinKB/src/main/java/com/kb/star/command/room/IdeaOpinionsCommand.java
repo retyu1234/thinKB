@@ -1,5 +1,7 @@
 package com.kb.star.command.room;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -63,9 +65,18 @@ public class IdeaOpinionsCommand implements RoomCommand {
         model.addAttribute("userOpinionCount", userOpinionCount);
 
         if (userOpinionCount >= 2) { // 2개 댓글 작성시 
-        	ideaOpinionsDao.updateStatus(userId, ideaId, roomId);
+            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, true);
+        } else { // 댓글을 삭제해서 2개 미만으로 떨어질 경우
+            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
         }
         
+        // 타이머 종료 시간 
+        String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
+        model.addAttribute("timer", endTime);
+        
+        // 방장 ID 가져오기
+        int roomManagerId = ideaOpinionsDao.getRoomManagerId(roomId);
+        model.addAttribute("roomManagerId", roomManagerId);
         
 		//기여도 +1 추가
         // RoomDao roomDao = sqlSession.getMapper(RoomDao.class);

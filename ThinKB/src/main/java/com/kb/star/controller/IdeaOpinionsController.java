@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.room.IdeaOpinions2Command;
+import com.kb.star.command.room.IdeaOpinionsClearCommand;
 import com.kb.star.command.room.IdeaOpinionsCommand;
 import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.util.IdeaOpinionsDao;
@@ -53,7 +55,7 @@ public class IdeaOpinionsController {
 	// 아이디어 의견을 가져오는 메서드
     @RequestMapping("/ideaOpinions")
     public String getIdeaOpinions(HttpServletRequest request, @RequestParam("roomId") int roomId,
-			@RequestParam("ideaId") int ideaId,@RequestParam("currentTab") String currentTab, Model model) {
+			@RequestParam("ideaId") int ideaId,@RequestParam("currentTab") String currentTab, Model model, ServletRequest session) {
     	
     	model.addAttribute("request", request);
         model.addAttribute("roomId", roomId);
@@ -62,6 +64,15 @@ public class IdeaOpinionsController {
         
         IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
         IdeaOpinionsCommand.execute(model);
+        
+        // 타이머 모델에 담기
+        IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+        String timer = ideaOpinionsDao.getEndTime(roomId, ideaId);
+        model.addAttribute("timer", timer);
+        
+        // 방장 ID 가져오기
+        int roomManagerId = ideaOpinionsDao.getRoomManagerId(roomId);
+        model.addAttribute("roomManagerId", roomManagerId);
 
         return "/firstMeeting/ideaOpinions";
     }
@@ -118,8 +129,10 @@ public class IdeaOpinionsController {
         // 두 개의 의견 작성 후 status 업데이트
         userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId);
         if (userOpinionCount >= 2) {
-            ideaOpinionsDao.updateStatus(userId, ideaId, roomId);
+            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, true);
             model.addAttribute("message", "필수 댓글 2개 작성을 완료하셨습니다.");
+        } else {
+            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
         }
         
         return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
@@ -140,6 +153,39 @@ public class IdeaOpinionsController {
         return "redirect:/ideaOpinions?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
     }
     
+    
+    
+    // ideaOpinionsClear.jsp
+    @RequestMapping("/ideaOpinionsClear")
+    public String ideaOpinionsClear(HttpServletRequest request, Model model,
+						    		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId) {
+    	
+    	model.addAttribute("request", request);
+    	model.addAttribute("roomId", roomId);
+        model.addAttribute("ideaId", ideaId);
+    	
+        return "/firstMeeting/ideaOpinionsClear";
+    }
+    
+	// stage 4로 갈 준비
+	@RequestMapping("/goStage4")
+	public String goStage4(@RequestParam("roomId") int roomId, 
+		            	   @RequestParam("ideaId") int ideaId, 
+		            	   @RequestParam("currentTab") String currentTab,
+		            	   HttpServletRequest request, Model model) {
+
+		model.addAttribute("request", request);
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("ideaId", ideaId);
+		model.addAttribute("currentTab", currentTab);
+		
+		IdeaOpinionsClearCommand ideaOpinionsClearCommand = new IdeaOpinionsClearCommand(sqlSession);
+		ideaOpinionsClearCommand.execute(model);
+
+		return "redirect:/ideaOpinions2";
+	}
+    
+    
 
     // ideaOpinions2.jsp
     // http://localhost:8080/star/ideaOpinions2?roomId=49&ideaId=31&currentTab=tab-smart
@@ -148,16 +194,18 @@ public class IdeaOpinionsController {
     @RequestMapping("/ideaOpinions2")
     public String viewIdeaDetails(HttpServletRequest request, Model model,
     							@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, @RequestParam("currentTab") String currentTab) {
-        model.addAttribute("roomId", roomId);
+    	model.addAttribute("request", request);
+    	model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
         model.addAttribute("currentTab", currentTab);
-        model.addAttribute("request", request);
-
+//        int stage = Integer.parseInt((String) request.getParameter("stage"));
+//        model.addAttribute("stage", stage);
+        
         IdeaOpinions2Command ideaOpinions2Command = new IdeaOpinions2Command(sqlSession);
         ideaOpinions2Command.execute(model);
 
-
         return "/firstMeeting/ideaOpinions2";
+//        return "redirect:/firstMeeting/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
     }
     
     // 의견 작성시 추가 + 현재 의견들 불러오기

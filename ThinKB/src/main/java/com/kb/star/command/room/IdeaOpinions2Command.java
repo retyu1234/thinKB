@@ -1,5 +1,7 @@
 package com.kb.star.command.room;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +19,7 @@ import com.kb.star.util.IdeaOpinionsDao;
 public class IdeaOpinions2Command implements RoomCommand {
 
     SqlSession sqlSession;
-
+    
     @Autowired
     public IdeaOpinions2Command(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
@@ -30,18 +32,36 @@ public class IdeaOpinions2Command implements RoomCommand {
         HttpServletRequest request = (HttpServletRequest) map.get("request");
         int roomId = Integer.parseInt(map.get("roomId").toString());
         int ideaId = Integer.parseInt(map.get("ideaId").toString());
+        // int stage = Integer.parseInt((String) request.getParameter("stage"));
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("ideaId", ideaId);
+        // model.addAttribute("stage", stage);
+       
         String currentTab = map.get("currentTab").toString();
 
         HttpSession session = request.getSession();
         int userId = (Integer) session.getAttribute("userId");
         model.addAttribute("userId", userId);
         
-        // 방 제목
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+        
+        
+	    // 타이머 종료 시간 
+        String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
+        model.addAttribute("timer", endTime);
+        
+        // 방장 ID 가져오기
+        int roomManagerId = ideaOpinionsDao.getRoomManagerId(roomId);
+        model.addAttribute("roomManagerId", roomManagerId);
+        
+		//기여도 +1 추가
+        // RoomDao roomDao = sqlSession.getMapper(RoomDao.class);
+        // roomDao.updateContribution(roomId, ideaId, userId);
+
+	    
+        // 방 제목
         Ideas idea = ideaOpinionsDao.getIdeaTitleById(ideaId);
         model.addAttribute("ideaTitle", idea.getTitle());
-        model.addAttribute("roomId", roomId);
-        model.addAttribute("ideaId", ideaId);
 
         // 탭별로 이전 의견을 가져오는 로직
         List<IdeaOpinionsDto> previousSmartOpinions = ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, "Smart");

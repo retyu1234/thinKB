@@ -230,10 +230,48 @@ function validateAndSubmitForm() {
 function confirmDelete() {
     return confirm('정말로 이 의견을 삭제하시겠습니까?');
 }
+
+/* 타이머 종료시 함수 */
+function onTimerEnd() {
+    // 방장
+	if ("${roomManagerId}" === "${userId}") {
+        document.getElementById("nextStepButton").style.display = "block";
+	}
+    // 일반사용자
+ 	// 의견 작성 섹션을 숨기고 종료 메시지를 표시
+ 	console.log("Timer ended");
+
+    document.querySelectorAll(".comment-section").forEach(function(el) {
+        el.style.display = "none";
+    });
+    document.querySelectorAll(".comment-ended").forEach(function(el) {
+        el.style.display = "block";
+    });
+}
+
+	// 방장이 다음 단계로 버튼 클릭 시 확인 창을 띄우고, 확인 시 이동
+function confirmNextStep() {
+    if (confirm("정말로 다음 페이지로 넘어가시겠습니까?")) {
+    	const roomId = "${roomId}";
+        const ideaId = "${ideaId}";
+        window.location.href = "./ideaOpinionsClear?roomId=" + roomId + "&ideaId=" + ideaId;
+    }
+}
+	
 </script>
 </head>
 <body>
+<%@ include file="../header.jsp"%>
     <div class="container">
+    	<!-- 타이머 -->
+	    <div id="timer-section" style="margin-top:100px;">
+	    	<%@ include file="../Timer.jsp"%>
+	    </div>
+	    <c:if test="${userId == roomManagerId}">
+		    <!-- <button id="nextStepButton" style="display:none;">다음 단계로</button> -->
+		    <button id="nextStepButton" onclick="confirmNextStep()">다음 단계로</button>
+		</c:if>
+		
         <h1>${ideaTitle}</h1>
         <div class="tabs">
             <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-smart" class="tab tab-smart ${currentTab == 'tab-smart' ? 'active' : ''}">똑똑이</a>
@@ -336,6 +374,9 @@ function confirmDelete() {
 		        <button type="submit" class="write-button">작성</button>
                 <!-- <button type="button" onclick="validateAndSubmitForm('opinionForm')">작성</button> -->
             </form>
+            <div class="comment-ended" style="display: none;">
+				    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
+			</div>
 		    </div>
 		</div>
     </div>
