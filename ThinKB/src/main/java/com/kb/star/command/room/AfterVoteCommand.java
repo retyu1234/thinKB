@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.RoomDao;
 
 public class AfterVoteCommand implements RoomCommand {
@@ -24,8 +25,13 @@ public class AfterVoteCommand implements RoomCommand {
 		Map<String, Object> map = model.asMap();
 		int roomId = (Integer) map.get("roomId");
 		int stage = (Integer) map.get("stage");
+		
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
+		
+		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
+		model.addAttribute("meetingRoom", meetingRoom);
+		System.out.println("회의실 정보: " + meetingRoom);
 		
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		
