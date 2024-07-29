@@ -153,7 +153,7 @@ body {
 	top: 0;
 	width: 100%;
 	height: 100%;
- overflow-y: auto;
+	overflow-y: auto;
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
 	padding-top: 60px;
@@ -211,13 +211,12 @@ body {
 
 /* 추가된 CSS 스타일 */
 .idea-box.reply {
-    background-color: #FFCE20; /* 노란색 */
+	background-color: #FFCE20; /* 노란색 */
 }
 
 .idea-box.reply-answer {
-    background-color: #EEEEEE;
+	background-color: #EEEEEE;
 }
-
 </style>
 </head>
 <body>
@@ -231,6 +230,10 @@ body {
 	<div class="idea_header">
 		<jsp:include page="../header.jsp" />
 	</div>
+	<!-- 방장 sideBar -->
+	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
+		<%@ include file="../sideBar.jsp"%>
+	</c:if>
 	<div class="content">
 		<c:if test="${not empty sessionScope.Message}">
 			<div class="alert">${sessionScope.Message}</div>

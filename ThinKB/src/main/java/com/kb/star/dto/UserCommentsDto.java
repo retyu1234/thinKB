@@ -3,95 +3,106 @@ package com.kb.star.dto;
 import java.sql.Timestamp;
 
 public class UserCommentsDto {
-    private int commentId;
-    private int x;
-    private int y;
-    private int abTestId;
-    private int userID;
-    private String userName;
-    private String commentText;
-    private Timestamp timestamp;
-    private int roomId;
-    private int ideaId;
+	private int commentId;
+	private int x;
+	private int y;
+	private int abTestId;
+	private int userID;
+	private String userName;
+	private String commentText;
+	private Timestamp timestamp;
+	private int associatedId;
+	private String associationType;
+	private boolean isDelete;
 
-    // Getters and Setters
-    public int getCommentId() {
-        return commentId;
-    }
+	// Getters and Setters
 
-    public void setCommentId(int commentId) {
-        this.commentId = commentId;
-    }
+	public int getAssociatedId() {
+		return associatedId;
+	}
 
-    public int getX() {
-        return x;
-    }
+	public void setAssociatedId(int associatedId) {
+		this.associatedId = associatedId;
+	}
 
-    public void setX(int x) {
-        this.x = x;
-    }
+	public String getAssociationType() {
+		return associationType;
+	}
 
-    public int getY() {
-        return y;
-    }
+	public void setAssociationType(String associationType) {
+		this.associationType = associationType;
+	}
 
-    public void setY(int y) {
-        this.y = y;
-    }
+	public boolean isDelete() {
+		return isDelete;
+	}
 
-    public int getAbTestId() {
-        return abTestId;
-    }
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
 
-    public void setAbTestId(int abTestId) {
-        this.abTestId = abTestId;
-    }
+	public int getCommentId() {
+		return commentId;
+	}
 
-    public int getUserID() {
-        return userID;
-    }
+	public void setCommentId(int commentId) {
+		this.commentId = commentId;
+	}
 
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
+	public int getX() {
+		return x;
+	}
 
-    public String getUserName() {
-        return userName;
-    }
+	public void setX(int x) {
+		this.x = x;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public int getY() {
+		return y;
+	}
 
-    public String getCommentText() {
-        return commentText;
-    }
+	public void setY(int y) {
+		this.y = y;
+	}
 
-    public void setCommentText(String commentText) {
-        this.commentText = commentText;
-    }
+	public int getAbTestId() {
+		return abTestId;
+	}
 
-    public Timestamp getTimestamp() {
-        return timestamp;
-    }
+	public void setAbTestId(int abTestId) {
+		this.abTestId = abTestId;
+	}
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
-    }
+	public int getUserID() {
+		return userID;
+	}
 
-    public int getRoomId() {
-        return roomId;
-    }
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
 
-    public void setRoomID(int roomId) {
-        this.roomId = roomId;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public int getIdeaId() {
-        return ideaId;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public void setIdeaId(int ideaId) {
-        this.ideaId = ideaId;
-    }
+	public String getCommentText() {
+		return commentText;
+	}
+
+	public void setCommentText(String commentText) {
+		this.commentText = commentText;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
+	}
+
 }

@@ -1,6 +1,5 @@
 package com.kb.star.command.addFunction;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,11 +9,11 @@ import org.springframework.ui.Model;
 
 import com.kb.star.util.PinTestsDao;
 
-public class AddCoordinateCommand implements AddCommand {
+public class PinTestStopCommand implements AddCommand {
 
     private SqlSession sqlSession;
 
-    public AddCoordinateCommand(SqlSession sqlSession) {
+    public PinTestStopCommand(SqlSession sqlSession) {
         this.sqlSession = sqlSession;
     }
 
@@ -22,13 +21,9 @@ public class AddCoordinateCommand implements AddCommand {
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
         HttpServletRequest request = (HttpServletRequest) map.get("request");
-
-        int x = Integer.parseInt(request.getParameter("x"));
-        int y = Integer.parseInt(request.getParameter("y"));
-        int abTestId = Integer.parseInt(request.getParameter("abTestId"));
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        int pinTestId = Integer.parseInt(request.getParameter("pinTestId"));
 
         PinTestsDao dao = sqlSession.getMapper(PinTestsDao.class);
-        dao.insertCoordinate(x, y, abTestId, userId);
+        dao.updatePinTestStatus(pinTestId);
     }
 }

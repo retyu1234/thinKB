@@ -27,8 +27,11 @@ import com.kb.star.command.addFunction.ABTestVote;
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.addFunction.AddVoteOptionsCommand;
 import com.kb.star.command.addFunction.MakeAorBCommand;
+import com.kb.star.command.addFunction.MakePinTestCommand;
 import com.kb.star.command.addFunction.MakeVoteCommand;
+import com.kb.star.command.addFunction.PinTestDetailCommand;
 import com.kb.star.command.addFunction.VoteListCommand;
+import com.kb.star.command.addFunction.pinListCommand;
 import com.kb.star.command.room.UserListCommand;
 import com.kb.star.dto.AddVoteDto;
 import com.kb.star.util.AddVoteDao;
@@ -217,5 +220,41 @@ public class AddFunctionController {
 		command.execute(model);
 		return "/addFunction/AorBFeedbackList";
 	}
+
+	// 핀테스트 목록
+	@RequestMapping("/pinList")
+	public String pinList(HttpSession session, HttpServletRequest request, Model model) {
+		int userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("request", request);
+		model.addAttribute("userId", userId);
+		command = new pinListCommand(sqlSession);
+		command.execute(model);
+		return "/addFunction/pinList";
+	}
+
+	// 핀테스트 만들기
+	@RequestMapping("/makePinTest")
+	public String makePin() {
+		return "/addFunction/makePin";
+	}
+
+	// 핀테스트 생성후 목록페이지로 리다이렉트
+	@RequestMapping(value = "/processPinTest", method = RequestMethod.POST)
+	public String processPinTest(MultipartHttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		command = new MakePinTestCommand(sqlSession);
+		command.execute(model);
+		return "redirect:/pinList";
+	}
+	
+	// 핀테스트 세부 내용
+	@RequestMapping(value = "/pinTestDetail", method = RequestMethod.GET)
+	public String ㅔ(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		command = new PinTestDetailCommand(sqlSession); // 변경된 커맨드 클래스 사용
+		command.execute(model);
+		return "/addFunction/pinTestDetail";
+	}
+
 
 }
