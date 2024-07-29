@@ -189,24 +189,13 @@ public class IdeaRoomController {
 		return "redirect:/userManagement";
 	}
 
-	// 참여자 알림발송화면 방장
-	@RequestMapping("/sendNotifications")
-	public String sendNotifications(HttpSession session, HttpServletRequest request, Model model) {
-		Integer departmentId = (Integer) session.getAttribute("departmentId");
-		model.addAttribute("request", request);
-		model.addAttribute("departmentId", departmentId);
-		command = new UserManagement(sqlSession);
-		command.execute(model);
-		return "ideaRoom/notiSendRoom";
-	}
-
 	//참여자별 알림발송
 	@RequestMapping("/sendNotiUser")
 	public String sendNotiUser(HttpServletRequest request,Model model) {
 		model.addAttribute("request",request);
 		command=new SendNotiUser(sqlSession);
 		command.execute(model);
-		return "redirect:/sendNotifications";
+		return "redirect:/userManagement";
 	}
 	//미참여자 알림발송
 	@RequestMapping("/noPartiNoti")

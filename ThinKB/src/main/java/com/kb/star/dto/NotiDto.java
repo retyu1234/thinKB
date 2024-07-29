@@ -10,7 +10,7 @@ public class NotiDto {
     private boolean isRead;     // 읽음 여부
     private boolean isDelete;   // 삭제 여부
     private Timestamp createdAt;// 생성 시간
-    
+    private int roomId;
     private Ideas idea; // noticeList.jsp에서 한 번의 반복문만 돌리기 위한 아이디어 정보 추가
     private String roomTitle; // noticeList.jsp에서 한 번의 반복문만 돌리기 위한 roomTitle 정보 추가
 
@@ -72,7 +72,13 @@ public class NotiDto {
 	public void setRoomTitle(String roomTitle) {
 		this.roomTitle = roomTitle;
 	}
-
+	public int getRoomId() {
+		return roomId;
+	}
+	public void setRoomId(int roomId) {
+		this.roomId = roomId;
+	}
+	
 	
 }
 
