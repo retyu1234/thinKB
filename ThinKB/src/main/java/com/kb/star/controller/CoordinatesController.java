@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import com.kb.star.command.addFunction.ABFeedbackDetailCommand;
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.addFunction.AddCommentCommand;
+import com.kb.star.command.addFunction.PinTestStopCommand;
 import com.kb.star.dto.UserCommentsDto;
-import com.kb.star.util.UserCommentsDao;
+import com.kb.star.util.PinTestsDao;
 
 @Controller
 public class CoordinatesController {
@@ -58,7 +59,7 @@ public class CoordinatesController {
 	@ResponseBody
 	public String deleteComment(@RequestParam("commentId") String commentId, HttpServletResponse response)
 			throws IOException {
-		UserCommentsDao dao = sqlSession.getMapper(UserCommentsDao.class);
+		PinTestsDao dao = sqlSession.getMapper(PinTestsDao.class);
 		boolean success = dao.deleteComment(commentId);
 
 		if (success) {
@@ -70,4 +71,12 @@ public class CoordinatesController {
 		}
 	}
 
+	@RequestMapping(value = "/stopTest", method = RequestMethod.POST)
+	@ResponseBody
+	public String stopTest(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		command = new PinTestStopCommand(sqlSession);
+		command.execute(model);
+		return "redirect:/pinList";
+	}
 }

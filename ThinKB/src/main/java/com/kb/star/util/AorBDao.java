@@ -31,12 +31,5 @@ public interface AorBDao {
 	// 11:08 추가
 	List<AorBDto> getAorBFeedbackList(@Param("departmentId") int departmentId);
 
-	// 좌표 삽입
-	void insertCoordinate(@Param("x") int x, @Param("y") int y, @Param("abTestId") int abTestId,
-			@Param("userId") int userId);
-
-	// 댓글 삽입
-	void insertComment(@Param("x") int x, @Param("y") int y, @Param("abTestId") int abTestId,
-			@Param("userId") int userId, @Param("commentText") String commentText);
 
 }

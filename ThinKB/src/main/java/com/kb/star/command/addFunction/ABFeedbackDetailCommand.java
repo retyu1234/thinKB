@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import com.kb.star.dto.AorBDto;
 import com.kb.star.dto.UserCommentsDto;
 import com.kb.star.util.AorBDao;
-import com.kb.star.util.UserCommentsDao;
+import com.kb.star.util.PinTestsDao;
 
 public class ABFeedbackDetailCommand implements AddCommand {
 
@@ -38,8 +38,8 @@ public class ABFeedbackDetailCommand implements AddCommand {
 		double bPercentage = totalVotes > 0 ? (double) dto.getResultBNum() / totalVotes * 100 : 0;
 		
 		// Get comments by abTestId
-		UserCommentsDao userCommentsDao = sqlSession.getMapper(UserCommentsDao.class);
-		List<UserCommentsDto> comments = userCommentsDao.getCommentsByAbTestId(abTestId);
+		PinTestsDao pinTestDao = sqlSession.getMapper(PinTestsDao.class);
+		List<UserCommentsDto> comments = pinTestDao.getCommentsByAbTestId(abTestId);
 		model.addAttribute("comments", comments);
 
 		model.addAttribute("abtest", dto);
