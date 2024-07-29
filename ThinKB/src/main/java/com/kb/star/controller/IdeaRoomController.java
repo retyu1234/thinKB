@@ -207,7 +207,7 @@ public class IdeaRoomController {
 		model.addAttribute("request", request);
 		command = new SendNotiUser(sqlSession);
 		command.execute(model);
-		return "redirect:/sendNotifications";
+		return "redirect:/userManagement";
 	}
 
 	// 미참여자 알림발송

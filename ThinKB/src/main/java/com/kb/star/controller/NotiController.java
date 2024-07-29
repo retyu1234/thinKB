@@ -1,9 +1,13 @@
 package com.kb.star.controller;
 
+import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,10 +20,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.roomManger.AllReadCommand;
@@ -113,11 +119,43 @@ public class NotiController {
 
         NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
         List<NotiDto> notifications = notiDao.getUnreadNotificationsSinceLogin(userId, loginTime);
+        
+        // 각 알림에 대해 아이디어 정보와 회의방 제목 설정
+        for (NotiDto notification : notifications) {
+            Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
+            notification.setIdea(idea);
+            
+            if (idea != null) {
+                MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
+                if (meetingRoom != null) {
+                    notification.setRoomTitle(meetingRoom.getRoomTitle());
+                }
+            }
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         String jsonResponse = mapper.writeValueAsString(notifications);
 
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(jsonResponse);
+    }
+    //실시간 알림 데이터 받기
+    @RequestMapping("/getInitialNotifications")
+    @ResponseBody
+    public List<NotiDto> getInitialNotifications(HttpSession session) {
+        List<NotiDto> notifications = (List<NotiDto>) session.getAttribute("notifications");
+        if (notifications == null) {
+            notifications = new ArrayList();
+        }
+        return notifications;
+    }
+    //실시간 알림 세션 담기
+    @RequestMapping("/updateNotificationSession")
+    @ResponseBody
+    public void updateNotificationSession(@RequestParam("notifications") String notificationsJson, HttpSession session) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<NotiDto> notifications = mapper.readValue(notificationsJson, new TypeReference<List<NotiDto>>() {});
+        session.setAttribute("notifications", notifications);
     }
 
     @RequestMapping("/notiTest")
@@ -141,6 +179,31 @@ public class NotiController {
     	    }
     	    
     	return "redirect:/noticeList";
+    }
+    //실시간 알림 전체읽음
+    @RequestMapping(value = "/readAllNotifications", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Boolean> readAllNotifications(HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        Map<String, Boolean> response = new HashMap<>();
+        if (userId != null) {
+            NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
+            notiDao.allReadNotification(userId);
+            response.put("success", true);
+        } else {
+            response.put("success", false);
+        }
+        return response;
+    }
+    //실시간 알림 개별알림리스트 읽음
+    @RequestMapping(value = "/readNotification", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Boolean> readNotification(@RequestParam("notificationId") int notificationId) {
+        Map<String, Boolean> response = new HashMap<>();
+        NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
+        notiDao.readNotification(notificationId);
+        response.put("success", true);
+        return response;
     }
 
 }

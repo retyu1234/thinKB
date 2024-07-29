@@ -371,7 +371,6 @@ button:hover {
 			<button id="nextStepButton" onclick="confirmNextStep()">다음
 				단계로</button>
 		</c:if>
-
 		<div class="tabs">
 			<div class="tab tab-smart"
 				onclick="showTab('tab-smart', '#007bff', '${roomId}', '${ideaId}')">똑똑이</div>

@@ -38,7 +38,7 @@ public class SendNotiUser implements RoomCommand {
 	    
 	    RoomDao dao = sqlSession.getMapper(RoomDao.class);
 	    if (!selectedEmployees.isEmpty()) {
-	        dao.insertNotifications(selectedEmployees, notiMessage);
+	        dao.insertNotifications(selectedEmployees, notiMessage,roomId);
 	    } 
 	}
 
