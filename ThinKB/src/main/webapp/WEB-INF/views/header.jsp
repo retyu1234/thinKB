@@ -316,6 +316,7 @@
                 <a href="#">마이페이지</a>
                 <a href="./AorBList">A/B테스트</a> 
                 <a href="./voteList">투표</a>
+                <a href="./pinList">핀메모(수정중)</a>
             </div>
             <div class="profile">
             <a href="<c:url value='./mypage'/>">

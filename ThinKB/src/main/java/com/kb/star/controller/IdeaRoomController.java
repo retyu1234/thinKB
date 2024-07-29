@@ -76,7 +76,7 @@ public class IdeaRoomController {
 		model.addAttribute("id", id);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
-		RoomDao dao=sqlSession.getMapper(RoomDao.class);
+		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
 		model.addAttribute("meetingRoom", info);
 
@@ -134,6 +134,7 @@ public class IdeaRoomController {
 		command.execute(model);
 		return "redirect:/roomDetail";
 	}
+
 	// 아이디어 초안 타이머 시간내 수정하기
 	@RequestMapping("/updateIdea")
 	public String updateIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
@@ -189,19 +190,31 @@ public class IdeaRoomController {
 		return "redirect:/userManagement";
 	}
 
-	//참여자별 알림발송
+	// 참여자 알림발송화면 방장
+	@RequestMapping("/sendNotifications")
+	public String sendNotifications(HttpSession session, HttpServletRequest request, Model model) {
+		Integer departmentId = (Integer) session.getAttribute("departmentId");
+		model.addAttribute("request", request);
+		model.addAttribute("departmentId", departmentId);
+		command = new UserManagement(sqlSession);
+		command.execute(model);
+		return "ideaRoom/notiSendRoom";
+	}
+
+	// 참여자별 알림발송
 	@RequestMapping("/sendNotiUser")
-	public String sendNotiUser(HttpServletRequest request,Model model) {
-		model.addAttribute("request",request);
-		command=new SendNotiUser(sqlSession);
+	public String sendNotiUser(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		command = new SendNotiUser(sqlSession);
 		command.execute(model);
 		return "redirect:/userManagement";
 	}
-	//미참여자 알림발송
+
+	// 미참여자 알림발송
 	@RequestMapping("/noPartiNoti")
-	public String noPartiNoti(HttpServletRequest request,Model model) {
-		model.addAttribute("request",request);
-		command=new NoPartiNoti(sqlSession);
+	public String noPartiNoti(HttpServletRequest request, Model model) {
+		model.addAttribute("request", request);
+		command = new NoPartiNoti(sqlSession);
 		command.execute(model);
 		return "redirect:/sendNotifications";
 	}
@@ -257,8 +270,11 @@ public class IdeaRoomController {
 	// 처음 투표완료 후 방장이 투표결과 목록 확인
 	@RequestMapping("/stage2Clear")
 	public String stage2Clear(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		int userId = (Integer) session.getAttribute("userId");
 		int roomId = Integer.parseInt((String) request.getParameter("roomId"));
 		int stage = Integer.parseInt((String) request.getParameter("stage"));
+		model.addAttribute("userId", userId);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
 

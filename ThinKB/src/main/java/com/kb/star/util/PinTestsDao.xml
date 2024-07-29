@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.star.util.PinTestsDao">
+
+	<!-- 좌표 삽입 (ABTest 기준) -->
+	<insert id="insertCoordinate">
+		INSERT INTO UserComments (X, Y, AssociatedID,
+		AssociationType, UserID,
+		UserName)
+		SELECT #{x}, #{y}, #{abTestId}, 'AB',
+		#{userId}, u.userName
+		FROM Users u
+		WHERE u.userID = #{userId}
+	</insert>
+
+	<!-- AB테스트 좌표에 메모 남기기 -->
+	<insert id="insertComment">
+		INSERT INTO UserComments (X, Y, AssociatedID,
+		AssociationType, UserID,
+		UserName, CommentText)
+		SELECT #{x}, #{y},
+		#{abTestId}, 'AB', #{userId}, u.userName, #{commentText}
+		FROM Users u
+		WHERE u.userID = #{userId}
+	</insert>
+
+	<!-- AbTestId로 메모 가져오기 -->
+	<select id="getCommentsByAbTestId"
+		resultType="com.kb.star.dto.UserCommentsDto">
+		SELECT * FROM UserComments
+		WHERE AssociatedID=#{abTestId}
+		AND AssociationType='AB' AND IsDelete=0
+	</select>
+
+	<!-- 개별 메모 삭제하기 (IsDelete를 1로 설정) -->
+	<update id="deleteComment">
+		UPDATE UserComments
+		SET IsDelete = 1
+		WHERE CommentID =
+		#{commentId}
+	</update>
+
+	<!-- 새로운 핀테스트 만들기 -->
+	<insert id="insertPinTest">
+		INSERT INTO PinTests (TestName, FileName, UserID,
+		DepartmentID)
+		VALUES (#{testName}, #{fileName}, #{userId},
+		#{departmentId})
+	</insert>
+
+	<!-- pinTestId로 테스트 가져오기 -->
+	<select id="getPinTestById"
+		resultType="com.kb.star.dto.PinTestsDto">
+		SELECT * FROM PinTests
+		WHERE PintestID = #{pinTestId} AND
+		IsDelete = 0
+	</select>
+
+	<!-- 핀테스트 전체 가져오기 -->
+	<select id="getAllPinTests"
+		resultType="com.kb.star.dto.PinTestsDto">
+		SELECT p.*
+		FROM PinTests p
+		WHERE EXISTS (
+		SELECT 1
+		FROM Users u
+		WHERE u.DepartmentID = #{departmentId}
+		)
+		ORDER BY p.CreatedAt DESC
+	</select>
+
+	<!-- 핀테스트 좌표에 메모 남기기 -->
+	<insert id="insertCommentPinId">
+		INSERT INTO UserComments (X, Y, AssociatedID,
+		AssociationType, UserID,
+		UserName, CommentText)
+		SELECT #{x}, #{y},
+		#{pinTestId}, 'PinTest', #{userId}, u.userName,
+		#{commentText}
+		FROM
+		Users u
+		WHERE u.userID = #{userId}
+	</insert>
+
+	<!-- pinTestId로 메모 가져오기 -->
+	<select id="getCommentsByPinTestId"
+		resultType="com.kb.star.dto.UserCommentsDto">
+		SELECT * FROM UserComments
+		WHERE AssociatedID=#{pinTestId}
+		AND AssociationType='PinTest' AND
+		IsDelete=0
+	</select>
+
+
+	<!-- 핀테스트 수정 -->
+	<update id="updatePinTest">
+		UPDATE PinTests
+		SET TestName = #{testName}, FileName =
+		#{fileName}
+		WHERE PinTestID = #{pinTestId}
+	</update>
+
+	<!-- 핀테스트 삭제 (IsDelete를 1로 설정) -->
+	<update id="deletePinTest">
+		UPDATE PinTests
+		SET IsDelete = 1
+		WHERE PinTestID =
+		#{pinTestId}
+	</update>
+
+	<!-- 핀테스트 종료 (status를 1로 설정) -->
+	<update id="updatePinTestStatus">
+		UPDATE PinTests
+		SET status = 1
+		WHERE pinTestId = #{pinTestId}
+	</update>
+
+
+</mapper>
