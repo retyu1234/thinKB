@@ -22,11 +22,10 @@ body {
 }
 
 .content {
-	margin-top: 60px; /* 헤더 높이만큼 여백 추가 */
+	margin-top: 100px; /* 헤더 높이만큼 여백 추가 */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-bottom: 100px;
 }
 
 .topic-box {
@@ -39,14 +38,14 @@ body {
 	left: 0;
 	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
 		rgba(0, 0, 0, 0.25);
-	border-radius: var(- -br-31xl) 0 var(- -br-31xl) 0;
+	border-radius: var(--br-31xl) 0 var(--br-31xl) 0;
 	background-color: rgba(255, 255, 255, 0.36);
 	border: 1px solid #7f6000;
 	box-sizing: border-box;
 }
 
 .topic-title {
-	width: 90%;
+	width: 50px;
 	position: relative;
 	font-weight: 600;
 	display: inline-block;
@@ -76,9 +75,9 @@ body {
 	top: 0;
 	right: 0;
 	left: 0;
-	border-radius: var(- -br-11xl);
-	background-color: var(- -color-white);
-	border: 5px solid var(- -color-gold);
+	border-radius: var(--br-11xl);
+	background-color: var(--color-white);
+	border: 5px solid var(--color-gold);
 	z-index: 1;
 }
 
@@ -119,7 +118,7 @@ body {
 	position: relative;
 	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
 		rgba(0, 0, 0, 0.25);
-	border-radius: var(- -br-31xl);
+	border-radius: var(--br-31xl);
 	background-color: #ffc000;
 	max-width: 100%;
 }
@@ -130,7 +129,7 @@ body {
 	position: relative;
 	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
 		rgba(0, 0, 0, 0.25);
-	border-radius: var(- -br-31xl);
+	border-radius: var(--br-31xl);
 	background-color: #A9A9A9;
 	max-width: 100%;
 }
@@ -144,11 +143,6 @@ body {
 	font-size: 20px;
 	cursor: pointer;
 	margin-top: 20px;
-	display: block;
-}
-
-.vote-button.hidden {
-	display: none;
 }
 
 .modal {
@@ -208,9 +202,9 @@ body {
 	width: 100%;
 	height: 100%;
 	overflow-y: auto;
-	background-color: var(- -color-white);
-	border: 5px solid var(- -color-gold);
-	border-radius: var(- -br-11xl);
+	background-color: var(--color-white);
+	border: 5px solid var(--color-gold);
+	border-radius: var(--br-11xl);
 	box-sizing: border-box;
 	padding: 10px; /* Add padding if needed */
 }
@@ -223,66 +217,63 @@ body {
 .idea-box.reply-answer {
 	background-color: #EEEEEE;
 }
-<<<<<<< HEAD
 
 .vote-info-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 auto; /* 중앙 정렬 */
-    padding: 0 15%; /* 좌우에 15%씩 패딩 추가 */
-    box-sizing: border-box; /* 패딩을 너비에 포함 */
-    margin-bottom: 10px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 auto; /* 중앙 정렬 */
+	padding: 0 15%; /* 좌우에 15%씩 패딩 추가 */
+	box-sizing: border-box; /* 패딩을 너비에 포함 */
+	margin-bottom: 10px;
 }
 
 .vote-info {
-    text-align: left;
+	text-align: left;
 }
 
 .next-step-container {
-    text-align: right;
+	text-align: right;
 }
-
-=======
->>>>>>> refs/heads/main
 </style>
 </head>
 <body>
-	<div id="timer-section" style="margin-top: 100px; margin-left: 15%; margin-right: 15%;"><%@ include
+	<div id="timer-section" style="margin-top: 100px;"><%@ include
 			file="../Timer.jsp"%></div>
 	<input type="hidden" id="session-user-id"
 		value="${sessionScope.userId}">
 	<input type="hidden" id="session-room-id"
 		value="${sessionScope.roomId}">
-		
-    <!-- 방장인 경우에만 "다음 단계" 버튼을 표시 -->
-    <div class="vote-info-container">
-    <c:if test="${userId == meetingRoom.getRoomManagerId()}">
-    <div class="vote-info">
-        <h2>현재 투표 참여인원 : ${voteCnt}명 / ${total}명</h2>
-    </div>
-    
-        <div class="next-step-container">
-            <form id="nextStageForm" action="./stage2Clear" method="post">
-                <input type="hidden" name="roomId" value="${meetingRoom.roomId}">
-                <input type="hidden" name="stage" value="${meetingRoom.stageId}">
-                <button id="nextStepButton" class="vote-button" onclick="goToNextStep()">다음 단계</button>
-            </form>
-        </div>
-    </c:if>
-</div>
 
 	<div class="idea_header">
 		<jsp:include page="../header.jsp" />
 	</div>
 	<!-- 방장 sideBar -->
 	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
-		<%@ include file="../sideBar.jsp"%>
+		<%@ include file="../leftSideBar.jsp"%>
 	</c:if>
 	<div class="content">
 		<c:if test="${not empty sessionScope.Message}">
 			<div class="alert">${sessionScope.Message}</div>
 		</c:if>
+		<!-- 방장인 경우에만 "다음 단계" 버튼을 표시 -->
+		<div class="vote-info-container">
+			<c:if test="${userId == meetingRoom.getRoomManagerId()}">
+				<div class="vote-info">
+					<h2>현재 투표 참여인원 : ${voteCnt}명 / ${total}명</h2>
+				</div>
+
+				<div class="next-step-container">
+					<form id="nextStageForm" action="./stage2Clear" method="post">
+						<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
+						<input type="hidden" name="stage" value="${meetingRoom.stageId}">
+						<button id="nextStepButton" class="vote-button"
+							onclick="goToNextStep()">다음 단계</button>
+					</form>
+				</div>
+			</c:if>
+		</div>
+
 		<div class="div">
 			<div class="selected-option">
 				<div class="topic-box"></div>
@@ -308,34 +299,43 @@ body {
 		</div>
 		<button id="voteButton" class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
 
+		<!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
+		<form id="nextStageForm" action="./stage2Clear" method="post">
+			<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
+			<input type="hidden" name="stage" value="${meetingRoom.stageId}">
+			<div style="text-align: right; margin-top: 20px;">
+				<button id="nextStepButton" class="vote-button"
+					style="display: none;" onclick="goToNextStep()">다음 단계</button>
+			</div>
+		</form>
 	</div>
 
 	<!-- Modal window -->
 	<div id="myModal" class="modal">
 		<div class="modal-content">
-			 <span class="close" onclick="closeModal()">&times;</span>
-			 <p>
+			<span class="close" onclick="closeModal()">&times;</span>
+			<p>
 				<span><input type="hidden" id="modal-idea-id"></span>
-			 </p>
-			 <p>
+			</p>
+			<p>
 				<span><input type="hidden" id="modal-idea-title"></span>
-			 </p>
-			 <p>
+			</p>
+			<p>
 				<span><input type="hidden" id="modal-idea-userId"></span>
-			 </p>
-			 <p>
+			</p>
+			<p>
 				상세설명 : <span id="modal-idea-description"></span>
-			 </p>
-			 <p>질문하기</p>
-			 <div class="modal-idea-container" id="modal-idea-replies">
+			</p>
+			<p>질문하기</p>
+			<div class="modal-idea-container" id="modal-idea-replies">
 				<!-- 댓글 내용이 여기에 동적으로 추가됩니다 -->
-			 </div>
-			 <div id="input-reply-container">
+			</div>
+			<div id="input-reply-container">
 				<input type="text" id="replyContent" placeholder="댓글을 입력하세요" />
 				<button onclick="submitReply()" id="input-button">입력</button>
-			 </div>
+			</div>
 
-			 <div id="reply-form-container" style="display: none;">
+			<div id="reply-form-container" style="display: none;">
 				<p>
 					답변할 질문: <span id="replying-to-question"></span>
 				</p>
@@ -344,15 +344,17 @@ body {
 				<div id="reply-button-container">
 					<button onclick="submitReplyAnswer()" id="reply-button">답글달기</button>
 				</div>
-			 </div>
+			</div>
 		</div>
 	</div>
+
 
 	<script>
     let selectedIdea = null;
     let selectedIdeaId = null;
     let selectedIdeaDescription = null;
     let selectedIdeaUserId = null;
+    let timerEnded = false; // 타이머 종료 여부를 추적하는 변수
 
     function toggleSelect(element, ideaId, ideaTitle, ideaDescription, ideaUserId, isCircle) {
         if (selectedIdea) {
@@ -388,18 +390,23 @@ body {
         document.getElementById("modal-idea-description").innerText = ideaDescription;
         document.getElementById("modal-idea-userId").innerText = ideaUserId;
 
-        const sessionUserId = document.getElementById("session-user-id").value;
-
-        if (Number(sessionUserId) === Number(ideaUserId)) {
-            document.getElementById("reply-button").style.display = "block";
-            document.getElementById("replyContent").style.display = "none";
-            document.getElementById("input-button").style.display = "none";
-            document.getElementById("input-button").innerText = "답변전송";
+        if (timerEnded) {
+            document.getElementById("input-reply-container").style.display = "none";
+            document.getElementById("reply-form-container").style.display = "none";
         } else {
-            document.getElementById("reply-button").style.display = "none";
-            document.getElementById("replyContent").style.display = "block";
-            document.getElementById("input-button").style.display = "block";
-            document.getElementById("input-button").innerText = "입력";
+            const sessionUserId = document.getElementById("session-user-id").value;
+
+            if (Number(sessionUserId) === Number(ideaUserId)) {
+                document.getElementById("reply-button").style.display = "block";
+                document.getElementById("replyContent").style.display = "none";
+                document.getElementById("input-button").style.display = "none";
+                document.getElementById("input-button").innerText = "답변전송";
+            } else {
+                document.getElementById("reply-button").style.display = "none";
+                document.getElementById("replyContent").style.display = "block";
+                document.getElementById("input-button").style.display = "block";
+                document.getElementById("input-button").innerText = "입력";
+            }
         }
 
         // AJAX 요청을 통해 댓글 데이터 불러오기
@@ -420,7 +427,7 @@ body {
                 replyElement.innerHTML = replyHtml;
                 replyElement.onclick = function() {
                     const sessionUserId = document.getElementById("session-user-id").value;
-                    if (Number(sessionUserId) !== Number(reply.userId) && Number(sessionUserId) === Number(ideaUserId)) {
+                    if (!timerEnded && Number(sessionUserId) !== Number(reply.userId) && Number(sessionUserId) === Number(ideaUserId)) {
                         showReplyForm(reply.ideaReply, replyHtml.replace(/"/g, '&quot;').replace(/'/g, '&#39;'));
                     } else {
                         hideReplyForm();
@@ -586,20 +593,17 @@ body {
     });
     
     //타이머 종료시 함수
-function onTimerEnd() {
-    document.getElementById("voteButton").style.display = "none";
-/*     if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
+    function onTimerEnd() {
+	timerEnded = true; // 타이머 종료 표시
+	if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
         document.getElementById("nextStepButton").style.display = "block";
-    } */
+    }
+	document.getElementById("voteButton").style.display = "none";
 }
-        // Hide the reply form and input fields
-        document.getElementById("input-reply-container").style.display = "none";
-        document.getElementById("reply-form-container").style.display = "none";
-    }
 
-    function goToNextStep() {
-        document.getElementById('nextStageForm').submit();
-    }
+function goToNextStep() {
+	document.getElementById('nextStageForm').submit();
+}
 
 </script>
 </body>
