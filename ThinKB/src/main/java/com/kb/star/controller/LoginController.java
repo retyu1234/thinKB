@@ -111,4 +111,9 @@ public class LoginController {
 		return "guide";
 	}
 	
+	@RequestMapping("/viewTest")
+	public String viewTest(HttpServletRequest request,Model model) {
+		return "viewTest";
+	}
+	
 }

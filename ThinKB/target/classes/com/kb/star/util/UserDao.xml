@@ -127,7 +127,7 @@
 		where mr.IsDelete = 0
 		and mrm.UserID = #{param1} and mr.EndDate >=
 		curdate() order by
-		mr.RoomID desc limit 3;
+		mr.RoomID desc limit 4;
 	</select>
 
 	<insert id="insertForwardStage1">

@@ -12,54 +12,90 @@
 	margin: 0;
 	padding: 0;
 	font-family: Arial, sans-serif;
-	background: url('<c:url value="/resources/sf_24011.jpg"/>') no-repeat
-		center center fixed;
-	background-size: cover;
+	caret-color: transparent;
 }
 
 .content {
 	padding: 20px;
-	color: white;
+	color: black;
 	margin-left: 15%;
 	margin-right: 15%;
 }
+        .button-container {
+            position: relative;
+            text-align: right;
+            margin-top: 10%;
+        }
 
-.yellow-button {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
-	padding: 10px 20px; /* 버튼의 여백 */
-	border: none; /* 테두리 없음 */
-	border-radius: 20px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
-	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-	font-weight: bold;
-}
+        .yellow-button {
+            background-color: #60584C; /* 진한 노란색 배경색 */
+            width: 100%;
+            min-height: 150px;
+            height: 100%;
+            color: white; /* 텍스트 색상 */
+            padding: 10px 20px; /* 버튼의 여백 */
+            border: none; /* 테두리 없음 */
+            border-radius: 10px; /* 라운드 처리 */
+            font-size: 20px; /* 텍스트 크기 */
+            cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+            font-weight: bold;
+            position: relative;
+            z-index: 1; /* 버튼의 z-index 설정 */
+        }
 
-.yellow-button:hover {
-	background-color: #696969;
-	color: white;
-}
+        .yellow-button:hover {
+            background-color: #696969;
+            color: white;
+        }
 
-.section-wrapper {
-	margin-top: 20px;
+        .button-container img {
+            position: absolute;
+            top: 50%;
+            right: -25px; /* 버튼 외부에 걸치도록 설정 */
+            transform: translateX(100%), translateY(-30%);
+            width: 300px; /* 이미지 크기 조정 */
+            height: auto;
+            z-index: 2; /* 이미지의 z-index 설정 (버튼보다 위에 위치) */
+        }
+.section-header {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .section-title {
-	font-size: 30px;
-	font-weight: bold;
-	color: white;
-	margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+}
+
+.more-button {
+    background-color: #f0f0f0;
+    border: none;
+    padding: 5px ;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top:20px;
+}
+
+.more-button:hover {
+    background-color: #e0e0e0;
+}
+
+.section-wrapper {
+    margin-top: 20px;
+    width: 100%;
 }
 
 .room-container-wrapper, .notifications-wrapper, .reports-wrapper {
-	background-color: #ffffff; /* 큰 네모칸의 흰색 배경 */
-	border-radius: 30px; /* 라운드 처리 */
-	padding: 30px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-	margin-bottom: 20px;
-	height: 250px;
-	display: flex;           /* 추가 */
-    flex-direction: column;  /* 추가 */
+    background-color: #ffffff;
+    border-radius: 30px;
+    padding: 30px;
+    margin-bottom: 40px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .room-container {
@@ -93,7 +129,7 @@
 
 .notifications-reports-wrapper {
 	display: flex;
-	gap: 7%;
+	gap: 3%;
 }
 
 .notifications, .reports {
@@ -251,13 +287,13 @@
 	/* background-color: white; */
 	padding: 20px;
 	text-align: center;
-	color: white;
+	color: black;
 }
 
 .footer hr {
 	border: none;
 	height: 3px;
-	background-color: #f0f0f0; /* 푸터 가로 줄 색상 */
+	background-color: #000000; /* 푸터 가로 줄 색상 */
 	margin: 20px 0;
 }
 
@@ -278,25 +314,83 @@
     height: auto; /* 높이 자동 조정 */
     margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
 }
-</style>
+.todo-wrapper {
+    display: flex;
+    gap: 2%;
+    flex-wrap: wrap;
+}
 
+.calendar {
+    flex: 1;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 25px;
+    
+}
+
+.todo-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin:25px;
+}
+
+.todo-item {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.todo-item.completed {
+    background-color: #e0e0e0;
+    text-decoration: line-through;
+}
+
+.todo-date {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.todo-content {
+    color: #333;
+    margin-bottom: 0;
+}
+</style>
+<!-- FullCalendar CSS -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
+
+<!-- FullCalendar JS -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: 'auto'
+
+    });
+    calendar.render();
+});
+</script>
 </head>
 <body class="main-body">
 	<%@ include file="./header.jsp"%>
-	<div style="text-align: right; margin-top: 6%; margin-right: 15%;">
-		<button class="yellow-button" onclick="location.href='./newIdeaRoom'">+
-			아이디어 회의방 만들기</button>
-	</div>
-	<div style="height: 400px;"></div>
-
 	<div class="content">
+
+		<img style="width: 100%; margin-top: 13%; caret-color: transparent;"
+			src="<c:url value='/resources/mainBanner.png' />" alt="no Img" />
 		<div class="section-wrapper">
-			<div class="section-title">진행중인 회의방</div>
+			<div class="section-header">
+				<div class="section-title">🧷진행중인 회의방</div>
+				<button class="more-button" onclick="location.href='./meetingList'">+
+					더보기</button>
+			</div>
 			<div class="room-container-wrapper" style="margin: 0 auto;">
-				<div style="text-align: right;">
-					<button class="more-button" onclick="location.href='./meetingList'">
-						+ 더보기</button>
-				</div>
+
 				<div class="room-container" style="text-align: center;">
 					<c:choose>
 						<c:when test="${empty roomList}">
@@ -317,7 +411,8 @@
 									<h2>${li.getRoomTitle()}</h2>
 									<p>방장 : ${li.getRoomManagerId() }</p>
 									<p>종료일 : ${li.getEndDate() }</p>
-									<p>단계 : 
+									<p>
+										단계 :
 										<c:choose>
 											<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
 											<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
@@ -337,63 +432,73 @@
 			</div>
 		</div>
 		<div class="notifications-reports-wrapper">
-		
+
 			<!-- 알림함 -->
-			<div class="section-wrapper" style="width: 43%;">
-    <div class="section-title">알림함</div>
-    <div class="notifications">
-        <div style="text-align: right;">
-            <button class="more-button" onclick="location.href='<c:url value="/noticeList"/>';">+ 더보기</button>
-        </div>
-        <c:forEach var="notification" items="${notifications}">
-            <div class="notification ${notification.read ? 'read' : 'unread'}" onclick="location.href='<c:url value="/noticeList"/>';">
-                <p class="notification-time">
-                    <fmt:formatDate value="${notification.createdAt}" pattern="yyyy-MM-dd HH:mm" />
-                </p>
-                <p class="notification-content">
-                    <c:if test="${notification.getIdeaID() != 0}">
+			<div class="section-wrapper" style="width: 37%;">
+				<div class="section-header">
+					<div class="section-title">📥알림함</div>
+					<button class="more-button"
+						onclick="location.href='<c:url value="/noticeList"/>';">+
+						더보기</button>
+				</div>
+				<div class="notifications">
+					<c:forEach var="notification" items="${notifications}">
+						<div class="notification ${notification.read ? 'read' : 'unread'}"
+							onclick="location.href='<c:url value="/noticeList"/>';">
+							<p class="notification-time">
+								<fmt:formatDate value="${notification.createdAt}"
+									pattern="yyyy-MM-dd HH:mm" />
+							</p>
+							<p class="notification-content">
+								<c:if test="${notification.getIdeaID() != 0}">
                         *${notification.idea.title}*&nbsp;&nbsp;
                     </c:if>
-                    ${notification.message}
-                </p>
-            </div>
-        </c:forEach>
-    </div>
-</div>
-			
-			<!-- 팝업창 추가 -->
-			<div class="popup-overlay">
-			    <div class="popup">
-			    	<div class="delete">
-			    		<img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
-			    	</div>
-			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
-			        <p class="popup-message"></p>
-			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
-			        <button class="popup-close">닫기</button>
-			    </div>
-			</div>
-			
-			<!-- 내 보고서 -->
-			<div class="section-wrapper" style="width: 50%;">
-				<div class="section-title">내 보고서</div>
-				<div class="reports-wrapper">
-					<div style="text-align: right;">
-						<button class="more-button"
-							onclick="location.href='<c:url value="/more-reports"/>';">
-							+ 더보기</button>
-					</div>
-					<div class="reports">
-						<p>보고서 제목 1</p>
-						<p>보고서 제목 2</p>
-						<!-- 추가 보고서 목록을 여기에 추가할 수 있습니다 -->
-					</div>
+								${notification.message}
+							</p>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
-			
+
+			<!-- 팝업창 추가 -->
+			<div class="popup-overlay">
+				<div class="popup">
+					<div class="delete">
+						<img src="./resources/delete.png" alt="Delete"
+							style="width: 40px; height: 40px;">
+					</div>
+					<img id="popup-image" src=""
+						style="display: none; width: 200px; height: 170px;">
+					<p class="popup-message"></p>
+					<button class="popup-dont-show">오늘 하루 보지 않기</button>
+					<button class="popup-close">닫기</button>
+				</div>
+			</div>
+			<!-- 내 보고서 -->
+<div class="section-wrapper" style="width: 60%;">
+    <div class="section-header">
+        <div class="section-title">🗓️오늘의 할일</div>
+    </div>
+    <div class="todo-wrapper">
+        <div class="calendar">
+            <!-- 달력 컴포넌트가 들어갈 자리 -->
+            <div id="calendar"></div>
+        </div>
+            <div class="todo-list">
+                <div class="todo-item">
+                    <p class="todo-date">2023-07-28</p>
+                    <p class="todo-content">회의 준비하기</p>
+                </div>
+                <div class="todo-item completed">
+                    <p class="todo-date">2023-07-29</p>
+                    <p class="todo-content">프로젝트 보고서 작성</p>
+                </div>
+            </div>
+    </div>
+</div>
 		</div>
 	</div>
-	
+
 	<div style="height: 200px;"></div>
 
 	<footer class="footer">
