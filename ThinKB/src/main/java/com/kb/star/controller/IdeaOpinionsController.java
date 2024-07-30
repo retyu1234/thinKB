@@ -280,24 +280,19 @@ public class IdeaOpinionsController {
 
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
 
-        // 좋아요 수 가져오기
-        // int likeNum = ideaOpinionsDao.getLikeNum(opinionId);
         // 사용자가 이미 좋아요를 눌렀는지 확인
-        boolean alreadyLiked = checkIfUserLikedOpinion(userId, opinionId);
+        boolean alreadyLiked = ideaOpinionsDao.checkUserLikedOpinion(userId, opinionId);
         
-        // 좋아요 수 증가 또는 감소
-        if (like && !alreadyLiked) {
-            ideaOpinionsDao.increaseLikeNum(opinionId);  // 좋아요 수 증가
-            ideaOpinionsDao.addUserLike(userId, opinionId);  // 좋아요 추가
-            ideaOpinionsDao.updateContributionLikeNum(ideaId, userId, roomId, true); // 좋아요 수만큼 기여도 증가
-        } else if (!like && alreadyLiked) {
-            ideaOpinionsDao.decreaseLikeNum(opinionId);  // 좋아요 수 감소
-            ideaOpinionsDao.removeUserLike(userId, opinionId);  // 좋아요 제거
-            ideaOpinionsDao.updateContributionLikeNum(ideaId, userId, roomId, false); // 좋아요 수만큼 기여도 증가
+        if (alreadyLiked) {
+            // 이미 좋아요를 눌렀다면 제거
+            ideaOpinionsDao.removeUserLike(userId, opinionId);
+        } else {
+            // 좋아요를 누르지 않았다면 추가
+            ideaOpinionsDao.addUserLike(userId, opinionId);
         }
-
-        int updatedLikeNum = ideaOpinionsDao.getLikeNum(opinionId);
-        model.addAttribute("updatedLikeNum", updatedLikeNum);
+        
+        // 모든 의견의 좋아요 수 업데이트
+        ideaOpinionsDao.updateAllLikeCounts(roomId, ideaId);
 
         return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
     }
@@ -325,28 +320,50 @@ public class IdeaOpinionsController {
         RoomDao dao=sqlSession.getMapper(RoomDao.class);
         MeetingRooms info = dao.roomDetailInfo(roomId);
         model.addAttribute("meetingRoom", info);
-        
-        // Ideas 테이블에서 Title과 StageID 가져오기
-//        List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
-//        model.addAttribute("ideasInfo", ideasInfo);
     	
 		return "firstMeeting/ideaOpinionsClear2";
     }
 
 	// stage 5로 이동 = IdeaRoomController의 case 5 = (방장)보고서 작성화면/(사용자)요약보고서
 	@RequestMapping("/goStage5")
-	public String goStage5(@RequestParam("roomId") int roomId, 
-		            	   @RequestParam("ideaId") int ideaId, 
-		            	   HttpServletRequest request, Model model) {
-		System.out.println("goStage5들어옴");
-
+	public String goStage5(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, 
+		            	   HttpServletRequest request, HttpSession session, Model model) {
+		
+		Integer userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("userId", userId);
 		model.addAttribute("request", request);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("ideaId", ideaId);
+		
+		
+		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+		 // 모든 참가자의 기여도를 한 번에 업데이트
+	    ideaOpinionsDao.updateContributionLikeNum(roomId);
+	    System.out.println("모든 참가자의 기여도 업데이트 완료");
+	    
+	    // 업데이트 후 각 참가자의 좋아요 수 로그 출력 (선택적)
+	    List<Integer> participantList = ideaOpinionsDao.RoomForUserList5(roomId);
+	    for (Integer participantId : participantList) {
+	        int likeNum = ideaOpinionsDao.getLikeNum(participantId, roomId);
+	        System.out.println("userId : " + participantId + " roomId : " + roomId + " likeNum : " + likeNum);
+	    }
+	    
+//		// 방에 참가한 모든 참여자 목록 가져오기
+//		List<Integer> participantList = ideaOpinionsDao.RoomForUserList5(roomId);
+//		for (Integer participantId : participantList) {
+//	        // 각 참여자의 좋아요 수 가져오기
+//	        int likeNum = ideaOpinionsDao.getLikeNum(participantId, roomId); // participantId = roomId에 있는 모든 userList
+//	        System.out.println("회의방 참여 userId : " + participantId + "참가한 roomId : " + roomId);
+//	        System.out.println("likeNum :" + likeNum);
+//	        
+//	        // 좋아요 수만큼 MeetingRoomMembers 테이블의 기여도 증가
+//	        ideaOpinionsDao.updateContributionLikeNum(participantId, roomId);
+//	        System.out.println("userId: " + participantId + "의 기여도 " + likeNum + "만큼 증가 완료");
+//	    }
 
-		return "redirect:/roomDetail";
+        return "firstMeeting/aa";
+		/* return "redirect:/roomDetail"; */
 	}
-   
 }
 	
 

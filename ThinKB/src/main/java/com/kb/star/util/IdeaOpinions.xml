@@ -224,60 +224,24 @@
 	    DELETE FROM LikeVotes WHERE OpinionID = #{opinionId}
 	</delete>
     <!-- 의견 삭제2 -->
-<!--     <delete id="deleteOpinion2" parameterType="int">
-        DELETE FROM IdeaOpinions WHERE OpinionID = #{opinionId}
-    </delete> -->
     <update id="deleteOpinion2" parameterType="int">
         UPDATE IdeaOpinions 
         SET IsDelete = true
         WHERE OpinionID = #{opinionId}
     </update>
     
-    <!-- 좋아요 수 증가 -->
-    <update id="increaseLikeNum">
-        UPDATE IdeaOpinions 
-        SET LikeNum = LikeNum + 1 
-        WHERE OpinionID = #{opinionId}
-    </update>
-
-    <!-- 좋아요 수 감소 -->
-    <update id="decreaseLikeNum">
-        UPDATE IdeaOpinions 
-        SET LikeNum = LikeNum - 1 
-        WHERE OpinionID = #{opinionId}
-    </update>
-
-    <!-- 현재 좋아요 수 가져오기 -->
-    <select id="getLikeNum" resultType="int">
-        SELECT LikeNum 
-        FROM IdeaOpinions 
-        WHERE OpinionID = #{opinionId}
-    </select>
-    
-    <!-- 좋아요 수만큼 MeetingRoomMembers테이블의 기여도 증가 -->
-    <update id="updateContributionLikeNum">
-	    UPDATE MeetingRoomMembers m
-	    JOIN StageParticipation s 
-	    ON m.UserID = s.UserID AND m.RoomID = s.RoomID
-	    SET m.ContributionCnt = m.ContributionCnt + 
-								(CASE 
-						            WHEN #{status} = true THEN 1 
-						            ELSE -1 
-						        END)
-	    WHERE s.IdeaID = #{ideaId} and s.UserID = #{userId} AND s.RoomID = #{roomId} AND s.StageID = 4;
-	</update>
 	
     <!-- 사용자가 특정 의견에 좋아요를 눌렀는지 확인 -->
     <select id="checkUserLikedOpinion" resultType="boolean">
         SELECT COUNT(*) > 0
         FROM LikeVotes
-        WHERE UserID = #{userId} AND OpinionID = #{opinionId} AND IsLike = true
+        WHERE UserID = #{userId} AND OpinionID = #{opinionId}
     </select>
 
     <!-- 좋아요 추가 -->
     <insert id="addUserLike">
-        INSERT INTO LikeVotes (UserID, OpinionID, IsLike)
-        VALUES (#{userId}, #{opinionId}, true)
+        INSERT INTO LikeVotes (UserID, OpinionID)
+        VALUES (#{userId}, #{opinionId})
     </insert>
 
     <!-- 좋아요 제거 -->
@@ -285,6 +249,18 @@
         DELETE FROM LikeVotes
         WHERE UserID = #{userId} AND OpinionID = #{opinionId}
     </delete>
+    
+    <!-- 모든 의견의 좋아요 수 업데이트 -->
+    <update id="updateAllLikeCounts">
+	    UPDATE IdeaOpinions io
+		JOIN (
+		    SELECT OpinionID, COUNT(*) as LikeCount
+		    FROM LikeVotes
+		    GROUP BY OpinionID
+		) lv ON io.OpinionID = lv.OpinionID
+		SET io.LikeNum = COALESCE(lv.LikeCount, 0)
+		WHERE io.IdeaID = #{ideaId}
+	</update>
     
     <!-- 방장전용 - stage4 완료자 수 -->
     <select id="getDoneUserCount2" resultType="int">
@@ -296,6 +272,36 @@
     
     
     <!-- 다음단계 -->
+    <!-- 좋아요 수 가져오기(특정 사용자/roomId기준) -->
+	<select id="getLikeNum" resultType="int">
+	    SELECT COALESCE(SUM(io.LikeNum), 0)
+	    FROM Ideas i
+	    LEFT JOIN IdeaOpinions io ON i.IdeaID = io.IdeaID
+	    WHERE i.RoomID = #{roomId}
+	    AND i.StageID = 5
+	    AND io.UserID = #{userId}
+	    AND io.Step = 2
+	    AND io.IsDelete = false;
+	</select>
+<!--     select IdeaID from Ideas where RoomID=142 and stageID=5;
+	SELECT SUM(LikeNum) FROM IdeaOpinions WHERE UserID = 2854701 and IdeaID = {검색된 IdeaID} and Step=2 and IsDelete = false; -->
+    
+    <!-- 좋아요 수만큼 MeetingRoomMembers테이블의 기여도 증가 -->
+	<update id="updateContributionLikeNum">
+		UPDATE MeetingRoomMembers m
+	    SET ContributionCnt = ContributionCnt + 
+	        (SELECT COALESCE(SUM(io.LikeNum), 0)
+	         FROM Ideas i
+	         LEFT JOIN IdeaOpinions io ON i.IdeaID = io.IdeaID
+	         WHERE i.RoomID = #{roomId}
+	         AND i.StageID = 5
+	         AND io.UserID = m.UserID
+	         AND io.Step = 2
+	         AND io.IsDelete = false)
+	    WHERE m.RoomID = #{roomId};
+	</update> <!-- COALESCE : SUM(LikeNum)이 NULL일 경우 0을 반환 -> 받은 좋아요가 없을 때 NULL이 반환 방지 -->
+	
+	
     <!-- MeetingRooms에서 stage 5로 변경 -->
 	<update id="updateStage5">
 		UPDATE MeetingRooms SET StageID = 5

@@ -24,7 +24,6 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
 
     @Override
     public void execute(Model model) {
-    	System.out.println("ideaOpinionsClear2Command들어옴");
     	
         Map<String, Object> map = model.asMap();
         HttpServletRequest request = (HttpServletRequest) map.get("request");
@@ -41,7 +40,6 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
         
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
-		
 		// MeetingRooms에서 stage 5로 변경
 		ideaOpinionsDao.updateStage5(roomId); 
 		
