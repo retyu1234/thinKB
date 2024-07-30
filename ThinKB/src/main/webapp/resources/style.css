@@ -1,0 +1,73 @@
+@charset "UTF-8";
+body {
+	font-family: Arial, sans-serif;
+}
+
+/* 메인화면, 회의방만들기 콘텐츠 배치 */
+.main-content {
+	
+}
+
+/* 메인제외 개별 회의방 콘텐츠 배치 */
+.room-content {
+	
+}
+
+/* 폰트사이즈 1~5 1:제일큰거, 5:제일작은거 */
+.content-font1 {
+	font-size: 30pt;
+}
+
+.content-font2 {
+	font-size: 26pt;
+}
+
+.content-font3 {
+	font-size: 22pt;
+}
+
+.content-font4 {
+	font-size: 18pt;
+}
+
+.content-font5 {
+	font-size: 15pt;
+}
+
+/* 노란색 버튼 */
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 18pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
+}
+
+/* 회색버튼 */
+.grey-button {
+	background-color: #978A8F;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 18pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.grey-button:hover {
+	background-color: #60584C;
+}
+
+/* 입력창 디폴트글씨 */
+.placeholder {
+	font-size: 15pt;
+	color: lightgrey;
+} 
