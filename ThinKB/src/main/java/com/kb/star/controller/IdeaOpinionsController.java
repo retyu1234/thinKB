@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.room.IdeaOpinions2Command;
+import com.kb.star.command.room.IdeaOpinionsClear2Command;
 import com.kb.star.command.room.IdeaOpinionsClearCommand;
 import com.kb.star.command.room.IdeaOpinionsCommand;
 import com.kb.star.dto.IdeaOpinionsDto;
+import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
@@ -306,7 +308,44 @@ public class IdeaOpinionsController {
     	IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         return ideaOpinionsDao.checkUserLikedOpinion(userId, opinionId);
     }
+    
+	
+    // ideaOpinionsClear2.jsp
+    @RequestMapping("/ideaOpinionsClear2")
+    public String ideaOpinionsClear2(HttpServletRequest request, Model model,
+						    		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId) {
+    	model.addAttribute("request", request);
+    	model.addAttribute("roomId", roomId);
+        model.addAttribute("ideaId", ideaId);
+        
+        IdeaOpinionsClear2Command ideaOpinionsClear2Command = new IdeaOpinionsClear2Command(sqlSession);
+		ideaOpinionsClear2Command.execute(model);
+        
+        // 방장 사이드탭
+        RoomDao dao=sqlSession.getMapper(RoomDao.class);
+        MeetingRooms info = dao.roomDetailInfo(roomId);
+        model.addAttribute("meetingRoom", info);
+        
+        // Ideas 테이블에서 Title과 StageID 가져오기
+//        List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
+//        model.addAttribute("ideasInfo", ideasInfo);
+    	
+		return "firstMeeting/ideaOpinionsClear2";
+    }
 
+	// stage 5로 이동 = IdeaRoomController의 case 5 = (방장)보고서 작성화면/(사용자)요약보고서
+	@RequestMapping("/goStage5")
+	public String goStage5(@RequestParam("roomId") int roomId, 
+		            	   @RequestParam("ideaId") int ideaId, 
+		            	   HttpServletRequest request, Model model) {
+		System.out.println("goStage5들어옴");
+
+		model.addAttribute("request", request);
+		model.addAttribute("roomId", roomId);
+		model.addAttribute("ideaId", ideaId);
+
+		return "redirect:/roomDetail";
+	}
    
 }
 	
