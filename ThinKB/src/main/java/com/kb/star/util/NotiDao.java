@@ -33,4 +33,6 @@ public interface NotiDao {
 
 	//알림 모두 읽기
 	public int allReadNotification(int userId);
+	
+	void readNotification(int notificationId);
 }

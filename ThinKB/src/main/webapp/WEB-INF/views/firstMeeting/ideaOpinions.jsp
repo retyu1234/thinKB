@@ -1,7 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,192 +11,193 @@
 <title>아이디어 회의</title>
 <style>
 body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f0f0f0;
-    margin: 0;
-    font-family: 'Arial', sans-serif;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #f0f0f0;
+	margin: 0;
+	font-family: 'Arial', sans-serif;
 }
 
 .container {
-    width: 60%;
-    background-color: #FFFFFF;
-    border: 1px solid #000;
-    border-radius: 10px;
-    padding: 20px;
-    box-sizing: border-box;
-    margin-top: 50px;
+	width: 60%;
+	background-color: #FFFFFF;
+	border: 1px solid #000;
+	border-radius: 10px;
+	padding: 20px;
+	box-sizing: border-box;
+	margin-top: 50px;
 }
 
 h1 {
-    text-align: center;
-    margin: 20px 0;
+	text-align: center;
+	margin: 20px 0;
 }
 
 .tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 20px;
 }
 
 .tab {
-    padding: 15px 25px;
-    cursor: pointer;
-    font-weight: bold;
-    color: #fff;
-    transition: background-color 0.3s ease;
-    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
-    flex: 1;
-    text-align: center;
+	padding: 15px 25px;
+	cursor: pointer;
+	font-weight: bold;
+	color: #fff;
+	transition: background-color 0.3s ease;
+	clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+	flex: 1;
+	text-align: center;
 }
 
 .tab-smart {
-    background-color: #007bff; /* 파란색 */
+	background-color: #007bff; /* 파란색 */
 }
 
 .tab-positive {
-    background-color: #ffc107; /* 노란색 */
-    color: black;
+	background-color: #ffc107; /* 노란색 */
+	color: black;
 }
 
 .tab-worry {
-    background-color: #28a745; /* 초록색 */
+	background-color: #28a745; /* 초록색 */
 }
 
 .tab-strict {
-    background-color: #dc3545; /* 빨간색 */
+	background-color: #dc3545; /* 빨간색 */
 }
 
 .tab-content-container {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .tab-content {
-    display: none;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #fff;
+	display: none;
+	padding: 20px;
+	box-sizing: border-box;
+	background-color: #fff;
 }
 
 .tab-content.active {
-    display: block;
+	display: block;
 }
 
 .opinion-list {
-    list-style-type: none;
-    padding: 0;
+	list-style-type: none;
+	padding: 0;
 }
 
 .opinion-list li {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .comment-section {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-    border-top: 1px solid #000;
-    padding-top: 10px;
-    flex-wrap: nowrap; /* 요소들이 한 줄에 유지되도록 설정 */
+	display: flex;
+	align-items: center;
+	margin-top: 20px;
+	border-top: 1px solid #000;
+	padding-top: 10px;
+	flex-wrap: nowrap; /* 요소들이 한 줄에 유지되도록 설정 */
 }
 
 .opinion-textarea {
-    width: calc(100% - 120px); /* 너비를 버튼 크기에 맞게 조정 */
-    height: 50px; /* 높이를 버튼과 맞춤 */
-    margin-right: 10px;
-    border: 2px solid #ccc; /* 두께를 두껍게 조정 */
-    padding: 12px; /* 패딩을 더 두껍게 조정 */
-    border-radius: 5px;
-    box-sizing: border-box; /* 패딩 포함한 크기 조정 */
-    font-weight: bold; /* 텍스트 두께를 두껍게 조정 */
-    font-size: 16px; /* 텍스트 크기를 키움 */
+	width: calc(100% - 120px); /* 너비를 버튼 크기에 맞게 조정 */
+	height: 50px; /* 높이를 버튼과 맞춤 */
+	margin-right: 10px;
+	border: 2px solid #ccc; /* 두께를 두껍게 조정 */
+	padding: 12px; /* 패딩을 더 두껍게 조정 */
+	border-radius: 5px;
+	box-sizing: border-box; /* 패딩 포함한 크기 조정 */
+	font-weight: bold; /* 텍스트 두께를 두껍게 조정 */
+	font-size: 16px; /* 텍스트 크기를 키움 */
 }
 
 button {
-    width: 100px; /* 버튼의 너비 고정 */
-    height: 50px; /* 높이를 입력란과 맞춤 */
-    border: none;
-    background-color: #ffc107;
-    color: #000;
-    font-weight: bold;
-    padding: 0 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+	width: 100px; /* 버튼의 너비 고정 */
+	height: 50px; /* 높이를 입력란과 맞춤 */
+	border: none;
+	background-color: #ffc107;
+	color: #000;
+	font-weight: bold;
+	padding: 0 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #e0a800;
+	background-color: #e0a800;
 }
 
 .idea-title-container {
-    border: 1px solid #000;
-    background-color: #EEEEEE;
-    margin-bottom: 20px;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
+	border: 1px solid #000;
+	background-color: #EEEEEE;
+	margin-bottom: 20px;
+	padding: 20px;
+	width: 100%;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
 }
 
 .idea-title-inner {
-    border: 3px solid #FFCC00;
-    background-color: #FFFFFF;
-    border-radius: 20px;
-    padding: 10px;
-    text-align: center;
-    font-size: 30px;
-    margin: 10px 0;
+	border: 3px solid #FFCC00;
+	background-color: #FFFFFF;
+	border-radius: 20px;
+	padding: 10px;
+	text-align: center;
+	font-size: 30px;
+	margin: 10px 0;
 }
 
 .opinion-section {
-    border: 1px solid #000;
-    background-color: #EEEEEE;
-    padding: 20px;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
+	border: 1px solid #000;
+	background-color: #EEEEEE;
+	padding: 20px;
+	width: 100%;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
 }
 
 .opinion-entry {
-    background-color: #EEEEEE;
-    padding: 20px;
-    border-radius: 20px;
-    margin-bottom: 10px;
-    font-size: 22px;
-    position: relative; /* 삭제 버튼 위치를 절대 위치로 설정하기 위해 상대 위치로 설정 */
+	background-color: #EEEEEE;
+	padding: 20px;
+	border-radius: 20px;
+	margin-bottom: 10px;
+	font-size: 22px;
+	position: relative; /* 삭제 버튼 위치를 절대 위치로 설정하기 위해 상대 위치로 설정 */
 }
 
 .opinion-text {
-    display: inline-block;
-    margin-right: 10px;
+	display: inline-block;
+	margin-right: 10px;
 }
 
 .delete-button {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+	position: absolute;
+	right: 10px;
+	top: 10px;
 }
 
 .date {
-    font-size: 12px;
-    color: #777;
-    margin-top: 5px;
+	font-size: 12px;
+	color: #777;
+	margin-top: 5px;
 }
 /* 등록된 의견이 없을 때 */
 .no-opinions {
-    color: #ccc; /* 연한 회색 */
-    font-style: italic; /* 기울임꼴로 표시 */
-    text-align: center; 
-    margin-top: 20px;
-    margin-bottom: 100px;
-    font-size: 25px; 
+	color: #ccc; /* 연한 회색 */
+	font-style: italic; /* 기울임꼴로 표시 */
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 100px;
+	font-size: 25px;
 }
+
 .no-opinions img {
-    margin-bottom: 20px; /* 이미지 아래 여백 */
+	margin-bottom: 20px; /* 이미지 아래 여백 */
 }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -358,6 +360,8 @@ button:hover {
 </head>
 <body>
 <%@ include file="../header.jsp"%>
+<c:if test="${userId == meetingRoom.roomManagerId}">
+<%@ include file="../sideBar.jsp"%></c:if>
 
     <div class="container">
 	    <!-- 타이머 -->
@@ -367,6 +371,10 @@ button:hover {
 	    <c:if test="${userId == roomManagerId}">
 		    <!-- <button id="nextStepButton" style="display:none;">다음 단계로</button> -->
 		    <button id="nextStepButton" onclick="confirmNextStep()">다음 단계로</button>
+		    
+		    <span style="float: right; font-size: 16px;">
+                    	현재 단계 완료 참여자 수: ${doneUserCount}/${userCount} <br>
+            </span>
 		</c:if>
 		
         <div class="tabs">
@@ -379,227 +387,262 @@ button:hover {
             <div class="idea-title-inner">${ideaTitle}</div>
         </div>
         <div class="opinion-section">
-        
-            <div id="tab-smart" class="tab-content active">
-                <h2>
-                    <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
-                    똑똑이 등록된 의견
-                    <span style="float: right; font-size: 16px;">
-                    	내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br>
-                        현재 탭에 전체 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
-                    </span>
-                </h2>
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty smartOpinions}">
-                            <li class="no-opinions">
-                                <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
-                                <br>의견이 아직 등록되지 않았어요! <br><br>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${smartOpinions}">
-                                <li class="opinion-entry">
-                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-                                    <c:if test="${opinion.userID == userId}">
-                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-smart')">삭제</button>
-                                    </c:if>
-                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-                                </li>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-                <div class="comment-section">
-                    <c:if test="${not empty error}">
-                        <div class="error-message">${error}</div>
-                    </c:if>
-                    <!-- <div id="tab-smart" class="tab-content active"> -->
-                   <c:if test="${2 - userOpinionCount > 0}">
-                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
-                   		onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
 
-                        <form:hidden path="hatColor" value="Smart" />
-                        <form:hidden path="currentTab" value="tab-smart" />
-                        <form:hidden path="roomId" value="${roomId}" />
-                        <form:hidden path="ideaId" value="${ideaId}" />
-                        <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})">작성</button>
-                    </form:form>
-                    </c:if>
-                    <!-- </div> -->
-                    <c:if test="${2 - userOpinionCount == 0}">
-			            <div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-			        </c:if>
-                </div>
-                <div class="comment-ended" style="display: none;">
-				    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
-				</div>
-            </div>
+			<div id="tab-smart" class="tab-content active">
+				<h2>
+					<img src="./resources/message.png"
+						style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
+					똑똑이 등록된 의견 <span style="float: right; font-size: 16px;"> 내가
+						추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br> 현재 탭에 전체 의견 갯수:
+						${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능:
+						${maxComments - smartOpinionCount}
+					</span>
+				</h2>
+				<ul class="opinion-list">
+					<c:choose>
+						<c:when test="${empty smartOpinions}">
+							<li class="no-opinions"><img
+								src="./resources/noContents.png" alt="No opinions"
+								style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+								<br>의견이 아직 등록되지 않았어요! <br>
+							<br></li>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="opinion" items="${smartOpinions}">
+								<li class="opinion-entry"><span class="opinion-text">${opinion.userName}:
+										${opinion.opinionText}</span> <c:if
+										test="${opinion.userID == userId}">
+										<button class="delete-button"
+											onclick="deleteOpinion(${opinion.opinionID}, 'tab-smart')">삭제</button>
+									</c:if>
+									<div class="date">
+										<fmt:formatDate value="${opinion.createdAt}"
+											pattern="yyyy-MM-dd HH:mm" />
+									</div></li>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+				<div class="comment-section">
+					<c:if test="${not empty error}">
+						<div class="error-message">${error}</div>
+					</c:if>
 
-            <div id="tab-positive" class="tab-content">
-                <h2>
-                    <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
-                    긍정이 등록된 의견
-                    <span style="float: right; font-size: 16px;">
-                    	내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br>
-                        현재 탭에 전체 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - positiveOpinionCount}
-                    </span>
-                </h2>
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty positiveOpinions}">
-                            <li class="no-opinions">
-                                <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
-                                <br>의견이 아직 등록되지 않았어요! <br><br>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${positiveOpinions}">
-                                <li class="opinion-entry">
-                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-                                    <c:if test="${opinion.userID == userId}">
-                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-positive')">삭제</button>
-                                    </c:if>
-                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-                                </li>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-                <div class="comment-section">
-                    <c:if test="${not empty error}">
-                        <div class="error-message">${error}</div>
-                    </c:if>
-                   <c:if test="${2 - userOpinionCount > 0}">
-                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
-                   		onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
-                        <form:hidden path="hatColor" value="Positive" />
-                        <form:hidden path="currentTab" value="tab-positive" />
-                        <form:hidden path="roomId" value="${roomId}" />
-                        <form:hidden path="ideaId" value="${ideaId}" />
-                        <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount}, ${userOpinionCount})">작성</button>
-                    </form:form>
-                    </c:if>
-			        <c:if test="${2 - userOpinionCount == 0}">
-			            <div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-			        </c:if>
-                </div>
-                <div class="comment-ended" style="display: none;">
-				    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
-				</div>
-            </div>
+					<!-- <div id="tab-smart" class="tab-content active"> -->
+					<c:if test="${2 - userOpinionCount > 0}">
+						<form:form method="post" action="./addOpinion"
+							modelAttribute="opinionForm"
+							onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})"
+							style="display: flex; align-items: center; width: 100%;">
+							<form:hidden path="hatColor" value="Smart" />
+							<form:hidden path="currentTab" value="tab-smart" />
+							<form:hidden path="roomId" value="${roomId}" />
+							<form:hidden path="ideaId" value="${ideaId}" />
+							<form:textarea path="opinionText" class="opinion-textarea"
+								placeholder="의견을 입력해주세요" />
+							<button type="button"
+								onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})">작성</button>
+						</form:form>
 
-            <div id="tab-worry" class="tab-content">
-                <h2>
-                    <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
-                    걱정이 등록된 의견
-                    <span style="float: right; font-size: 16px;">
-                    	내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br>
-                        현재 탭에 전체 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - worryOpinionCount}
-                    </span>
-                </h2>
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty worryOpinions}">
-                            <li class="no-opinions">
-                                <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
-                                <br>의견이 아직 등록되지 않았어요! <br><br>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${worryOpinions}">
-                                <li class="opinion-entry">
-                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-                                    <c:if test="${opinion.userID == userId}">
-                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-worry')">삭제</button>
-                                    </c:if>
-                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-                                </li>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-                <div class="comment-section">
-                    <c:if test="${not empty error}">
-                        <div class="error-message">${error}</div>
-                    </c:if>
-                    <c:if test="${2 - userOpinionCount > 0}">
-                    <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
-                    	onsubmit="return validateAndSubmitForm('tab-worry', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
-                        <form:hidden path="hatColor" value="Worry" />
-                        <form:hidden path="currentTab" value="tab-worry" />
-                        <form:hidden path="roomId" value="${roomId}" />
-                        <form:hidden path="ideaId" value="${ideaId}" />
-                        <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount}, ${userOpinionCount})">작성</button>
-                    </form:form>
-                    </c:if>
-			        <c:if test="${2 - userOpinionCount == 0}">
-			            <div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-			        </c:if>
-                </div>
-                <div class="comment-ended" style="display: none;">
-				    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
+					</c:if>
+					<!-- </div> -->
+					<c:if test="${2 - userOpinionCount == 0}">
+						<div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+					</c:if>
 				</div>
-            </div>
+				<div class="comment-ended" style="display: none;">타이머가
+					종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+			</div>
 
-            <div id="tab-strict" class="tab-content">
-                <h2>
-                    <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
-                    깐깐이 등록된 의견
-                    <span style="float: right; font-size: 16px;">
-                   		내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br>
-                        현재 탭에 전체 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - strictOpinionCount}
-                    </span>
-                </h2>
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty strictOpinions}">
-                            <li class="no-opinions">
-                                <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
-                                <br>의견이 아직 등록되지 않았어요! <br><br>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${strictOpinions}">
-                                <li class="opinion-entry">
-                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-                                    <c:if test="${opinion.userID == userId}">
-                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-strict')">삭제</button>
-                                    </c:if>
-                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-                                </li>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-                <div class="comment-section">
-                    <c:if test="${not empty error}">
-                        <div class="error-message">${error}</div>
-                    </c:if>
-                   <c:if test="${2 - userOpinionCount > 0}">
-                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm" 
-                   		onsubmit="return validateAndSubmitForm('tab-strict', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
-                        <form:hidden path="hatColor" value="Strict" />
-                        <form:hidden path="currentTab" value="tab-strict" />
-                        <form:hidden path="roomId" value="${roomId}" />
-                        <form:hidden path="ideaId" value="${ideaId}" />
-                        <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount}, ${userOpinionCount})">작성</button>
-                    </form:form>
-                    </c:if>
-			        <c:if test="${2 - userOpinionCount == 0}">
-			            <div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-			        </c:if>
-                </div>
-                <div class="comment-ended" style="display: none;">
-				    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
+			<div id="tab-positive" class="tab-content">
+				<h2>
+					<img src="./resources/message.png"
+						style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
+					긍정이 등록된 의견 <span style="float: right; font-size: 16px;"> 내가
+						추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br> 현재 탭에 전체 의견 갯수:
+						${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능:
+						${maxComments - positiveOpinionCount}
+					</span>
+				</h2>
+				<ul class="opinion-list">
+					<c:choose>
+						<c:when test="${empty positiveOpinions}">
+							<li class="no-opinions"><img
+								src="./resources/noContents.png" alt="No opinions"
+								style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+								<br>의견이 아직 등록되지 않았어요! <br>
+							<br></li>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="opinion" items="${positiveOpinions}">
+								<li class="opinion-entry"><span class="opinion-text">${opinion.userName}:
+										${opinion.opinionText}</span> <c:if
+										test="${opinion.userID == userId}">
+										<button class="delete-button"
+											onclick="deleteOpinion(${opinion.opinionID}, 'tab-positive')">삭제</button>
+									</c:if>
+									<div class="date">
+										<fmt:formatDate value="${opinion.createdAt}"
+											pattern="yyyy-MM-dd HH:mm" />
+									</div></li>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+				<div class="comment-section">
+					<c:if test="${not empty error}">
+						<div class="error-message">${error}</div>
+					</c:if>
+					<c:if test="${2 - userOpinionCount > 0}">
+						<form:form method="post" action="./addOpinion"
+							modelAttribute="opinionForm"
+							onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})"
+							style="display: flex; align-items: center; width: 100%;">
+							<form:hidden path="hatColor" value="Positive" />
+							<form:hidden path="currentTab" value="tab-positive" />
+							<form:hidden path="roomId" value="${roomId}" />
+							<form:hidden path="ideaId" value="${ideaId}" />
+							<form:textarea path="opinionText" class="opinion-textarea"
+								placeholder="의견을 입력해주세요" />
+							<button type="button"
+								onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount}, ${userOpinionCount})">작성</button>
+						</form:form>
+					</c:if>
+					<c:if test="${2 - userOpinionCount == 0}">
+						<div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+					</c:if>
 				</div>
-            </div>
-        </div>
-    </div>
+				<div class="comment-ended" style="display: none;">타이머가
+					종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+			</div>
+
+
+			<div id="tab-worry" class="tab-content">
+				<h2>
+					<img src="./resources/message.png"
+						style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
+					걱정이 등록된 의견 <span style="float: right; font-size: 16px;"> 내가
+						추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br> 현재 탭에 전체 의견 갯수:
+						${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능:
+						${maxComments - worryOpinionCount}
+					</span>
+				</h2>
+				<ul class="opinion-list">
+					<c:choose>
+						<c:when test="${empty worryOpinions}">
+							<li class="no-opinions"><img
+								src="./resources/noContents.png" alt="No opinions"
+								style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+								<br>의견이 아직 등록되지 않았어요! <br>
+							<br></li>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="opinion" items="${worryOpinions}">
+								<li class="opinion-entry"><span class="opinion-text">${opinion.userName}:
+										${opinion.opinionText}</span> <c:if
+										test="${opinion.userID == userId}">
+										<button class="delete-button"
+											onclick="deleteOpinion(${opinion.opinionID}, 'tab-worry')">삭제</button>
+									</c:if>
+									<div class="date">
+										<fmt:formatDate value="${opinion.createdAt}"
+											pattern="yyyy-MM-dd HH:mm" />
+									</div></li>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+				<div class="comment-section">
+					<c:if test="${not empty error}">
+						<div class="error-message">${error}</div>
+					</c:if>
+					<c:if test="${2 - userOpinionCount > 0}">
+						<form:form method="post" action="./addOpinion"
+							modelAttribute="opinionForm"
+							onsubmit="return validateAndSubmitForm('tab-worry', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})"
+							style="display: flex; align-items: center; width: 100%;">
+							<form:hidden path="hatColor" value="Worry" />
+							<form:hidden path="currentTab" value="tab-worry" />
+							<form:hidden path="roomId" value="${roomId}" />
+							<form:hidden path="ideaId" value="${ideaId}" />
+							<form:textarea path="opinionText" class="opinion-textarea"
+								placeholder="의견을 입력해주세요" />
+							<button type="button"
+								onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount}, ${userOpinionCount})">작성</button>
+						</form:form>
+					</c:if>
+					<c:if test="${2 - userOpinionCount == 0}">
+						<div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+					</c:if>
+				</div>
+				<div class="comment-ended" style="display: none;">타이머가
+					종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+			</div>
+
+
+			<div id="tab-strict" class="tab-content">
+				<h2>
+					<img src="./resources/message.png"
+						style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
+					깐깐이 등록된 의견 <span style="float: right; font-size: 16px;"> 내가
+						추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br> 현재 탭에 전체 의견 갯수:
+						${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능:
+						${maxComments - strictOpinionCount}
+					</span>
+				</h2>
+				<ul class="opinion-list">
+					<c:choose>
+						<c:when test="${empty strictOpinions}">
+							<li class="no-opinions"><img
+								src="./resources/noContents.png" alt="No opinions"
+								style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+								<br>의견이 아직 등록되지 않았어요! <br>
+							<br></li>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="opinion" items="${strictOpinions}">
+								<li class="opinion-entry"><span class="opinion-text">${opinion.userName}:
+										${opinion.opinionText}</span> <c:if
+										test="${opinion.userID == userId}">
+										<button class="delete-button"
+											onclick="deleteOpinion(${opinion.opinionID}, 'tab-strict')">삭제</button>
+									</c:if>
+									<div class="date">
+										<fmt:formatDate value="${opinion.createdAt}"
+											pattern="yyyy-MM-dd HH:mm" />
+									</div></li>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+				<div class="comment-section">
+					<c:if test="${not empty error}">
+						<div class="error-message">${error}</div>
+					</c:if>
+					<c:if test="${2 - userOpinionCount > 0}">
+						<form:form method="post" action="./addOpinion"
+							modelAttribute="opinionForm"
+							onsubmit="return validateAndSubmitForm('tab-strict', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})"
+							style="display: flex; align-items: center; width: 100%;">
+							<form:hidden path="hatColor" value="Strict" />
+							<form:hidden path="currentTab" value="tab-strict" />
+							<form:hidden path="roomId" value="${roomId}" />
+							<form:hidden path="ideaId" value="${ideaId}" />
+							<form:textarea path="opinionText" class="opinion-textarea"
+								placeholder="의견을 입력해주세요" />
+							<button type="button"
+								onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount}, ${userOpinionCount})">작성</button>
+						</form:form>
+					</c:if>
+					<c:if test="${2 - userOpinionCount == 0}">
+						<div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+					</c:if>
+				</div>
+				<div class="comment-ended" style="display: none;">타이머가
+					종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+			</div>
+		</div>
+	</div>
 </body>
 
 </html>
