@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,92 +7,104 @@
 <title>ABTest 투표</title>
 <style>
 body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
 }
 
 .ab-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+	font-family: Arial, sans-serif;
+	background-color: #f5f5f5;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
 }
 
 .abtestHeadImg {
-    width: 100%;
-    background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
-    background-position: center; /* 이미지를 가운데 정렬 */
-    background-repeat: no-repeat;
+	width: 100%;
+	background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
+	background-position: center; /* 이미지를 가운데 정렬 */
+	background-repeat: no-repeat;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 }
 
 .topic {
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-bottom: 20px;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-bottom: 20px;
 }
 
 .choice img {
-    width: 360px;
-    height: 800px;
-    object-fit: cover; /* 비율을 유지하면서 가로 세로를 꽉 채우도록 설정 */
+	width: 360px;
+	height: 800px;
+	object-fit: cover; /* 비율을 유지하면서 가로 세로를 꽉 채우도록 설정 */
 }
 
 .submit-button {
-    background-color: #ffc107;
-    color: #ffffff;
-    font-size: 1.2em;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
+	background-color: #ffc107;
+	color: #ffffff;
+	font-size: 1.2em;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 20px;
 }
 
 .submit-button:hover {
-    background-color: #e0a800;
+	background-color: #e0a800;
 }
 
 .coordinate-button {
-    position: absolute;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
+	position: absolute;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
 }
 
 .coordinate-form {
-    display: none;
-    position: absolute;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 20px;
-    z-index: 1000;
+	display: none;
+	position: absolute;
+	background-color: white;
+	border: 1px solid #ccc;
+	padding: 20px;
+	z-index: 1000;
 }
 
 .coordinate-form textarea {
-    width: 100%;
-    height: 100px;
+	width: 100%;
+	height: 100px;
 }
 
 .comment {
-    background-color: #f5f5f5;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
+	background-color: #f5f5f5;
+	border: 1px solid #ccc;
+	padding: 10px;
+	margin-bottom: 10px;
+	position: relative;
+}
+
+.delete-button {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background-color: red;
+	color: white;
+	border: none;
+	padding: 5px;
+	cursor: pointer;
 }
 </style>
 <script type="text/javascript">
@@ -194,40 +206,73 @@ body, html {
             if (comment.getAttribute("data-x") == x && comment.getAttribute("data-y") == y) {
                 var userName = comment.getAttribute("data-username");
                 var commentText = comment.getAttribute("data-comment");
+                var commentId = comment.getAttribute("data-comment-id");
 
                 var commentDiv = document.createElement("div");
                 commentDiv.className = "comment";
                 commentDiv.innerHTML = "<strong>" + userName + ":</strong> " + commentText;
+
+                // Create delete button
+                var deleteButton = document.createElement("button");
+                deleteButton.className = "delete-button";
+                deleteButton.innerHTML = "Delete";
+                deleteButton.onclick = function() { deleteComment(commentId, commentDiv); };
+                commentDiv.appendChild(deleteButton);
+
                 form.appendChild(commentDiv);
             }
         }
     }
+
+    function deleteComment(commentId, commentDiv) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "${pageContext.request.contextPath}/deleteComment", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                console.log("Comment deleted successfully");
+                // Remove comment div from the form
+                commentDiv.parentNode.removeChild(commentDiv);
+            }
+        };
+        var data = "commentId=" + encodeURIComponent(commentId);
+        xhr.send(data);
+    }
 </script>
 </head>
 
+
 <body class="ab-body" onclick="sendCoordinates(event)">
-    <div class="abtestHeadImg">
-        <%@ include file="../header.jsp" %>
-    </div>
-    <div class="container">
-        <div class="topic">${abtest.testName}</div>
-        <div class="choice">
-            <c:choose>
-                <c:when test="${aPercentage >= bPercentage}">
-                    <img src="${pageContext.request.contextPath}/upload/${abtest.variantA}" alt="Image A">
-                </c:when>
-                <c:otherwise>
-                    <img src="${pageContext.request.contextPath}/upload/${abtest.variantB}" alt="Image B">
-                </c:otherwise>
-            </c:choose>
-        </div>
-        <input type="hidden" id="abTestId" name="abTestId" value="${abtest.ABTestID}">
-        <input type="hidden" id="userId" name="userId" value="${userId}">
-        <div id="commentsData" style="display:none;">
-            <c:forEach var="comment" items="${comments}">
-                <div data-x="${comment.x}" data-y="${comment.y}" data-username="${comment.userName}" data-comment="${comment.commentText}"></div>
-            </c:forEach>
-        </div>
-    </div>
+	<div class="abtestHeadImg">
+		<%@ include file="../header.jsp"%>
+	</div>
+	<div class="container">
+		<div class="topic">${abtest.testName}</div>
+		<div class="choice">
+			<c:choose>
+				<c:when test="${aPercentage >= bPercentage}">
+					<img
+						src="${pageContext.request.contextPath}/upload/${abtest.variantA}"
+						alt="Image A">
+				</c:when>
+				<c:otherwise>
+					<img
+						src="${pageContext.request.contextPath}/upload/${abtest.variantB}"
+						alt="Image B">
+				</c:otherwise>
+			</c:choose>
+		</div>
+		<input type="hidden" id="abTestId" name="abTestId"
+			value="${abtest.ABTestID}"> <input type="hidden" id="userId"
+			name="userId" value="${userId}">
+		<div id="commentsData" style="display: none;">
+			<c:forEach var="comment" items="${comments}">
+				<div data-x="${comment.x}" data-y="${comment.y}"
+					data-username="${comment.userName}"
+					data-comment="${comment.commentText}"
+					data-comment-id="${comment.commentId}"></div>
+			</c:forEach>
+		</div>
+	</div>
 </body>
 </html>

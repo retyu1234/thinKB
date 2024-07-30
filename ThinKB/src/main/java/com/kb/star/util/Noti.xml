@@ -30,20 +30,25 @@
     <update id="deleteNotification">
         UPDATE Notifications SET IsDelete = true WHERE NotificationID = #{notificationID}
     </update>
-    <!-- 실시간 알림 생성시간에 따라 -->
-    
+    <!-- 실시간 알림 생성시간에 따라 --> 
     <select id="getUnreadNotificationsSinceLogin" resultType="com.kb.star.dto.NotiDto">
-        SELECT * FROM Notifications 
-        WHERE UserID = #{userId} 
-        AND IsRead = 0 
-        AND IsDelete = 0 
-        AND CreatedAt > #{loginTime}
-        ORDER BY CreatedAt DESC
+    SELECT n.*, mr.RoomTitle 
+    FROM Notifications n 
+    JOIN Ideas i ON n.IdeaID = i.IdeaID
+    JOIN MeetingRooms mr ON i.RoomID = mr.RoomID 
+    WHERE n.UserID = #{userId} 
+    AND n.IsRead = 0 
+    AND n.IsDelete = 0 
+    ORDER BY n.CreatedAt DESC
     </select>
     
     <!-- 알림 모두 읽기 -->
     <update id="allReadNotification" parameterType="int">
 		UPDATE Notifications SET IsRead=1 WHERE UserID=#{param1} AND IsRead=0 
     </update>
+
+<update id="readNotification" parameterType="int">
+    UPDATE Notifications SET IsRead = 1 WHERE NotificationID = #{notificationId}
+</update>
 
 </mapper>

@@ -216,10 +216,10 @@
   </select>
   <!-- 미참여자 알림 -->
   <insert id="insertNotifiNonParti">
-    INSERT INTO Notifications (UserID, IdeaID, Message, IsRead, IsDelete, CreatedAt)
+    INSERT INTO Notifications (UserID, IdeaID, Message, IsRead, IsDelete, CreatedAt,RoomID)
     SELECT sp.UserID, sp.IdeaID, 
            CONCAT(i.Title, ' - ', #{stageId}, '단계 미참여입니다! 참여해주세요'), 
-           0, 0, NOW()
+           0, 0, NOW(),#{roomId}
     FROM StageParticipation sp
     JOIN Ideas i ON sp.IdeaID = i.IdeaID
     WHERE sp.RoomID = #{roomId}
@@ -228,10 +228,10 @@
 </insert>
 <!-- 개별 알림 -->
 <insert id="insertNotifications">
-    INSERT INTO Notifications (UserID, IdeaID, Message, IsRead, IsDelete, CreatedAt)
+    INSERT INTO Notifications (UserID, IdeaID, Message, IsRead, IsDelete, CreatedAt,RoomID)
     VALUES
     <foreach collection="userIdList" item="userId" index="index" separator=",">
-            (#{userId}, 0, #{message}, 0, 0, NOW())
+            (#{userId}, 0, #{message}, 0, 0, NOW(),#{roomId})
     </foreach>
 </insert>
 	<!-- 초안 투표 진행하기 누르면 타이머 업데이트되는 쿼리 -->

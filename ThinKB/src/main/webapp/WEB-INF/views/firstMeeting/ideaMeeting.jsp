@@ -143,6 +143,11 @@ body {
 	font-size: 20px;
 	cursor: pointer;
 	margin-top: 20px;
+	display: block;
+}
+
+.vote-button.hidden {
+	display: none;
 }
 
 .modal {
@@ -153,7 +158,7 @@ body {
 	top: 0;
 	width: 100%;
 	height: 100%;
- overflow-y: auto;
+	overflow-y: auto;
 	background-color: rgb(0, 0, 0);
 	background-color: rgba(0, 0, 0, 0.4);
 	padding-top: 60px;
@@ -211,13 +216,12 @@ body {
 
 /* 추가된 CSS 스타일 */
 .idea-box.reply {
-    background-color: #FFCE20; /* 노란색 */
+	background-color: #FFCE20; /* 노란색 */
 }
 
 .idea-box.reply-answer {
-    background-color: #EEEEEE;
+	background-color: #EEEEEE;
 }
-
 </style>
 </head>
 <body>
@@ -231,6 +235,10 @@ body {
 	<div class="idea_header">
 		<jsp:include page="../header.jsp" />
 	</div>
+	<!-- 방장 sideBar -->
+	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
+		<%@ include file="../sideBar.jsp"%>
+	</c:if>
 	<div class="content">
 		<c:if test="${not empty sessionScope.Message}">
 			<div class="alert">${sessionScope.Message}</div>
@@ -274,29 +282,29 @@ body {
 	<!-- Modal window -->
 	<div id="myModal" class="modal">
 		<div class="modal-content">
-			<span class="close" onclick="closeModal()">&times;</span>
-			<p>
+			 <span class="close" onclick="closeModal()">&times;</span>
+			 <p>
 				<span><input type="hidden" id="modal-idea-id"></span>
-			</p>
-			<p>
+			 </p>
+			 <p>
 				<span><input type="hidden" id="modal-idea-title"></span>
-			</p>
-			<p>
+			 </p>
+			 <p>
 				<span><input type="hidden" id="modal-idea-userId"></span>
-			</p>
-			<p>
+			 </p>
+			 <p>
 				상세설명 : <span id="modal-idea-description"></span>
-			</p>
-			<p>질문하기</p>
-			<div class="modal-idea-container" id="modal-idea-replies">
+			 </p>
+			 <p>질문하기</p>
+			 <div class="modal-idea-container" id="modal-idea-replies">
 				<!-- 댓글 내용이 여기에 동적으로 추가됩니다 -->
-			</div>
-			<div id="input-reply-container">
+			 </div>
+			 <div id="input-reply-container">
 				<input type="text" id="replyContent" placeholder="댓글을 입력하세요" />
 				<button onclick="submitReply()" id="input-button">입력</button>
-			</div>
+			 </div>
 
-			<div id="reply-form-container" style="display: none;">
+			 <div id="reply-form-container" style="display: none;">
 				<p>
 					답변할 질문: <span id="replying-to-question"></span>
 				</p>
@@ -305,10 +313,9 @@ body {
 				<div id="reply-button-container">
 					<button onclick="submitReplyAnswer()" id="reply-button">답글달기</button>
 				</div>
-			</div>
+			 </div>
 		</div>
 	</div>
-
 
 	<script>
     let selectedIdea = null;
@@ -549,15 +556,19 @@ body {
     
     //타이머 종료시 함수
     function onTimerEnd() {
-	if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
-        document.getElementById("nextStepButton").style.display = "block";
-        document.getElementById("voteButton").style.display = "none";
-    }
-}
+        if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
+            document.getElementById("nextStepButton").style.display = "block";
+        }
+        document.getElementById("voteButton").classList.add("hidden");
 
-function goToNextStep() {
-	document.getElementById('nextStageForm').submit();
-}
+        // Hide the reply form and input fields
+        document.getElementById("input-reply-container").style.display = "none";
+        document.getElementById("reply-form-container").style.display = "none";
+    }
+
+    function goToNextStep() {
+        document.getElementById('nextStageForm').submit();
+    }
 
 </script>
 </body>
