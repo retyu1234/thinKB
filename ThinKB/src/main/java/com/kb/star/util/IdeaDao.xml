@@ -78,7 +78,7 @@
 		SELECT IdeaID
 		FROM Ideas
 		WHERE RoomID = #{roomId} AND UserID = #{userId} AND StageID = 1 AND
-		isReject = 0
+		isReject = 0 and IsDelete = 0
 	</select>
 
 
