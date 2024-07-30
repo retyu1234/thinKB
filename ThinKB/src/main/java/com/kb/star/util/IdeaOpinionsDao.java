@@ -43,6 +43,8 @@ public interface IdeaOpinionsDao {
     
     // 2개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
     void updateStatus(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId, @Param("status") boolean status);
+    // 2개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1 / -1
+    void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId, @Param("status") boolean status);
     
     // 타이머
     String getEndTime(@Param("roomId") int roomId, @Param("ideaId") int ideaId);
@@ -97,6 +99,8 @@ public interface IdeaOpinionsDao {
     int getUserOpinionCount2(@Param("userId") int userId, @Param("ideaId") int ideaId);
     // 1개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
     void updateStatus2(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId, @Param("status") boolean status);
+    // 2개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1 / -1
+    void updateContribution2(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId, @Param("status") boolean status);
     // 사용자별 특정 탭에 이미 작성한 의견이 있는지 확인하는 메서드(중복작성방지)
     int countUserOpinionsInTab(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("hatColor") String hatColor);
     
@@ -106,6 +110,8 @@ public interface IdeaOpinionsDao {
     void decreaseLikeNum(@Param("opinionId") int opinionId);
     // 현재 좋아요 수 가져오기
     int getLikeNum(@Param("opinionId") int opinionId);
+    // 좋아요 수만큼 MeetingRoomMembers테이블의 기여도 증가
+    void updateContributionLikeNum(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId, @Param("status") boolean status);
     // 사용자가 특정 의견에 좋아요를 눌렀는지 확인
     boolean checkUserLikedOpinion(@Param("userId") int userId, @Param("opinionId") int opinionId);
     // 좋아요 추가

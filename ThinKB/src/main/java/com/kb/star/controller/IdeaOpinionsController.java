@@ -22,7 +22,9 @@ import com.kb.star.command.room.IdeaOpinions2Command;
 import com.kb.star.command.room.IdeaOpinionsClearCommand;
 import com.kb.star.command.room.IdeaOpinionsCommand;
 import com.kb.star.dto.IdeaOpinionsDto;
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.IdeaOpinionsDao;
+import com.kb.star.util.RoomDao;
 
 
 @Controller
@@ -163,6 +165,11 @@ public class IdeaOpinionsController {
     	model.addAttribute("request", request);
     	model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
+        
+        // 방장 사이드탭
+        RoomDao dao=sqlSession.getMapper(RoomDao.class);
+        MeetingRooms info = dao.roomDetailInfo(roomId);
+        model.addAttribute("meetingRoom", info);
     	
         return "/firstMeeting/ideaOpinionsClear";
     }
@@ -271,13 +278,20 @@ public class IdeaOpinionsController {
 
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
 
+        // 좋아요 수 가져오기
+        // int likeNum = ideaOpinionsDao.getLikeNum(opinionId);
+        // 사용자가 이미 좋아요를 눌렀는지 확인
+        boolean alreadyLiked = checkIfUserLikedOpinion(userId, opinionId);
+        
         // 좋아요 수 증가 또는 감소
-        if (like) {
+        if (like && !alreadyLiked) {
             ideaOpinionsDao.increaseLikeNum(opinionId);  // 좋아요 수 증가
             ideaOpinionsDao.addUserLike(userId, opinionId);  // 좋아요 추가
-        } else {
+            ideaOpinionsDao.updateContributionLikeNum(ideaId, userId, roomId, true); // 좋아요 수만큼 기여도 증가
+        } else if (!like && alreadyLiked) {
             ideaOpinionsDao.decreaseLikeNum(opinionId);  // 좋아요 수 감소
             ideaOpinionsDao.removeUserLike(userId, opinionId);  // 좋아요 제거
+            ideaOpinionsDao.updateContributionLikeNum(ideaId, userId, roomId, false); // 좋아요 수만큼 기여도 증가
         }
 
         int updatedLikeNum = ideaOpinionsDao.getLikeNum(opinionId);

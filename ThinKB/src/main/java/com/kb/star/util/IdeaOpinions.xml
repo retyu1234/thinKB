@@ -78,6 +78,19 @@
 	    SET Status = #{status}
 	    WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
 	</update>
+	<!-- 2개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1 / -1 -->
+    <update id="updateContribution">
+	    UPDATE MeetingRoomMembers m
+	    JOIN StageParticipation s 
+	    ON m.UserID = s.UserID AND m.RoomID = s.RoomID
+	    SET m.ContributionCnt = m.ContributionCnt + 
+								(CASE 
+						            WHEN #{status} = true THEN 1 
+						            ELSE -1 
+						        END)
+	    WHERE s.IdeaID = #{ideaId} and s.UserID = #{userId} AND s.RoomID = #{roomId} AND s.StageID = 3;
+	</update>
+	
 	
 	<!-- 타이머 종료시간 -->
     <select id="getEndTime" parameterType="map" resultType="string">
@@ -177,6 +190,18 @@
         SET Status = #{status}
         WHERE UserID = #{userId} AND IdeaID = #{ideaId} AND RoomID = #{roomId}
     </update>
+    <!-- 1개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1 / -1 -->
+    <update id="updateContribution2">
+	    UPDATE MeetingRoomMembers m
+	    JOIN StageParticipation s 
+	    ON m.UserID = s.UserID AND m.RoomID = s.RoomID
+	    SET m.ContributionCnt = m.ContributionCnt + 
+								(CASE 
+						            WHEN #{status} = true THEN 1 
+						            ELSE -1 
+						        END)
+	    WHERE s.IdeaID = #{ideaId} and s.UserID = #{userId} AND s.RoomID = #{roomId} AND s.StageID = 4;
+	</update>
     <!-- 사용자별 특정 탭에 이미 작성한 의견이 있는지 확인하는 메서드(중복작성방지) -->
     <select id="countUserOpinionsInTab" resultType="int">
 	    SELECT COUNT(*)
@@ -229,6 +254,19 @@
         WHERE OpinionID = #{opinionId}
     </select>
     
+    <!-- 좋아요 수만큼 MeetingRoomMembers테이블의 기여도 증가 -->
+    <update id="updateContributionLikeNum">
+	    UPDATE MeetingRoomMembers m
+	    JOIN StageParticipation s 
+	    ON m.UserID = s.UserID AND m.RoomID = s.RoomID
+	    SET m.ContributionCnt = m.ContributionCnt + 
+								(CASE 
+						            WHEN #{status} = true THEN 1 
+						            ELSE -1 
+						        END)
+	    WHERE s.IdeaID = #{ideaId} and s.UserID = #{userId} AND s.RoomID = #{roomId} AND s.StageID = 4;
+	</update>
+	
     <!-- 사용자가 특정 의견에 좋아요를 눌렀는지 확인 -->
     <select id="checkUserLikedOpinion" resultType="boolean">
         SELECT COUNT(*) > 0
