@@ -359,15 +359,10 @@ button:hover {
 </script>
 </head>
 <body>
-<<<<<<< HEAD
 <%@ include file="../header.jsp"%>
 <c:if test="${userId == meetingRoom.roomManagerId}">
 <%@ include file="../sideBar.jsp"%></c:if>
-=======
-	<%@ include file="../header.jsp"%>
->>>>>>> branch 'main' of https://github.com/retyu1234/thinKB.git
 
-<<<<<<< HEAD
     <div class="container">
 	    <!-- 타이머 -->
 	    <div id="timer-section" style="margin-top:100px;">
@@ -380,20 +375,7 @@ button:hover {
 		    <span style="float: right; font-size: 16px;">
                     	현재 단계 완료 참여자 수: ${doneUserCount}/${userCount} <br>
             </span>
-=======
-	<div class="container">
-		<!-- 타이머 -->
-		<div id="timer-section" style="margin-top: 100px;">
-			<%@ include file="../Timer.jsp"%>
-		</div>
-		<c:if test="${userId == roomManagerId}">
-			<!-- <button id="nextStepButton" style="display:none;">다음 단계로</button> -->
-			<button id="nextStepButton" onclick="confirmNextStep()">다음
-				단계로</button>
->>>>>>> branch 'main' of https://github.com/retyu1234/thinKB.git
 		</c:if>
-<<<<<<< HEAD
-		
 		
         <div class="tabs">
             <div class="tab tab-smart" onclick="showTab('tab-smart', '#007bff', '${roomId}', '${ideaId}')">똑똑이</div>
@@ -405,78 +387,6 @@ button:hover {
             <div class="idea-title-inner">${ideaTitle}</div>
         </div>
         <div class="opinion-section">
-        
-            <div id="tab-smart" class="tab-content active">
-                <h2>
-                    <img src="./resources/message.png" style="width: 50px; height: 50px; vertical-align: middle; margin-right: 10px;">
-                    똑똑이 등록된 의견
-                    <span style="float: right; font-size: 16px;">
-                    	내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br>
-                        현재 탭에 전체 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
-                    </span>
-                </h2>
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty smartOpinions}">
-                            <li class="no-opinions">
-                                <img src="./resources/noContents.png" alt="No opinions" style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
-                                <br>의견이 아직 등록되지 않았어요! <br><br>
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${smartOpinions}">
-                                <li class="opinion-entry">
-                                    <span class="opinion-text">${opinion.userName}: ${opinion.opinionText}</span>
-                                    <c:if test="${opinion.userID == userId}">
-                                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-smart')">삭제</button>
-                                    </c:if>
-                                    <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-                                </li>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-                <div class="comment-section">
-                    <c:if test="${not empty error}">
-                        <div class="error-message">${error}</div>
-                    </c:if>
-                    <!-- <div id="tab-smart" class="tab-content active"> -->
-                   <c:if test="${2 - userOpinionCount > 0}">
-                   <form:form method="post" action="./addOpinion" modelAttribute="opinionForm"
-                   		onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" style="display: flex; align-items: center; width: 100%;">
-                        <form:hidden path="hatColor" value="Smart" />
-                        <form:hidden path="currentTab" value="tab-smart" />
-                        <form:hidden path="roomId" value="${roomId}" />
-                        <form:hidden path="ideaId" value="${ideaId}" />
-                        <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-                        <button type="button" onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})">작성</button>
-                    </form:form>
-                    </c:if>
-                    <!-- </div> -->
-                    <c:if test="${2 - userOpinionCount == 0}">
-			            <div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-			        </c:if>
-                </div>
-                <div class="comment-ended" style="display: none;">
-				    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
-				</div>
-            </div>
-=======
-		<div class="tabs">
-			<div class="tab tab-smart"
-				onclick="showTab('tab-smart', '#007bff', '${roomId}', '${ideaId}')">똑똑이</div>
-			<div class="tab tab-positive"
-				onclick="showTab('tab-positive', '#ffc107', '${roomId}', '${ideaId}')">긍정이</div>
-			<div class="tab tab-worry"
-				onclick="showTab('tab-worry', '#28a745', '${roomId}', '${ideaId}')">걱정이</div>
-			<div class="tab tab-strict"
-				onclick="showTab('tab-strict', '#dc3545', '${roomId}', '${ideaId}')">깐깐이</div>
-		</div>
-		<div class="idea-title-container">
-			<div class="idea-title-inner">${ideaTitle}</div>
-		</div>
-		<div class="opinion-section">
->>>>>>> branch 'main' of https://github.com/retyu1234/thinKB.git
 
 			<div id="tab-smart" class="tab-content active">
 				<h2>
@@ -606,6 +516,7 @@ button:hover {
 					종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
 			</div>
 
+
 			<div id="tab-worry" class="tab-content">
 				<h2>
 					<img src="./resources/message.png"
@@ -667,6 +578,7 @@ button:hover {
 				<div class="comment-ended" style="display: none;">타이머가
 					종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
 			</div>
+
 
 			<div id="tab-strict" class="tab-content">
 				<h2>
@@ -732,5 +644,5 @@ button:hover {
 		</div>
 	</div>
 </body>
-
 </html>
+
