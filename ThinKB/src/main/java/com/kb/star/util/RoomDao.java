@@ -113,5 +113,8 @@ public interface RoomDao {
 
 	void insertNotifiNonParti(@Param("roomId") int roomId,@Param("stageId") int stageId, List<StageParticipationIdeas> ideaList);
 
+	int voteRoomUsers(int roomId);
+
 	void insertNotifications(@Param("userIdList") List<Integer> userIdList,@Param("message") String message,@Param("roomId") int roomId);
+
 }

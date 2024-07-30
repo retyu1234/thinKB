@@ -158,24 +158,58 @@ input.room1-detail:focus {
 	}
 
 	function submitForm() {
-		var myIdea = document.querySelector('input[name="myIdea"]').value;
-		var ideaDetail = document.querySelector('input[name="ideaDetail"]').value;
+	    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
+	    var ideaDetail = document.querySelector('input[name="ideaDetail"]').value.trim();
+	    var hasExistingIdea = ${result == true};
+	    var originalIdea = "${submittedIdea.getTitle()}";
+	    var originalDetail = "${submittedIdea.getDescription()}";
 
-		document.getElementById('myIdeaHidden').value = myIdea;
-		document.getElementById('ideaDetailHidden').value = ideaDetail;
+	    if (hasExistingIdea) {
+	        // 기존 아이디어가 있는 경우
+	        if (myIdea === "" || ideaDetail === "") {
+	            // 필드가 비어있으면 원래 값으로 복원
+	            document.querySelector('input[name="myIdea"]').value = originalIdea;
+	            document.querySelector('input[name="ideaDetail"]').value = originalDetail;
+	            alert("아이디어와 상세 설명을 비워둘 수 없습니다. 원래 값으로 복원됩니다.");
+	            return;
+	        } else if (myIdea === originalIdea && ideaDetail === originalDetail) {
+	            alert("변경된 내용이 없습니다.");
+	            return;
+	        }
+	    } else {
+	        // 새 아이디어 제출의 경우
+	        if (myIdea === "" || ideaDetail === "") {
+	            alert("아이디어와 상세 설명을 모두 입력해주세요.");
+	            return;
+	        }
+	    }
 
-		document.getElementById('ideaForm').submit();
+	    // 폼 제출
+	    document.getElementById('myIdeaHidden').value = myIdea;
+	    document.getElementById('ideaDetailHidden').value = ideaDetail;
+	    document.getElementById('ideaForm').submit();
 	}
 
 	function updateForm() {
-		var myIdea = document.querySelector('input[name="myIdea"]').value;
-		var ideaDetail = document.querySelector('input[name="ideaDetail"]').value;
+	    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
+	    var ideaDetail = document.querySelector('input[name="ideaDetail"]').value.trim();
+	    var originalIdea = "${submittedIdea.getTitle()}";
+	    var originalDetail = "${submittedIdea.getDescription()}";
 
-		document.getElementById('myIdeaHidden2').value = myIdea;
-		document.getElementById('ideaDetailHidden2').value = ideaDetail;
+	    if (myIdea === "" || ideaDetail === "") {
+	        // 필드가 비어있으면 원래 값으로 복원
+	        document.querySelector('input[name="myIdea"]').value = originalIdea;
+	        document.querySelector('input[name="ideaDetail"]').value = originalDetail;
+	        alert("아이디어와 상세 설명을 비워둘 수 없습니다. 이전에 작성했던 내용이 복원됩니다.");
+	        return;
+	    } else if (myIdea === originalIdea && ideaDetail === originalDetail) {
+	        alert("변경된 내용이 없습니다.");
+	        return;
+	    }
 
-		document.getElementById('updateForm').submit();
-
+	    document.getElementById('myIdeaHidden2').value = myIdea;
+	    document.getElementById('ideaDetailHidden2').value = ideaDetail;
+	    document.getElementById('updateForm').submit();
 	}
 
 	function nextStage() {
@@ -236,6 +270,10 @@ input.room1-detail:focus {
 	document.addEventListener("DOMContentLoaded", function() {
 	    console.log("DOMContentLoaded 이벤트 발생");
 	    
+	    var hasExistingIdea = ${result == true}; // 기존 아이디어 존재 여부
+	    var originalIdea = "${submittedIdea.getTitle()}"; // 원래 아이디어 제목
+	    var originalDetail = "${submittedIdea.getDescription()}"; // 원래 아이디어 설명
+
 	    try {
 	        showNextStageButton();
 	    } catch (error) {
@@ -247,7 +285,7 @@ input.room1-detail:focus {
 	    } catch (error) {
 	        console.error("checkRejectedIdea 함수 실행 중 오류 발생:", error);
 	    }
-	
+
 	    try {
 	        if (${result}) {
 	            const submitButton = document.getElementById("submitButton");

@@ -99,18 +99,35 @@
 }
 
 .room-container {
-	display: flex;
-	gap: 20px; /* 작은 네모칸 간격 */
-	flex-wrap: nowrap; /* 줄바꿈하지 않도록 설정 */
-	justify-content: space-between; /* 공간을 균등하게 배치 */
-	flex: 1;       
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* wrap으로 변경 */
+    justify-content: flex-start; /* 왼쪽 정렬로 변경 */
 }
 
 .room {
-	flex: 1 1 calc(33.33% - 20px); /* 작은 네모칸 너비 설정 */
-	background-color: #f0f0f0; /* 연한 회색 배경색 */
-	padding: 20px;
-	border-radius: 30px; /* 라운드 처리 */
+    flex: 0 0 calc(33.33% - 20px); /* 고정 너비로 변경 */
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 30px;
+    box-sizing: border-box; /* 패딩을 너비에 포함 */
+    cursor: pointer; /* 마우스 오버 시 커서 변경 */
+    transition: background-color 0.3s ease; /* 부드러운 배경색 변경 효과 */
+}
+
+.room:hover {
+    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+}
+
+.room-link {
+    text-decoration: none;
+    color: inherit;
+    display: contents; /* 이 설정은 링크가 레이아웃에 영향을 주지 않게 합니다 */
+}
+
+.room-placeholder {
+    flex: 0 0 calc(33.33% - 20px);
+    visibility: hidden; /* 보이지 않게 설정 */
 }
 
 .room h2 {
@@ -141,11 +158,11 @@
 }
 
 .notifications p, .reports p {
-	font-size: 14px;
+	font-size: 15px;
 	color: #666;
 	margin-bottom: 10px;
+	margin-left : 10px;
 }
-
 .more-button {
 	background: none;
 	border: none;
@@ -189,7 +206,9 @@
 	color: #333;
 	margin-bottom: 0;
 }
-
+.notiRoomTitle{
+	margin:0;
+}
 /* 읽지 않은 메세지 팝업 스타일 */
 .popup-overlay {
     display: none; /* 기본적으로 숨김 */
@@ -245,7 +264,7 @@
 
 .popup-message {
     font-size: 1.3em;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
     /* font-weight: bold; */ /* 글자를 두껍게 설정 */
 }
 .popup-footer {
@@ -318,6 +337,8 @@
     display: flex;
     gap: 2%;
     flex-wrap: wrap;
+    border-radius: 15px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .calendar {
@@ -326,7 +347,8 @@
     border-radius: 15px;
     padding: 15px;
     margin: 25px;
-    
+    height: 400px; /* 고정 높이 설정 */
+    overflow: hidden; /* 내용이 넘치면 숨김 */
 }
 
 .todo-list {
@@ -349,14 +371,33 @@
     text-decoration: line-through;
 }
 
-.todo-date {
-    font-weight: bold;
-    margin-bottom: 5px;
+#calendar {
+    height: 100%; /* 부모 요소의 높이에 맞춤 */
 }
 
-.todo-content {
-    color: #333;
-    margin-bottom: 0;
+.fc-daygrid-day {
+    height: 50px !important; /* 일자별 높이 조정 */
+}
+
+.fc-toolbar-title {
+    font-size: 1.2em !important; /* 월 표시 글자 크기 축소 */
+}
+
+.fc-day-today {
+    background-color: #fffde7 !important; /* 오늘 날짜 배경색 */
+}
+
+.fc-day-selected {
+    background-color: #fff59d !important; /* 선택된 날짜 배경색 */
+}
+
+/* 헤더와 요일 표시 줄의 높이 조정 */
+.fc-header-toolbar, .fc-col-header {
+    margin-bottom: 0.5em !important;
+}
+
+.fc-col-header-cell {
+    padding: 2px 0 !important;
 }
 </style>
 <!-- FullCalendar CSS -->
@@ -370,8 +411,26 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
-        height: 'auto'
-
+        height: '100%', // 부모 요소의 높이에 맞춤
+        aspectRatio: 1, // 가로 세로 비율 1:1로 설정
+        headerToolbar: {
+            left: 'prev,next',
+            center: 'title',
+            right: 'today'
+        },
+        dateClick: function(info) {
+            // 이전에 선택된 날짜의 클래스 제거
+            var prevSelected = document.querySelector('.fc-day-selected');
+            if (prevSelected) {
+                prevSelected.classList.remove('fc-day-selected');
+            }
+            
+            // 클릭된 날짜에 선택 클래스 추가
+            info.dayEl.classList.add('fc-day-selected');
+            
+            alert('선택된 날짜: ' + info.dateStr);
+            // 여기에 선택된 날짜에 대한 추가 작업을 수행할 수 있습니다.
+        }
     });
     calendar.render();
 });
@@ -407,6 +466,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 						<c:otherwise>
 							<c:forEach var="li" items="${roomList}">
+							<a href="./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}" class="room-link">
 								<div class="room">
 									<h2>${li.getRoomTitle()}</h2>
 									<p>방장 : ${li.getRoomManagerId() }</p>
@@ -417,15 +477,15 @@ document.addEventListener('DOMContentLoaded', function() {
 											<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
 											<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
 											<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-											<c:when test="${li.getStageId() == 4}">1차 의견 투표중</c:when>
-											<c:when test="${li.getStageId() == 5}">2차 의견 작성중</c:when>
-											<c:when test="${li.getStageId() == 6}">2차 의견 투표중</c:when>
-											<c:when test="${li.getStageId() == 7}">최종보고서 작성중</c:when>
-											<c:when test="${li.getStageId() == 8}">아이디어 회의 완료</c:when>
+											<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+											<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+											<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
 										</c:choose>
 									</p>
 								</div>
+								</a>
 							</c:forEach>
+							
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -442,9 +502,10 @@ document.addEventListener('DOMContentLoaded', function() {
 						더보기</button>
 				</div>
 				<div class="notifications">
-					<c:forEach var="notification" items="${notifications}">
+					<c:forEach var="notification" items="${notifications}" begin="0" end="3">
 						<div class="notification ${notification.read ? 'read' : 'unread'}"
 							onclick="location.href='<c:url value="/noticeList"/>';">
+							<h4 class="notiRoomTitle">Title : ${notification.roomTitle}</h3>
 							<p class="notification-time">
 								<fmt:formatDate value="${notification.createdAt}"
 									pattern="yyyy-MM-dd HH:mm" />
@@ -591,6 +652,20 @@ $(document).ready(function() {
         $('.popup-overlay').hide();
     });
  	
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var container = document.querySelector('.room-container');
+    var rooms = container.querySelectorAll('.room');
+    var placeholdersNeeded = 3 - (rooms.length % 3);
+    
+    if (placeholdersNeeded < 3) {
+        for (var i = 0; i < placeholdersNeeded; i++) {
+            var placeholder = document.createElement('div');
+            placeholder.className = 'room-placeholder';
+            container.appendChild(placeholder);
+        }
+    }
 });
 </script>
 </body>

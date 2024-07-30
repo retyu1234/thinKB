@@ -13,7 +13,9 @@ import com.kb.star.command.login.LoginCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
+import com.kb.star.dto.ReportsDto;
 import com.kb.star.util.NotiDao;
+import com.kb.star.util.ReportDao;
 import com.kb.star.util.UserDao;
 
 public class UserInfoCommand implements LoginCommand {
@@ -71,6 +73,11 @@ public class UserInfoCommand implements LoginCommand {
         model.addAttribute("notifications", notifications);
         model.addAttribute("unreadCount", unreadCount); // 읽지 않은 알림 개수 추가
         System.out.println("unreadCount : " + unreadCount);
+        
+        // 내가 쓴 보고서 목록 가져오기
+        ReportDao repoDao = sqlSession.getMapper(ReportDao.class);
+		List<ReportsDto> repoDto = repoDao.getMyReportList(id);
+		model.addAttribute("reportList", repoDto);
 		
 		// 추가 필요한 정보있으면 밑에 추가
 	}
