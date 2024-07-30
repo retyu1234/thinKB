@@ -359,32 +359,34 @@ button:hover {
 </script>
 </head>
 <body>
-	<%@ include file="../header.jsp"%>
+<%@ include file="../header.jsp"%>
+<c:if test="${userId == meetingRoom.roomManagerId}">
+<%@ include file="../sideBar.jsp"%></c:if>
 
-	<div class="container">
-		<!-- 타이머 -->
-		<div id="timer-section" style="margin-top: 100px;">
-			<%@ include file="../Timer.jsp"%>
-		</div>
-		<c:if test="${userId == roomManagerId}">
-			<!-- <button id="nextStepButton" style="display:none;">다음 단계로</button> -->
-			<button id="nextStepButton" onclick="confirmNextStep()">다음
-				단계로</button>
+    <div class="container">
+	    <!-- 타이머 -->
+	    <div id="timer-section" style="margin-top:100px;">
+	    	<%@ include file="../Timer.jsp"%>
+	    </div>
+	    <c:if test="${userId == roomManagerId}">
+		    <!-- <button id="nextStepButton" style="display:none;">다음 단계로</button> -->
+		    <button id="nextStepButton" onclick="confirmNextStep()">다음 단계로</button>
+		    
+		    <span style="float: right; font-size: 16px;">
+                    	현재 단계 완료 참여자 수: ${doneUserCount}/${userCount} <br>
+            </span>
 		</c:if>
-		<div class="tabs">
-			<div class="tab tab-smart"
-				onclick="showTab('tab-smart', '#007bff', '${roomId}', '${ideaId}')">똑똑이</div>
-			<div class="tab tab-positive"
-				onclick="showTab('tab-positive', '#ffc107', '${roomId}', '${ideaId}')">긍정이</div>
-			<div class="tab tab-worry"
-				onclick="showTab('tab-worry', '#28a745', '${roomId}', '${ideaId}')">걱정이</div>
-			<div class="tab tab-strict"
-				onclick="showTab('tab-strict', '#dc3545', '${roomId}', '${ideaId}')">깐깐이</div>
-		</div>
-		<div class="idea-title-container">
-			<div class="idea-title-inner">${ideaTitle}</div>
-		</div>
-		<div class="opinion-section">
+		
+        <div class="tabs">
+            <div class="tab tab-smart" onclick="showTab('tab-smart', '#007bff', '${roomId}', '${ideaId}')">똑똑이</div>
+            <div class="tab tab-positive" onclick="showTab('tab-positive', '#ffc107', '${roomId}', '${ideaId}')">긍정이</div>
+            <div class="tab tab-worry" onclick="showTab('tab-worry', '#28a745', '${roomId}', '${ideaId}')">걱정이</div>
+            <div class="tab tab-strict" onclick="showTab('tab-strict', '#dc3545', '${roomId}', '${ideaId}')">깐깐이</div>
+        </div>
+        <div class="idea-title-container">
+            <div class="idea-title-inner">${ideaTitle}</div>
+        </div>
+        <div class="opinion-section">
 
 			<div id="tab-smart" class="tab-content active">
 				<h2>
@@ -514,6 +516,7 @@ button:hover {
 					종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
 			</div>
 
+
 			<div id="tab-worry" class="tab-content">
 				<h2>
 					<img src="./resources/message.png"
@@ -575,6 +578,7 @@ button:hover {
 				<div class="comment-ended" style="display: none;">타이머가
 					종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
 			</div>
+
 
 			<div id="tab-strict" class="tab-content">
 				<h2>

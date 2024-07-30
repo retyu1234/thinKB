@@ -63,18 +63,35 @@
 }
 
 .room-container {
-	display: flex;
-	gap: 20px; /* 작은 네모칸 간격 */
-	flex-wrap: nowrap; /* 줄바꿈하지 않도록 설정 */
-	justify-content: space-between; /* 공간을 균등하게 배치 */
-	flex: 1;       
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* wrap으로 변경 */
+    justify-content: flex-start; /* 왼쪽 정렬로 변경 */
 }
 
 .room {
-	flex: 1 1 calc(33.33% - 20px); /* 작은 네모칸 너비 설정 */
-	background-color: #f0f0f0; /* 연한 회색 배경색 */
-	padding: 20px;
-	border-radius: 30px; /* 라운드 처리 */
+    flex: 0 0 calc(33.33% - 20px); /* 고정 너비로 변경 */
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 30px;
+    box-sizing: border-box; /* 패딩을 너비에 포함 */
+    cursor: pointer; /* 마우스 오버 시 커서 변경 */
+    transition: background-color 0.3s ease; /* 부드러운 배경색 변경 효과 */
+}
+
+.room:hover {
+    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+}
+
+.room-link {
+    text-decoration: none;
+    color: inherit;
+    display: contents; /* 이 설정은 링크가 레이아웃에 영향을 주지 않게 합니다 */
+}
+
+.room-placeholder {
+    flex: 0 0 calc(33.33% - 20px);
+    visibility: hidden; /* 보이지 않게 설정 */
 }
 
 .room h2 {
@@ -209,7 +226,7 @@
 
 .popup-message {
     font-size: 1.3em;
-    margin-bottom: 40px;
+    margin-bottom: 15px;
     /* font-weight: bold; */ /* 글자를 두껍게 설정 */
 }
 .popup-footer {
@@ -313,6 +330,7 @@
 
 						<c:otherwise>
 							<c:forEach var="li" items="${roomList}">
+							<a href="./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}" class="room-link">
 								<div class="room">
 									<h2>${li.getRoomTitle()}</h2>
 									<p>방장 : ${li.getRoomManagerId() }</p>
@@ -322,15 +340,15 @@
 											<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
 											<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
 											<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-											<c:when test="${li.getStageId() == 4}">1차 의견 투표중</c:when>
-											<c:when test="${li.getStageId() == 5}">2차 의견 작성중</c:when>
-											<c:when test="${li.getStageId() == 6}">2차 의견 투표중</c:when>
-											<c:when test="${li.getStageId() == 7}">최종보고서 작성중</c:when>
-											<c:when test="${li.getStageId() == 8}">아이디어 회의 완료</c:when>
+											<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+											<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+											<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
 										</c:choose>
 									</p>
 								</div>
+								</a>
 							</c:forEach>
+							
 						</c:otherwise>
 					</c:choose>
 				</div>
@@ -369,6 +387,7 @@
 			    	</div>
 			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
 			        <p class="popup-message"></p>
+			        <div style="text-align: right; margin-bottom: 5px;"><a href="./noticeList">알림함 바로가기</a></div>
 			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
 			        <button class="popup-close">닫기</button>
 			    </div>
@@ -383,11 +402,13 @@
 							onclick="location.href='<c:url value="/more-reports"/>';">
 							+ 더보기</button>
 					</div>
+					
 					<div class="reports">
-						<p>보고서 제목 1</p>
-						<p>보고서 제목 2</p>
-						<!-- 추가 보고서 목록을 여기에 추가할 수 있습니다 -->
+						<c:forEach var="report" items="${reportList}">
+							<p>${report.getReportTitle()}</p>
+						</c:forEach>
 					</div>
+					
 				</div>
 			</div>
 			
@@ -486,6 +507,20 @@ $(document).ready(function() {
         $('.popup-overlay').hide();
     });
  	
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    var container = document.querySelector('.room-container');
+    var rooms = container.querySelectorAll('.room');
+    var placeholdersNeeded = 3 - (rooms.length % 3);
+    
+    if (placeholdersNeeded < 3) {
+        for (var i = 0; i < placeholdersNeeded; i++) {
+            var placeholder = document.createElement('div');
+            placeholder.className = 'room-placeholder';
+            container.appendChild(placeholder);
+        }
+    }
 });
 </script>
 </body>

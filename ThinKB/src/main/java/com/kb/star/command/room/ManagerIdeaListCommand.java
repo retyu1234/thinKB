@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.RoomDao;
 
 public class ManagerIdeaListCommand implements RoomCommand {
@@ -29,7 +30,10 @@ public class ManagerIdeaListCommand implements RoomCommand {
 //		List<Ideas> dto = dao.ideaList(roomId, stage);
 		List<Ideas> dto = dao.ideaListUnreject(roomId, stage); // 리젝트된것 제거
 		model.addAttribute("ideaList", dto);
-
+		
+		//방장 사이드바 사용
+		MeetingRooms info = dao.roomDetailInfo(roomId);
+		model.addAttribute("meetingRoom", info);
 	}
 
 }
