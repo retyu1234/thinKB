@@ -302,7 +302,8 @@ function confirmNextStep() {
     if (confirm("정말로 다음 페이지로 넘어가시겠습니까?")) {
     	const roomId = "${roomId}";
         const ideaId = "${ideaId}";
-        window.location.href = "./ideaOpinions2Clear?roomId=" + roomId + "&ideaId=" + ideaId;
+        window.location.href = "./ideaOpinionsClear2?roomId=" + roomId +"&ideaId=" + ideaId;
+        /* window.location.href = "./goStage5?roomId=" + roomId +"&ideaId=" + ideaId; */
     }
 }
 	

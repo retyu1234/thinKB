@@ -292,7 +292,44 @@
         FROM StageParticipation
         WHERE RoomID = #{roomId} AND IdeaID = #{ideaId} AND StageID = 4 AND Status = 1;
     </select>
-
+    
+    
+    
+    <!-- 다음단계 -->
+    <!-- MeetingRooms에서 stage 5로 변경 -->
+	<update id="updateStage5">
+		UPDATE MeetingRooms SET StageID = 5
+		WHERE RoomID = #{roomId};
+	</update>
+	
+    <!-- Ideas에서 아이디어 StageID 5로 변경 -->
+    <update id="updateIdeaStage5">
+		UPDATE Ideas SET StageID = 5
+		WHERE IdeaID = #{ideaId};
+	</update>
+	
+	<!-- 방번호별 userList -->
+	<select id="RoomForUserList5" resultType="Integer">
+		SELECT UserID from
+		MeetingRoomMembers WHERE RoomID=#{param1}
+	</select>
+	
+	<!-- StageParticipation에서 참여자별 StageID 5로 새로 생성해서 Status 0으로 일괄 넣기 -->
+	<insert id="insertStageParticipation5">
+		INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) values (#{ideaId},5,#{list},0,#{roomId})
+	</insert>
+	
+	
+	<!-- ideaOpinionsClear2.jsp -->
+	<!-- Ideas 테이블에서 제목, stageID 가져오기 -->
+	<select id="getIdeasInfo" resultType="com.kb.star.dto.Ideas">
+        SELECT Title as title, StageID as stageId
+        FROM Ideas
+        WHERE RoomID = #{roomId} and StageID >=4
+    </select>
+    
+    
+    
 </mapper>
 
 
