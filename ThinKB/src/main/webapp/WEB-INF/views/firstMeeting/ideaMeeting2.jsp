@@ -8,9 +8,7 @@
 <meta charset="UTF-8">
 <title>아이디어 투표</title>
 <!-- Alpine.js CDN -->
-<script
-	src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js"
-	defer></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 <style>
 body {
 	font-family: 'Inter', sans-serif;
@@ -227,18 +225,19 @@ body {
 </style>
 </head>
 <body>
+	<div id="timer-section" style="margin-top: 100px;">
+        <%@ include file="../Timer.jsp"%>
+    </div>
+	<input type="hidden" id="session-user-id" value="${sessionScope.userId}">
+	<input type="hidden" id="session-room-id" value="${sessionScope.roomId}">
+
 	<div class="idea_header">
 		<jsp:include page="../header.jsp" />
 	</div>
-
-	<input type="hidden" id="session-user-id"
-		value="${sessionScope.userId}">
-	<input type="hidden" id="session-room-id"
-		value="${sessionScope.roomId}">
-
-
 	<!-- 방장 sideBar -->
-	<%@ include file="../leftSideBar.jsp"%>
+	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
+		<%@ include file="../sideBar.jsp"%>
+	</c:if>
 	<div class="content" x-data="voteApp()">
 		<c:if test="${not empty sessionScope.Message}">
 			<div class="alert">${sessionScope.Message}</div>
@@ -247,8 +246,7 @@ body {
 			<div class="selected-option">
 				<div class="topic-box"></div>
 				<div class="topic-title">
-					${meetingRoom.roomTitle} <input type="hidden" name="roomId"
-						value="${meetingRoom.roomId}">
+					${meetingRoom.roomTitle} <input type="hidden" name="roomId" value="${meetingRoom.roomId}">
 				</div>
 				<div class="wrapper">
 					<div class="topic-description">${meetingRoom.description}</div>
@@ -257,12 +255,8 @@ body {
 			<div class="idea-container">
 				<c:forEach var="idea" items="${ideas}">
 					<div class="idea-item">
-						<div class="idea-circle"
-							:class="{'selected': selectedIdeaId === ${idea.ideaID}}"
-							@click="toggleSelect(${idea.ideaID}, '${idea.title}', '${idea.description}', '${idea.userID}', true)"></div>
-						<div class="idea-box"
-							:class="{'voted': votedIdeaId === ${idea.ideaID}}"
-							@click="toggleSelect(${idea.ideaID}, '${idea.title}', '${idea.description}', '${idea.userID}', false)">${idea.title}</div>
+						<div class="idea-circle" :class="{'selected': selectedIdeaId === ${idea.ideaID}}" @click="toggleSelect(${idea.ideaID}, '${idea.title}', '${idea.description}', '${idea.userID}', true)"></div>
+						<div class="idea-box" :class="{'voted': votedIdeaId === ${idea.ideaID}}" @click="toggleSelect(${idea.ideaID}, '${idea.title}', '${idea.description}', '${idea.userID}', false)">${idea.title}</div>
 					</div>
 				</c:forEach>
 			</div>
@@ -274,54 +268,46 @@ body {
 			<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
 			<input type="hidden" name="stage" value="${meetingRoom.stageId}">
 			<div style="text-align: right; margin-top: 20px;">
-				<button id="nextStepButton" class="vote-button hidden"
-					x-show="isRoomManager" @click="goToNextStep()">다음 단계</button>
+				<button id="nextStepButton" class="vote-button hidden" x-show="isRoomManager" @click="goToNextStep()">다음 단계</button>
 			</div>
 		</form>
 	</div>
 
 	<!-- Modal window -->
-	<div id="myModal" class="modal" x-show="showModal"
-		@click.self="closeModal()">
+	<div id="myModal" class="modal" x-show="showModal" @click.self="closeModal()">
 		<div class="modal-content">
-			<span class="close" @click="closeModal()">&times;</span>
-			<p>
-				<span><input type="hidden" id="modal-idea-id"
-					x-text="modalIdeaId"></span>
-			</p>
-			<p>
-				<span><input type="hidden" id="modal-idea-title"
-					x-text="modalIdeaTitle"></span>
-			</p>
-			<p>
-				<span><input type="hidden" id="modal-idea-userId"
-					x-text="modalIdeaUserId"></span>
-			</p>
-			<p>
-				상세설명 : <span id="modal-idea-description"
-					x-text="modalIdeaDescription"></span>
-			</p>
-			<p>질문하기</p>
-			<div class="modal-idea-container" id="modal-idea-replies">
+			 <span class="close" @click="closeModal()">&times;</span>
+			 <p>
+				<span><input type="hidden" id="modal-idea-id" x-text="modalIdeaId"></span>
+			 </p>
+			 <p>
+				<span><input type="hidden" id="modal-idea-title" x-text="modalIdeaTitle"></span>
+			 </p>
+			 <p>
+				<span><input type="hidden" id="modal-idea-userId" x-text="modalIdeaUserId"></span>
+			 </p>
+			 <p>
+				상세설명 : <span id="modal-idea-description" x-text="modalIdeaDescription"></span>
+			 </p>
+			 <p>질문하기</p>
+			 <div class="modal-idea-container" id="modal-idea-replies">
 				<!-- 댓글 내용이 여기에 동적으로 추가됩니다 -->
-			</div>
-			<div id="input-reply-container">
-				<input type="text" id="replyContent" placeholder="댓글을 입력하세요"
-					x-model="replyContent" />
+			 </div>
+			 <div id="input-reply-container">
+				<input type="text" id="replyContent" placeholder="댓글을 입력하세요" x-model="replyContent" />
 				<button @click="submitReply()">입력</button>
-			</div>
+			 </div>
 
-			<div id="reply-form-container" x-show="replyingToId !== null">
+			 <div id="reply-form-container" x-show="replyingToId !== null">
 				<p>
 					답변할 질문: <span x-text="replyingToQuestion"></span>
 				</p>
-				<input type="hidden" id="replyToId" x-model="replyingToId" /> <input
-					type="text" id="replyAnswerContent" placeholder="답변을 입력하세요"
-					x-model="replyAnswerContent" />
+				<input type="hidden" id="replyToId" x-model="replyingToId" /> 
+				<input type="text" id="replyAnswerContent" placeholder="답변을 입력하세요" x-model="replyAnswerContent" />
 				<div id="reply-button-container">
 					<button @click="submitReplyAnswer()">답글달기</button>
 				</div>
-			</div>
+			 </div>
 		</div>
 	</div>
 
