@@ -402,11 +402,13 @@
 							onclick="location.href='<c:url value="/more-reports"/>';">
 							+ 더보기</button>
 					</div>
+					
 					<div class="reports">
-						<p>보고서 제목 1</p>
-						<p>보고서 제목 2</p>
-						<!-- 추가 보고서 목록을 여기에 추가할 수 있습니다 -->
+						<c:forEach var="report" items="${reportList}">
+							<p>${report.getReportTitle()}</p>
+						</c:forEach>
 					</div>
+					
 				</div>
 			</div>
 			
