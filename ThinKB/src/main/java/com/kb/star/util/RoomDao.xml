@@ -178,11 +178,13 @@
     INSERT INTO StageParticipation (IdeaID, StageID, UserID, Status, RoomID)
     VALUES (#{ideaId}, #{stageId}, #{userId}, 0, #{roomId})
 </insert>
+<!-- 강퇴했을때 사용 -->
 <update id="updateParticipation">
     UPDATE StageParticipation
     SET Status = 0, StageID = #{stageId}
     WHERE RoomID = #{roomId} AND IdeaID = #{ideaId} AND UserID = #{userId}
 </update>
+
 <!-- 참여자 추가할 때 ideaId 조회 -->
 <select id="getTopIdeaIds" parameterType="int" resultType="int">
     SELECT DISTINCT IdeaID
