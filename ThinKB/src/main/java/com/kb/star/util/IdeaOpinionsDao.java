@@ -43,8 +43,6 @@ public interface IdeaOpinionsDao {
     
     // 2개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
     void updateStatus(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId, @Param("status") boolean status);
-    // 2개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1 / -1
-    void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId, @Param("status") boolean status);
     
     // 타이머
     String getEndTime(@Param("roomId") int roomId, @Param("ideaId") int ideaId);
@@ -60,7 +58,10 @@ public interface IdeaOpinionsDao {
     
     
     // 다음단계
-	// Timer 시간 새로 insert 해주기
+    // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
+    void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
+	
+    // Timer 시간 새로 insert 해주기
 	void updateNewTimer(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("formattedTime") String formattedTime);
     
     // MeetingRooms에서 stage 4로 변경
@@ -99,8 +100,8 @@ public interface IdeaOpinionsDao {
     int getUserOpinionCount2(@Param("userId") int userId, @Param("ideaId") int ideaId);
     // 1개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
     void updateStatus2(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId, @Param("status") boolean status);
-    // 2개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1 / -1
-    void updateContribution2(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId, @Param("status") boolean status);
+    // 1개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1
+    void updateContribution2(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
     // 사용자별 특정 탭에 이미 작성한 의견이 있는지 확인하는 메서드(중복작성방지)
     int countUserOpinionsInTab(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("hatColor") String hatColor);
     

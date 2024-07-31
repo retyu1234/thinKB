@@ -67,12 +67,8 @@ public class IdeaOpinionsCommand implements RoomCommand {
 
 		if (userOpinionCount >= 2) { // 2개 댓글 작성시
 			ideaOpinionsDao.updateStatus(userId, ideaId, roomId, true);
-			// MeetingRoomMembers테이블의 기여도 +1
-			ideaOpinionsDao.updateContribution(ideaId, userId, roomId, true);
 		} else { // 댓글을 삭제해서 2개 미만으로 떨어질 경우
 			ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
-			// MeetingRoomMembers테이블의 기여도 -1
-			ideaOpinionsDao.updateContribution(ideaId, userId, roomId, false);
 		}
 
 		// 타이머 종료 시간

@@ -40,6 +40,10 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
         
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
+        // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
+        ideaOpinionsDao.updateContribution2(ideaId, userId, roomId); // status의 t/f 검증은 xml파일에서 함
+        
+        
 		// MeetingRooms에서 stage 5로 변경
 		ideaOpinionsDao.updateStage5(roomId); 
 		
