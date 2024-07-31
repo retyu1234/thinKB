@@ -121,6 +121,9 @@ public class IdeaOpinions2Command implements RoomCommand {
             ideaOpinionsDao.updateContribution2(ideaId, userId, roomId, true);
         } else { // 댓글을 삭제해서 1개 미만으로 떨어질 경우
             ideaOpinionsDao.updateStatus2(userId, ideaId, roomId, false);
+            System.out.println(userId);
+            System.out.println(ideaId);
+            System.out.println(roomId);
             // MeetingRoomMembers테이블의 기여도 -1
             ideaOpinionsDao.updateContribution2(ideaId, userId, roomId, false);
         }

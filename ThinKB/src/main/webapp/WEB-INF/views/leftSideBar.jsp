@@ -7,14 +7,14 @@
 <meta charset="UTF-8">
 <title>Left Sidebar</title>
 <style>
-body {
+.LeftSideBar_body {
 	display: flex;
 	margin: 10px;
 	padding: 0;
 	margin-top: 150px;
 }
 
-.sidebar {
+.leftSidebar {
 	width: 15%;
 	background-color: #FFFFFF;
 	padding: 15px;
@@ -185,8 +185,8 @@ body {
 </style>
 </head>
 
-<body>
-	<div class="sidebar">
+<body class="LeftSideBar_body">
+	<div class="leftSidebar">
 		<div class="section section1">${meetingRoom.roomTitle}</div>
 		<c:choose>
 			<c:when test="${empty yesPickList or empty yesPickList[0].title}">

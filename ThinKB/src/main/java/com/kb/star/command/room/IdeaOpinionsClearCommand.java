@@ -83,6 +83,7 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
 		for(Integer list : users) {
 			ideaOpinionsDao.insertStageParticipation(roomId, ideaId, list);
 		}
+		System.out.println("here"+users);
 
 		// roomId, stage값 다시 model에 넣기
 		model.addAttribute("roomId", roomId);
