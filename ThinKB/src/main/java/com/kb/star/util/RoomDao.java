@@ -11,6 +11,7 @@ import com.kb.star.dto.StageParticipationIdeas;
 import com.kb.star.dto.RejectLog;
 import com.kb.star.dto.TimersDto;
 import com.kb.star.dto.UserListDto;
+import com.kb.star.dto.UsersDto;
 
 public interface RoomDao {
 
@@ -116,5 +117,9 @@ public interface RoomDao {
 	int voteRoomUsers(int roomId);
 
 	void insertNotifications(@Param("userIdList") List<Integer> userIdList,@Param("message") String message,@Param("roomId") int roomId);
+
+	List<Integer> roomIdFormember(int roomId);
+
+	UsersDto whosMember(int id);
 
 }

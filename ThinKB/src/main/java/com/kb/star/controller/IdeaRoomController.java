@@ -302,9 +302,6 @@ public class IdeaRoomController {
 
 		return "redirect:/ideaOpinionsList";
 	}
-	@RequestMapping("/redirectIdeaOpinions2")
-	public String ideaOpinions2() {
-		return "firstMeeting/ideaOpinions2";
-	}
+
 
 }

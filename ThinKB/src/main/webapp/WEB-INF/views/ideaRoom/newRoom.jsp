@@ -6,23 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Insert title here</title>
+<title>thinKB - 회의방 만들기</title>
 <style>
-.newRoom-body {
-	margin: 0;
-	padding: 0;
-	background-image:
-		url('${pageContext.request.contextPath}/resources/23029.jpg');
-	background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
-	background-position: center; /* 이미지를 가운데 정렬 */
-	background-repeat: no-repeat;
-	height: 400px; /* 요소의 높이를 400px로 고정 */
+.content-banner {
+	margin-top: 150px; /* content 영역의 여백 설정 */
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-bottom: 30px;
 }
 
 .content {
 	padding: 20px; /* content 영역의 여백 설정 */
-	margin-left: 25%;
-	margin-right: 25%;
+	margin-left: 20%;
+	margin-right: 20%;
 }
 
 .title {
@@ -33,22 +29,6 @@
 	margin-bottom: 20px;
 }
 
-.custom-input {
-	width: 100%; /* 화면 가로에 꽉 차도록 설정 (여백 20px 고려) */
-	padding: 12px; /* 내부 여백 설정 */
-	border: 3px solid #666; /* 테두리 두께와 색상 설정 */
-	border-radius: 8px; /* 테두리 둥글기 설정 */
-	transition: border-color 0.3s ease; /* 테두리 색 변화에 대한 transition 설정 */
-	/* 기본 테두리 색상 */
-	border-color: #666;
-	font-size: 16px; /* 글자 크기 설정 */
-}
-
-/* 입력 중에는 노란색 테두리로 변경 */
-.custom-input:focus {
-	border-color: #ffcc00;
-	outline: none; /* 포커스 효과 제거 */
-}
 
 .date-input-container {
 	display: flex;
@@ -68,13 +48,43 @@
 .date-input {
 	width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
 	padding: 12px;
-	border: 3px solid #666;
-	border-radius: 8px;
-	font-size: 16px;
+	border: 3px solid lightgrey;
+	border-radius: 20px;
+	font-size: 15pt;
 	box-sizing: border-box;
 }
 
+.date-input:focus {
+	border-color: #FFD700; /* 포커스 시 테두리 색상 */
+	outline: none; /* 기본 포커스 스타일 제거 */
+}
+
+.new-subject {
+	font-size: 15pt; /* 제목의 글자 크기 */
+	color: black;
+	border: 3px solid #FFD700; /* 진한 노란색 테두리 */
+	border-radius: 20px; /* 라운드 처리 */
+	padding: 20px; /* 내부 여백 */
+	background-color: white; /* 배경색 */
+}
+
+input.new-subject {
+	font-size: 15pt;
+	color: black;
+	border: 3px solid lightgrey;
+	border-radius: 10px;
+	padding: 20px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+input.new-subject:focus {
+	border-color: #FFD700; /* 포커스 시 테두리 색상 */
+	outline: none; /* 기본 포커스 스타일 제거 */
+}
+
 .calendar-icon {
+	font-size: 24px;
 	margin-left: 10px;
 	cursor: pointer;
 }
@@ -154,8 +164,8 @@
 .timer-input {
 	width: 60px;
 	padding: 8px;
-	border: 2px solid #666;
-	border-radius: 5px;
+	border: 3px solid lightgrey;
+	border-radius: 10px;
 	font-size: 16px;
 	text-align: center;
 }
@@ -195,51 +205,97 @@
 	color: white;
 }
 
+body.modal-open {
+    overflow: hidden;
+}
+
 .modal {
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-	background-color: #fefefe;
-	margin: 15% auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 80%;
-	max-width: 600px;
-	border-radius: 10px;
-}
-
-.modal-header, .modal-footer {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .modal-header {
-	border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.modal-body {
+    flex-grow: 1;
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 추가 */
+}
+
+.table-container {
+    max-height: 350px; /* 약 7명의 직원이 표시될 수 있는 높이 */
+    overflow-y: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    position: sticky;
+    top: 0;
+    background-color: #f8f8f8;
+    z-index: 10;
+}
+
+.table td, .table th {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
 .modal-footer {
-	border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-top: 20px;
+    text-align: center;
 }
 
+/* 기존 스타일 유지 */
 .close {
-	color: red;
-	font-size: 28px;
-	font-weight: bold;
-	cursor: pointer;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 1;  /* 추가: 다른 요소 위에 표시되도록 함 */
 }
 
-.close:hover, .close:focus {
-	color: darkred;
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.modal-header h5 {
+    font-size: 18pt;
+    font-weight: bold;
+    margin: 0;
 }
 
 .table {
@@ -285,32 +341,116 @@
 	margin-left: 10px;
 	font-size: 0.9em;
 }
+.titleAndDetail {
+	display: flex; 
+	justify-content: space-between; 
+	align-items: center; 
+	margin-bottom: 10px;
+}
+.titleAndDetail-title {
+	margin: 0;
+	font-size: 22pt;
+	color: black;
+	font-weight: bold;
+}
+.titleAndDetail-detail {
+	font-size: 13pt;
+}
 
+.userList {
+    display: flex; 
+    align-items: center; 
+    margin-bottom: 10px;
+    justify-content: space-between; /* 추가 */
+}
+
+.userList-left {
+    display: flex;
+    align-items: center;
+}
+
+.userList-title {
+    margin: 0;
+    font-size: 22pt;
+    color: black;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.userList-detail {
+    font-size: 13pt;
+}
+
+/* 노란색 버튼 */
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
+}
+
+/* 회색버튼 */
+.grey-button {
+	background-color: #978A8F;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.grey-button:hover {
+	background-color: #60584C;
+}
 
 </style>
 </head>
 <body>
-
-	<div class="newRoom-body">
+<!-- 헤더영역 -->
+	<div>
 		<%@ include file="../header.jsp"%>
+	</div>
+	
+<!-- 상단 배너영역 -->
+	<div class="content-banner">
+		<img src="<c:url value='./resources/newRoomBanner.png'/>" alt="Example Image" 
+		style="max-width: 100%; height: auto;">
 	</div>
 
 	<div class="content">
+	<!-- 아이디어 회의 제목 -->
 		<form action="./makeRoom" method="post"
 			onsubmit="return validateForm()">
 			<input type="hidden" name="id" value="${userId}" /> <input
 				type="hidden" name="departmentId" value="${departmentId}" /> <input
 				type="hidden" name="teamId" value="${teamId}" />
 
-			<div class="title">아이디어 회의 주제</div>
-			<input type="text" class="custom-input" name="title"
-				placeholder="여기에 입력하세요">
+			<div class="titleAndDetail">
+				<div class="titleAndDetail-title">아이디어 회의 주제</div>
+				<div class="titleAndDetail-detail">구체화 하고싶은 주제를 입력해주세요. </div>
+			</div>
+			<input type="text" class="new-subject" name="title" style="margin-bottom: 50px;"
+				placeholder="여기에 작성해주세요">
 
-			<div class="title" style="margin-top: 70px;">회의 상세설명</div>
-			<input type="text" class="custom-input" style="height: 70px;"
+	<!-- 아이디어 회의 상세설명 -->
+			<div class="titleAndDetail">
+				<div class="titleAndDetail-title">아이디어 회의 상세설명</div>
+				<div class="titleAndDetail-detail">회의 주제에 대한 상세한 설명을 입력해주세요. ex) 참고할 수 있는 관련문서, 보고서 등</div>
+			</div>
+			<input type="text" class="new-subject" style="height: 150px;"
 				name="content"
-				placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">
-
+				placeholder="여기에 작성해주세요">
+	<!-- 회의종료일 -->
 			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
 				<div class="date-input-wrapper">
@@ -344,8 +484,13 @@
 					</table>
 				</div>
 			</div>
-
-			<div class="title" style="margin-top: 70px;">타이머 설정</div>
+			
+	<!-- 타이머 설정 -->
+			<div style="padding: 30px;"></div>
+			<div class="titleAndDetail">
+				<div class="titleAndDetail-title">타이머 설정</div>
+				<div class="titleAndDetail-detail">아이디어 초안을 받을 수 있는 시간을 정해주세요.</div>
+			</div>
 			<div>
 				<input type="number" class="timer-input" name="timer_hours" min="0"
 					max="23" placeholder="HH">&nbsp;시&nbsp;&nbsp;&nbsp; <input
@@ -355,50 +500,61 @@
 					max="59" placeholder="SS">&nbsp;초&nbsp;&nbsp;&nbsp; <span
 					class="error-message" id="timerError"></span>
 			</div>
-			<div class="title" style="margin-top: 70px;">참여자 선택</div>
-			<div class="btn" id="openModalBtn">직원 조회</div>
+			
+	<!-- 참여자 선택  -->
+		<div style="padding: 30px;"></div>
+			<div class="userList">
+				<div class="userList-left">
+					<div class="userList-title">참여자 선택</div>
+					<div class="grey-button" id="openModalBtn">직원 목록 조회</div>
+				</div>
+				<div class="userList-detail">함께 아이디어 회의를 진행할 직원을 목록에서 선택해주세요.</div>
+			</div>
+
 			<div id="selectedEmployees">
 				<!-- 선택된 직원들이 여기에 표시됩니다 -->
 			</div>
 			<input type="hidden" id="selectedEmployeeIds" name="users">
 			<div style="margin: 70px; text-align: center;">
-				<button class="btn" type="submit">만들기</button>
+				<button class="yellow-button" type="submit">만들기</button>
 			</div>
 		</form>
 	</div>
+	
 	<!-- 모달창 -->
 	<!-- 직원 목록 모달 -->
-	<div id="employeeModal" class="modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5>직원 목록</h5>
-				<span class="close" id="closeModalBtn">&times;</span>
-			</div>
-			<div class="modal-body">
-				<!-- 직원 목록 테이블 -->
-				<table class="table">
-					<thead>
-						<tr>
-							<th>선택</th>
-							<th>이름(직원번호)</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="employee" items="${list}">
-							<tr>
-								<td><input type="checkbox" name="employees"
-									value="${employee.getUserId()}"></td>
-								<td>${employee.getUserName()}(${employee.getUserId()})</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
-			<div class="modal-footer">
-				<button class="btn-primary" id="submitBtn">선택 완료</button>
-			</div>
-		</div>
-	</div>
+<div id="employeeModal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModalBtn">&times;</span>
+        <div class="modal-header">    
+            <h5>참여자 선택</h5>
+        </div>
+        <div class="modal-body">
+            <div class="table-container">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>선택</th>
+                            <th>이름(직원번호)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="employee" items="${list}">
+                            <tr>
+                                <td><input type="checkbox" name="employees"
+                                    value="${employee.getUserId()}"></td>
+                                <td>${employee.getUserName()}(${employee.getUserId()})</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="yellow-button" id="submitBtn" style="font-size:13pt;">선택 완료</button>
+        </div>
+    </div>
+</div>
 
 	<script>
 		// 달력 팝업 열고 닫기 함수
@@ -523,15 +679,17 @@
 		// 모달창 시작
 		// 모달 창 열기 함수
 		function openModal() {
-			var modal = document.getElementById('employeeModal');
-			modal.style.display = 'block';
-			addEmployeeCheckboxListeners(); // 체크박스 리스너 추가
+		    var modal = document.getElementById('employeeModal');
+		    modal.style.display = 'block';
+		    document.body.classList.add('modal-open');
+		    addEmployeeCheckboxListeners();
 		}
 
 		//모달 창 닫기 함수
 		function closeModal() {
-			var modal = document.getElementById('employeeModal');
-			modal.style.display = 'none';
+		    var modal = document.getElementById('employeeModal');
+		    modal.style.display = 'none';
+		    document.body.classList.remove('modal-open');
 		}
 
 		//모달 닫기 버튼 클릭 이벤트 핸들러
