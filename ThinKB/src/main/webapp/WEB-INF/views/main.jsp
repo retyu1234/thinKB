@@ -765,21 +765,6 @@ document.addEventListener('DOMContentLoaded', function() {
 					</c:forEach>
 				</div>
 			</div>
-
-			<!-- 팝업창 추가 -->
-			<div class="popup-overlay">
-				<div class="popup">
-					<div class="delete">
-						<img src="./resources/delete.png" alt="Delete"
-							style="width: 40px; height: 40px;">
-					</div>
-					<img id="popup-image" src=""
-						style="display: none; width: 200px; height: 170px;">
-					<p class="popup-message"></p>
-					<button class="popup-dont-show">오늘 하루 보지 않기</button>
-					<button class="popup-close">닫기</button>
-				</div>
-			</div>
 			<!-- 오늘할일 -->
 			<div class="section-wrapper" style="width: 60%;">
 				<div class="section-header">
@@ -795,7 +780,20 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 		</div>
-		
+					<!-- 팝업창 추가 -->
+			<div class="popup-overlay">
+				<div class="popup">
+					<div class="delete">
+						<img src="./resources/delete.png" alt="Delete"
+							style="width: 40px; height: 40px;">
+					</div>
+					<img id="popup-image" src=""
+						style="display: none; width: 200px; height: 170px;">
+					<p class="popup-message"></p>
+					<button class="popup-dont-show">오늘 하루 보지 않기</button>
+					<button class="popup-close">닫기</button>
+				</div>
+			</div>
 	</div>
 <!-- Guide 섹션 추가 -->
 

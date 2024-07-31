@@ -231,11 +231,11 @@
             </div>
                         <div class="input-row">
                 <div class="form-group">
-                    <label for="writer">작성자</label>
+                    <label for="writer">기안자</label>
                     <input type="text" id="writer" name="yesPickUserNames" value="${reportsFirst.yesPickUserNames != null ? reportsFirst.yesPickUserNames : ''}">
                 </div>
                 <div class="form-group">
-                    <label for="manager">기안자</label>
+                    <label for="manager">작성자</label>
                     <input type="text" id="manager" name="roomManagerName" value="${reportsFirst.roomManagerName != null ? reportsFirst.roomManagerName : ''}">
                 </div>
             </div>

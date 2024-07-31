@@ -6,7 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
+import org.jsoup.select.Elements;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +17,9 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
@@ -155,5 +158,26 @@ public class WordSubmit implements ReportCommand {
 	private String extractTextFromHtml(String html) {
 	    // 간단한 HTML 태그 제거
 	    return html.replaceAll("<[^>]*>", "");
+	}
+	private void applyHtmlStyling(XWPFParagraph paragraph, String html) {
+	    // HTML 파싱 (jsoup 사용)
+	    Document doc = Jsoup.parse(html);
+	    Elements elements = doc.body().children();
+
+	    for (Element element : elements) {
+	        XWPFRun run = paragraph.createRun();
+	        if (element.tagName().equals("h1")) {
+	            run.setFontSize(16);
+	            run.setBold(true);
+	        } else if (element.tagName().equals("h2")) {
+	            run.setFontSize(14);
+	            run.setBold(true);
+	        } else if (element.tagName().equals("b") || element.tagName().equals("strong")) {
+	            run.setBold(true);
+	        } else if (element.tagName().equals("i") || element.tagName().equals("em")) {
+	            run.setItalic(true);
+	        }
+	        run.setText(element.text());
+	    }
 	}
 }
