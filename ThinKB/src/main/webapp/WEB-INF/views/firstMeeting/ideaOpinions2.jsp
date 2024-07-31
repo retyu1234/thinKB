@@ -10,47 +10,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>아이디어 회의</title>
 <style>
-    body {
-        display: flex;
-/*         flex-direction: column; */
-        align-items: center;
-        background-color: #f0f0f0;
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-    }
-    .container {
-        width: 80%;
-        background-color: #FFFFFF;
-        border: 1px solid #000;
-        border-radius: 10px;
-        padding: 20px;
-        box-sizing: border-box;
-        margin-top: 50px;
-        text-align: center;
-    }
-    h1 {
-        text-align: center;
-        margin: 20px 0;
-    }
-    .tabs {
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 20px;
-    }
-    .tab {
-        padding: 15px 25px;
-        cursor: pointer;
-        font-weight: bold;
-        color: #fff;
-        transition: background-color 0.3s ease;
-        clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
-        flex: 1;
-        text-align: center;
-    }
-    .tab-smart { background-color: #007bff; }
-    .tab-positive { background-color: #ffc107; color: black; }
-    .tab-worry { background-color: #28a745; }
-    .tab-strict { background-color: #dc3545; }
+.ideaOpinions2-body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #FFFFFF;
+    width: 70%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    padding: 20px;
+    /* 수지 */
+   /*  display: flex; */
+    /* align-items: center; */
+}
+
+/* 제목 */
+.title {
+    font-weight: bold;
+    font-size: 26pt;
+    /* color: black; */
+    text-align: left;
+    margin-left: 50px;
+    margin-top: 20px; 
+    margin-bottom: 20px; 
+}
+/* 현재 단계 완료 참여자 수 */
+.countDone {
+	/* float: left;  */
+	font-size: 18pt;
+	margin-left: 50px;
+	margin-bottom: 100px;
+}
+    
+/* 4가지 탭 */
+.tabs {
+    display: flex;
+    /* justify-content: space-around; */
+    justify-content: flex-start; /* 탭들을 왼쪽으로 몰리게 함 */
+    gap: 10px; /* 탭 간의 간격 조절 */
+    margin-bottom: 20px;
+}
+.tab {
+    padding: 15px 25px;
+	cursor: pointer;
+	font-weight: bold;
+	color: #909090; /* 기본 색상 */
+	transition: background-color 0.3s ease, color 0.3s ease;
+	clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+	flex: 1;
+	text-align: center;
+	font-size: 22pt;
+	text-decoration: none; /* 기본 밑줄 제거 */	
+}
+/* 선택된 탭 */
+.tab.active {
+    color: black; /* 선택된 탭의 글자색 */
+    border-bottom: 6px solid #FFE297; /* 선택된 탭의 밑줄 색상 */
+    width: 80%; /* 선택된 탭의 밑줄 길이 줄이기 */
+    margin: 0 auto; /* 가운데 정렬 */
+}
+    
+    
     .columns {
         display: flex;
         justify-content: space-between;
@@ -310,29 +329,36 @@ function confirmNextStep() {
 </script>
 </head>
 <body>
+<div class="ideaOpinions2-body">
 <%@ include file="../header.jsp"%>
 <%@ include file="../leftSideBar.jsp"%>
 
-    <div class="container">
     	<!-- 타이머 -->
 	    <div id="timer-section" style="margin-top:100px;">
 	    	<%@ include file="../Timer.jsp"%>
 	    </div>
+	    <!-- 방장이면 표시 -->
 	    <c:if test="${userId == roomManagerId}">
 		    <button id="nextStepButton" onclick="confirmNextStep()">다음 단계로</button>
-		    
-		    <span style="float: right; font-size: 16px;">
-            	현재 단계 완료 참여자 수: ${doneUserCount}/${userCount} <br>
-            </span>
 		</c:if>
 		
-        <h1>${ideaTitle}</h1>
+		<!-- 현재 단계 완료 참여자 수 -->
+        <div class="title"> [${ideaTitle}] </div>
+        <span class="countDone"> 현재 단계 완료 참여자 수: ${doneUserCount}/${userCount}</span>
+        
+        <!-- 4가지 탭 -->
         <div class="tabs">
-            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-smart" class="tab tab-smart ${currentTab == 'tab-smart' ? 'active' : ''}">똑똑이</a>
-            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-positive" class="tab tab-positive ${currentTab == 'tab-positive' ? 'active' : ''}">긍정이</a>
-            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-worry" class="tab tab-worry ${currentTab == 'tab-worry' ? 'active' : ''}">걱정이</a>
-            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-strict" class="tab tab-strict ${currentTab == 'tab-strict' ? 'active' : ''}">깐깐이</a>
+            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-smart" 
+            class="tab tab-smart ${currentTab == 'tab-smart' ? 'active' : ''}">똑똑이</a>
+            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-positive" 
+            class="tab tab-positive ${currentTab == 'tab-positive' ? 'active' : ''}">긍정이</a>
+            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-worry" 
+            class="tab tab-worry ${currentTab == 'tab-worry' ? 'active' : ''}">걱정이</a>
+            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-strict" 
+            class="tab tab-strict ${currentTab == 'tab-strict' ? 'active' : ''}">깐깐이</a>
         </div>
+        
+        
         <div class="columns">
             <div class="column">
                 <h2>기존 의견들</h2>
@@ -386,7 +412,7 @@ function confirmNextStep() {
 									    <form action="likeOpinion" method="post" style="display: inline;">
 									        <input type="hidden" name="opinionId" value="${opinion.opinionID}" />
 									        <input type="hidden" name="userId" value="${userId}" />
-									        <input type="hidden" name="like" value="${opinion.likedByCurrentUser ? false : true}" />
+									        <input type="hidden" name="like" value="${opinion.likedByCurrentUser ? false : true}" /> 
 									        <input type="hidden" name="roomId" value="${roomId}" />
 									        <input type="hidden" name="ideaId" value="${ideaId}" />
 									        <input type="hidden" name="currentTab" value="${currentTab}" />
@@ -445,6 +471,6 @@ function confirmNextStep() {
 			</div>
 		    </div>
 		</div>
-    </div>
+</div>
 </body>
 </html>
