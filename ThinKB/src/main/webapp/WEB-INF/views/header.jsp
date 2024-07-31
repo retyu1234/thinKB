@@ -13,10 +13,10 @@
 .header-container {
 	position: fixed;
 	top: 0;
-	left: 0; width : 100%;
+	left: 0;
 	z-index: 1000;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 100%
+	width: 100%;
 }
 
 .header {
@@ -45,8 +45,10 @@
 }
 
 .menu {
-	display: flex;
-	gap: 30px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
 }
 
 .menu a {
@@ -55,7 +57,12 @@
 	font-weight: bold;
 	margin: 0 10px;
 }
-
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    margin-right:7%;
+}
 .profile {
 	display: flex;
 	align-items: center;
@@ -325,7 +332,6 @@
         <div class="header">
         
             <div class="menu">
-                <a href="./guide">사용가이드</a> 
                 <a href="./meetingList">회의방</a> 
                 <a href="./myReportList">내 보고서</a> 
                 <a href="./noticeList">알림함</a> 
@@ -333,6 +339,7 @@
                 <a href="./voteList">투표</a>
                 <a href="./pinList">핀메모(수정중)</a>
             </div>
+            <div class="right-section">
             <div class="profile">
             <a href="<c:url value='./mypage'/>">
                <c:choose>
@@ -358,7 +365,7 @@
                 </div>
             </div>
             <a href="<c:url value='/logout'/>"> <img src="<c:url value='/resources/logout.png'/>" alt="Logout Icon" class="logout-icon"> </a>
-        </div>
+        </div></div>
 </div>
     </header>
         <!-- 알림 상세 모달 -->
