@@ -4,29 +4,53 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <meta charset="UTF-8">
 <title>보고서 양식</title>
 <style>
 .report-body {
 	font-family: Arial, sans-serif;
-	background-color: #f5f5f5;
+	background-color: #ffffff;
 	padding: 20px;
-	margin-top:10%;
+	margin-top:8%;
 	caret-color: transparent;
 }
-
+.form-group {
+    margin-bottom: 15px;
+}
+.input-row {
+    display: flex;
+    justify-content: space-between;
+}
+.input-row .form-group {
+    width: 48%;
+}
 .report-form-container {
-	background-color: #fff;
+	background-color: #ffffff;
 	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	max-width: 600px;
+	border:none;
+	max-width: 60%;
 	margin: 0 auto;
 }
+#report-content{
+    height: 500px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    caret-color: auto; /* 커서 색상을 기본값으로 설정 */
+}
+.ql-container.ql-snow {
+    border: none;
+}
 
+.ql-toolbar.ql-snow {
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
 .report-form-container h2 {
-	text-align: center;
-	margin-bottom: 20px;
+	text-align: left;
+	margin:0;
+	font-size:22pt;
 }
 
 .report-form-container label {
@@ -44,6 +68,7 @@
 	border: 1px solid #ccc;
 	border-radius: 4px;
 	box-sizing: border-box;
+	font-size:15pt;
 }
 
 .report-form-container textarea {
@@ -53,7 +78,9 @@
 
 .report-button-container {
 	display: flex;
-	justify-content: space-between;
+	gap:10px;
+	justify-content: flex-end;
+	margin-bottom: 20px;
 }
 
 .report-button-container button {
@@ -61,32 +88,35 @@
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: bold;
 	transition: background-color 0.3s;
 }
 
 .report-button-container .report-save-button {
-	background-color: #ffc107;
+	background-color: #978A8F;
 	color: white;
 }
 
 .report-button-container .report-save-button:hover {
-	background-color: #e0a800;
+	background-color: #60584C;
 }
 
 .report-button-container .report-submit-button {
-	background-color: #28a745;
+	background-color: #ffcc00;
 	color: white;
 }
 
 .report-button-container .report-submit-button:hover {
-	background-color: #218838;
+	background-color: #D4AA00;
 }
 .summary-report {
         margin-top: 30px;
-        margin-left:15%;
-        margin-right:15%;
+        margin-left:20%;
+        margin-right:20%;
+    }
+.summary-report h3{
+        font-size:22pt;
     }
     
     .four-hat-container {
@@ -173,46 +203,82 @@
 <body class="report-body">
 <%@ include file="../header.jsp"%>
 	<div class="report-form-container">
-		<h2>보고서 양식</h2>
+		<h2>🗒️아이디어 보고서 작성</h2>
 		<form action="./submitForm" method="post"
 			onsubmit="handleFormSubmit(event)">
-			<label for="report-title">Report Title:</label> <input type="text"
-				id="report-title" name="reportTitle"
-				value="${reports.reportTitle != null ? reports.reportTitle : ''}"
-				required><br> <label for="report-content">Report
-				Content:</label>
-			<textarea id="report-content" name="reportContent" required>${reports.reportContent != null ? reports.reportContent : ''}</textarea>
-			<br> <label for="date">작성일자:</label> <input type="date"
-				id="date" name="date"
-				value="${reports.updatedAt != null ? reports.updatedAt : ''}"
-				required><br> <label for="date">부서명:</label> <input
-				type="text" name="departmentName"
-				value="${reportsFirst.departmentName != null ? reportsFirst.departmentName : ''}">
-			<label for="date">팀명:</label> <input type="text" name="teamName"
-				value="${reportsFirst.teamName != null ? reportsFirst.teamName : ''}">
-			<label for="date">팀장(방장):</label> <input type="text"
-				name="roomManagerName"
-				value="${reportsFirst.roomManagerName != null ? reportsFirst.roomManagerName : ''}">
-			<label for="date">기안자:</label> <input type="text"
-				name="yesPickUserNames"
-				value="${reportsFirst.yesPickUserNames != null ? reportsFirst.yesPickUserNames : ''}">
+						<div class="report-button-container">
+				<button type="submit" name="action" value="save"
+					class="report-save-button">임시 저장</button>
+				<button type="submit" name="action" value="submit"
+					class="report-submit-button">제출</button>
+			</div><hr style="margin-bottom:30px">
+            <div class="form-group">
+                <label for="report-title">제목을 입력해주세요 *</label>
+                <input type="text" id="report-title" name="reportTitle" value="${reports.reportTitle != null ? reports.reportTitle : ''}" required>
+            </div>
+                        <div class="input-row">
+                <div class="form-group">
+                    <label for="date">작성일자</label>
+                    <input type="date" id="date" name="date" value="${reports.updatedAt != null ? reports.updatedAt : ''}" required>
+                </div>
+<div class="form-group">
+    <label for="department-team">부서명 / 팀명</label>
+    <input type="text" id="department-team" readonly 
+           value="${reportsFirst.departmentName != null ? reportsFirst.departmentName : ''} / ${reportsFirst.teamName != null ? reportsFirst.teamName : ''}">
+    <input type="hidden" name="departmentName" value="${reportsFirst.departmentName != null ? reportsFirst.departmentName : ''}">
+    <input type="hidden" name="teamName" value="${reportsFirst.teamName != null ? reportsFirst.teamName : ''}">
+</div>
+            </div>
+                        <div class="input-row">
+                <div class="form-group">
+                    <label for="writer">작성자</label>
+                    <input type="text" id="writer" name="yesPickUserNames" value="${reportsFirst.yesPickUserNames != null ? reportsFirst.yesPickUserNames : ''}">
+                </div>
+                <div class="form-group">
+                    <label for="manager">기안자</label>
+                    <input type="text" id="manager" name="roomManagerName" value="${reportsFirst.roomManagerName != null ? reportsFirst.roomManagerName : ''}">
+                </div>
+            </div>
+<div class="form-group">
+    <label for="report-content">Report Content:</label>
+    <div id="report-content">${reports.reportContent != null ? reports.reportContent : ''}</div>
+    <input type="hidden" name="reportContent" id="hidden-report-content">
+</div>
+			
 			<!-- Hidden fields for additional data -->
 
 			<input type="hidden" name="roomId"
 				value="${reportsFirst.roomId != null ? reportsFirst.roomId : ''}">
 			<input type="hidden" name="userId" value="${userId}" required><br>
 
-			<div class="report-button-container">
-				<button type="submit" name="action" value="save"
-					class="report-save-button">임시 저장</button>
-				<button type="submit" name="action" value="submit"
-					class="report-submit-button">제출</button>
-			</div>
+
 		</form>
+<script src="https://cdn.ckeditor.com/4.24.0-lts/standard/ckeditor.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    var quill = new Quill('#report-content', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ 'color': [] }, { 'background': [] }],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image', 'video'],
+                ['clean']
+            ]
+        }
+    });
+
+    // 폼 제출 시 Quill 내용을 hidden input에 설정
+    document.querySelector('form').onsubmit = function() {
+        document.getElementById('hidden-report-content').value = quill.root.innerHTML;
+    };
+</script>
 	</div>
 	<div class="summary-report">
 		<h3>
-			요약 보고서
+			📌요약 보고서
 			<button class = "reportToggleBtn" onclick="toggleSummary()">🔽</button>
 		</h3>
 		<div id="summaryContent" style="display: none;">

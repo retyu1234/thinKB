@@ -48,8 +48,8 @@ public class WordSubmit implements ReportCommand {
 		String departmentName = request.getParameter("departmentName");
 		String teamName = request.getParameter("teamName");
 		String roomManagerName = request.getParameter("roomManagerName");
-		String yesPickUserName = request.getParameter("yesPickUserName");
-
+		String yesPickUserName = request.getParameter("yesPickUserNames");
+		System.out.println(departmentName+"/"+teamName);
 		String realPath = servletContext.getRealPath("/upload");
 		String inputPath = realPath + File.separator + "formTemplate.docx";
 		String outputPath = realPath + File.separator + "formData_" + roomId + ".docx";
@@ -144,12 +144,16 @@ public class WordSubmit implements ReportCommand {
 	private String replacePlaceholderText(String text, String reportTitle, String reportContent, String date,
 			String departmentName, String teamName, String roomManagerName, String yesPickUserName) {
 		text = text.replace("{ReportTitle}", reportTitle);
-		text = text.replace("{ReportContent}", reportContent);
+		text = text.replace("{ReportContent}", extractTextFromHtml(reportContent));
 		text = text.replace("{DepartmentName}", departmentName);
 		text = text.replace("{TeamName}", teamName);
 		text = text.replace("{RoomManagerName}", roomManagerName);
 		text = text.replace("{YesPickUserName}", yesPickUserName);
 		text = text.replace("{Date}", date);
 		return text;
+	}
+	private String extractTextFromHtml(String html) {
+	    // 간단한 HTML 태그 제거
+	    return html.replaceAll("<[^>]*>", "");
 	}
 }
