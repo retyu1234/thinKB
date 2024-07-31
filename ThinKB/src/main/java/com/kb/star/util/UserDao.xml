@@ -127,7 +127,7 @@
 		where mr.IsDelete = 0
 		and mrm.UserID = #{param1} and mr.EndDate >=
 		curdate() order by
-		mr.RoomID desc limit 3;
+		mr.RoomID desc limit 4;
 	</select>
 
 	<insert id="insertForwardStage1">
@@ -218,5 +218,48 @@
 	    WHERE mr.IsDelete = 0
 	      AND mrm.UserID = #{userId}
 	</select>
-
+<!-- TodoList -->
+<select id="getUserTodoListForToday" resultType="com.kb.star.dto.TodoDto">
+    SELECT 
+        DATE_FORMAT(t.endTime, '%Y.%m.%d') AS dueDate,
+        mr.RoomTitle,mr.StageID,mr.RoomID,
+        s.Status AS stageStatus
+    FROM 
+        Timer t
+    JOIN 
+        MeetingRooms mr ON t.RoomID = mr.RoomID
+    JOIN 
+        Stages s ON mr.StageID = s.StageID
+    JOIN 
+        StageParticipation sp ON mr.RoomID = sp.RoomID AND mr.StageID = sp.StageID
+    WHERE 
+        sp.UserID = #{userId}
+        AND sp.Status = 0
+        AND DATE(t.endTime) = CURDATE()
+        AND t.endTime > NOW()  -- 현재 시간 이후의 항목만 선택
+    ORDER BY 
+        t.endTime ASC
+</select>
+<!-- 날짜별 todolist (기존 쿼리 수정) -->
+<select id="getUserTodoListByDate" resultType="com.kb.star.dto.TodoDto">
+    SELECT 
+        DATE_FORMAT(t.endTime, '%Y.%m.%d') AS dueDate,
+        mr.RoomTitle,mr.StageID,mr.RoomID,
+        s.Status AS stageStatus
+    FROM 
+        Timer t
+    JOIN 
+        MeetingRooms mr ON t.RoomID = mr.RoomID
+    JOIN 
+        Stages s ON mr.StageID = s.StageID
+    JOIN 
+        StageParticipation sp ON mr.RoomID = sp.RoomID AND mr.StageID = sp.StageID
+    WHERE 
+        sp.UserID = #{userId}
+        AND sp.Status = 0
+        AND DATE(t.endTime) = #{date}
+        AND t.endTime > NOW()  -- 현재 시간 이후의 항목만 선택
+    ORDER BY 
+        t.endTime ASC
+</select>
 </mapper>

@@ -14,6 +14,7 @@ import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.ReportsDto;
+import com.kb.star.dto.TodoDto;
 import com.kb.star.util.NotiDao;
 import com.kb.star.util.ReportDao;
 import com.kb.star.util.UserDao;
@@ -40,6 +41,9 @@ public class UserInfoCommand implements LoginCommand {
         NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
         List<NotiDto> notifications = notiDao.getAllNoti(id); // 알림 목록 데이터 가져오기
         
+        // Todo 리스트 가져오기
+        List<TodoDto> todoList = dao.getUserTodoListForToday(id);
+        model.addAttribute("todoList", todoList);
         // 알림에 아이디어 제목 정보를 추가
         // 읽지 않은 알림 개수 계산
         int unreadCount = 0;
@@ -72,7 +76,6 @@ public class UserInfoCommand implements LoginCommand {
 
         model.addAttribute("notifications", notifications);
         model.addAttribute("unreadCount", unreadCount); // 읽지 않은 알림 개수 추가
-        System.out.println("unreadCount : " + unreadCount);
         
         // 내가 쓴 보고서 목록 가져오기
         ReportDao repoDao = sqlSession.getMapper(ReportDao.class);

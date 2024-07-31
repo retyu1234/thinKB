@@ -335,15 +335,10 @@ public class IdeaOpinionsController {
 
 	// stage 5로 이동 = IdeaRoomController의 case 5 = (방장)보고서 작성화면/(사용자)요약보고서
 	@RequestMapping("/goStage5")
-	public String goStage5(@RequestParam("roomId") int roomId, 
-		            	   @RequestParam("ideaId") int ideaId, 
+	public String goStage5(@RequestParam("roomId") int roomId,
 		            	   HttpServletRequest request, Model model) {
-		System.out.println("goStage5들어옴");
-
 		model.addAttribute("request", request);
 		model.addAttribute("roomId", roomId);
-		model.addAttribute("ideaId", ideaId);
-
 		return "redirect:/roomDetail";
 	}
    

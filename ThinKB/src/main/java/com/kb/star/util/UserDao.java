@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.Teams;
+import com.kb.star.dto.TodoDto;
 import com.kb.star.dto.UserListDto;
 import com.kb.star.dto.UsersDto;
 
@@ -71,5 +72,9 @@ public interface UserDao {
 	//페이지네이션
 	List<MeetingRooms> myAllMeetingRoomPaginated(@Param("userId") int userId, @Param("start") int start, @Param("pageSize") int pageSize);
 	int countMyAllMeetingRooms(@Param("userId") int userId);
+	
+	List<TodoDto> getUserTodoListForToday(int userId);
+	
+	List<TodoDto> getUserTodoListByDate(@Param("userId") int userId, @Param("date") String date);
 
 }

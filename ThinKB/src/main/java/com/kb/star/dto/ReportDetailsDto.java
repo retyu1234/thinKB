@@ -14,7 +14,7 @@ public class ReportDetailsDto {
     private String teamName;
     private String roomTitle;
     private String roomManagerName;
-    private String yesPickUserName;
+    private String yesPickUserNames;
 	public int getReportId() {
 		return reportId;
 	}
@@ -87,11 +87,11 @@ public class ReportDetailsDto {
 	public void setRoomManagerName(String roomManagerName) {
 		this.roomManagerName = roomManagerName;
 	}
-	public String getYesPickUserName() {
-		return yesPickUserName;
+	public String getYesPickUserNames() {
+		return yesPickUserNames;
 	}
-	public void setYesPickUserName(String yesPickUserName) {
-		this.yesPickUserName = yesPickUserName;
+	public void setYesPickUserNames(String yesPickUserNames) {
+		this.yesPickUserNames = yesPickUserNames;
 	}
 
 }
