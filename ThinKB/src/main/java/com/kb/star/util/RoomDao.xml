@@ -339,4 +339,12 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 	SELECT count(*) from StageParticipation WHERE RoomID = #{param1} and StageID =2 and Status =1
 </select>
 
+<!-- 오른쪽 사이드바용 -->
+<select id="roomIdFormember" resultType="int">
+	SELECT UserID from MeetingRoomMembers WHERE RoomID = #{param1}
+</select>
+
+<select id="whosMember" resultType="com.kb.star.dto.UsersDto">
+	SELECT * from Users WHERE UserID = #{param1}
+</select>
 </mapper>

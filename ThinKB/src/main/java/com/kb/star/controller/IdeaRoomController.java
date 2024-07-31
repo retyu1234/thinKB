@@ -293,5 +293,6 @@ public class IdeaRoomController {
 
 		return "redirect:/ideaOpinionsList";
 	}
+	
 
 }
