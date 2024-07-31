@@ -11,6 +11,8 @@
 	font-family: Arial, sans-serif;
 	background-color: #f5f5f5;
 	padding: 20px;
+	margin-top:10%;
+	caret-color: transparent;
 }
 
 .report-form-container {
@@ -141,14 +143,14 @@
     }
     
     .reportToggleBtn {
-        background-color: #4CAF50;
+        background-color: #ffffff;
         border: none;
         color: white;
-        padding: 10px 20px;
+        padding: 0;
         text-align: center;
         text-decoration: none;
         display: inline-block;
-        font-size: 16px;
+        font-size: 26px;
         margin: 4px 2px;
         cursor: pointer;
         border-radius: 5px;
@@ -169,6 +171,7 @@
 </script>
 </head>
 <body class="report-body">
+<%@ include file="../header.jsp"%>
 	<div class="report-form-container">
 		<h2>보고서 양식</h2>
 		<form action="./submitForm" method="post"
@@ -210,7 +213,7 @@
 	<div class="summary-report">
 		<h3>
 			요약 보고서
-			<button onclick="toggleSummary()">토글</button>
+			<button class = "reportToggleBtn" onclick="toggleSummary()">🔽</button>
 		</h3>
 		<div id="summaryContent" style="display: none;">
 			<c:forEach var="idea"

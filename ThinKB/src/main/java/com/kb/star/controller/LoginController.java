@@ -1,8 +1,11 @@
 package com.kb.star.controller;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
@@ -10,14 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kb.star.command.login.CheckUser;
 import com.kb.star.command.login.Login;
 import com.kb.star.command.login.LoginCommand;
-import com.kb.star.command.user.UserInfoCommand;
 import com.kb.star.command.login.Mypage;
 import com.kb.star.command.login.ProfileImg;
 import com.kb.star.command.login.UpdatePassword;
+import com.kb.star.command.user.UserInfoCommand;
+import com.kb.star.dto.TodoDto;
+import com.kb.star.util.UserDao;
 
 @Controller
 public class LoginController {
@@ -115,5 +124,34 @@ public class LoginController {
 	public String viewTest(HttpServletRequest request,Model model) {
 		return "viewTest";
 	}
-	
+    @RequestMapping(value = "/getTodoList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public void getTodoList(@RequestParam("date") String date, HttpSession session, HttpServletResponse response) {
+        try {
+            int userId = (Integer) session.getAttribute("userId");
+            UserDao dao = sqlSession.getMapper(UserDao.class);
+            List<TodoDto> todoList;
+            
+            if (date.equals("today")) {
+                todoList = dao.getUserTodoListForToday(userId);
+            } else {
+                todoList = dao.getUserTodoListByDate(userId, date);
+            }
+
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonResult = mapper.writeValueAsString(todoList);
+
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(jsonResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                response.setContentType("application/json;charset=UTF-8");
+                response.getWriter().write("[]");
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+    }
+
 }

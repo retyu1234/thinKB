@@ -28,6 +28,7 @@
 	justify-content: space-between;
 	align-items: center;
 	box-sizing: border-box;
+	z-index: 1000;
 }
 
 .logo {
@@ -36,6 +37,7 @@
 	display: flex;
 	align-items: center;
 	padding: 10px 30px;
+	z-index: 1000;
 }
 
 .logo img {
