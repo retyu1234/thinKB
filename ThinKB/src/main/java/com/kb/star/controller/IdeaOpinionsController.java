@@ -23,7 +23,6 @@ import com.kb.star.command.room.IdeaOpinionsClear2Command;
 import com.kb.star.command.room.IdeaOpinionsClearCommand;
 import com.kb.star.command.room.IdeaOpinionsCommand;
 import com.kb.star.dto.IdeaOpinionsDto;
-import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
@@ -361,4 +360,3 @@ public class IdeaOpinionsController {
 	}
 }
 	
-

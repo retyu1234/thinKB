@@ -9,63 +9,73 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <style>
-        .header {
-            position: fixed;
-            top: 30px;
-            left: 50px;
-            right: 50px;
-            background: white;
-            border-radius: 30px;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            z-index: 1000; /* 다른 요소들보다 위에 오도록 설정 */
-        }
+<style>
+.header-container {
+	position: fixed;
+	top: 0;
+	left: 0; width : 100%;
+	z-index: 1000;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	width: 100%
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+.header {
+	width: 100%;
+	padding: 10px 30px;
+	top: 0;
+	display: flex;
+	background: #ffcc00;
+	justify-content: space-between;
+	align-items: center;
+	box-sizing: border-box;
+	z-index: 1000;
+}
 
-        .logo img {
-            height: 40px; /* 원하는 크기로 조정 */
-        }
+.logo {
+	font-size: 24px;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	padding: 10px 30px;
+	z-index: 1000;
+}
 
-        .menu {
-            display: flex;
-            gap: 30px;
-        }
+.logo img {
+	height: 40px;
+}
 
-        .menu a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-            margin: 0 10px;
-        }
+.menu {
+	display: flex;
+	gap: 30px;
+}
 
-        .profile {
-            display: flex;
-            align-items: center;
-        }
+.menu a {
+	text-decoration: none;
+	color: #333;
+	font-weight: bold;
+	margin: 0 10px;
+}
 
-        .profile img {
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
+.profile {
+	display: flex;
+	align-items: center;
+}
 
-        .logout-icon {
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            margin-left: 20px;
-        }
-    </style>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+.profile img {
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+	margin-right: 10px;
+}
+
+.logout-icon {
+	width: 24px;
+	height: 24px;
+	cursor: pointer;
+	margin-left: 20px;
+}
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
 @keyframes blink {
             0% { opacity: 1; }
@@ -249,11 +259,13 @@
             var notificationList = $("#notificationList");
             notificationList.empty();
             notifications.forEach(function(notification) {
+                var createdAt = new Date(notification.createdAt).toLocaleString(); // 날짜를 로컬 형식의 문자열로 변환
                 var listItem = $("<li>")
-                    .attr("data-id", notification.notificationID)
-                    .attr("data-room", notification.roomTitle)
-                    .attr("data-message", notification.message)
-                    .html("Room: " + notification.roomTitle);
+                .attr("data-id", notification.notificationID)
+                .attr("data-room", notification.roomTitle)
+                .attr("data-message", notification.message)
+                .attr("data-time", createdAt)  // 시간 데이터 추가
+                .html("Room: " + notification.roomTitle + "<br>Time: " + createdAt);
                 notificationList.append(listItem);
             });
 
@@ -281,9 +293,11 @@
             var notificationId = $(this).data("id");
             var roomTitle = $(this).data("room");
             var message = $(this).data("message");
+            var createdTime = $(this).data("time");  // 시간 정보 가져오기
 
-            $("#modalRoomTitle").text("RoomTitle : "+roomTitle);
+            $("#modalRoomTitle").text("RoomTitle : " + roomTitle);
             $("#modalMessage").text(message);
+            $("#modalTime").text("Created at: " + createdTime);  // 모달에 시간 표시
             $("#notificationModal").show();
 
             $.post("${pageContext.request.contextPath}/readNotification", { notificationId: notificationId }, function(response) {
@@ -304,16 +318,17 @@
 </head>
 <body>
     <header>
-        <div class="header">
-            <div class="logo">
+    <div class="header-container">
+                    <div class="logo">
                 <a href="<c:url value='./main'/>"> <img src="<c:url value='./resources/logo1.png'/>" alt="Logo"> </a>
             </div>
+        <div class="header">
+        
             <div class="menu">
                 <a href="./guide">사용가이드</a> 
                 <a href="./meetingList">회의방</a> 
                 <a href="./myReportList">내 보고서</a> 
                 <a href="./noticeList">알림함</a> 
-                <a href="#">마이페이지</a>
                 <a href="./AorBList">A/B테스트</a> 
                 <a href="./voteList">투표</a>
                 <a href="./pinList">핀메모(수정중)</a>
@@ -331,7 +346,7 @@
             </div>
             <div>
                 <div id="notificationIcon">
-                    <span class="bell">🔔</span>
+                    <span class="bell">📬</span>
                     <span id="notificationCount">0</span>
                 </div>
                 <div id="notificationDropdown">
@@ -344,13 +359,13 @@
             </div>
             <a href="<c:url value='/logout'/>"> <img src="<c:url value='/resources/logout.png'/>" alt="Logout Icon" class="logout-icon"> </a>
         </div>
-
+</div>
     </header>
         <!-- 알림 상세 모달 -->
     <div id="notificationModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h2 id="modalRoomTitle"></h2><hr>
+            <h2 id="modalRoomTitle"></h2><p id="modalTime"></p><hr>
             <h3>Noti Contents : </h3>
             <p id="modalMessage"></p>
         </div>

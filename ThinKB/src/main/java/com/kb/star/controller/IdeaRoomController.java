@@ -1,5 +1,7 @@
 package com.kb.star.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +21,6 @@ import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.StageThreeCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
-import com.kb.star.command.room.TimerTestCommand;
 import com.kb.star.command.room.UpdateIdeaCommand;
 import com.kb.star.command.room.UpdateStageThreeCommand;
 import com.kb.star.command.room.UpdateStageTwoCommand;
@@ -102,7 +103,7 @@ public class IdeaRoomController {
 
 		case 3:
 			command = new StageThreeCommand(sqlSession);
-			command.execute(model);
+			command.execute(model);		
 			return "redirect:/ideaOpinionsList";
 
 		case 4:
@@ -295,6 +296,10 @@ public class IdeaRoomController {
 		command.execute(model);
 
 		return "redirect:/ideaOpinionsList";
+	}
+	@RequestMapping("/redirectIdeaOpinions2")
+	public String ideaOpinions2() {
+		return "firstMeeting/ideaOpinions2";
 	}
 
 }

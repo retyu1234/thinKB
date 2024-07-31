@@ -30,38 +30,33 @@
 	<!-- 최종보고서 작성 데이터 조회 기안자 빼고test -->
 	<select id="getReportDetails" resultMap="reportDetailsResultMap"
 		parameterType="int">
-		SELECT
-		r.ReportID,
-		r.RoomID,
-		r.UserID,
-		r.ReportTitle,
-		r.ReportContent,
-		r.IsFinal,
-		r.CreatedAt,
-		r.UpdatedAt,
-		d.DepartmentName,
-		t.TeamName,
-		rm.RoomTitle,
-		u.UserName AS RoomManagerName
-		FROM
-		Reports r
-		JOIN
-		MeetingRooms rm ON r.RoomID = rm.RoomID
-		JOIN
-		Departments d ON
-		rm.DepartmentID = d.DepartmentID
-		JOIN
-		Teams t ON rm.TeamID = t.TeamID
-		JOIN
-		Users u ON rm.RoomManagerID = u.UserID
-		JOIN
-		MeetingRoomMembers mrm
-		ON r.RoomID = mrm.RoomID
-		JOIN
-		Users mm ON mrm.UserID = mm.UserID
-		WHERE
-		r.RoomID = #{roomId}
-		LIMIT 1
+    SELECT
+    r.ReportID,
+    r.RoomID,
+    r.UserID,
+    r.ReportTitle,
+    r.ReportContent,
+    r.IsFinal,
+    r.CreatedAt,
+    r.UpdatedAt,
+    d.DepartmentName,
+    t.TeamName,
+    rm.RoomTitle,
+    u.UserName AS RoomManagerName,
+    GROUP_CONCAT(DISTINCT mm.UserName SEPARATOR '/') AS YesPickUserNames
+    FROM
+    Reports r
+    JOIN MeetingRooms rm ON r.RoomID = rm.RoomID
+    JOIN Departments d ON rm.DepartmentID = d.DepartmentID
+    JOIN Teams t ON rm.TeamID = t.TeamID
+    JOIN Users u ON rm.RoomManagerID = u.UserID
+    JOIN MeetingRoomMembers mrm ON r.RoomID = mrm.RoomID AND mrm.Role = 'yesPick' AND mrm.IsDelete = FALSE
+    JOIN Users mm ON mrm.UserID = mm.UserID
+    WHERE
+    r.RoomID = #{roomId}
+    GROUP BY r.ReportID, r.RoomID, r.UserID, r.ReportTitle, r.ReportContent, r.IsFinal, r.CreatedAt, r.UpdatedAt,
+             d.DepartmentName, t.TeamName, rm.RoomTitle, u.UserName
+    LIMIT 1
 	</select>
 
 	<resultMap id="reportDetailsResultMap"
@@ -78,38 +73,28 @@
 		<result property="teamName" column="TeamName" />
 		<result property="roomTitle" column="RoomTitle" />
 		<result property="roomManagerName" column="RoomManagerName" />
-		<result property="yesPickUserName" column="YesPickUserName" />
+		<result property="yesPickUserNames" column="YesPickUserNames" />
 	</resultMap>
 	<!-- 보고서작성 최초 입장시 데이터없을때 -->
 	<select id="getReportDetailsFirst"
 		resultMap="meetingRoomDetailsResultMap" parameterType="int">
-		SELECT
-		mr.RoomID,
-		mr.RoomTitle,
-		d.DepartmentName,
-		t.TeamName,
-		u.UserName AS
-		RoomManagerName,
-		mm_user.UserName AS YesPickUserName
-		FROM
-		MeetingRooms mr
-		JOIN
-		Departments d ON mr.DepartmentID = d.DepartmentID
-		JOIN
-		Teams t ON
-		mr.TeamID = t.TeamID
-		JOIN
-		Users u ON mr.RoomManagerID = u.UserID
-		LEFT
-		JOIN
-		MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID AND mrm.Role =
-		'yesPick' AND
-		mrm.IsDelete = FALSE
-		LEFT JOIN
-		Users mm_user ON mrm.UserID
-		= mm_user.UserID
-		WHERE
-		mr.IsDelete = FALSE AND mr.RoomID = #{roomId};
+    SELECT
+    mr.RoomID,
+    mr.RoomTitle,
+    d.DepartmentName,
+    t.TeamName,
+    u.UserName AS RoomManagerName,
+    GROUP_CONCAT(mm_user.UserName SEPARATOR '/') AS YesPickUserNames
+    FROM
+    MeetingRooms mr
+    JOIN Departments d ON mr.DepartmentID = d.DepartmentID
+    JOIN Teams t ON mr.TeamID = t.TeamID
+    JOIN Users u ON mr.RoomManagerID = u.UserID
+    LEFT JOIN MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID AND mrm.Role = 'yesPick' AND mrm.IsDelete = FALSE
+    LEFT JOIN Users mm_user ON mrm.UserID = mm_user.UserID
+    WHERE
+    mr.IsDelete = FALSE AND mr.RoomID = #{roomId}
+    GROUP BY mr.RoomID, mr.RoomTitle, d.DepartmentName, t.TeamName, u.UserName;
 	</select>
 	<resultMap id="meetingRoomDetailsResultMap"
 		type="com.kb.star.dto.ReportDetailsDto">
@@ -143,4 +128,35 @@
     WHERE 
         r.UserID = #{userId};
 	</select>
+<select id="getIdeaSummaries" resultMap="ideaSummaryResultMap">
+    SELECT 
+        i.IdeaID, 
+        i.Title AS IdeaTitle, 
+        io.OpinionText, 
+        io.HatColor, 
+        io.LikeNum,
+        u.UserName AS OpinionUserName
+    FROM 
+        Ideas i
+    JOIN 
+        IdeaOpinions io ON i.IdeaID = io.IdeaID
+    JOIN
+        Users u ON io.UserID = u.UserID
+    WHERE 
+        i.RoomID = #{roomId}
+        AND io.Step = 2
+        AND io.IsDelete = 0
+        AND i.IsDelete = 0
+    ORDER BY 
+        i.IdeaID, io.HatColor, io.LikeNum DESC
+</select>
+
+<resultMap id="ideaSummaryResultMap" type="com.kb.star.dto.IdeaSummaryDto">
+    <id property="ideaId" column="IdeaID" />
+    <result property="ideaTitle" column="IdeaTitle" />
+    <result property="opinionText" column="OpinionText" />
+    <result property="hatColor" column="HatColor" />
+    <result property="likeNum" column="LikeNum" />
+    <result property="opinionUserName" column="OpinionUserName" />
+</resultMap>
 </mapper>
