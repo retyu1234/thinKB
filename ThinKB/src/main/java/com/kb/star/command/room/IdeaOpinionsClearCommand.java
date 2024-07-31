@@ -12,8 +12,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
-import com.kb.star.dto.IdeaOpinionsDto;
-import com.kb.star.dto.Ideas;
 import com.kb.star.util.IdeaOpinionsDao;
 
 public class IdeaOpinionsClearCommand implements RoomCommand {
@@ -91,6 +89,7 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
 	    model.addAttribute("ideaId", ideaId);
 	    model.addAttribute("stage", 4);
 	    
+        
 	   
     }
 }

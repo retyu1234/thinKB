@@ -12,7 +12,7 @@
 <style>
     body {
         display: flex;
-/*         flex-direction: column; */
+        flex-direction: column;
         align-items: center;
         background-color: #f0f0f0;
         margin: 0;
@@ -211,39 +211,20 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-// 페이질 로드시 실행
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded event fired');
+window.onload = function() {
     var currentTab = '${currentTab}';
+    
     var currentHatColor = '${currentHatColor}';
-    var userCommentedTabs = [<c:forEach items="${userCommentedTabs}" var="tab" varStatus="status">"${tab}"<c:if test="${!status.last}">,</c:if></c:forEach>];
+    var userCommentedTabs = ${userCommentedTabs}; 
     var alreadyWritten = ${alreadyWritten};
     
-    console.log('currentTab:', currentTab);
-    console.log('currentHatColor:', currentHatColor);
-    console.log('userCommentedTabs:', userCommentedTabs);
-    console.log('alreadyWritten:', alreadyWritten);
-    
-    if (alreadyWritten === true || userCommentedTabs.includes(currentHatColor)) { 
-        document.querySelectorAll(".comment-section").forEach(function(el) {
-            el.style.display = "none";
-        });
-        document.querySelectorAll(".comment-full").forEach(function(el) {
-            el.style.display = "block";
-        });
+    /* if (alreadyWritten === true || userCommentedTabs.includes(getHatColorFromTab(currentTab))) { */
+    if (alreadyWritten === true || userCommentedTabs.includes(currentHatColor) { 
+        alert('이미 해당 탭에 의견을 작성하셨습니다.\n다른 탭에 의견을 추가 작성해주세요.');
+        document.querySelector('.opinion-textarea').disabled = true;
+        document.querySelector('.write-button').disabled = true;
     }
-
-    // 폼 제출 이벤트 리스너 추가
-    var form = document.querySelector('form.comment-section');
-    if (form) {
-        form.addEventListener('submit', function(event) {
-            if (!validateAndSubmitForm(currentTab, userCommentedTabs)) {
-                event.preventDefault();
-            }
-        });
-    }
-});
-
+};
 
 function getHatColorFromTab(tab) {
     switch (tab) {
@@ -255,22 +236,27 @@ function getHatColorFromTab(tab) {
     }
 }
 
-
-function validateAndSubmitForm(tabName, userCommentedTabs) {
-    console.log('validateAndSubmitForm called', tabName, userCommentedTabs);
+function validateAndSubmitForm() {
     var opinionText = document.querySelector('.opinion-textarea').value.trim();
-    var currentHatColor = getHatColorFromTab(tabName);
-
+    
     if (opinionText === '') {
         alert('의견을 입력해주세요!');
         return false;
-    } /* else if (userCommentedTabs.includes(currentHatColor)) {
-        alert('이미 해당 탭에 의견을 작성하셨습니다.\n다른 탭에 의견을 추가 작성해주세요');
-        return false;
-    } */
+    }
+
     return true;
 }
 
+window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount) {
+    var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
+    if (opinionText === '') {
+        alert('의견을 입력해주세요!');
+    } else if (currentOpinionCount >= maxComments) {
+        alert('의견 작성 제한 인원을 초과하였습니다. \n다른 의견 탭에 의견을 작성해주세요');
+    } else {
+        document.querySelector('#' + tabName + ' form').submit();
+    }
+};
 
 function confirmDelete() {
     return confirm('정말로 이 의견을 삭제하시겠습니까?');
@@ -282,28 +268,24 @@ function onTimerEnd() {
 	if ("${roomManagerId}" === "${userId}") {
         document.getElementById("nextStepButton").style.display = "block";
 	}
-    // 모든 사용자
+    // 일반사용자
+ 	// 의견 작성 섹션을 숨기고 종료 메시지를 표시
  	console.log("Timer ended");
 
- 	// 모든 comment-section, comment-full, comment-ended 요소를 숨깁니다
-    document.querySelectorAll(".comment-section, .comment-full").forEach(function(el) {
+    document.querySelectorAll(".comment-section").forEach(function(el) {
         el.style.display = "none";
     });
- 	
-    // 타이머 종료 메시지만 표시
     document.querySelectorAll(".comment-ended").forEach(function(el) {
         el.style.display = "block";
-        el.textContent = "타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.";
     });
 }
 
-// 방장이 다음 단계로 버튼 클릭 시 확인 창을 띄우고, 확인 시 이동
+	// 방장이 다음 단계로 버튼 클릭 시 확인 창을 띄우고, 확인 시 이동
 function confirmNextStep() {
     if (confirm("정말로 다음 페이지로 넘어가시겠습니까?")) {
     	const roomId = "${roomId}";
         const ideaId = "${ideaId}";
-        window.location.href = "./ideaOpinionsClear2?roomId=" + roomId +"&ideaId=" + ideaId;
-        /* window.location.href = "./goStage5?roomId=" + roomId +"&ideaId=" + ideaId; */
+        window.location.href = "./ideaOpinions2Clear?roomId=" + roomId + "&ideaId=" + ideaId;
     }
 }
 	
@@ -311,7 +293,8 @@ function confirmNextStep() {
 </head>
 <body>
 <%@ include file="../header.jsp"%>
-<%@ include file="../leftSideBar.jsp"%>
+<c:if test="${userId == meetingRoom.roomManagerId}">
+<%@ include file="../sideBar.jsp"%></c:if>
 
     <div class="container">
     	<!-- 타이머 -->
@@ -421,25 +404,18 @@ function confirmNextStep() {
 		            </c:otherwise>
 		        </c:choose>
 		    </ul>
-	       <c:if test="${4 - userOpinionCount > 0}">
-			    <c:choose>
-			        <c:when test="${!userCommentedTabs.contains(currentHatColor)}">
-			            <form action="addOpinion2" method="post" class="comment-section">
-			                <input type="hidden" name="ideaId" value="${ideaId}" />
-			                <input type="hidden" name="roomId" value="${roomId}" />
-			                <input type="hidden" name="currentTab" value="${currentTab}" />
-			                <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력하세요"></textarea>
-			                <button type="submit" class="write-button">작성</button>
-			            </form>
-			        </c:when>
-			        <c:otherwise>
-			            <div class="comment-ended">이미 해당 탭에 의견을 작성하셨습니다.<br> 다른 탭에 의견을 추가 작성해주세요</div>
-			        </c:otherwise>
-			    </c:choose>
-			</c:if>
-			<c:if test="${4 - userOpinionCount <= 0}">
-			    <div class="comment-full">최대 작성 가능 의견 4개 작성을 완료하셨습니다. <br> 더 이상 의견을 작성할 수 없습니다.</div>
-			</c:if>
+		    <c:if test="${4 - userOpinionCount > 0}">
+		    <form action="addOpinion2" method="post" class="comment-section" onsubmit="return validateAndSubmitForm();">
+		        <input type="hidden" name="ideaId" value="${ideaId}" />
+		        <input type="hidden" name="roomId" value="${roomId}" />
+		        <input type="hidden" name="currentTab" value="${currentTab}" />
+		        <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력하세요"></textarea>
+		        <button type="submit" class="write-button">작성</button>
+            </form>
+            </c:if>
+            <c:if test="${4 - userOpinionCount <= 0}">
+	            <div>최대 작성 가능 의견 4개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+	        </c:if>
             <div class="comment-ended" style="display: none;">
 				타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
 			</div>

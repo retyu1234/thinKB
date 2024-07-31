@@ -102,6 +102,9 @@ tr:hover {
 </head>
 <body>
 	<%@ include file="../header.jsp"%>
+	
+	<c:if test="${userId == meetingRoom.roomManagerId}">
+	<%@ include file="../sideBar.jsp"%></c:if>
 
 	<div class="content-container">
 		<h1>2차 의견 타이머 설정</h1>

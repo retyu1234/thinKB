@@ -16,17 +16,18 @@ import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
 import com.kb.star.util.RoomDao;
 
-public class StageThreeCommand implements RoomCommand {
+public class StageThreeCommandCopy implements RoomCommand {
 
 	SqlSession sqlSession;
 
 	@Autowired
-	public StageThreeCommand(SqlSession sqlSession) {
+	public StageThreeCommandCopy(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
 
 	@Override
 	public void execute(Model model) {
+		System.out.println("stageThreeCommand 호출");
 		Map<String, Object> map = model.asMap();
 		int roomId = (Integer) map.get("roomId");
 		int stage = (Integer) map.get("stage");
@@ -35,19 +36,29 @@ public class StageThreeCommand implements RoomCommand {
 
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 
-		// ideaId를 먼저 확인
-		Integer ideaId = (Integer) map.get("ideaId");
-		System.out.println(ideaId);
-		model.addAttribute("ideaId", ideaId);
+		// 첫번째 아이디어 id model에 담기 (사이드바에서 이동하는 경우 ideaId 제공으로, ideaId 없을 경우에만 사용하도록 수정
+		// 06:10)
+		List<Ideas> list = dao.yesPickIdeaList(roomId);
+		int ideaId = list.get(0).getIdeaID(); // 선택된것중에 첫번째꺼
+		System.out.println("1번"+ideaId);
+
+		if ((Integer) map.get("ideaId") != null) {
+			Integer ideaIdSide = (Integer) map.get("ideaId");
+			System.out.println(ideaIdSide);
+			ideaId = ideaIdSide;
+			System.out.println("2번"+ideaId);
+		}
+		model.addAttribute("ideaId", ideaId); // 선택된 것 중 첫 번째 아이디어의 ID 담기
 
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);
-		System.out.println("스테이지3커맨드" + dto);
+		System.out.println("여기" + dto);
 
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
 		model.addAttribute("meetingRoom", meetingRoom);
+		/* HttpSession session = (HttpSession) map.get("session"); */
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", (Integer) map.get("id"));
 		params.put("roomId", roomId);
@@ -55,7 +66,6 @@ public class StageThreeCommand implements RoomCommand {
 
 		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
 		model.addAttribute("roomMessage", roomMessage);
-		System.out.println(roomMessage);
 		// 여기까지 leftSideBar 출력용
 	}
 

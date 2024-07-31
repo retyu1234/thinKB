@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -12,27 +12,36 @@
 	margin: 0;
 	padding: 0;
 	font-family: Arial, sans-serif;
-	background: url('<c:url value="/resources/sf_24011.jpg"/>') no-repeat
-		center center fixed;
-	background-size: cover;
+	caret-color: transparent;
 }
 
 .content {
 	padding: 20px;
-	color: white;
+	color: black;
 	margin-left: 15%;
 	margin-right: 15%;
 }
 
+.button-container {
+	position: relative;
+	text-align: right;
+	margin-top: 10%;
+}
+
 .yellow-button {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
+	background-color: #60584C; /* 진한 노란색 배경색 */
+	width: 100%;
+	min-height: 150px;
+	height: 100%;
+	color: white; /* 텍스트 색상 */
 	padding: 10px 20px; /* 버튼의 여백 */
 	border: none; /* 테두리 없음 */
-	border-radius: 20px; /* 라운드 처리 */
+	border-radius: 10px; /* 라운드 처리 */
 	font-size: 20px; /* 텍스트 크기 */
 	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
 	font-weight: bold;
+	position: relative;
+	z-index: 1; /* 버튼의 z-index 설정 */
 }
 
 .yellow-button:hover {
@@ -40,58 +49,87 @@
 	color: white;
 }
 
-.section-wrapper {
-	margin-top: 20px;
+.button-container img {
+	position: absolute;
+	top: 50%;
+	right: -25px; /* 버튼 외부에 걸치도록 설정 */
+	transform: translateX(100%), translateY(-30%);
+	width: 300px; /* 이미지 크기 조정 */
+	height: auto;
+	z-index: 2; /* 이미지의 z-index 설정 (버튼보다 위에 위치) */
+}
+
+.section-header {
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	margin-bottom: 10px;
 }
 
 .section-title {
 	font-size: 30px;
 	font-weight: bold;
-	color: white;
-	margin-bottom: 10px;
+	color: black;
+}
+
+.more-button {
+	background-color: #f0f0f0;
+	border: none;
+	padding: 5px;
+	cursor: pointer;
+	font-size: 14px;
+	margin-top: 20px;
+}
+
+.more-button:hover {
+	background-color: #e0e0e0;
+}
+
+.section-wrapper {
+	margin-top: 20px;
+	width: 100%;
 }
 
 .room-container-wrapper, .notifications-wrapper, .reports-wrapper {
-	background-color: #ffffff; /* 큰 네모칸의 흰색 배경 */
-	border-radius: 30px; /* 라운드 처리 */
+	background-color: #ffffff;
+	border-radius: 30px;
 	padding: 30px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
-	margin-bottom: 20px;
-	height: 250px;
-	display: flex;           /* 추가 */
-    flex-direction: column;  /* 추가 */
+	margin-bottom: 40px;
+	height: auto;
+	display: flex;
+	flex-direction: column;
 }
 
 .room-container {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap; /* wrap으로 변경 */
-    justify-content: flex-start; /* 왼쪽 정렬로 변경 */
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap; /* wrap으로 변경 */
+	justify-content: flex-start; /* 왼쪽 정렬로 변경 */
 }
 
 .room {
-    flex: 0 0 calc(33.33% - 20px); /* 고정 너비로 변경 */
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 30px;
-    box-sizing: border-box; /* 패딩을 너비에 포함 */
-    cursor: pointer; /* 마우스 오버 시 커서 변경 */
-    transition: background-color 0.3s ease; /* 부드러운 배경색 변경 효과 */
+	flex: 0 0 calc(33.33% - 20px); /* 고정 너비로 변경 */
+	background-color: #f0f0f0;
+	padding: 20px;
+	border-radius: 30px;
+	box-sizing: border-box; /* 패딩을 너비에 포함 */
+	cursor: pointer; /* 마우스 오버 시 커서 변경 */
+	transition: background-color 0.3s ease; /* 부드러운 배경색 변경 효과 */
 }
 
 .room:hover {
-    background-color: #e0e0e0; /* 호버 시 배경색 변경 */
+	background-color: #e0e0e0; /* 호버 시 배경색 변경 */
 }
 
 .room-link {
-    text-decoration: none;
-    color: inherit;
-    display: contents; /* 이 설정은 링크가 레이아웃에 영향을 주지 않게 합니다 */
+	text-decoration: none;
+	color: inherit;
+	display: contents; /* 이 설정은 링크가 레이아웃에 영향을 주지 않게 합니다 */
 }
 
 .room-placeholder {
-    flex: 0 0 calc(33.33% - 20px);
-    visibility: hidden; /* 보이지 않게 설정 */
+	flex: 0 0 calc(33.33% - 20px);
+	visibility: hidden; /* 보이지 않게 설정 */
 }
 
 .room h2 {
@@ -110,10 +148,10 @@
 
 .notifications-reports-wrapper {
 	display: flex;
-	gap: 7%;
+	gap: 3%;
 }
 
-.notifications, .reports {
+.notifications, .todo-wrapper {
 	flex: 1;
 	background-color: white;
 	padding: 20px;
@@ -122,9 +160,10 @@
 }
 
 .notifications p, .reports p {
-	font-size: 14px;
+	font-size: 15px;
 	color: #666;
 	margin-bottom: 10px;
+	margin-left: 10px;
 }
 
 .more-button {
@@ -171,149 +210,455 @@
 	margin-bottom: 0;
 }
 
+.notiRoomTitle {
+	margin: 0;
+}
 /* 읽지 않은 메세지 팝업 스타일 */
 .popup-overlay {
-    display: none; /* 기본적으로 숨김 */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+	display: none; /* 기본적으로 숨김 */
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 1000;
 }
 
 .popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* 화면의 가운데에 뜨게끔 설정 */
-    background: white;
-    padding: 40px;
-    min-height: 150px; /* 팝업창의 최소 높이 설정 */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1001;
-    color: #000; /* 텍스트 색상 검정으로 설정 */
-    text-align: center;
-    border: 4px solid #ffc107; /* 굵은 노란색 테두리 추가 */
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 전체 크기 계산 */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); /* 화면의 가운데에 뜨게끔 설정 */
+	background: white;
+	padding: 40px;
+	min-height: 150px; /* 팝업창의 최소 높이 설정 */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	z-index: 1001;
+	color: #000; /* 텍스트 색상 검정으로 설정 */
+	text-align: center;
+	border: 4px solid #ffc107; /* 굵은 노란색 테두리 추가 */
+	box-sizing: border-box; /* 패딩과 테두리를 포함한 전체 크기 계산 */
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 /* 삭제버튼 */
 .delete {
 	position: absolute;
-    top: 1px; /* 팝업창 상단에서의 거리 */
-    right: 1px; /* 팝업창 오른쪽에서의 거리 */
-    cursor: pointer;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    display: flex;
-    align-items: center; /* 세로로 가운데 정렬 */
-    justify-content: center; /* 가로로 가운데 정렬 */
+	top: 1px; /* 팝업창 상단에서의 거리 */
+	right: 1px; /* 팝업창 오른쪽에서의 거리 */
+	cursor: pointer;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	display: flex;
+	align-items: center; /* 세로로 가운데 정렬 */
+	justify-content: center; /* 가로로 가운데 정렬 */
 }
 
 .popup img {
-    display: block;
-    margin: 0 auto 20px; /* 가운데 정렬 및 아래쪽 마진 추가 */
-    max-width: 100%; /* 이미지가 팝업창을 넘지 않도록 설정 */
-    height: auto; /* 이미지 비율 유지 */
+	display: block;
+	margin: 0 auto 20px; /* 가운데 정렬 및 아래쪽 마진 추가 */
+	max-width: 100%; /* 이미지가 팝업창을 넘지 않도록 설정 */
+	height: auto; /* 이미지 비율 유지 */
 }
-
 
 .popup-message {
-    font-size: 1.3em;
-    margin-bottom: 15px;
-    /* font-weight: bold; */ /* 글자를 두껍게 설정 */
+	font-size: 1.3em;
+	margin-bottom: 15px;
+	/* font-weight: bold; */ /* 글자를 두껍게 설정 */
 }
+
 .popup-footer {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 10px 0;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	padding: 10px 0;
 }
 
 .popup-dont-show, .popup-close {
-    background: #808080;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    display: inline-block; /* 버튼을 인라인 블록 요소로 설정 */
+	background: #808080;
+	color: #ffffff;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+	border-radius: 5px;
+	display: inline-block; /* 버튼을 인라인 블록 요소로 설정 */
 }
 
 .popup-close {
-    background: #ffc107;
-    color: #ffffff;
-    border: none;
-    padding: 10px 50px;
-    cursor: pointer;
-    border-radius: 5px;
-    display: inline-block; /* 추가: 버튼을 인라인 블록 요소로 설정 */
+	background: #ffc107;
+	color: #ffffff;
+	border: none;
+	padding: 10px 50px;
+	cursor: pointer;
+	border-radius: 5px;
+	display: inline-block; /* 추가: 버튼을 인라인 블록 요소로 설정 */
 }
 
 .popup-dont-show:hover {
 	background-color: #606060;
 }
+
 .popup-close:hover {
 	background-color: #e0a800;
 }
 /*  */
-
 .footer {
 	/* background-color: white; */
 	padding: 20px;
 	text-align: center;
-	color: white;
+	color: black;
 }
 
 .footer hr {
 	border: none;
 	height: 3px;
-	background-color: #f0f0f0; /* 푸터 가로 줄 색상 */
+	background-color: #000000; /* 푸터 가로 줄 색상 */
 	margin: 20px 0;
 }
 
 .no-rooms-message {
-    color: grey;
-    font-size: 15pt;
-    text-align: center;
-    display: flex;
-    flex-direction: column; /* 수직으로 정렬되도록 설정 */
-    justify-content: center;
-    align-items: center;
-    height: 100%; /* 높이 설정을 유지하고 */
-    width: 100%;
+	color: grey;
+	font-size: 15pt;
+	text-align: center;
+	display: flex;
+	flex-direction: column; /* 수직으로 정렬되도록 설정 */
+	justify-content: center;
+	align-items: center;
+	height: 100%; /* 높이 설정을 유지하고 */
+	width: 100%;
 }
 
 .no-rooms-message img {
-    width: 100px; /* 이미지 너비 조정 */
-    height: auto; /* 높이 자동 조정 */
-    margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
+	width: 100px; /* 이미지 너비 조정 */
+	height: auto; /* 높이 자동 조정 */
+	margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
+}
+
+.todo-wrapper {
+	display: flex;
+	gap: 2%;
+	flex-wrap: wrap;
+	border-radius: 15px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.calendar {
+	flex: 1;
+	background-color: #f0f0f0;
+	border-radius: 15px;
+	padding: 15px;
+	margin: 25px;
+	height: 400px; /* 고정 높이 설정 */
+	overflow: hidden; /* 내용이 넘치면 숨김 */
+}
+
+.todo-list {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	margin: 25px;
+	max-height: 400px; /* calendar의 높이와 맞춤 */
+	overflow-y: auto; /* 내용이 넘치면 스크롤 표시 */
+}
+
+.todo-item {
+	background-color: #f0f0f0;
+	padding: 10px;
+	border-radius: 15px;
+	margin-bottom: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.todo-item.completed {
+	background-color: #e0e0e0;
+	text-decoration: line-through;
+}
+
+.todo-date {
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.todo-content {
+	margin: 0;
+}
+
+#calendar {
+	height: 100%; /* 부모 요소의 높이에 맞춤 */
+}
+
+.fc-daygrid-day {
+	height: 5% !important; /* 일자별 높이 조정 */
+}
+
+.fc-toolbar-title {
+	font-size: 1.2em !important; /* 월 표시 글자 크기 축소 */
+}
+
+.fc-day-today {
+	background-color: #fffde7 !important; /* 오늘 날짜 배경색 */
+}
+
+.fc-day-selected {
+	background-color: #fff59d !important; /* 선택된 날짜 배경색 */
+}
+
+/* 헤더와 요일 표시 줄의 높이 조정 */
+.fc-header-toolbar, .fc-col-header {
+	margin-bottom: 0.5em !important;
+}
+
+.fc-col-header-cell {
+	padding: 2px 0 !important;
+}
+/* Guide 섹션 스타일 */
+#guide-section {
+    padding: 50px 0;
+    background-color: #f8f8f8;
+    overflow-x: hidden; /* 가로 스크롤 방지 */
+}
+
+#guide-container {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.guide-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 100px; /* 간격 증가 */
+    opacity: 0;
+    transform: translateY(50px) rotate(-5deg) scale(0.9);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.guide-item:nth-child(even) {
+    transform: translateY(50px) rotate(5deg) scale(0.9);
+}
+
+.guide-item.visible {
+    opacity: 1;
+    transform: translateY(0) rotate(0) scale(1);
+}
+
+.guide-image-container, .guide-text {
+    width: 45%;
+    transition: transform 0.5s ease;
+}
+
+.guide-item:hover .guide-image-container {
+    transform: scale(1.05);
+}
+
+.guide-item:hover .guide-text {
+    transform: translateY(-5px);
+}
+.guide-image-container, .guide-text {
+    width: 45%;
+}
+
+.guide-image-container {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+.guide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.guide-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 2%;
+    box-sizing: border-box;
+}
+
+.guide-item:nth-child(even) {
+    flex-direction: row-reverse;
+}
+
+.guide-item:nth-child(even) .guide-text {
+    text-align: left;
+}
+
+#guide-section h2 {
+    font-size: 2.5vw;
+    margin-bottom: 1vw;
+}
+
+#guide-section p {
+    font-size: 1.5vw;
+    margin-bottom: 0.5vw;
+}
+
+@media (max-width: 768px) {
+    #guide-container {
+        width: 90%;
+    }
+    .guide-item {
+        flex-direction: column;
+    }
+    .guide-image-container, .guide-text {
+        width: 100%;
+        margin-bottom: 5%;
+    }
+    .guide-item:nth-child(even) {
+        flex-direction: column;
+    }
+    #guide-section h2 {
+        font-size: 4vw;
+    }
+    #guide-section p {
+        font-size: 3vw;
+    }
 }
 </style>
+<!-- FullCalendar CSS -->
+<link
+	href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css'
+	rel='stylesheet' />
 
+<!-- FullCalendar JS -->
+<script
+	src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+<!-- todolist 달력 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+function getTodoList(date) {
+    $.ajax({
+        url: '/star/getTodoList',
+        type: 'GET',
+        data: { date: date },
+        dataType: 'json',
+        contentType: 'application/json;charset=UTF-8',
+        success: function(data) {
+            updateTodoList(data, date);
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching todo list:", error);
+        }
+    });
+}
+function updateTodoList(todoList, selectedDate) {
+    console.log("Received todo list:", todoList);
+
+    var todoListContainer = document.querySelector('.todo-list');
+    todoListContainer.innerHTML = ''; // 기존 내용 지우기
+
+    var formattedDate = new Date(selectedDate).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\. /g, '.').replace('.', '');
+
+    if (todoList.length === 0) {
+        var noTodoMessage = document.createElement('p');
+        noTodoMessage.textContent = formattedDate + '에는 할 일이 없습니다.';
+        todoListContainer.appendChild(noTodoMessage);
+    } else {
+        todoList.forEach(function(todo) {
+            console.log("Processing todo item:", todo);
+            var todoItem = document.createElement('div');
+            todoItem.className = 'todo-item';
+            
+            var dueDate = todo.dueDate || 'No date';
+            var roomTitle = todo.roomTitle || 'No title';
+            var stageStatus = todo.stageStatus || 'No status';
+            var roomId = todo.roomId || '';
+            var stageId = todo.stageId || '';
+            
+            todoItem.innerHTML = 
+                '<p class="todo-date">' + dueDate + '</p>' +
+                '<p class="todo-content">' + roomTitle + ' - ' + stageStatus + '</p>';
+            
+            // 클릭 이벤트 추가
+            todoItem.style.cursor = 'pointer'; // 커서 스타일 변경
+            todoItem.onclick = function() {
+                window.location.href = './roomDetail?roomId=' + roomId + '&stage=' + stageId;
+            };
+            
+            todoListContainer.appendChild(todoItem);
+            console.log("Added todo item to container:", todoItem.outerHTML);
+        });
+    }
+
+    console.log("Final todo list container:", todoListContainer.innerHTML);
+}
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        height: '100%',
+        aspectRatio: 1,
+        headerToolbar: {
+            left: 'prev',
+            center: 'title',
+            right: 'next'
+        },
+        dateClick: function(info) {
+            // 이전에 선택된 날짜의 클래스 제거
+            var prevSelected = document.querySelector('.fc-day-selected');
+            if (prevSelected) {
+                prevSelected.classList.remove('fc-day-selected');
+            }
+            
+            // 클릭된 날짜에 선택 클래스 추가
+            info.dayEl.classList.add('fc-day-selected');
+            
+            // 선택된 날짜의 todo 리스트 가져오기
+            getTodoList(info.dateStr);
+        }
+    });
+    calendar.render();
+
+    // 초기 로드 시 오늘 날짜의 todo 리스트 가져오기
+    getTodoList('today');
+});
+//Guide 섹션 스크롤 효과
+document.addEventListener('DOMContentLoaded', function() {
+    const guideItems = document.querySelectorAll('.guide-item');
+    
+    function checkScroll() {
+        guideItems.forEach((item, index) => {
+            const itemTop = item.getBoundingClientRect().top;
+            const itemBottom = item.getBoundingClientRect().bottom;
+            
+            if (itemTop < window.innerHeight * 0.8 && itemBottom > 0) {
+                setTimeout(() => {
+                    item.classList.add('visible');
+                }, index * 200); // 각 항목마다 약간의 지연 추가
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', checkScroll);
+    checkScroll(); // 초기 로드 시 체크
+});
+</script>
 </head>
 <body class="main-body">
 	<%@ include file="./header.jsp"%>
-	<div style="text-align: right; margin-top: 6%; margin-right: 15%;">
-		<button class="yellow-button" onclick="location.href='./newIdeaRoom'">+
-			아이디어 회의방 만들기</button>
-	</div>
-	<div style="height: 400px;"></div>
-
 	<div class="content">
+
+		<img style="width: 100%; margin-top: 13%; caret-color: transparent;"
+			src="<c:url value='/resources/mainBanner.png' />" alt="no Img" />
 		<div class="section-wrapper">
-			<div class="section-title">진행중인 회의방</div>
+			<div class="section-header">
+				<div class="section-title">🧷진행중인 회의방</div>
+				<button class="more-button" onclick="location.href='./meetingList'">+
+					더보기</button>
+			</div>
 			<div class="room-container-wrapper" style="margin: 0 auto;">
-				<div style="text-align: right;">
-					<button class="more-button" onclick="location.href='./meetingList'">
-						+ 더보기</button>
-				</div>
+
 				<div class="room-container" style="text-align: center;">
 					<c:choose>
 						<c:when test="${empty roomList}">
@@ -330,91 +675,210 @@
 
 						<c:otherwise>
 							<c:forEach var="li" items="${roomList}">
-							<a href="./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}" class="room-link">
-								<div class="room">
-									<h2>${li.getRoomTitle()}</h2>
-									<p>방장 : ${li.getRoomManagerId() }</p>
-									<p>종료일 : ${li.getEndDate() }</p>
-									<p>단계 : 
-										<c:choose>
-											<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
-											<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
-											<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-											<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
-											<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
-											<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
-										</c:choose>
-									</p>
-								</div>
-								</a>
+							    <c:choose>
+                                    <c:when test="${li.getStageId() >= 3}">
+                                        <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
+                                        <c:if test="${not empty ideasList}">
+                                            <c:set var="firstIdea" value="${ideasList[0]}" />
+                                            <a href="./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${firstIdea.getIdeaID()}" class="room-link">
+                                                <div class="room">
+                                                    <h2>${li.getRoomTitle()}</h2>
+                                                    <p>방장 : ${li.getRoomManagerId()}</p>
+                                                    <p>종료일 : ${li.getEndDate()}</p>
+                                                    <p>단계 : 
+                                                        <c:choose>
+                                                            <c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+                                                            <c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+                                                            <c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+                                                            <c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+                                                            <c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+                                                            <c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
+                                                        </c:choose>
+                                                    </p>
+                                                    <input type="hidden" name="ideaId" value="${firstIdea.getIdeaID()}" />
+                                                </div>
+                                            </a>
+                                        </c:if>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}" class="room-link">
+                                            <div class="room">
+                                                <h2>${li.getRoomTitle()}</h2>
+                                                <p>방장 : ${li.getRoomManagerId()}</p>
+                                                <p>종료일 : ${li.getEndDate()}</p>
+                                                <p>단계 : 
+                                                    <c:choose>
+                                                        <c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+                                                        <c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+                                                        <c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+                                                        <c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+                                                        <c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+                                                        <c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
+                                                    </c:choose>
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
 							</c:forEach>
-							
+
 						</c:otherwise>
 					</c:choose>
 				</div>
 			</div>
 		</div>
 		<div class="notifications-reports-wrapper">
-		
+
 			<!-- 알림함 -->
-			<div class="section-wrapper" style="width: 43%;">
-    <div class="section-title">알림함</div>
-    <div class="notifications">
-        <div style="text-align: right;">
-            <button class="more-button" onclick="location.href='<c:url value="/noticeList"/>';">+ 더보기</button>
-        </div>
-        <c:forEach var="notification" items="${notifications}">
-            <div class="notification ${notification.read ? 'read' : 'unread'}" onclick="location.href='<c:url value="/noticeList"/>';">
-                <p class="notification-time">
-                    <fmt:formatDate value="${notification.createdAt}" pattern="yyyy-MM-dd HH:mm" />
-                </p>
-                <p class="notification-content">
-                    <c:if test="${notification.getIdeaID() != 0}">
+			<div class="section-wrapper" style="width: 37%;">
+				<div class="section-header">
+					<div class="section-title">📥알림함</div>
+					<button class="more-button"
+						onclick="location.href='<c:url value="/noticeList"/>';">+
+						더보기</button>
+				</div>
+				<div class="notifications">
+					<c:forEach var="notification" items="${notifications}" begin="0"
+						end="3">
+						<div class="notification ${notification.read ? 'read' : 'unread'}"
+							onclick="location.href='<c:url value="/noticeList"/>';">
+							<h4 class="notiRoomTitle">
+								Title : ${notification.roomTitle}
+								</h3>
+								<p class="notification-time">
+									<fmt:formatDate value="${notification.createdAt}"
+										pattern="yyyy-MM-dd HH:mm" />
+								</p>
+								<p class="notification-content">
+									<c:if test="${notification.getIdeaID() != 0}">
                         *${notification.idea.title}*&nbsp;&nbsp;
                     </c:if>
-                    ${notification.message}
-                </p>
-            </div>
-        </c:forEach>
-    </div>
-</div>
-			
-			<!-- 팝업창 추가 -->
-			<div class="popup-overlay">
-			    <div class="popup">
-			    	<div class="delete">
-			    		<img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
-			    	</div>
-			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
-			        <p class="popup-message"></p>
-			        <div style="text-align: right; margin-bottom: 5px;"><a href="./noticeList">알림함 바로가기</a></div>
-			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
-			        <button class="popup-close">닫기</button>
-			    </div>
-			</div>
-			
-			<!-- 내 보고서 -->
-			<div class="section-wrapper" style="width: 50%;">
-				<div class="section-title">내 보고서</div>
-				<div class="reports-wrapper">
-					<div style="text-align: right;">
-						<button class="more-button"
-							onclick="location.href='<c:url value="/more-reports"/>';">
-							+ 더보기</button>
-					</div>
-					
-					<div class="reports">
-						<c:forEach var="report" items="${reportList}">
-							<p>${report.getReportTitle()}</p>
-						</c:forEach>
-					</div>
-					
+									${notification.message}
+								</p>
+						</div>
+					</c:forEach>
 				</div>
 			</div>
-			
+
+			<!-- 팝업창 추가 -->
+			<div class="popup-overlay">
+				<div class="popup">
+					<div class="delete">
+						<img src="./resources/delete.png" alt="Delete"
+							style="width: 40px; height: 40px;">
+					</div>
+					<img id="popup-image" src=""
+						style="display: none; width: 200px; height: 170px;">
+					<p class="popup-message"></p>
+					<button class="popup-dont-show">오늘 하루 보지 않기</button>
+					<button class="popup-close">닫기</button>
+				</div>
+			</div>
+			<!-- 오늘할일 -->
+			<div class="section-wrapper" style="width: 60%;">
+				<div class="section-header">
+					<div class="section-title">🗓️오늘의 할일</div>
+				</div>
+				<div class="todo-wrapper">
+					<div class="calendar">
+						<div id="calendar"></div>
+					</div>
+					<div class="todo-list">
+						<!-- Todo 리스트가 여기에 동적으로 추가됩니다 -->
+					</div>
+				</div>
+			</div>
 		</div>
+		
 	</div>
-	
+<!-- Guide 섹션 추가 -->
+        <section id="guide-section">
+            <div id="guide-container">
+                <div class="guide-item">
+                    <div class="guide-image-container">
+                        <img src="./resources/Component 1.png" alt="의견 보장" class="guide-image">
+                    </div>
+                    <div class="guide-text">
+                        <h2>의명 보장으로 완전 안심!</h2>
+                        <p>자유롭게 아이디어를 나눠요</p>
+                        <p>초기 단계에서는 익명으로 아이디어를 올릴 수 있어요.</p>
+                    </div>
+                </div>
+                
+                <div class="guide-item">
+                    <div class="guide-image-container">
+                        <img src="./resources/Component 2.png" alt="의견 모아" class="guide-image">
+                    </div>
+                    <div class="guide-text">
+                        <h2>모두의 의견을 모아</h2>
+                        <p>두개의 아이디어를 골라요</p>
+                        <p>익명 투표를 진행해 재밌게 골라 보면 돼요</p>
+                    </div>
+                </div>
+<div class="guide-item">
+			<div class="guide-image-container">
+				<img src="./resources/Component 3.png" alt="가이드" class="guide-image">
+			</div>
+			<div class="guide-text">
+				<h2>네 가지 가이드에 맞춰</h2>
+				<p>편리하게 아이디어를 확장시켜요</p>
+				<p>목표와, 급하지, 주장이, 방법이</p>
+			</div>
+		</div>
+
+		<div class="guide-item">
+			<div class="guide-image-container">
+				<img src="./resources/Component 4.png" alt="의견 모아"
+					class="guide-image">
+			</div>
+			<div class="guide-text">
+				<h2>관점별 의견들을 모아</h2>
+				<p>피드백을 진행해요</p>
+				<p>관점별로 모인 의견들에 대해</p>
+				<p>종합적으로 피드백을 남길 의견을 창의해요.</p>
+			</div>
+		</div>
+
+		<div class="guide-item">
+			<div class="guide-image-container">
+				<img src="./resources/Component 5.png" alt="최고의 의견"
+					class="guide-image">
+			</div>
+			<div class="guide-text">
+				<h2>좋아요가 보여주는</h2>
+				<p>최고의 의견을 확인해봐요</p>
+				<p>가장 좋은 의견에 한표!</p>
+				<p>팀원들이 생각하는 가장 좋은 의견을 확인할 수 있어요.</p>
+			</div>
+		</div>
+
+		<div class="guide-item">
+			<div class="guide-image-container">
+				<img src="./resources/Component 6.png" alt="의견 나눔"
+					class="guide-image">
+			</div>
+			<div class="guide-text">
+				<h2>원하는만큼 더</h2>
+				<p>의견을 나눌 수 있어요</p>
+				<p>거기서가 끝이라면, 선택한 의견에 대해</p>
+				<p>추가적으로 논의를 진행할 수 있어요.</p>
+			</div>
+		</div>
+
+		<div class="guide-item">
+			<div class="guide-image-container">
+				<img src="./resources/Component 7.png" alt="최종보고서"
+					class="guide-image">
+			</div>
+			<div class="guide-text">
+				<h2>THINKB와 함께라면</h2>
+				<p>최종보고서 작성도 어렵지 않아요</p>
+				<p>논의가 완료되면 지금까지 알맞에 정리된 의견들과</p>
+				<p>함께 제공되는 양식에 맞춰 최종보고서를 작성할 수 있어요.</p>
+			</div>
+		</div>
+            </div>
+        </section>
 	<div style="height: 200px;"></div>
 
 	<footer class="footer">
@@ -423,8 +887,8 @@
 		<div style="text-align: center;">&copy; 2024 DigiCampus 3rd
 			FourSideOut Team. All rights reserved.</div>
 	</footer>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
 $(document).ready(function() {
     function formatTimestamp(timestamp) {
         const date = new Date(timestamp);
@@ -525,4 +989,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-

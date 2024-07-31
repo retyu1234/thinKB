@@ -1,5 +1,7 @@
 package com.kb.star.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +21,6 @@ import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.StageThreeCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
-import com.kb.star.command.room.TimerTestCommand;
 import com.kb.star.command.room.UpdateIdeaCommand;
 import com.kb.star.command.room.UpdateStageThreeCommand;
 import com.kb.star.command.room.UpdateStageTwoCommand;
@@ -67,55 +68,63 @@ public class IdeaRoomController {
 		return "redirect:/meetingList";
 	}
 
-	// 회의방 stage단계별로 화면이동 다르게
 	@RequestMapping("/roomDetail")
 	public String roomDetail(HttpServletRequest request, @RequestParam("roomId") int roomId,
-			@RequestParam("stage") int stage, Model model) {
-		HttpSession session = request.getSession();
-		int id = (Integer) session.getAttribute("userId");
-		model.addAttribute("id", id);
-		model.addAttribute("roomId", roomId);
-		model.addAttribute("stage", stage);
-		RoomDao dao = sqlSession.getMapper(RoomDao.class);
-		MeetingRooms info = dao.roomDetailInfo(roomId);
-		model.addAttribute("meetingRoom", info);
 
-		switch (stage) {
-		case 1:
-			command = new StageOneCommand(sqlSession);
-			command.execute(model);
-			return "firstMeeting/roomStage1";
+	                         @RequestParam("stage") int stage, Model model,
+	                         @RequestParam(value = "ideaId", required = false) Integer ideaId) {
+	    HttpSession session = request.getSession();
+	    int id = (Integer) session.getAttribute("userId");
+	    model.addAttribute("id", id);
+	    model.addAttribute("roomId", roomId);
+	    model.addAttribute("stage", stage);
 
-		case 2:
-			command = new RoomStage2Command(sqlSession);
-			command.execute(model);
+	    RoomDao dao = sqlSession.getMapper(RoomDao.class);
+	    MeetingRooms info = dao.roomDetailInfo(roomId);
+	    model.addAttribute("meetingRoom", info);
 
-			// 세션에서 에러 메시지를 가져와서 모델에 추가
-			String errorMessage = (String) model.asMap().get("Message");
-			System.out.println("이게 메세지다: " + errorMessage);
-			if (errorMessage != null) {
-				model.addAttribute("errorMessage", errorMessage);
-				session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
-			}
-			return "firstMeeting/ideaMeeting";
-		/* return "redirect:/roomStage2?roomId=" + roomId; */
+	    if (stage >= 3 && ideaId != null) {
+	        model.addAttribute("ideaId", ideaId);
+	    }
 
-		case 3:
-			command = new StageThreeCommand(sqlSession);
-			command.execute(model);
-			return "redirect:/ideaOpinionsList";
+	    switch (stage) {
+	        case 1:
+	            command = new StageOneCommand(sqlSession);
+	            command.execute(model);
+	            return "firstMeeting/roomStage1";
 
-		case 4:
-			return "firstMeeting/ideaOpinions2";
 
-		case 5:
-			command = new ReportView(sqlSession);
-			command.execute(model);
-			return "report/roomStage7";
+	        case 2:
+	            command = new RoomStage2Command(sqlSession);
+	            command.execute(model);
+	         // 세션에서 에러 메시지를 가져와서 모델에 추가
+	            String errorMessage = (String) model.asMap().get("Message");
+	            System.out.println("이게 메세지다: " + errorMessage);
+	            if (errorMessage != null) {
+	                model.addAttribute("errorMessage", errorMessage);
+	                session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
+	            }
+	            return "firstMeeting/ideaMeeting";
 
-		default:
-			return "main";
-		}
+	        case 3:
+	            command = new StageThreeCommand(sqlSession);
+	            command.execute(model);
+	            return "redirect:/ideaOpinionsList";
+
+	    	case 4:
+				command = new StageThreeCommand(sqlSession);
+				command.execute(model);
+				model.addAttribute("currentTab","smart");
+				return "redirect:/ideaOpinions2";
+
+	        case 5:
+	            command = new ReportView(sqlSession);
+	            command.execute(model);
+	            return "report/roomStage7";
+
+	        default:
+	            return "main";
+	    }
 	}
 
 	// 아이디어 초안 저장
@@ -293,6 +302,6 @@ public class IdeaRoomController {
 
 		return "redirect:/ideaOpinionsList";
 	}
-	
+
 
 }

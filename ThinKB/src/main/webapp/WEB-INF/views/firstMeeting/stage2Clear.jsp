@@ -102,10 +102,7 @@ tr:hover {
 </head>
 <body>
 	<%@ include file="../header.jsp"%>
-	<!-- 방장 sideBar -->
-	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
-		<%@ include file="../sideBar.jsp"%>
-	</c:if>
+		<%@ include file="../leftSideBar.jsp"%>
 	<div class="content-container">
 		<h1>아이디어 투표결과</h1>
 		<h3>1, 2위 아이디어만 추가 의견 받기가 가능합니다(동순위 발생 시 아이디어 제공자의 누적 기여도가 높은순으로
