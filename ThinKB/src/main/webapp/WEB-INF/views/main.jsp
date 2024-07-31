@@ -22,43 +22,6 @@
 	margin-right: 15%;
 }
 
-.button-container {
-	position: relative;
-	text-align: right;
-	margin-top: 10%;
-}
-
-.yellow-button {
-	background-color: #60584C; /* 진한 노란색 배경색 */
-	width: 100%;
-	min-height: 150px;
-	height: 100%;
-	color: white; /* 텍스트 색상 */
-	padding: 10px 20px; /* 버튼의 여백 */
-	border: none; /* 테두리 없음 */
-	border-radius: 10px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
-	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-	font-weight: bold;
-	position: relative;
-	z-index: 1; /* 버튼의 z-index 설정 */
-}
-
-.yellow-button:hover {
-	background-color: #696969;
-	color: white;
-}
-
-.button-container img {
-	position: absolute;
-	top: 50%;
-	right: -25px; /* 버튼 외부에 걸치도록 설정 */
-	transform: translateX(100%), translateY(-30%);
-	width: 300px; /* 이미지 크기 조정 */
-	height: auto;
-	z-index: 2; /* 이미지의 z-index 설정 (버튼보다 위에 위치) */
-}
-
 .section-header {
 	display: flex;
 	justify-content: start;
@@ -108,7 +71,7 @@
 }
 
 .room {
-	flex: 0 0 calc(33.33% - 20px); /* 고정 너비로 변경 */
+	flex: 0 0 calc(25% - 15px); /* 고정 너비로 변경 */
 	background-color: #f0f0f0;
 	padding: 20px;
 	border-radius: 30px;
@@ -418,8 +381,8 @@
 }
 /* Guide 섹션 스타일 */
 #guide-section {
-    padding: 50px 0;
-    background-color: #f8f8f8;
+    padding: 100px 0;
+    background-color: #ffffff;
     overflow-x: hidden; /* 가로 스크롤 방지 */
 }
 
@@ -464,12 +427,12 @@
 }
 
 .guide-image-container {
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 16 / 9; /* 16:9 비율 유지 */
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
 }
 
 .guide-image {
@@ -495,12 +458,12 @@
 }
 
 #guide-section h2 {
-    font-size: 2.5vw;
+    font-size: 18pt;
     margin-bottom: 1vw;
 }
 
 #guide-section p {
-    font-size: 1.5vw;
+    font-size: 15pt;
     margin-bottom: 0.5vw;
 }
 
@@ -524,6 +487,34 @@
     #guide-section p {
         font-size: 3vw;
     }
+}
+.makeRoomImg {
+	width: 100%;
+	margin-top: 13%;
+	caret-color: transparent;
+	border:none;
+	cursor: pointer; /* 커서가 포인터로 변경 */
+	transition: transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 변환 효과 */
+}
+
+/* 호버 시 효과 */
+.makeRoomImg:hover {
+	transform: scale(1.03); /* 약간 확대 */
+}
+
+/* 클릭 시 효과 */
+.makeRoomImg:active {
+	transform: scale(0.95); /* 약간 축소 */
+}
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 </style>
 <!-- FullCalendar CSS -->
@@ -635,7 +626,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (itemTop < window.innerHeight * 0.8 && itemBottom > 0) {
                 setTimeout(() => {
                     item.classList.add('visible');
-                }, index * 200); // 각 항목마다 약간의 지연 추가
+                }, index * 100); // 각 항목마다 약간의 지연 추가
             }
         });
     }
@@ -643,15 +634,30 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', checkScroll);
     checkScroll(); // 초기 로드 시 체크
 });
+document.addEventListener('DOMContentLoaded', function() {
+    const fadeElements = document.querySelectorAll('.content .fade-in');
+    
+    function showElements() {
+        fadeElements.forEach((element, index) => {
+            setTimeout(() => {
+                element.classList.add('visible');
+            }, index * 200); // 각 요소마다 200ms 지연
+        });
+    }
+    
+    // 페이지 로드 후 약간의 지연을 두고 애니메이션 시작
+    setTimeout(showElements, 100);
+});
 </script>
 </head>
 <body class="main-body">
 	<%@ include file="./header.jsp"%>
 	<div class="content">
-
-		<img style="width: 100%; margin-top: 13%; caret-color: transparent;"
-			src="<c:url value='/resources/mainBanner.png' />" alt="no Img" />
-		<div class="section-wrapper">
+<div class="fade-in">
+    <img class="makeRoomImg" style="width: 100%; margin-top: 13%; caret-color: transparent;" onclick="location.href='./newIdeaRoom'"
+        src="<c:url value='/resources/mainBanner.png' />" alt="no Img" />
+</div>
+		<div class="section-wrapper fade-in">
 			<div class="section-header">
 				<div class="section-title">🧷진행중인 회의방</div>
 				<button class="more-button" onclick="location.href='./meetingList'">+
@@ -727,7 +733,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 		</div>
-		<div class="notifications-reports-wrapper">
+		<div class="notifications-reports-wrapper fade-in">
 
 			<!-- 알림함 -->
 			<div class="section-wrapper" style="width: 37%;">
@@ -759,20 +765,6 @@ document.addEventListener('DOMContentLoaded', function() {
 					</c:forEach>
 				</div>
 			</div>
-
-		<!-- 팝업창 추가 -->
-			<div class="popup-overlay">
-			    <div class="popup">
-			    	<div class="delete">
-			    		<img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
-			    	</div>
-			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
-			        <p class="popup-message"></p>
-			        <div style="text-align: right; margin-bottom: 5px;"><a href="./noticeList">알림함 바로가기</a></div>
-			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
-			        <button class="popup-close">닫기</button>
-			    </div>
-			</div>
 			<!-- 오늘할일 -->
 			<div class="section-wrapper" style="width: 60%;">
 				<div class="section-header">
@@ -788,64 +780,77 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 		</div>
-		
+		<!-- 팝업창 추가 -->
+			<div class="popup-overlay">
+			    <div class="popup">
+			    	<div class="delete">
+			    		<img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
+			    	</div>
+			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
+			        <p class="popup-message"></p>
+			        <div style="text-align: right; margin-bottom: 5px;"><a href="./noticeList">알림함 바로가기</a></div>
+			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
+			        <button class="popup-close">닫기</button>
+			    </div>
+			</div>
 	</div>
 <!-- Guide 섹션 추가 -->
+
         <section id="guide-section">
+       
             <div id="guide-container">
+             <h1 style="font-size: 30pt;">👣Guide</h1>
                 <div class="guide-item">
                     <div class="guide-image-container">
-                        <img src="./resources/Component 1.png" alt="의견 보장" class="guide-image">
+                        <img src="./resources/Component1.png" alt="의견 보장" class="guide-image">
                     </div>
                     <div class="guide-text">
-                        <h2>의명 보장으로 완전 안심!</h2>
-                        <p>자유롭게 아이디어를 나눠요</p>
-                        <p>초기 단계에서는 익명으로 아이디어를 올릴 수 있어요.</p>
+                        <h2>자유롭게 아이디어를 나눠요!</h2>
+                        <p>익명등록으로 편한 분위기로 아이디어를 낼수 있어요.</p>
+                        <p>AI질문으로 내 생각을 보다 쉽게 정리해요.</p>
                     </div>
                 </div>
                 
                 <div class="guide-item">
                     <div class="guide-image-container">
-                        <img src="./resources/Component 2.png" alt="의견 모아" class="guide-image">
+                        <img src="./resources/Component2.png" alt="의견 모아" class="guide-image">
                     </div>
                     <div class="guide-text">
-                        <h2>모두의 의견을 모아</h2>
-                        <p>두개의 아이디어를 골라요</p>
-                        <p>익명 투표를 진행해 재밌게 골라 보면 돼요</p>
+                        <h2>모두의 의견을 모아 2개의 아이디어를 골라요!</h2>
+                        <p>익명 투표를 진행해 제일 표를 많이 받은</p>
+                        <p>2개의 아이디어를 뽑아 회의를 진행할 수 있어요.</p>
                     </div>
                 </div>
 <div class="guide-item">
 			<div class="guide-image-container">
-				<img src="./resources/Component 3.png" alt="가이드" class="guide-image">
+				<img src="./resources/Component3.png" alt="가이드" class="guide-image">
 			</div>
 			<div class="guide-text">
-				<h2>네 가지 가이드에 맞춰</h2>
-				<p>편리하게 아이디어를 확장시켜요</p>
-				<p>목표와, 급하지, 주장이, 방법이</p>
+				<h2>다양한 방향에서 아이디어를 확장시켜봐요!</h2>
+				<p>똑똑이, 긍정이, 걱정이, 깐깐이</p>
+				<p>4가지 관점에서 아이디어에 대한 의견을 작성해요.</p>
 			</div>
 		</div>
 
 		<div class="guide-item">
 			<div class="guide-image-container">
-				<img src="./resources/Component 4.png" alt="의견 모아"
+				<img src="./resources/Component4.png" alt="의견 모아"
 					class="guide-image">
 			</div>
 			<div class="guide-text">
-				<h2>관점별 의견들을 모아</h2>
-				<p>피드백을 진행해요</p>
-				<p>관점별로 모인 의견들에 대해</p>
-				<p>종합적으로 피드백을 남길 의견을 창의해요.</p>
+				<h2>관점별 의견들을 모아 피드백을 진행해요!</h2>
+				<p>관점별로 모인 의견들을</p>
+				<p>피드백을 통해 아이디어를 구체화해요.</p>
 			</div>
 		</div>
 
 		<div class="guide-item">
 			<div class="guide-image-container">
-				<img src="./resources/Component 5.png" alt="최고의 의견"
+				<img src="./resources/Component5.png" alt="최고의 의견"
 					class="guide-image">
 			</div>
 			<div class="guide-text">
-				<h2>좋아요가 보여주는</h2>
-				<p>최고의 의견을 확인해봐요</p>
+				<h2>'❤️좋아요'가 보여주는 최고의 의견을 확인해봐요!</h2>
 				<p>가장 좋은 의견에 한표!</p>
 				<p>팀원들이 생각하는 가장 좋은 의견을 확인할 수 있어요.</p>
 			</div>
@@ -853,25 +858,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		<div class="guide-item">
 			<div class="guide-image-container">
-				<img src="./resources/Component 6.png" alt="의견 나눔"
+				<img src="./resources/Component6.png" alt="의견 나눔"
 					class="guide-image">
 			</div>
 			<div class="guide-text">
-				<h2>원하는만큼 더</h2>
-				<p>의견을 나눌 수 있어요</p>
-				<p>거기서가 끝이라면, 선택한 의견에 대해</p>
-				<p>추가적으로 논의를 진행할 수 있어요.</p>
+				<h2>다양한 추가기능!</h2>
+				<p>A/B테스트, 추가 투표, 핀메모를 이용해</p>
+				<p>회의뿐 아니라 간단한 의견 종합부터 피드백까지</p>
+				<p>추가논의를 진행할 수 있어요.</p>
 			</div>
 		</div>
 
 		<div class="guide-item">
 			<div class="guide-image-container">
-				<img src="./resources/Component 7.png" alt="최종보고서"
+				<img src="./resources/Component7.png" alt="최종보고서"
 					class="guide-image">
 			</div>
 			<div class="guide-text">
-				<h2>THINKB와 함께라면</h2>
-				<p>최종보고서 작성도 어렵지 않아요</p>
+				<h2>THINKB와 함께 최종보고서 작성까지!</h2>
+				<p>최종보고서 작성도 어렵지 않아요.</p>
 				<p>논의가 완료되면 지금까지 알맞에 정리된 의견들과</p>
 				<p>함께 제공되는 양식에 맞춰 최종보고서를 작성할 수 있어요.</p>
 			</div>

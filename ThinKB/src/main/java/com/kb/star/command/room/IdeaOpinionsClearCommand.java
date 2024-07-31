@@ -43,7 +43,8 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
         
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
-        
+        // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
+        ideaOpinionsDao.updateContribution(ideaId, userId, roomId); // status의 t/f 검증은 xml파일에서 함
         
         // ideaOpinionsClear.jsp
         // 타이머
@@ -83,6 +84,7 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
 		for(Integer list : users) {
 			ideaOpinionsDao.insertStageParticipation(roomId, ideaId, list);
 		}
+		System.out.println("here"+users);
 
 		// roomId, stage값 다시 model에 넣기
 		model.addAttribute("roomId", roomId);

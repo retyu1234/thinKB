@@ -96,10 +96,10 @@ tr:hover {
 	<div class="content-container">
 		<h1>보고서 작성 설정</h1>
 
-			<form action="./goStage5" id="goStage5" method="post">
+			<form action="./goStage5" id="goStage5" method="get">
 				<input type="hidden" name="roomId" value="${roomId}">
 				<input type="hidden" name="ideaId" value="${ideaId}"> 
-				
+				<input type="hidden" name="stage" value=5>
 				<h2 style="text-align: left; margin-top: 50px;">아이디어 목록</h2>
 	            <table>
 	                <tr>
@@ -143,8 +143,9 @@ document.getElementById('goStage5').addEventListener('submit', function(e) {
         // 모든 아이디어가 완료 상태일 때
         var roomId = this.querySelector('input[name="roomId"]').value;
         var ideaId = this.querySelector('input[name="ideaId"]').value;
+        var stage = this.querySelector('input[name="stage"]').value;
         // var url = this.action; // URL 설정
-        var url = this.action + '?roomId=' + roomId + '&ideaId=' + ideaId; // URL 설정
+        var url = this.action + '?roomId=' + roomId + '&ideaId=' + ideaId+ '&stage=' + stage; // URL 설정
         window.location.href = url; // URL로 이동
     } else {
         // 하나라도 진행 중인 아이디어가 있을 때
