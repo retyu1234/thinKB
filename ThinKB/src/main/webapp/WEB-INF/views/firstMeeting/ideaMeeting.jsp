@@ -14,18 +14,18 @@ body {
 	padding: 0;
 }
 
-.idea_header {
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 1000;
-}
-
 .content {
 	margin-top: 100px; /* 헤더 높이만큼 여백 추가 */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+}
+
+.idea_header {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1000;
 }
 
 .topic-box {
@@ -38,7 +38,7 @@ body {
 	left: 0;
 	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
 		rgba(0, 0, 0, 0.25);
-	border-radius: var(--br-31xl) 0 var(--br-31xl) 0;
+	border-radius: var(- -br-31xl) 0 var(- -br-31xl) 0;
 	background-color: rgba(255, 255, 255, 0.36);
 	border: 1px solid #7f6000;
 	box-sizing: border-box;
@@ -75,9 +75,9 @@ body {
 	top: 0;
 	right: 0;
 	left: 0;
-	border-radius: var(--br-11xl);
-	background-color: var(--color-white);
-	border: 5px solid var(--color-gold);
+	border-radius: var(- -br-11xl);
+	background-color: var(- -color-white);
+	border: 5px solid var(- -color-gold);
 	z-index: 1;
 }
 
@@ -118,7 +118,7 @@ body {
 	position: relative;
 	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
 		rgba(0, 0, 0, 0.25);
-	border-radius: var(--br-31xl);
+	border-radius: var(- -br-31xl);
 	background-color: #ffc000;
 	max-width: 100%;
 }
@@ -129,7 +129,7 @@ body {
 	position: relative;
 	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
 		rgba(0, 0, 0, 0.25);
-	border-radius: var(--br-31xl);
+	border-radius: var(- -br-31xl);
 	background-color: #A9A9A9;
 	max-width: 100%;
 }
@@ -202,9 +202,9 @@ body {
 	width: 100%;
 	height: 100%;
 	overflow-y: auto;
-	background-color: var(--color-white);
-	border: 5px solid var(--color-gold);
-	border-radius: var(--br-11xl);
+	background-color: var(- -color-white);
+	border: 5px solid var(- -color-gold);
+	border-radius: var(- -br-11xl);
 	box-sizing: border-box;
 	padding: 10px; /* Add padding if needed */
 }
@@ -248,10 +248,7 @@ body {
 	<div class="idea_header">
 		<jsp:include page="../header.jsp" />
 	</div>
-	<!-- 방장 sideBar -->
-	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
-		<%@ include file="../leftSideBar.jsp"%>
-	</c:if>
+	<%@ include file="../leftSideBar.jsp"%>
 	<div class="content">
 		<c:if test="${not empty sessionScope.Message}">
 			<div class="alert">${sessionScope.Message}</div>
