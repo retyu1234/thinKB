@@ -681,26 +681,51 @@ document.addEventListener('DOMContentLoaded', function() {
 
 						<c:otherwise>
 							<c:forEach var="li" items="${roomList}">
-								<a
-									href="./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}"
-									class="room-link">
-									<div class="room">
-										<h2>${li.getRoomTitle()}</h2>
-										<p>방장 : ${li.getRoomManagerId() }</p>
-										<p>종료일 : ${li.getEndDate() }</p>
-										<p>
-											단계 :
-											<c:choose>
-												<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
-												<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
-												<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-												<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
-												<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
-												<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
-											</c:choose>
-										</p>
-									</div>
-								</a>
+							    <c:choose>
+                                    <c:when test="${li.getStageId() >= 3}">
+                                        <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
+                                        <c:if test="${not empty ideasList}">
+                                            <c:set var="firstIdea" value="${ideasList[0]}" />
+                                            <a href="./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${firstIdea.getIdeaID()}" class="room-link">
+                                                <div class="room">
+                                                    <h2>${li.getRoomTitle()}</h2>
+                                                    <p>방장 : ${li.getRoomManagerId()}</p>
+                                                    <p>종료일 : ${li.getEndDate()}</p>
+                                                    <p>단계 : 
+                                                        <c:choose>
+                                                            <c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+                                                            <c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+                                                            <c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+                                                            <c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+                                                            <c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+                                                            <c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
+                                                        </c:choose>
+                                                    </p>
+                                                    <input type="hidden" name="ideaId" value="${firstIdea.getIdeaID()}" />
+                                                </div>
+                                            </a>
+                                        </c:if>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <a href="./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}" class="room-link">
+                                            <div class="room">
+                                                <h2>${li.getRoomTitle()}</h2>
+                                                <p>방장 : ${li.getRoomManagerId()}</p>
+                                                <p>종료일 : ${li.getEndDate()}</p>
+                                                <p>단계 : 
+                                                    <c:choose>
+                                                        <c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+                                                        <c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+                                                        <c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+                                                        <c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+                                                        <c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+                                                        <c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
+                                                    </c:choose>
+                                                </p>
+                                            </div>
+                                        </a>
+                                    </c:otherwise>
+                                </c:choose>
 							</c:forEach>
 
 						</c:otherwise>
@@ -971,4 +996,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
