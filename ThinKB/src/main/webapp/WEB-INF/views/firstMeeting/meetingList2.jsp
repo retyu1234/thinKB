@@ -184,30 +184,25 @@ body {
 }
 
 .pagination {
-	display: flex;
-	justify-content: center;
-	margin-top: 20px;
-}
-
-.pagination a {
-	color: black;
-	float: left;
-	padding: 8px 16px;
-	text-decoration: none;
-	transition: background-color .3s;
-	border: 1px solid #ddd;
-	margin: 0 4px;
-}
-
-.pagination a.active {
-	background-color: #ffc107;
-	color: white;
-	border: 1px solid #ffc107;
-}
-
-.pagination a:hover:not(.active) {
-	background-color: #ddd;
-}
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination a {
+        color: black;
+        float: left;
+        padding: 8px 16px;
+        text-decoration: none;
+        transition: background-color .3s;
+        border: 1px solid #ddd;
+        margin: 0 4px;
+    }
+    .pagination a.active {
+        background-color: #ffc107;
+        color: white;
+        border: 1px solid #ffc107;
+    }
+    .pagination a:hover:not(.active) {background-color: #ddd;}
 </style>
 </head>
 
@@ -227,19 +222,17 @@ body {
 		<div class="progress-container">
 			<div class="progress">
 				<!-- data-stage 수정 필요 이 부분 수정이 필요해. 체크박스를 눌렀을 때 해당 단계인 아이디어만 보여지게 하는건 맞지만, 이후 데이터베이스에서 반복문을 통해 데이터를 가져올거기 때문에 지금 코드처럼  data-stage="draft" 이렇게 작성하면 안돼. 재사용 가능하도록 수정하고싶어-->
-				<label><input type="checkbox" data-stage="1"
-					onchange="filterIdeas()"> 아이디어 초안</label> <label><input
-					type="checkbox" data-stage="2" onchange="filterIdeas()"> 투표
-					진행</label> <label><input type="checkbox" data-stage="3"
-					onchange="filterIdeas()"> 1차 의견</label> <label><input
-					type="checkbox" data-stage="4" onchange="filterIdeas()">
-					2차의견</label> <label><input type="checkbox" data-stage="5"
-					onchange="filterIdeas()"> 보고서작성</label> <label><input
-					type="checkbox" data-stage="6" onchange="filterIdeas()"> 완료</label>
+				<label><input type="checkbox" data-stage="1" onchange="filterIdeas()"> 아이디어 초안</label>
+				<label><input type="checkbox" data-stage="2" onchange="filterIdeas()"> 투표 진행</label>
+				<label><input type="checkbox" data-stage="3" onchange="filterIdeas()"> 1차 의견</label>
+				<label><input type="checkbox" data-stage="4" onchange="filterIdeas()"> 2차의견</label>
+				<label><input type="checkbox" data-stage="5" onchange="filterIdeas()"> 보고서작성</label>
+				<label><input type="checkbox" data-stage="6" onchange="filterIdeas()"> 완료</label>
 			</div>
 		</div>
 
 		<div class="ideas">
+
 			<c:choose>
 				<c:when test="${empty roomList}">
 					<div class="no-room">
@@ -253,15 +246,7 @@ body {
 				<c:otherwise>
 					<c:forEach var="li" items="${roomList}">
 						<div class="idea" data-stage="${li.getStageId()}"
-							<c:if test="${li.getStageId() >= 3}">
-                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
-                <c:forEach var="idea" items="${ideasList}">
-                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${idea.getIdeaID()}'"
-                </c:forEach>
-            </c:if>
-							<c:if test="${li.getStageId() < 3}">
-                onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'"
-            </c:if>>
+							onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'">
 							<h2>${li.getRoomTitle()}</h2>
 							<div class="idea-details">
 								<p>종료일: ${li.getEndDate()}</p>
@@ -269,8 +254,8 @@ body {
 									주최 팀명:
 									<c:forEach var="team" items="${teamInfo}">
 										<c:if test="${team.getTeamId() == li.getTeamId()}">
-                            ${team.getTeamName()}
-                        </c:if>
+                                ${team.getTeamName()}
+                            </c:if>
 									</c:forEach>
 								</p>
 								<p>
@@ -284,43 +269,36 @@ body {
 										<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
 									</c:choose>
 								</p>
-								<c:if test="${li.getStageId() >= 3}">
-									<c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
-									<c:forEach var="idea" items="${ideasList}">
-										<input type="hidden" name="ideaId" value="${idea.getIdeaID()}" />
-									</c:forEach>
-								</c:if>
 							</div>
 						</div>
 					</c:forEach>
 				</c:otherwise>
-
 			</c:choose>
 
 
 		</div>
-
+		
 		<!-- 페이지네이션 추가 -->
-		<div class="pagination">
-			<c:if test="${currentPage > 1}">
-				<a href="?page=${currentPage - 1}">&laquo; 이전</a>
-			</c:if>
-
-			<c:forEach begin="1" end="${totalPages}" var="i">
-				<c:choose>
-					<c:when test="${currentPage eq i}">
-						<a class="active" href="#">${i}</a>
-					</c:when>
-					<c:otherwise>
-						<a href="?page=${i}">${i}</a>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
-
-			<c:if test="${currentPage < totalPages}">
-				<a href="?page=${currentPage + 1}">다음 &raquo;</a>
-			</c:if>
-		</div>
+<div class="pagination">
+    <c:if test="${currentPage > 1}">
+        <a href="?page=${currentPage - 1}">&laquo; 이전</a>
+    </c:if>
+    
+    <c:forEach begin="1" end="${totalPages}" var="i">
+        <c:choose>
+            <c:when test="${currentPage eq i}">
+                <a class="active" href="#">${i}</a>
+            </c:when>
+            <c:otherwise>
+                <a href="?page=${i}">${i}</a>
+            </c:otherwise>
+        </c:choose>
+    </c:forEach>
+    
+    <c:if test="${currentPage < totalPages}">
+        <a href="?page=${currentPage + 1}">다음 &raquo;</a>
+    </c:if>
+</div>
 		<!-- <div class="ideas">
 		<div class="idea first-review active">
 			<div class="idea-left">

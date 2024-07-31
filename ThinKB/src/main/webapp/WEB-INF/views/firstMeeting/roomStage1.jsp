@@ -310,9 +310,7 @@ input.room1-detail:focus {
 		<%@ include file="../header.jsp"%>
 	</header>
 	<!-- 방장 sideBar -->
-	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
 		<%@ include file="../sideBar.jsp"%>
-	</c:if>
 	<div class="room1"></div>
 	<!-- 배경 이미지를 위한 영역 -->
 	<div class="room1-content">

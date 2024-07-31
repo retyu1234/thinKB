@@ -304,7 +304,7 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 
 <!-- stage3인(=투표로 선택된) 아이디어만 찾는 쿼리 -->
 <select id="yesPickIdeaList" resultType="com.kb.star.dto.Ideas">
-	SELECT * from Ideas WHERE RoomID=#{param1} and StageID=3
+	SELECT * from Ideas WHERE RoomID=#{param1} and StageID>=3
 </select>
 
 <!-- 반려된 내용 제거하고 방장이 보는 리스트 -->
