@@ -111,8 +111,10 @@ public interface IdeaOpinionsDao {
     void addUserLike(@Param("userId") int userId, @Param("opinionId") int opinionId);
     // 좋아요 제거
     void removeUserLike(@Param("userId") int userId, @Param("opinionId") int opinionId);
-    // 모든 의견의 좋아요 수 업데이트
-    void updateAllLikeCounts(@Param("roomId") int roomId, @Param("ideaId") int ideaId);
+    // 좋아요 수 증가
+    void increaseLikeNum(@Param("opinionId") int opinionId);
+    // 좋아요 수 감소
+    void decreaseLikeNum(@Param("opinionId") int opinionId);
     
     
     // 방장전용 - stage4 완료자 수 

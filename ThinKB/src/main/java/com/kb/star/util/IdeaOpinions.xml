@@ -250,17 +250,20 @@
         WHERE UserID = #{userId} AND OpinionID = #{opinionId}
     </delete>
     
-    <!-- 모든 의견의 좋아요 수 업데이트 -->
-    <update id="updateAllLikeCounts">
-	    UPDATE IdeaOpinions io
-		JOIN (
-		    SELECT OpinionID, COUNT(*) as LikeCount
-		    FROM LikeVotes
-		    GROUP BY OpinionID
-		) lv ON io.OpinionID = lv.OpinionID
-		SET io.LikeNum = COALESCE(lv.LikeCount, 0)
-		WHERE io.IdeaID = #{ideaId}
+	<!-- 좋아요 수 증가 -->
+	<update id="increaseLikeNum">
+	UPDATE IdeaOpinions
+	SET LikeNum = LikeNum + 1
+	WHERE OpinionID = #{opinionId}
 	</update>
+	
+	<!-- 좋아요 수 감소 -->
+	<update id="decreaseLikeNum">
+	UPDATE IdeaOpinions
+	SET LikeNum = GREATEST(LikeNum - 1, 0)
+	WHERE OpinionID = #{opinionId}
+	</update>
+    
     
     <!-- 방장전용 - stage4 완료자 수 -->
     <select id="getDoneUserCount2" resultType="int">

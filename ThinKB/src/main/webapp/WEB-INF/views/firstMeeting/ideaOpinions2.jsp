@@ -387,7 +387,7 @@ function confirmNextStep() {
 									    <form action="likeOpinion" method="post" style="display: inline;">
 									        <input type="hidden" name="opinionId" value="${opinion.opinionID}" />
 									        <input type="hidden" name="userId" value="${userId}" />
-									        <input type="hidden" name="like" value="${opinion.likedByCurrentUser ? false : true}" />
+									        <input type="hidden" name="like" value="${opinion.likedByCurrentUser ? false : true}" /> 
 									        <input type="hidden" name="roomId" value="${roomId}" />
 									        <input type="hidden" name="ideaId" value="${ideaId}" />
 									        <input type="hidden" name="currentTab" value="${currentTab}" />

@@ -214,7 +214,6 @@ public class IdeaOpinionsController {
         ideaOpinions2Command.execute(model);
 
         return "/firstMeeting/ideaOpinions2";
-//        return "redirect:/firstMeeting/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
     }
     
     // 의견 작성시 추가 + 현재 의견들 불러오기
@@ -283,16 +282,15 @@ public class IdeaOpinionsController {
         // 사용자가 이미 좋아요를 눌렀는지 확인
         boolean alreadyLiked = ideaOpinionsDao.checkUserLikedOpinion(userId, opinionId);
         
-        if (alreadyLiked) {
-            // 이미 좋아요를 눌렀다면 제거
-            ideaOpinionsDao.removeUserLike(userId, opinionId);
-        } else {
-            // 좋아요를 누르지 않았다면 추가
-            ideaOpinionsDao.addUserLike(userId, opinionId);
+        if (like && !alreadyLiked) {
+            // 좋아요 추가 (Empty Heart -> Filled Heart)
+            ideaOpinionsDao.addUserLike(userId, opinionId); // 사용자의 좋아요를 추가
+            ideaOpinionsDao.increaseLikeNum(opinionId); // 좋아요 수를 1 증가
+        } else if (!like && alreadyLiked) {
+            // 좋아요 제거 (Filled Heart -> Empty Heart)
+            ideaOpinionsDao.removeUserLike(userId, opinionId); // 사용자의 좋아요를 제거
+            ideaOpinionsDao.decreaseLikeNum(opinionId); // 좋아요 수를 1 감소
         }
-        
-        // 모든 의견의 좋아요 수 업데이트
-        ideaOpinionsDao.updateAllLikeCounts(roomId, ideaId);
 
         return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
     }
@@ -326,15 +324,13 @@ public class IdeaOpinionsController {
 
 	// stage 5로 이동 = IdeaRoomController의 case 5 = (방장)보고서 작성화면/(사용자)요약보고서
 	@RequestMapping("/goStage5")
-	public String goStage5(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, 
+	public String goStage5(@RequestParam("roomId") int roomId,
 		            	   HttpServletRequest request, HttpSession session, Model model) {
 		
 		Integer userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("userId", userId);
 		model.addAttribute("request", request);
 		model.addAttribute("roomId", roomId);
-		model.addAttribute("ideaId", ideaId);
-		
 		
 		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
 		 // 모든 참가자의 기여도를 한 번에 업데이트
@@ -361,8 +357,7 @@ public class IdeaOpinionsController {
 //	        System.out.println("userId: " + participantId + "의 기여도 " + likeNum + "만큼 증가 완료");
 //	    }
 
-        return "firstMeeting/aa";
-		/* return "redirect:/roomDetail"; */
+		return "redirect:/roomDetail"; 
 	}
 }
 	

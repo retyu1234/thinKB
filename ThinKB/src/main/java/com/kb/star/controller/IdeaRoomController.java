@@ -70,15 +70,12 @@ public class IdeaRoomController {
 	// 회의방 stage단계별로 화면이동 다르게
 	@RequestMapping("/roomDetail")
 	public String roomDetail(HttpServletRequest request, @RequestParam("roomId") int roomId,
-			@RequestParam("stage") int stage, @RequestParam("ideaId") int ideaId, Model model) {
+			@RequestParam("stage") int stage, Model model) {
 		HttpSession session = request.getSession();
-		System.out.println("여기");
 		int id = (Integer) session.getAttribute("userId");
 		model.addAttribute("id", id);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
-		System.out.println("여기"+stage);
-		model.addAttribute("ideaId", ideaId); // Add ideaId to model
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
 		model.addAttribute("meetingRoom", info);
@@ -109,7 +106,10 @@ public class IdeaRoomController {
 			return "redirect:/ideaOpinionsList";
 
 		case 4:
-			return "firstMeeting/ideaOpinions2";
+			command = new StageThreeCommand(sqlSession);
+			command.execute(model);
+			model.addAttribute("currentTab","smart");
+			return "redirect:/ideaOpinions2";
 
 		case 5:
 			command = new ReportView(sqlSession);
