@@ -310,7 +310,9 @@ body {
 	<!-- Modal window -->
 	<div id="myModal" class="modal">
 		<div class="modal-content">
+
 			<span class="closeIdea" onclick="closeModal()">&times;</span>
+
 			<p>
 				<span><input type="hidden" id="modal-idea-id"></span>
 			</p>

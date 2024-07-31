@@ -8,13 +8,17 @@
 
 	<!-- 알림 목록(모든정보) 가져오기 -->
 	<select id="getAllNoti" resultType="com.kb.star.dto.NotiDto">
-		SELECT * FROM Notifications
-		WHERE UserID = #{userId} AND IsDelete = FALSE ORDER BY CreatedAt DESC
+		SELECT *, m.RoomTitle
+		FROM Notifications n
+		LEFT JOIN MeetingRooms m ON n.RoomID = m.RoomID
+		WHERE n.UserID = #{userId} AND n.IsDelete = FALSE
+		ORDER BY n.CreatedAt DESC
 	</select>
 
 	<!-- IdeaID로 아이디어 정보 가져오기 -->
 	<select id="getIdeaById" resultType="com.kb.star.dto.Ideas">
-		SELECT IdeaID, RoomID, Title FROM Ideas WHERE IdeaID = #{ideaId}
+		SELECT IdeaID, RoomID, Title
+		FROM Ideas WHERE IdeaID = #{ideaId}
 	</select>
 
 	<!-- Ideas 테이블의 RoomID컬럼으로 MeetingRooms 테이블 정보 가져오기(roomTitle) -->
@@ -25,13 +29,15 @@
 
 	<!-- 알림 읽음 상태 업데이트 -->
 	<update id="updateReadStatus">
-		UPDATE Notifications SET IsRead = true WHERE NotificationID =
+		UPDATE Notifications SET IsRead = true WHERE
+		NotificationID =
 		#{notificationID}
 	</update>
 
 	<!-- 알림 삭제 -->
 	<update id="deleteNotification">
-		UPDATE Notifications SET IsDelete = true WHERE NotificationID =
+		UPDATE Notifications SET IsDelete = true WHERE
+		NotificationID =
 		#{notificationID}
 	</update>
 	<!-- 실시간 알림 생성시간에 따라 -->
@@ -39,12 +45,15 @@
 		resultType="com.kb.star.dto.NotiDto">
 		SELECT n.*, mr.RoomTitle
 		FROM Notifications n
-		JOIN Ideas i ON n.IdeaID = i.IdeaID
+		JOIN Ideas i ON
+		n.IdeaID = i.IdeaID
 		JOIN MeetingRooms mr ON i.RoomID = mr.RoomID
-		WHERE n.UserID = #{userId}
+		WHERE
+		n.UserID = #{userId}
 		AND n.IsRead = 0
 		AND n.IsDelete = 0
-		ORDER BY n.CreatedAt DESC
+		ORDER BY
+		n.CreatedAt DESC
 	</select>
 
 	<!-- 알림 모두 읽기 -->
@@ -54,7 +63,8 @@
 	</update>
 
 	<update id="readNotification" parameterType="int">
-		UPDATE Notifications SET IsRead = 1 WHERE NotificationID = #{notificationId}
+		UPDATE Notifications
+		SET IsRead = 1 WHERE NotificationID = #{notificationId}
 	</update>
 
 	<!-- 조건에 맞는 알림 메시지 가져오기 -->
@@ -63,7 +73,8 @@
 		SELECT *
 		FROM Notifications
 		WHERE UserID = #{userId}
-		AND RoomID = #{roomId}
+		AND
+		RoomID = #{roomId}
 		AND IsRead = 0
 		AND IsDelete = 0
 		AND IdeaID = #{ideaId}

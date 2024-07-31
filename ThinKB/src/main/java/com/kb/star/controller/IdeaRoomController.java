@@ -1,5 +1,7 @@
 package com.kb.star.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,7 +21,6 @@ import com.kb.star.command.room.RoomCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.StageThreeCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
-import com.kb.star.command.room.TimerTestCommand;
 import com.kb.star.command.room.UpdateIdeaCommand;
 import com.kb.star.command.room.UpdateStageThreeCommand;
 import com.kb.star.command.room.UpdateStageTwoCommand;
@@ -69,6 +70,7 @@ public class IdeaRoomController {
 
 	@RequestMapping("/roomDetail")
 	public String roomDetail(HttpServletRequest request, @RequestParam("roomId") int roomId,
+
 	                         @RequestParam("stage") int stage, Model model,
 	                         @RequestParam(value = "ideaId", required = false) Integer ideaId) {
 	    HttpSession session = request.getSession();
@@ -91,11 +93,11 @@ public class IdeaRoomController {
 	            command.execute(model);
 	            return "firstMeeting/roomStage1";
 
+
 	        case 2:
 	            command = new RoomStage2Command(sqlSession);
 	            command.execute(model);
-
-	            // 세션에서 에러 메시지를 가져와서 모델에 추가
+	         // 세션에서 에러 메시지를 가져와서 모델에 추가
 	            String errorMessage = (String) model.asMap().get("Message");
 	            System.out.println("이게 메세지다: " + errorMessage);
 	            if (errorMessage != null) {
@@ -299,6 +301,10 @@ public class IdeaRoomController {
 		command.execute(model);
 
 		return "redirect:/ideaOpinionsList";
+	}
+	@RequestMapping("/redirectIdeaOpinions2")
+	public String ideaOpinions2() {
+		return "firstMeeting/ideaOpinions2";
 	}
 
 }

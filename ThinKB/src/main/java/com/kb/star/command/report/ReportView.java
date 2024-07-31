@@ -1,5 +1,6 @@
 package com.kb.star.command.report;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.kb.star.command.room.RoomCommand;
+import com.kb.star.dto.IdeaSummaryDto;
 import com.kb.star.dto.ReportDetailsDto;
 import com.kb.star.util.ReportDao;
 
@@ -28,6 +30,8 @@ public class ReportView implements RoomCommand{
 		ReportDao dao=sqlSession.getMapper(ReportDao.class);
 		ReportDetailsDto dto=dao.getReportDetails(roomId);
 		ReportDetailsDto dto1=dao.getReportDetailsFirst(roomId);
+	    List<IdeaSummaryDto> ideaSummaries = dao.getIdeaSummaries(roomId);
+	    model.addAttribute("ideaSummaries", ideaSummaries);
 		model.addAttribute("reports",dto);
 		model.addAttribute("reportsFirst",dto1);
 	}

@@ -93,7 +93,7 @@ body {
 	font-size: 13pt;
 	cursor: pointer;
 	margin-top: 10px;
-	height: 12%;
+	height: 22px;
 	overflow: hidden; /* 내용이 넘칠 때 숨김 */
 	white-space: nowrap; /* 텍스트를 한 줄로 표시 */
 	text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */

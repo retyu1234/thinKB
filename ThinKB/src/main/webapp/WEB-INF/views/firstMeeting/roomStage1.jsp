@@ -13,23 +13,6 @@ body, html {
 	font-family: Arial, sans-serif;
 }
 
-.room1
-{background
-	: url('<c:url value="/resources/sf_23043.jpg"/>')
-		
-	 no-repeat
-	center center fixed
-	; background-size 
-	:
-
-cover
-;height:50vh
-	; z-index : -1;
-	position :
-	relative ; }
-	.header {
-}
-
 .room1 {
 	background: url('<c:url value="/resources/sf_23043.jpg"/>') no-repeat
 		center center fixed;
@@ -45,7 +28,6 @@ cover
 }
 
 .room1-content {
-	width: 100%;
 	padding: 20px;
 	margin-left: 15%;
 	margin-right: 15%;
@@ -328,30 +310,26 @@ input.room1-detail:focus {
 		<%@ include file="../header.jsp"%>
 	</header>
 	<!-- 방장 sideBar -->
-
-	<%@ include file="../leftSideBar.jsp"%>
-
+		<%@ include file="../sideBar.jsp"%>
 	<div class="room1"></div>
 	<!-- 배경 이미지를 위한 영역 -->
 	<div class="room1-content">
-		<div>
-			<h2 class="room1-title">아이디어 입력 가능 시간</h2>
-			<%@ include file="../Timer.jsp"%>
-		</div>
-
+	<div>
+	<h2 class="room1-title">아이디어 입력 가능 시간</h2>
+		<%@ include file="../Timer.jsp"%>
+	</div>
+	
 		<form id="nextStageForm" action="./stage1Clear" method="post">
-			<input type="hidden" name="roomId" value="${info.getRoomId()}">
-			<input type="hidden" name="stage" value="${stage}">
-			<div
-				style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-				<c:if test="${userId == info.getRoomManagerId()}">
-					<div>
-						<h2 class="room1-title">현재 아이디어 제출인원 : ${submit}명 / ${total}명</h2>
-					</div>
-					<button id="nextStageButton" class="yellow-button"
-						onclick="nextStage()">다음 단계</button>
-				</c:if>
-			</div>
+		    <input type="hidden" name="roomId" value="${info.getRoomId()}">
+		    <input type="hidden" name="stage" value="${stage}">
+		    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+		        <c:if test="${userId == info.getRoomManagerId()}">
+		        <div>
+		            <h2 class="room1-title">현재 아이디어 제출인원 : ${submit}명 / ${total}명</h2>
+		        </div>
+		            <button id="nextStageButton" class="yellow-button" onclick="nextStage()">다음 단계</button>
+		        </c:if>
+		    </div>
 		</form>
 
 		<!-- <div id="timer" class="room1-timer"></div> -->
