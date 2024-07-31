@@ -59,6 +59,18 @@ body {
 	margin-left: -5px;
 }
 
+.section21 {
+	background-color: #FFFFFF;
+	color: #000000;
+	font-family: Arial;
+	font-size: 13pt;
+	font-weight: regular;
+	text-align: center;
+	padding: 5px;
+	margin-left: -5px;
+	cursor: pointer;
+}
+
 .section3 .sub-section1, .section4 .sub-section1 {
 	font-size: 15pt;
 	font-weight: bold;
@@ -81,6 +93,10 @@ body {
 	font-size: 13pt;
 	cursor: pointer;
 	margin-top: 10px;
+	height: 12%;
+	overflow: hidden; /* 내용이 넘칠 때 숨김 */
+	white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+	text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
 }
 
 .sub-section2 a {
@@ -95,7 +111,7 @@ body {
 }
 
 /* 모달창 */
-.modal {
+.modal-notification {
 	display: none; /* Hidden by default */
 	position: fixed; /* Stay in place */
 	z-index: 1; /* Sit on top */
@@ -109,7 +125,7 @@ body {
 	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 }
 
-.modal-content {
+.modal-content-notification {
 	background-color: #fefefe;
 	margin: auto;
 	padding: 20px;
@@ -119,25 +135,25 @@ body {
 	text-align: center;
 }
 
-.close {
+.close-notification {
 	color: #aaa;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
 }
 
-.close:hover, .close:focus {
+.close-notification:hover, .close-notification:focus {
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
 }
 
-.modal-title {
+.modal-title-notification {
 	font-size: 1.5em;
 	font-weight: bold;
 }
 
-.modal-message-box {
+.modal-message-box-notification {
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	background-color: #f9f9f9;
@@ -146,11 +162,11 @@ body {
 	margin-bottom: 20px;
 }
 
-.modal-footer {
+.modal-footer-notification {
 	text-align: center;
 }
 
-.modal-button {
+.modal-button-notification {
 	background-color: #ffc107;
 	color: black;
 	border: none;
@@ -163,7 +179,7 @@ body {
 	margin-bottom: 20px;
 }
 
-.modal-button:hover {
+.modal-button-notification:hover {
 	background-color: #e0a800;
 }
 </style>
@@ -171,21 +187,22 @@ body {
 
 <body>
 	<div class="sidebar">
-		<div class="section section1">아이디어 회의방 제목</div>
+		<div class="section section1">${meetingRoom.roomTitle}</div>
 		<c:choose>
-			<c:when
-				test="${empty yesPickIdeaList or empty yesPickIdeaList[0].title}">
+			<c:when test="${empty yesPickList or empty yesPickList[0].title}">
 				<div class="section section2">
 					<span class="sidebar-icon">📝</span>아이디어 선택 전
 				</div>
 			</c:when>
 			<c:otherwise>
-				<div class="section section2">
-					<c:forEach var="idea" items="${yesPickIdeaList}">
-						<div>
-							<span class="sidebar-icon">📌</span>${idea.title}</div>
-					</c:forEach>
-				</div>
+				<c:forEach var="idea" items="${yesPickList}">
+					<div class="section section21" data-room-id="${idea.roomID}"
+						data-idea-id="${idea.ideaID}" data-stage-id="${idea.stageID}">
+						<span class="sidebar-icon">📌</span>${idea.title} <input
+							type="hidden" name="ideaId" value="${idea.ideaID}" /> <input
+							type="hidden" name="stageId" value="${idea.stageID}" />
+					</div>
+				</c:forEach>
 			</c:otherwise>
 		</c:choose>
 		<div class="section section3">
@@ -193,13 +210,13 @@ body {
 			<c:choose>
 				<c:when test="${empty roomMessage}">
 					<div class="section section2">
-						<span class="sidebar-icon">📝</span>받은 알림이 없습니다.
+						<span class="sidebar-icon">✉️</span>받은 알림이 없습니다.
 					</div>
 				</c:when>
 				<c:otherwise>
 					<c:forEach var="message" items="${roomMessage}">
-						<div class="notification-box" data-message="${message.message}" data-id="${message.notificationID}">
-							<span class="sidebar-icon">📌</span>${message.message}</div>
+						<div class="notification-box" data-message="${message.message}"
+							data-id="${message.notificationID}">${message.message}</div>
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>
@@ -218,25 +235,36 @@ body {
 		</c:if>
 	</div>
 
+	<!-- 숨겨진 폼 -->
+	<form id="ideaForm" method="post" action="./roomDetail">
+		<input type="hidden" name="roomId" id="formRoomId" /> <input
+			type="hidden" name="stage" id="formStage" /> <input type="hidden"
+			name="ideaId" id="formIdeaId" />
+	</form>
+
 	<!-- 모달 창 -->
-	<div id="notificationModal" class="modal">
-		<div class="modal-content">
-			<span class="close">&times;</span>
-			<h2 class="modal-title">알림 내용</h2>
-			<div class="modal-message-box">
+	<div id="notificationModal" class="modal-notification">
+		<div class="modal-content-notification">
+			<span class="close-notification">&times;</span>
+			<h2 class="modal-title-notification">알림 내용</h2>
+			<div class="modal-message-box-notification">
 				<p id="modalMessage" class="modal-message"></p>
 			</div>
-			<div class="modal-footer">
-				<button id="closeModal" class="modal-button">닫기</button>
+			<div class="modal-footer-notification">
+				<button id="closeModal" class="modal-button-notification">닫기</button>
 			</div>
 		</div>
 	</div>
+
+	<form id="updateReadForm" method="post" action="./updateReadSide">
+		<input type="hidden" id="notificationId" name="notificationId">
+	</form>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 		$(document).ready(function() {
 			let currentNotificationId;
-			
+
 			// 알림 클릭 시 모달 창 띄우기
 			$('.notification-box').click(function() {
 				const message = $(this).data('message');
@@ -246,20 +274,41 @@ body {
 			});
 
 			// 모달 창 닫기
-			$('.close, #closeModal').click(function() {
-			    $('#notificationModal').hide();
-			 // 알림을 읽음 상태로 업데이트
-		        window.location.href = `./updateRead/\${currentNotificationId}`;
+			$('.close-notification, #closeModal').click(function() {
+				console.log('닫기 버튼 클릭됨');
+				$('#notificationModal').hide();
+				updateNotificationReadStatus();
 			});
 
 			// 모달 창 바깥 클릭 시 닫기
 			$(window).click(function(event) {
-			    if (event.target.id === 'notificationModal') {
-			        $('#notificationModal').hide();
-			     // 알림을 읽음 상태로 업데이트
-			        window.location.href = `./updateRead/\${currentNotificationId}`;
-			    }
+				if (event.target.id === 'notificationModal') {
+					$('#notificationModal').hide();
+					updateNotificationReadStatus();
+				}
 			});
+
+			function updateNotificationReadStatus() {
+				$('#notificationId').val(currentNotificationId);
+				$('#updateReadForm').submit();
+			}
+
+			// section21 클릭 시 roomDetail로 이동
+			$('.section21').on('click', function() {
+				const roomId = $(this).data('room-id');
+				const ideaId = $(this).data('idea-id');
+				const stage = $(this).data('stage-id');
+				console.log(ideaId);
+
+				// 폼에 값 설정
+				$('#formRoomId').val(roomId);
+				$('#formIdeaId').val(ideaId);
+				$('#formStage').val(stage);
+
+				// 폼 제출
+				$('#ideaForm').submit();
+			});
+
 		});
 	</script>
 </body>

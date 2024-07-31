@@ -54,11 +54,13 @@ public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
 		
 		// leftSideBar.jsp 출력용
 		params.put("ideaId", 0);
-		List<Ideas> yesPickIdeaList = sqlSession.selectList("com.kb.star.util.RoomDao.yesPickIdeaList", roomId);
-		model.addAttribute("yesPickIdeaList", yesPickIdeaList);
+		/* Map<String, Object> params = new HashMap<String, Object>(); */
+		List<Ideas> yesPickList = sqlSession.selectList("com.kb.star.util.RoomDao.yesPickIdeaList", roomId);
+		model.addAttribute("yesPickList", yesPickList);
 
 		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
 		model.addAttribute("roomMessage", roomMessage);
+		//여기까지 leftSideBar 출력용
 
 		Integer votedIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
 		System.out.println("뽑은 아이디어" + votedIdeaId);

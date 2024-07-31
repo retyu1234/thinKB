@@ -67,58 +67,61 @@ public class IdeaRoomController {
 		return "redirect:/meetingList";
 	}
 
-	// 회의방 stage단계별로 화면이동 다르게
 	@RequestMapping("/roomDetail")
 	public String roomDetail(HttpServletRequest request, @RequestParam("roomId") int roomId,
-			@RequestParam("stage") int stage, @RequestParam("ideaId") int ideaId, Model model) {
-		HttpSession session = request.getSession();
-		System.out.println("여기");
-		int id = (Integer) session.getAttribute("userId");
-		model.addAttribute("id", id);
-		model.addAttribute("roomId", roomId);
-		model.addAttribute("stage", stage);
-		System.out.println("여기"+stage);
-		model.addAttribute("ideaId", ideaId); // Add ideaId to model
-		RoomDao dao = sqlSession.getMapper(RoomDao.class);
-		MeetingRooms info = dao.roomDetailInfo(roomId);
-		model.addAttribute("meetingRoom", info);
+	                         @RequestParam("stage") int stage, Model model,
+	                         @RequestParam(value = "ideaId", required = false) Integer ideaId) {
+	    HttpSession session = request.getSession();
+	    int id = (Integer) session.getAttribute("userId");
+	    model.addAttribute("id", id);
+	    model.addAttribute("roomId", roomId);
+	    model.addAttribute("stage", stage);
 
-		switch (stage) {
-		case 1:
-			command = new StageOneCommand(sqlSession);
-			command.execute(model);
-			return "firstMeeting/roomStage1";
+	    RoomDao dao = sqlSession.getMapper(RoomDao.class);
+	    MeetingRooms info = dao.roomDetailInfo(roomId);
+	    model.addAttribute("meetingRoom", info);
 
-		case 2:
-			command = new RoomStage2Command(sqlSession);
-			command.execute(model);
+	    if (stage >= 3 && ideaId != null) {
+	        model.addAttribute("ideaId", ideaId);
+	    }
 
-			// 세션에서 에러 메시지를 가져와서 모델에 추가
-			String errorMessage = (String) model.asMap().get("Message");
-			System.out.println("이게 메세지다: " + errorMessage);
-			if (errorMessage != null) {
-				model.addAttribute("errorMessage", errorMessage);
-				session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
-			}
-			return "firstMeeting/ideaMeeting";
-		/* return "redirect:/roomStage2?roomId=" + roomId; */
+	    switch (stage) {
+	        case 1:
+	            command = new StageOneCommand(sqlSession);
+	            command.execute(model);
+	            return "firstMeeting/roomStage1";
 
-		case 3:
-			command = new StageThreeCommand(sqlSession);
-			command.execute(model);
-			return "redirect:/ideaOpinionsList";
+	        case 2:
+	            command = new RoomStage2Command(sqlSession);
+	            command.execute(model);
 
-		case 4:
-			return "firstMeeting/ideaOpinions2";
+	            // 세션에서 에러 메시지를 가져와서 모델에 추가
+	            String errorMessage = (String) model.asMap().get("Message");
+	            System.out.println("이게 메세지다: " + errorMessage);
+	            if (errorMessage != null) {
+	                model.addAttribute("errorMessage", errorMessage);
+	                session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
+	            }
+	            return "firstMeeting/ideaMeeting";
 
-		case 5:
-			command = new ReportView(sqlSession);
-			command.execute(model);
-			return "report/roomStage7";
+	        case 3:
+	            command = new StageThreeCommand(sqlSession);
+	            command.execute(model);
+	            return "redirect:/ideaOpinionsList";
 
-		default:
-			return "main";
-		}
+	        case 4:
+	            command = new StageThreeCommand(sqlSession);
+	            command.execute(model);
+	            return "firstMeeting/ideaOpinions2";
+
+	        case 5:
+	            command = new ReportView(sqlSession);
+	            command.execute(model);
+	            return "report/roomStage7";
+
+	        default:
+	            return "main";
+	    }
 	}
 
 	// 아이디어 초안 저장

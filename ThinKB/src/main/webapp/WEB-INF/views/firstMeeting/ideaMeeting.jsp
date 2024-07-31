@@ -168,14 +168,14 @@ body {
 	overflow-y: auto;
 }
 
-.close {
+.closeIdea {
 	color: #aaa;
 	float: right;
 	font-size: 28px;
 	font-weight: bold;
 }
 
-.close:hover, .close:focus {
+.closeIdea:hover, .closeIdea:focus {
 	color: black;
 	text-decoration: none;
 	cursor: pointer;
@@ -313,7 +313,7 @@ body {
 	<!-- Modal window -->
 	<div id="myModal" class="modal">
 		<div class="modal-content">
-			<span class="close" onclick="closeModal()">&times;</span>
+			<span class="closeIdea" onclick="closeModal()">&times;</span>
 			<p>
 				<span><input type="hidden" id="modal-idea-id"></span>
 			</p>
@@ -380,6 +380,7 @@ body {
 
     function closeModal() {
         document.getElementById("myModal").style.display = "none";
+        console.log('아이디어 닫기 버튼 클릭됨');
         hideReplyForm(); // Hide the reply form container when the modal is closed
     }
 
