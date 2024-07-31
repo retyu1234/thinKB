@@ -4,17 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ThinkKB</title>
+<title>thinKB - 회의방 목록</title>
 <style>
 body {
 	font-family: Arial, sans-serif;
-	background-color: #f5f5f5;
 }
 
 .content {
 	padding: 20px;
-	margin-left: 15%;
-	margin-right: 15%;
+	margin-left: 17%;
+	margin-right: 17%;
+	margin-top: 150px;
 }
 
 .container {
@@ -84,6 +84,43 @@ body {
 .progress-header {
 	margin: 0;
 	padding: 10px 0;
+	font-size: 22pt;
+}
+
+/* <style> 태그 안에 다음 CSS를 추가하세요 */
+.progress input[type="checkbox"] {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #ccc;
+	border-radius: 4px;
+	outline: none;
+	transition: all 0.3s;
+	cursor: pointer;
+	position: relative;
+	margin-right: 10px;
+}
+
+.progress input[type="checkbox"]:checked {
+	background-color: #FFCC00; /* 체크된 상태의 배경색 */
+	border-color: #FFCC00; /* 체크된 상태의 테두리 색 */
+}
+
+.progress input[type="checkbox"]:checked::before {
+	content: '\2714'; /* 체크 표시 */
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white; /* 체크 표시 색상 */
+	font-size: 14px;
+}
+
+.progress label {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
 }
 
 .ideas {
@@ -92,23 +129,69 @@ body {
 
 .idea {
 	padding: 20px;
-	background-color: #ffffff;
 	border-radius: 20px;
 	margin-top: 30px;
 	margin-left: auto;
 	margin-right: auto;
-	border: 1px solid #ccc;
+	/* border: 1px solid #ccc; */
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 	font-size: 1.2em;
 	width: 80%;
 	cursor: pointer;
-	transition: box-shadow 0.3s ease;
+	transition: box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.idea-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.idea-icon {
+	margin-right: 10px;
+	margin-left: 30px;
+	font-size: 24pt;
+	flex-shrink: 0;
+}
+
+h2 {
+	display: flex;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	font-size: 1.5em;
+	width: calc(100% - 30px); /* next-icon의 너비와 여백을 고려 */
+	overflow: hidden;
+}
+
+.next-icon {
+	width: 15px;
+	height: auto;
+	margin-left: 15px;
+	margin-right: 30px;
+	flex-shrink: 0;
+}
+
+.room-title {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	flex-grow: 1;
 }
 
 .idea:hover {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 커서를 대면 그림자 추가 */
+}
+
+.idea[data-stage="6"] {
+	background-color: #f0f0f0;
+}
+
+.idea:not([data-stage="6"]) {
+	background-color: #FFE297;
 }
 
 .idea h2 {
@@ -127,7 +210,7 @@ body {
 }
 
 .idea-details p {
-	margin: 0;
+	margin: 0 50px 0 0;
 }
 
 .idea-left {
@@ -142,20 +225,36 @@ body {
 	flex-direction: column;
 }
 
+/* 노란색 버튼 */
 .yellow-button {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
-	padding: 10px 20px; /* 버튼의 여백 */
-	border: none; /* 테두리 없음 */
-	border-radius: 20px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
-	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15pt;
+	cursor: pointer;
 	font-weight: bold;
 }
 
 .yellow-button:hover {
-	background-color: #696969;
+	background-color: #D4AA00;
+}
+
+/* 회색버튼 */
+.grey-button {
+	background-color: #978A8F;
 	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.grey-button:hover {
+	background-color: #60584C;
 }
 
 .no-room {
@@ -212,21 +311,22 @@ body {
 </head>
 
 <body>
+	<!-- 헤더 영역 -->
 	<%@ include file="../header.jsp"%>
-	<div class="header1">
-		<img src="./resources/header2.jpg" alt="Header Image">
-	</div>
+
 	<div class="content">
+		<!-- 회의방 만들기 버튼 영역 -->
 		<div class="button-container">
-			<button class="yellow-button" onclick="location.href='./newIdeaRoom'">+
+			<button class="grey-button" onclick="location.href='./newIdeaRoom'">+
 				아이디어 회의방 만들기</button>
 		</div>
+
+		<!-- 회의방 조회 탭 -->
 		<div class="progress-header-container">
-			<h2 class="progress-header">진행중인 단계</h2>
+			<h2 class="progress-header">회의방 단계별 조회</h2>
 		</div>
 		<div class="progress-container">
 			<div class="progress">
-				<!-- data-stage 수정 필요 이 부분 수정이 필요해. 체크박스를 눌렀을 때 해당 단계인 아이디어만 보여지게 하는건 맞지만, 이후 데이터베이스에서 반복문을 통해 데이터를 가져올거기 때문에 지금 코드처럼  data-stage="draft" 이렇게 작성하면 안돼. 재사용 가능하도록 수정하고싶어-->
 				<label><input type="checkbox" data-stage="1"
 					onchange="filterIdeas()"> 아이디어 초안</label> <label><input
 					type="checkbox" data-stage="2" onchange="filterIdeas()"> 투표
@@ -239,7 +339,11 @@ body {
 			</div>
 		</div>
 
+		<!-- 회의방 목록 -->
 		<div class="ideas">
+			<%-- <<<<<<< HEAD
+
+=======
 			<c:choose>
 				<c:when test="${empty roomList}">
 					<div class="no-room">
@@ -249,7 +353,65 @@ body {
 						<div class="contents">아이디어 회의방 만들기를 통해 아이디어를 쉽게 도출해보세요!</div>
 					</div>
 				</c:when>
+>>>>>>> refs/heads/main
 
+<<<<<<< HEAD --%>
+			<c:forEach var="li" items="${roomList}">
+				<div class="idea" data-stage="${li.getStageId()}"
+					<c:if test="${li.getStageId() >= 3}">
+                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
+                <c:forEach var="idea" items="${ideasList}">
+                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${idea.getIdeaID()}'"
+                </c:forEach>
+            </c:if>
+					<c:if test="${li.getStageId() < 3}">
+                onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'"
+            </c:if>>
+					<div class="idea-header">
+						<h2>
+							<span class="idea-icon">📝</span> <span class="room-title">${li.getRoomTitle()}</span>
+						</h2>
+						<img src="./resources/nextIcon.png" alt="더 보기" class="next-icon">
+					</div>
+					<div class="idea-details">
+						<p>종료일: ${li.getEndDate()}</p>
+						<p>
+							주최 팀명:
+							<c:forEach var="team" items="${teamInfo}">
+								<c:if test="${team.getTeamId() == li.getTeamId()}">
+                                ${team.getTeamName()}
+                            </c:if>
+							</c:forEach>
+						</p>
+						<p>
+							단계:
+							<c:choose>
+								<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+								<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+								<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+								<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+								<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+								<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
+							</c:choose>
+						</p>
+						<c:if test="${li.getStageId() >= 3}">
+							<c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
+							<c:forEach var="idea" items="${ideasList}">
+								<input type="hidden" name="ideaId" value="${idea.getIdeaID()}" />
+							</c:forEach>
+						</c:if>
+					</div>
+					</div>
+			</c:forEach>
+
+			<div class="no-room" style="display: none;">
+				<img src="./resources/noContent.png" alt="no Contents"
+					style="width: 100px; height: auto; margin-bottom: 10px;">
+				<div class="contents">선택한 단계의 회의방이 없어요.</div>
+				<div class="contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
+			</div>
+
+			<%-- =======
 				<c:otherwise>
 					<c:forEach var="li" items="${roomList}">
 						<div class="idea" data-stage="${li.getStageId()}"
@@ -296,6 +458,7 @@ body {
 				</c:otherwise>
 
 			</c:choose>
+>>>>>>> refs/heads/main --%>
 
 
 		</div>
@@ -320,86 +483,47 @@ body {
 			<c:if test="${currentPage < totalPages}">
 				<a href="?page=${currentPage + 1}">다음 &raquo;</a>
 			</c:if>
+
 		</div>
-		<!-- <div class="ideas">
-		<div class="idea first-review active">
-			<div class="idea-left">
-				<h3>회의방 제목 1</h3>
-				<br>
-				<p>ESG팀</p>
-			</div>
-			<div class="idea-right">
-				<p>1차의견</p>
-				<p>2024.01.01 까지</p>
-			</div>
-		</div>
-		<div class="idea draft active">
-			<div class="idea-left">
-				<h3>회의방 제목 2</h3>
-				<br>
-				<p>ESG팀</p>
-			</div>
-			<div class="idea-right">
-				<p>초안작성</p>
-				<p>2024.01.01 까지</p>
-			</div>
-		</div>
-		</div> -->
-		<!-- 더 많은 아이디어를 여기에 추가할 수 있습니다 -->
-	</div>
-	<script>
-		function createMeetingRoom() {
-			// 회의방 만들기 기능 구현
-			alert("회의방 만들기 기능은 구현되지 않았습니다.");
-		}
-	</script>
 </body>
 
 <script>
-	function filterIdeas() {
-		var checkboxes = document.querySelectorAll('.progress input');
-		var ideas = document.querySelectorAll('.idea');
-		var anyChecked = false;
+function filterIdeas() {
+    var checkboxes = document.querySelectorAll('.progress input:checked');
+    var ideas = document.querySelectorAll('.idea');
+    var anyVisible = false;
 
-		checkboxes.forEach(function(checkbox) {
-			if (checkbox.checked) {
-				anyChecked = true;
-			}
-		});
+    if (checkboxes.length === 0) {
+        // 체크된 박스가 없으면 모든 아이디어를 표시
+        ideas.forEach(function(idea) {
+            idea.style.display = 'flex';
+        });
+        anyVisible = true;
+    } else {
+        ideas.forEach(function(idea) {
+            var ideaStage = idea.getAttribute('data-stage');
+            var shouldShow = Array.from(checkboxes).some(function(checkbox) {
+                return checkbox.getAttribute('data-stage') === ideaStage;
+            });
+            idea.style.display = shouldShow ? 'flex' : 'none';
+            if (shouldShow) anyVisible = true;
+        });
+    }
 
-		if (!anyChecked) {
-			ideas.forEach(function(idea) {
-				idea.style.display = 'flex';
-			});
-		} else {
-			ideas.forEach(function(idea) {
-				idea.style.display = 'none';
-			});
+    // 표시할 아이디어가 없는 경우 메시지 표시
+    var noRoomMessage = document.querySelector('.no-room');
+    if (noRoomMessage) {
+        noRoomMessage.style.display = anyVisible ? 'none' : 'flex';
+    }
+}
 
-			checkboxes
-					.forEach(function(checkbox) {
-						if (checkbox.checked) {
-							var stages = checkbox.getAttribute('data-stage')
-									.split(',');
-							ideas
-									.forEach(function(idea) {
-										var ideaStage = idea
-												.getAttribute('data-stage');
-										if (stages.includes(ideaStage)) {
-											idea.style.display = 'flex';
-										}
-									});
-						}
-					});
-		}
-	}
-
-	document.addEventListener('DOMContentLoaded', function() {
-		var checkboxes = document.querySelectorAll('.progress input');
-		checkboxes.forEach(function(checkbox) {
-			checkbox.addEventListener('change', filterIdeas);
-		});
-		filterIdeas();
-	});
+document.addEventListener('DOMContentLoaded', function() {
+    var checkboxes = document.querySelectorAll('.progress input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', filterIdeas);
+    });
+    // 페이지 로드 시 초기 필터링 적용
+    filterIdeas();
+});
 </script>
 </html>

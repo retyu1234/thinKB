@@ -5,21 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회의방(1단계)</title>
+<title>thinKB - 아이디어 작성</title>
 <style>
 body, html {
 	margin: 0;
 	padding: 0;
 	font-family: Arial, sans-serif;
-}
-
-.room1 {
-	background: url('<c:url value="/resources/sf_23043.jpg"/>') no-repeat
-		center center fixed;
-	background-size: cover;
-	height: 50vh;
-	z-index: -1;
-	position: relative;
 }
 
 .header {
@@ -29,20 +20,70 @@ body, html {
 
 .room1-content {
 	padding: 20px;
-	margin-left: 15%;
-	margin-right: 15%;
+	margin-left: 17%;
+	margin-right: 17%;
 	position: relative;
 	z-index: 2;
+	margin-top: 80px;
 }
 
 .room1-title {
-	font-family: Arial, sans-serif;
-	font-size: 20px;
+	font-size: 22pt;
 	color: black;
+	font-weight: bold;
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+
+.room1-title-detail {
+	font-size: 18pt;
+}
+
+/* 노란색 버튼 */
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
+}
+
+/* 회색버튼 */
+.grey-button {
+	background-color: #978A8F;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 15pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.grey-button:hover {
+	background-color: #60584C;
+}
+
+.stage-info {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.submit-info {
+    margin-right: 30px;
+    font-size: 15pt;
 }
 
 .room1-subject {
-	font-size: 24px; /* 제목의 글자 크기 */
+	font-size: 15pt; /* 제목의 글자 크기 */
 	color: black;
 	border: 3px solid #FFD700; /* 진한 노란색 테두리 */
 	border-radius: 20px; /* 라운드 처리 */
@@ -50,16 +91,8 @@ body, html {
 	background-color: white; /* 배경색 */
 }
 
-.room1-detail {
-	font-size: 18px; /* 제목의 글자 크기 */
-	color: black;
-	border-radius: 20px; /* 라운드 처리 */
-	padding: 20px; /* 내부 여백 */
-	background-color: whitesmoke; /* 배경색 */
-}
-
 input.room1-subject {
-	font-size: 24px;
+	font-size: 15pt;
 	color: black;
 	border: 3px solid lightgrey;
 	border-radius: 20px;
@@ -68,44 +101,13 @@ input.room1-subject {
 	box-sizing: border-box;
 }
 
-input.room1-detail {
-	font-size: 18px; /* 제목의 글자 크기 */
-	color: black;
-	width: 100%;
-	border: 3px solid whitesmoke;
-	box-sizing: border-box;
-}
-
 input.room1-subject:focus {
 	border-color: #FFD700; /* 포커스 시 테두리 색상 */
 	outline: none; /* 기본 포커스 스타일 제거 */
 }
 
-input.room1-detail:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
-}
-
-.kb-ai-button {
-	display: block;
-	width: 100%;
-	margin: 20px 0;
-	padding: 15px;
-	font-size: 18px;
-	color: white;
-	background-color: #007BFF; /* 버튼 배경색 */
-	border: none;
-	border-radius: 10px;
-	cursor: pointer;
-	text-align: center;
-}
-
-.kb-ai-button:hover {
-	background-color: #0056b3; /* 버튼 호버 색상 */
-}
-
 .kb-ai-response {
-	font-size: 16px;
+	font-size: 15pt;
 	color: black;
 	border: 1px solid #ddd;
 	border-radius: 10px;
@@ -116,37 +118,73 @@ input.room1-detail:focus {
 	display: none; /* 처음에는 보이지 않도록 설정 */
 	display: flex; /* 추가: flex 컨테이너로 설정 */
 	align-items: center; /* 추가: 세로 중앙 정렬 */
+	height: 150px;
 }
 
 .ai-image {
-	width: 50px; /* 이미지 크기 조절 */
+	width: 115px; /* 이미지 크기 조절 */
 	height: auto;
-	margin-right: 15px; /* 이미지와 텍스트 사이 간격 */
+	margin-right: 30px; /* 이미지와 텍스트 사이 간격 */
+	margin-left: 30px; 
 }
 
-.yellow-button {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
-	padding: 10px 20px; /* 버튼의 여백 */
-	border: none; /* 테두리 없음 */
-	border-radius: 20px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
-	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+.stages {
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 0;
+	font-size: 13pt;
+}
+
+.stage {
+    flex: 1;
+    text-align: center;
+    padding: 3px; /* 5px에서 3px로 줄임 */
+    margin: 0 2px; /* 좌우 여백 추가 */
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+}
+
+.active {
+	color: #FFD700;
 	font-weight: bold;
 }
 
-.yellow-button:hover {
-	background-color: #696969;
-	color: white;
+.inactive {
+	color: #999;
+	pointer-events: none;
 }
 
-.room1-timer {
-	font-size: 24px;
-	font-weight: bold;
-	color: #007BFF;
-	text-align: center;
-	margin-bottom: 20px;
+.titleAndDetail {
+	display: flex; 
+	justify-content: space-between; 
+	align-items: center; 
+	margin-bottom: 10px;
 }
+.titleAndDetail-title {
+	margin: 0;
+	font-size: 22pt;
+	color: black;
+	font-weight: bold;
+}
+.titleAndDetail-detail {
+	font-size: 13pt;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 100px;
+}
+
+.button-container button {
+    margin: 0 10px; /* 버튼 사이에 20px 간격을 만듭니다 (좌우 각각 10px) */
+}
+
 </style>
 </head>
 <script>
@@ -302,63 +340,105 @@ input.room1-detail:focus {
 	        console.error("버튼 표시 설정 중 오류 발생:", error);
 	    }
 	});
+	
+	<%
+	    String[] stages = {"아이디어 초안 제출하기", "좋은 초안에 투표하기", "다양한 관점 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
+	    request.setAttribute("stages", stages);
+	%>
 
 </script>
 <body>
-
+<!-- 헤더영역 -->
 	<header class="header">
 		<%@ include file="../header.jsp"%>
 	</header>
-	<!-- 방장 sideBar -->
+
+<!-- 방장 sideBar -->
+	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
+
 		<%@ include file="../sideBar.jsp"%>
-	<div class="room1"></div>
-	<!-- 배경 이미지를 위한 영역 -->
+	</c:if>
+
+<!-- 컨텐츠 영역 시작 -->	
 	<div class="room1-content">
-	<div>
-	<h2 class="room1-title">아이디어 입력 가능 시간</h2>
-		<%@ include file="../Timer.jsp"%>
-	</div>
 	
+	<!-- 사이드바 import -->
+	<%@ include file="../rightSideBar.jsp"%>
+	
+	<!-- 5개 단계 표시 -->
+	<div class="stages">
+        <c:forEach var="stage" items="${stages}" varStatus="status">
+            <c:choose>
+                <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+                    <a href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}" class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+                        ${status.index + 1}. ${stage}
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <div class="stage inactive">
+                        ${status.index + 1}. ${stage}
+                    </div>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+    </div>
+    
+    <!-- 제목, 상세설명 -->
+    <div class="room1-title">[${info.getRoomTitle()}]</div>
+    <div class="room1-title-detail">${info.getDescription()}</div>
+	
+	<div>
+	<!-- 방장만 보이는 다음단계 버튼 -->
 		<form id="nextStageForm" action="./stage1Clear" method="post">
 		    <input type="hidden" name="roomId" value="${info.getRoomId()}">
 		    <input type="hidden" name="stage" value="${stage}">
-		    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+		    <div class="stage-info" style="margin-bottom: 50px;">
 		        <c:if test="${userId == info.getRoomManagerId()}">
-		        <div>
-		            <h2 class="room1-title">현재 아이디어 제출인원 : ${submit}명 / ${total}명</h2>
+		        <div class="submit-info">
+		            현재 아이디어 제출인원 : ${submit}명 / ${total}명
 		        </div>
 		            <button id="nextStageButton" class="yellow-button" onclick="nextStage()">다음 단계</button>
 		        </c:if>
 		    </div>
 		</form>
-
-		<!-- <div id="timer" class="room1-timer"></div> -->
-
-		<h2 class="room1-title">아이디어 회의 주제</h2>
-		<div class="room1-subject">${info.getRoomTitle()}</div>
-
-		<h2 class="room1-title" style="padding-top: 30px;">상세 설명</h2>
-		<div class="room1-detail">${info.getDescription()}</div>
-
-
-		<h2 class="room1-title" style="padding-top: 30px;">나의 아이디어</h2>
-		<input type="text" id="myIdeaInput" class="room1-subject"
-			name="myIdea" placeholder="여기에 작성해주세요"
-			value="${result == true ? submittedIdea.getTitle() : ''}">
-
-		<button class="kb-ai-button" onclick="showResponse()">KB ai에게
-			물어보기</button>
+	
+	<!-- 아이디어 입력창 -->
+		<div class="titleAndDetail">
+			<div class="titleAndDetail-title">나의 아이디어</div>
+			<div class="titleAndDetail-detail">회의 주제에 대한 나의 아이디어를 작성해주세요.</div>
+		</div>
+		<div style="margin-bottom: 50px;">
+			<input type="text" id="myIdeaInput" class="room1-subject"
+				name="myIdea" placeholder="여기에 작성해주세요"
+				value="${result == true ? submittedIdea.getTitle() : ''}">
+		</div>
+		
+	<!-- 아이디어 상세설명 입력창 -->
+		<div class="titleAndDetail">
+			<div class="titleAndDetail-title">아이디어에 대한 상세 설명</div>
+			<div class="titleAndDetail-detail">내가 작성한 아이디어에 대해 자세히 설명해주세요.</div>
+		</div>
+		<div style="margin-bottom: 50px;">
+			<input type="text" id="ideaDetailInput" class="room1-subject" style="height: 150px;"
+				name="ideaDetail" placeholder="여기에 작성해주세요" 
+				value="${result == true ? submittedIdea.getDescription() : ''}">
+		</div>
+		
+	<!-- ai영역 -->
+	<div class="titleAndDetail">
+			<div class="titleAndDetail-title">나의 아이디어에 대한 KB AI 의견</div>
+			<div class="titleAndDetail-detail">아래 AI에게 물어보기 버튼을 눌러 의견을 확인할 수 있어요.</div>
+		</div>
 		<div id="kb-ai-response" class="kb-ai-response">
 			<img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot"
 				class="ai-image"> <span id="ai-response-text">KB ai의 응답
 				내용이 여기에 표시됩니다.</span>
 		</div>
 
-		<h2 class="room1-title" style="padding-top: 30px;">아이디어에 대한 상세 설명</h2>
-		<input type="text" id="ideaDetailInput" class="room1-detail"
-			name="ideaDetail" placeholder="여기에 작성해주세요"
-			style="margin-bottom: 100px;"
-			value="${result == true ? submittedIdea.getDescription() : ''}">
+	<!-- 맨 하단 버튼영역 -->
+	<div class="button-container">
+		<button class="grey-button" onclick="showResponse()">KB ai에게
+			물어보기</button>
 
 
 		<form id="ideaForm" action="./submitIdea" method="post">
@@ -366,11 +446,10 @@ input.room1-detail:focus {
 			<input type="hidden" name="stage" value="${stage}"> <input
 				type="hidden" id="myIdeaHidden" name="myIdea"> <input
 				type="hidden" id="ideaDetailHidden" name="ideaDetail">
-			<div style="text-align: center;">
+
 				<button type="button" id="submitButton" class="yellow-button"
-					style="margin-bottom: 100px; display: inline-block;"
 					onclick="submitForm()">아이디어 제출하기</button>
-			</div>
+
 		</form>
 
 		<form id="updateForm" action="./updateIdea" method="post">
@@ -378,13 +457,14 @@ input.room1-detail:focus {
 			<input type="hidden" name="stage" value="${stage}"> <input
 				type="hidden" id="myIdeaHidden2" name="myIdea"> <input
 				type="hidden" id="ideaDetailHidden2" name="ideaDetail">
-			<div style="text-align: center;">
-				<button type="button" id="updateButton" class="yellow-button"
-					style="margin-bottom: 100px; display: none;" onclick="updateForm()">아이디어
-					수정하기</button>
-			</div>
-		</form>
 
+				<button type="button" id="updateButton" class="yellow-button"
+					 onclick="updateForm()">아이디어
+					수정하기</button>
+
+		</form>
+</div>
+	</div>
 	</div>
 </body>
 </html>

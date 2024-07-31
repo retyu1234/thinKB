@@ -178,11 +178,13 @@
     INSERT INTO StageParticipation (IdeaID, StageID, UserID, Status, RoomID)
     VALUES (#{ideaId}, #{stageId}, #{userId}, 0, #{roomId})
 </insert>
+<!-- 강퇴했을때 사용 -->
 <update id="updateParticipation">
     UPDATE StageParticipation
     SET Status = 0, StageID = #{stageId}
     WHERE RoomID = #{roomId} AND IdeaID = #{ideaId} AND UserID = #{userId}
 </update>
+
 <!-- 참여자 추가할 때 ideaId 조회 -->
 <select id="getTopIdeaIds" parameterType="int" resultType="int">
     SELECT DISTINCT IdeaID
@@ -339,4 +341,12 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 	SELECT count(*) from StageParticipation WHERE RoomID = #{param1} and StageID =2 and Status =1
 </select>
 
+<!-- 오른쪽 사이드바용 -->
+<select id="roomIdFormember" resultType="int">
+	SELECT UserID from MeetingRoomMembers WHERE RoomID = #{param1}
+</select>
+
+<select id="whosMember" resultType="com.kb.star.dto.UsersDto">
+	SELECT * from Users WHERE UserID = #{param1}
+</select>
 </mapper>
