@@ -109,10 +109,11 @@ public class IdeaRoomController {
 	            command.execute(model);
 	            return "redirect:/ideaOpinionsList";
 
-	        case 4:
-	            command = new StageThreeCommand(sqlSession);
-	            command.execute(model);
-	            return "firstMeeting/ideaOpinions2";
+	    	case 4:
+				command = new StageThreeCommand(sqlSession);
+				command.execute(model);
+				model.addAttribute("currentTab","smart");
+				return "redirect:/ideaOpinions2";
 
 	        case 5:
 	            command = new ReportView(sqlSession);

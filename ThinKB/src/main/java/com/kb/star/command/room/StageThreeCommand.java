@@ -50,9 +50,6 @@ public class StageThreeCommand implements RoomCommand {
 		model.addAttribute("meetingRoom", meetingRoom);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", (Integer) map.get("id"));
-		/*
-		 * int userId = (Integer) map.get("id"); System.out.println("userId :"+ userId);
-		 */
 		params.put("roomId", roomId);
 		params.put("ideaId", ideaId);
 

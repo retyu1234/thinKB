@@ -240,7 +240,6 @@ body {
 		</div>
 
 		<div class="ideas">
-
 			<c:choose>
 				<c:when test="${empty roomList}">
 					<div class="no-room">
