@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>아이디어 회의</title>
 <style>
-body {
+.ideaOpinions2-body {
     margin: 0;
     font-family: 'Arial', sans-serif;
     background-color: #FFFFFF;
@@ -18,6 +18,9 @@ body {
     margin: 0 auto;
     box-sizing: border-box;
     padding: 20px;
+    /* 수지 */
+   /*  display: flex; */
+    /* align-items: center; */
 }
 
 /* 제목 */
@@ -65,8 +68,6 @@ body {
     width: 80%; /* 선택된 탭의 밑줄 길이 줄이기 */
     margin: 0 auto; /* 가운데 정렬 */
 }
-    
-    
     
     
     .columns {
@@ -328,9 +329,9 @@ function confirmNextStep() {
 </script>
 </head>
 <body>
+<div class="ideaOpinions2-body">
 <%@ include file="../header.jsp"%>
-<c:if test="${userId == meetingRoom.roomManagerId}">
-<%@ include file="../sideBar.jsp"%></c:if>
+<%@ include file="../leftSideBar.jsp"%>
 
     	<!-- 타이머 -->
 	    <div id="timer-section" style="margin-top:100px;">
@@ -470,5 +471,6 @@ function confirmNextStep() {
 			</div>
 		    </div>
 		</div>
+</div>
 </body>
 </html>

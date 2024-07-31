@@ -1,5 +1,7 @@
 package com.kb.star.command.room;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.NotiDto;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
 
@@ -90,6 +93,23 @@ public class IdeaOpinionsCommand implements RoomCommand {
 
 		model.addAttribute("opinionForm", new IdeaOpinionsDto());
 		model.addAttribute("userOpinions", ideaOpinionsDao.getUserCommentedTabs(userId, ideaId));
+
+		// leftSideBar.jsp 출력용
+		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
+		model.addAttribute("meetingRoom", meetingRoom);
+
+		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
+		List<Ideas> dto = dao.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", dto);
+		System.out.println("아이디어 오피니언 커맨드" + dto);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("roomId", roomId);
+		params.put("ideaId", ideaId);
+
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+		model.addAttribute("roomMessage", roomMessage);
+		// 여기까지 leftSideBar 출력용
 
 	}
 }

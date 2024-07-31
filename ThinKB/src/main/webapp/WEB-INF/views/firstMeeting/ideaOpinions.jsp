@@ -12,7 +12,7 @@
 <style>
 body {
 	display: flex;
-	flex-direction: column;
+/* 	flex-direction: column; */
 	align-items: center;
 	background-color: #f0f0f0;
 	margin: 0;
@@ -360,8 +360,7 @@ button:hover {
 </head>
 <body>
 <%@ include file="../header.jsp"%>
-<c:if test="${userId == meetingRoom.roomManagerId}">
-<%@ include file="../sideBar.jsp"%></c:if>
+<%@ include file="../leftSideBar.jsp"%>
 
     <div class="container">
 	    <!-- 타이머 -->
