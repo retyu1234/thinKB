@@ -43,8 +43,6 @@ public interface IdeaOpinionsDao {
     
     // 2개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
     void updateStatus(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId, @Param("status") boolean status);
-    // 2개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1 / -1
-    void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId, @Param("status") boolean status);
     
     // 타이머
     String getEndTime(@Param("roomId") int roomId, @Param("ideaId") int ideaId);
@@ -60,7 +58,10 @@ public interface IdeaOpinionsDao {
     
     
     // 다음단계
-	// Timer 시간 새로 insert 해주기
+    // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
+    void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
+	
+    // Timer 시간 새로 insert 해주기
 	void updateNewTimer(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("formattedTime") String formattedTime);
     
     // MeetingRooms에서 stage 4로 변경
@@ -99,25 +100,22 @@ public interface IdeaOpinionsDao {
     int getUserOpinionCount2(@Param("userId") int userId, @Param("ideaId") int ideaId);
     // 1개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
     void updateStatus2(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId, @Param("status") boolean status);
-    // 2개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1 / -1
-    void updateContribution2(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId, @Param("status") boolean status);
+    // 1개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1
+    void updateContribution2(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
     // 사용자별 특정 탭에 이미 작성한 의견이 있는지 확인하는 메서드(중복작성방지)
     int countUserOpinionsInTab(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("hatColor") String hatColor);
     
-    // 좋아요 수 증가
-    void increaseLikeNum(@Param("opinionId") int opinionId);
-    // 좋아요 수 감소
-    void decreaseLikeNum(@Param("opinionId") int opinionId);
-    // 현재 좋아요 수 가져오기
-    int getLikeNum(@Param("opinionId") int opinionId);
-    // 좋아요 수만큼 MeetingRoomMembers테이블의 기여도 증가
-    void updateContributionLikeNum(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId, @Param("status") boolean status);
+    // 좋아요
     // 사용자가 특정 의견에 좋아요를 눌렀는지 확인
     boolean checkUserLikedOpinion(@Param("userId") int userId, @Param("opinionId") int opinionId);
     // 좋아요 추가
     void addUserLike(@Param("userId") int userId, @Param("opinionId") int opinionId);
     // 좋아요 제거
     void removeUserLike(@Param("userId") int userId, @Param("opinionId") int opinionId);
+    // 좋아요 수 증가
+    void increaseLikeNum(@Param("opinionId") int opinionId);
+    // 좋아요 수 감소
+    void decreaseLikeNum(@Param("opinionId") int opinionId);
     
     
     // 방장전용 - stage4 완료자 수 
@@ -125,6 +123,11 @@ public interface IdeaOpinionsDao {
     
     
     // 다음단계
+    // 좋아요 수 가져오기(특정 사용자/roomId기준)
+    int getLikeNum(@Param("userId") int userId, @Param("roomId") int roomId);
+    // 좋아요 수만큼 MeetingRoomMembers테이블의 기여도 증가
+    void updateContributionLikeNum(@Param("roomId") int roomId);
+    
     // MeetingRooms에서 stage 5로 변경
     void updateStage5(@Param("roomId") int roomId);
     
