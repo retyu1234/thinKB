@@ -13,18 +13,17 @@ body, html {
 	font-family: Arial, sans-serif;
 }
 
-.header {
+.room1-header {
 	position: relative;
 	z-index: 1;
 }
 
 .room1-content {
-	padding: 20px;
-	margin-left: 17%;
-	margin-right: 17%;
-	position: relative;
-	z-index: 2;
-	margin-top: 80px;
+    padding: 20px;
+    margin-left: 17%; /* 또는 더 작은 값 */
+    margin-right: 17%;
+    z-index: 2;
+    margin-top: 80px;
 }
 
 .room1-title {
@@ -195,7 +194,7 @@ input.room1-subject:focus {
 		responseText.innerText = "api써서 받아온 응답이 보여집니다.";
 	}
 
-	function submitForm() {
+	function submitIdeaForm() {
 	    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
 	    var ideaDetail = document.querySelector('input[name="ideaDetail"]').value.trim();
 	    var hasExistingIdea = ${result == true};
@@ -349,20 +348,15 @@ input.room1-subject:focus {
 </script>
 <body>
 <!-- 헤더영역 -->
-	<header class="header">
+	<header class="room1-header">
 		<%@ include file="../header.jsp"%>
 	</header>
-
-<!-- 방장 sideBar -->
-	<c:if test="${userId == meetingRoom.getRoomManagerId() }">
-
-		<%@ include file="../sideBar.jsp"%>
-	</c:if>
-
+ 	<%-- <%@ include file="../leftSideBar.jsp"%> --%>
 <!-- 컨텐츠 영역 시작 -->	
 	<div class="room1-content">
 	
 	<!-- 사이드바 import -->
+
 	<%@ include file="../rightSideBar.jsp"%>
 	
 	<!-- 5개 단계 표시 -->
@@ -443,12 +437,12 @@ input.room1-subject:focus {
 
 		<form id="ideaForm" action="./submitIdea" method="post">
 			<input type="hidden" name="roomId" value="${info.getRoomId()}">
-			<input type="hidden" name="stage" value="${stage}"> <input
-				type="hidden" id="myIdeaHidden" name="myIdea"> <input
-				type="hidden" id="ideaDetailHidden" name="ideaDetail">
+			<input type="hidden" name="stage" value="${stage}">
+			<input type="hidden" id="myIdeaHidden" name="myIdea">
+			<input type="hidden" id="ideaDetailHidden" name="ideaDetail">
 
-				<button type="button" id="submitButton" class="yellow-button"
-					onclick="submitForm()">아이디어 제출하기</button>
+			<button type="button" id="submitButton" class="yellow-button"
+					onclick="submitIdeaForm()">아이디어 제출하기</button>
 
 		</form>
 
