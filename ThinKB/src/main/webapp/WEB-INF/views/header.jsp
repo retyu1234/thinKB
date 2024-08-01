@@ -11,7 +11,6 @@
     <title>Home</title>
 <style>
 .header-container {
-	position: fixed;
 	top: 0;
 	left: 0;
 	z-index: 1000;
@@ -37,6 +36,9 @@
 	display: flex;
 	align-items: center;
 	padding: 10px 30px;
+	width:100%;
+	height:auto;
+	background-color:#ffffff;
 	z-index: 1000;
 }
 
@@ -81,6 +83,25 @@
 	cursor: pointer;
 	margin-left: 20px;
 }
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 4%;
+            right: 4%;
+            background-color: #ffcc00;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none; /* 기본적으로 숨기기 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        #scrollToTopBtn:hover {
+            background-color: #D4AA00;
+        }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -319,7 +340,20 @@
         });
         // 주기적 업데이트 (3초마다)
         setInterval(updateNotifications, 3000);
+        // 스크롤 이벤트 리스너 추가
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 100) {
+                $("#scrollToTopBtn").fadeIn();
+            } else {
+                $("#scrollToTopBtn").fadeOut();
+            }
+        });
 
+        // 위로 가기 버튼 클릭 이벤트 리스너 추가
+        $("#scrollToTopBtn").click(function() {
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            return false;
+        });
     });
 </script>
 </head>
@@ -377,6 +411,7 @@
             <p id="modalMessage"></p>
         </div>
     </div>
+    <button id="scrollToTopBtn">▲</button>
 </body>
 
 </html>
