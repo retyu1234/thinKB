@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1차 의견</title>
+<title>아이디어 회의</title>
 <style>
 .ideaOpinions-body {
     margin: 0;
@@ -43,46 +43,55 @@
 	margin-bottom: 100px;
 }
 /* 말풍선*/
-/* .speechBubble {
-    background-color: #FFE297; 
-    border-radius: 30px; 
+.speechBubble {
+    background-color: #e0f7fa; /* 말풍선 배경 색상 */
+    border-radius: 30px; /* 둥근 네모 모양 */
     padding: 20px;
     display: inline-block;
     position: relative;
-    width: 40%;
-    height: 20px;
+    width: 60%;
+    height: 150px;
     max-width: 60%;
-    margin: 0px 0px 50px 80px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px 0px 50px 60px; /* 위쪽, 오른쪽, 아래쪽, 왼쪽 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
 }
 /* 말풍선 - 화살표 */
 .speechBubble::after {
     content: '';
     position: absolute;
-    bottom: -25px; 
-    right: 25px; 
+    bottom: -25px; /* 화살표를 아래에 위치 */
+    right: 25px; /* 화살표를 오른쪽 라인에 위치 */
     width: 0;
     height: 0;
     border-left: 50px solid transparent;
     border-right: -10px solid transparent;
-    border-top: 25px solid #FFE297; 
-} */
-
-
-/* 탭 설명 */
-.tabExplain {
+    border-top: 25px solid #e0f7fa; /* 말풍선 배경 색상과 일치 */
+}
+/* 캐릭터 이름 */
+.characterName {
+    font-size: 22pt;
+    margin-bottom: 20px;
+    color : blue;
+}
+/* 캐릭터 설명 */
+.characterExplain {
     font-size: 15pt;
-    margin-bottom: 100px;
+}
+/* 캐릭터 이미지 */
+.character-img-container {
+    float: right;
+    font-size: 16px;
+}
+.character-img {
+    width: 250px; /* 이미지 크기 조정 */
+    height: 250px;
+    vertical-align: middle;
+	margin-right: 150px;
 }
 
 /* 추가 작성 의견수, 작성된 전체 의견 갯수, 최대 작성 가능, 추가 가능 */
-.opinion-counts {
-    font-size: 15pt;
-    float: right;
-    width: auto;
-    margin-bottom: 10px;
-    margin-right: 100px;
-    text-align: right; /* 텍스트를 오른쪽으로 정렬 */
+.counts {
+	font-size: 15pt;
 }
 
 h1 {
@@ -129,7 +138,7 @@ h1 {
 /* 선택된 탭 */
 .tab.active {
     color: black; /* 선택된 탭의 글자색 */
-    border-bottom: 5px solid #007bff; /* 선택된 탭의 밑줄 색상 */
+    border-bottom: 6px solid #FFE297; /* 선택된 탭의 밑줄 색상 */
     width: 80%; /* 선택된 탭의 밑줄 길이 줄이기 */
     margin: 0 auto; /* 가운데 정렬 */
 }
@@ -137,6 +146,9 @@ h1 {
 /* 전체 흰색 네모 */
 .tab-content {
 	display: none;
+	padding: 20px;
+	box-sizing: border-box;
+	background-color: #fff;
 }
 .tab-content.active {
 	display: block;
@@ -153,112 +165,25 @@ h1 {
 	flex-direction: column;
 } */
 
-/* 달린 의견 박스 */
 .opinion-entry {
 	/* background-color: #FFE297; */
 	background-color: #EEEEEE;
 	padding: 20px;
 	border-radius: 20px;
-	width: 85%;
-	margin: 0 auto; /* 가운데 정렬 */
 	margin-bottom: 10px;
 	font-size: 22px;
 	position: relative; /* 삭제 버튼 위치를 절대 위치로 설정하기 위해 상대 위치로 설정 */
 }
-/* 의견들 */
-.name-date {
-    display: flex;
-    align-items: center;
-}
-.name {
-    margin-right: 10px;
-    font-size: 22pt;
-    font-weight: bold;
-}
-.date {
-    font-size: 15pt;
-    color: #777;
-    margin-top: 10px;
-    margin-left: 30px;
-}
-.opinion-text {
-    margin: 10px 0;
-} 
-.delete-button {
-    background-color: #EEEEEE;
-    color: #777 !important;
-    text-align: left; /* 좌측 정렬 */
-    border: none;
-    cursor: pointer; 
-    font-weight: bold;
-    font-weight: bold;
-    
-}
 
-/* 등록된 의견이 없을 때 */
-.no-opinions {
-	color: #ccc; /* 연한 회색 */
-	font-style: italic; /* 기울임꼴로 표시 */
-	text-align: center;
-	margin-top: 20px;
-	margin-bottom: 100px;
-	font-size: 25px;
-}
-.no-opinions img {
-	margin-bottom: 20px; /* 이미지 아래 여백 */
-}
 
-/* 폼을 가운데 정렬 */
-.input-form {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 85%; /* opinion-entry와 동일한 너비 */
-    margin: 0 auto; /* 가운데 정렬 */
-}
-/* 의견을 입력해주세요란 */
-.opinion-textarea {
-	width: calc(100% - 110px); /* 버튼 너비(100px)와 여백(10px)을 고려한 너비 */
-    height: 70px;
-	margin-right: 10px;
-	/* border: 2px solid #ccc; */ /* 두께를 두껍게 조정 */
-	border: 4px solid #ffc107;
-	padding: 12px; /* 패딩을 더 두껍게 조정 */
-	border-radius: 5px;
-	box-sizing: border-box; /* 패딩 포함한 크기 조정 */
-	font-weight: bold; /* 텍스트 두께를 두껍게 조정 */
-	font-size: 15pt; /* 텍스트 크기를 키움 */
-	box-shadow: 0 0 5px rgba(255, 193, 7, 0.5); 
-} 
-/* .opinion-textarea:focus {
-    outline: none; 
-    border: 4px solid #ffc107; 
-} */
-/* 작성 버튼 */
-.btn-write {
-	width: 100px;
-    height: 70px;
-    border: none;
-    background-color: #ffc107;
-    color: #000;
-    font-weight: bold;
-    padding: 0 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 15pt; /* 텍스트 크기를 키움 */
-    transition: background-color 0.3s ease;
-}
-.btn-write:hover {
-	background-color: #e0a800;
-}
+
+
 
 
 
 .opinion-list {
-	clear: both;
-    list-style: none;
-    padding: 0;
-    margin: 0;
+	list-style-type: none;
+	padding: 0;
 }
 
 .opinion-list li {
@@ -274,6 +199,67 @@ h1 {
 	flex-wrap: nowrap; /* 요소들이 한 줄에 유지되도록 설정 */
 }
 
+.opinion-textarea {
+	width: calc(100% - 120px); /* 너비를 버튼 크기에 맞게 조정 */
+	height: 50px; /* 높이를 버튼과 맞춤 */
+	margin-right: 10px;
+	border: 2px solid #ccc; /* 두께를 두껍게 조정 */
+	padding: 12px; /* 패딩을 더 두껍게 조정 */
+	border-radius: 5px;
+	box-sizing: border-box; /* 패딩 포함한 크기 조정 */
+	font-weight: bold; /* 텍스트 두께를 두껍게 조정 */
+	font-size: 16px; /* 텍스트 크기를 키움 */
+}
+
+button {
+	width: 100px; /* 버튼의 너비 고정 */
+	height: 50px; /* 높이를 입력란과 맞춤 */
+	border: none;
+	background-color: #ffc107;
+	color: #000;
+	font-weight: bold;
+	padding: 0 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+button:hover {
+	background-color: #e0a800;
+}
+
+
+
+
+.opinion-text {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.delete-button {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.date {
+	font-size: 12px;
+	color: #777;
+	margin-top: 5px;
+}
+/* 등록된 의견이 없을 때 */
+.no-opinions {
+	color: #ccc; /* 연한 회색 */
+	font-style: italic; /* 기울임꼴로 표시 */
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 100px;
+	font-size: 25px;
+}
+
+.no-opinions img {
+	margin-bottom: 20px; /* 이미지 아래 여백 */
+}
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -307,7 +293,7 @@ h1 {
         
         window.onload = function() {
             var urlParams = new URLSearchParams(window.location.search);
-            var currentTab = urlParams.get('currentTab')
+            var currentTab = urlParams.get('currentTab');
             var roomId = urlParams.get('roomId');
             var ideaId = urlParams.get('ideaId');
             if (currentTab && roomId && ideaId) {
@@ -433,14 +419,16 @@ h1 {
     
 </script>
 </head>
-<%@ include file="../leftSideBar.jsp"%>
-<body >
+<body class="ideaOpinions-body">
 <%@ include file="../header.jsp"%>
-<%@ include file="../rightSideBar.jsp"%>
+<%-- <%@ include file="../leftSideBar.jsp"%> --%>
 
-<div class="ideaOpinions-body">
     <div class="container">
-
+	    <!-- 타이머 -->
+	    <div id="timer-section" style="margin-top:100px;">
+	    	<%@ include file="../Timer.jsp"%>
+	    </div>
+	    
 	    <!-- 방장이면 표시 -->
 	    <c:if test="${userId == roomManagerId}">
 		    <button id="nextStepButton" onclick="confirmNextStep()">다음 단계로</button>
@@ -455,28 +443,37 @@ h1 {
        
         <!-- 4가지 탭 -->
         <div class="tabs">
-            <div class="tab tab-smart active" onclick="showTab('tab-smart', '#007bff', '${roomId}', '${ideaId}')">객관적 관점</div>
-            <div class="tab tab-positive" onclick="showTab('tab-positive', '#ffc107', '${roomId}', '${ideaId}')">기대효과</div>
-            <div class="tab tab-worry" onclick="showTab('tab-worry', '#28a745', '${roomId}', '${ideaId}')">문제점</div>
-            <div class="tab tab-strict" onclick="showTab('tab-strict', '#dc3545', '${roomId}', '${ideaId}')">실현가능성</div>
+            <div class="tab tab-smart" onclick="showTab('tab-smart', '#007bff', '${roomId}', '${ideaId}')">똑똑이</div>
+            <div class="tab tab-positive" onclick="showTab('tab-positive', '#ffc107', '${roomId}', '${ideaId}')">긍정이</div>
+            <div class="tab tab-worry" onclick="showTab('tab-worry', '#28a745', '${roomId}', '${ideaId}')">걱정이</div>
+            <div class="tab tab-strict" onclick="showTab('tab-strict', '#dc3545', '${roomId}', '${ideaId}')">깐깐이</div>
         </div>
 
         <div class="opinion-section">
 			<div id="tab-smart" class="tab-content active">
 				<h2>
 					<div class="speechBubble">
-						<div class="tabExplain" style="margin-left: 100px;">
-							ㄴ 현황, 관련 데이터 등 객관적인 관점을 작성해주세요.
+						<div class="characterName">
+						나는 똑똑이 !
+						</div>
+						<div class="characterExplain">
+						나는 정말 똑똑한 똑똑이야 ~
+						똑똑한 사람만 댓글 달아 ~
 						</div>
 					</div>
-<%-- 					<div class="counts"> 
-						내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br> 
-						현재 탭의 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
-					</div> --%>
-					<span class="opinion-counts"> 
-						내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br> 
-						현재 탭의 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
+					<span class="character-img-container">
+						<img src="./resources/smart.png" class="character-img">
 					</span>
+					 
+					<div class="counts"> 
+						내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br> 
+						현재 탭의 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
+					</div>
+					<%-- <span style="float: middle; font-size: 16px;"> 
+						내가 추가로 달 수 있는 의견 수: ${2-userOpinionCount}/2 <br> 
+						현재 탭에 전체 의견 갯수: ${positiveOpinionCount} / 최대 작성 가능: ${maxComments} / 추가 가능: ${maxComments - smartOpinionCount}
+					</span> --%>
+					
 				</h2>
 				<ul class="opinion-list">
 					<c:choose>
@@ -489,17 +486,16 @@ h1 {
 						</c:when>
 						<c:otherwise>
 							<c:forEach var="opinion" items="${smartOpinions}">
-								<li class="opinion-entry">
-								<div class="name-date">
-	                                <span class="name">${opinion.userName}</span>
-	                                <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-                                </div>
-                                <div class="opinion-text">${opinion.opinionText}</div>
-								<c:if test="${opinion.userID == userId}">
-									<button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-smart')">삭제</button>
-								</c:if>
-								</li>
-  
+								<li class="opinion-entry"><span class="opinion-text">${opinion.userName}:
+										${opinion.opinionText}</span> <c:if
+										test="${opinion.userID == userId}">
+										<button class="delete-button"
+											onclick="deleteOpinion(${opinion.opinionID}, 'tab-smart')">삭제</button>
+									</c:if>
+									<div class="date">
+										<fmt:formatDate value="${opinion.createdAt}"
+											pattern="yyyy-MM-dd HH:mm" />
+									</div></li>
 							</c:forEach>
 						</c:otherwise>
 					</c:choose>
@@ -509,21 +505,24 @@ h1 {
 						<div class="error-message">${error}</div>
 					</c:if>
 
+					<!-- <div id="tab-smart" class="tab-content active"> -->
 					<c:if test="${2 - userOpinionCount > 0}">
 						<form:form method="post" action="./addOpinion"
 							modelAttribute="opinionForm"
 							onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})"
-							class="input-form">
+							style="display: flex; align-items: center; width: 100%;">
 							<form:hidden path="hatColor" value="Smart" />
 							<form:hidden path="currentTab" value="tab-smart" />
 							<form:hidden path="roomId" value="${roomId}" />
 							<form:hidden path="ideaId" value="${ideaId}" />
 							<form:textarea path="opinionText" class="opinion-textarea"
 								placeholder="의견을 입력해주세요" />
-							<button type="button" class="btn-write"
+							<button type="button"
 								onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})">작성</button>
 						</form:form>
+
 					</c:if>
+					<!-- </div> -->
 					<c:if test="${2 - userOpinionCount == 0}">
 						<div>필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
 					</c:if>
@@ -582,7 +581,7 @@ h1 {
 							<form:hidden path="ideaId" value="${ideaId}" />
 							<form:textarea path="opinionText" class="opinion-textarea"
 								placeholder="의견을 입력해주세요" />
-							<button type="button" class="btn-write"
+							<button type="button"
 								onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount}, ${userOpinionCount})">작성</button>
 						</form:form>
 					</c:if>
@@ -645,7 +644,7 @@ h1 {
 							<form:hidden path="ideaId" value="${ideaId}" />
 							<form:textarea path="opinionText" class="opinion-textarea"
 								placeholder="의견을 입력해주세요" />
-							<button type="button" class="btn-write"
+							<button type="button"
 								onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount}, ${userOpinionCount})">작성</button>
 						</form:form>
 					</c:if>
@@ -708,7 +707,7 @@ h1 {
 							<form:hidden path="ideaId" value="${ideaId}" />
 							<form:textarea path="opinionText" class="opinion-textarea"
 								placeholder="의견을 입력해주세요" />
-							<button type="button" class="btn-write"
+							<button type="button"
 								onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount}, ${userOpinionCount})">작성</button>
 						</form:form>
 					</c:if>
@@ -721,7 +720,6 @@ h1 {
 			</div>
 		</div>
 	</div>
-</div>
 </body>
 </html>
 
