@@ -8,13 +8,14 @@
 <title>Left Sidebar</title>
 <style>
 .LeftSideBar_body {
-	display: flex;
+	/* display: flex; */
 	margin: 10px;
 	padding: 0;
 	margin-top: 150px;
 }
 
 .leftSidebar {
+	position: fixed;
 	width: 15%;
 	background-color: #FFFFFF;
 	padding: 15px;
