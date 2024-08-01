@@ -490,7 +490,7 @@
 }
 .makeRoomImg {
 	width: 100%;
-	margin-top: 13%;
+	margin-top: 3%;
 	caret-color: transparent;
 	border:none;
 	cursor: pointer; /* 커서가 포인터로 변경 */
@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	<%@ include file="./header.jsp"%>
 	<div class="content">
 <div class="fade-in">
-    <img class="makeRoomImg" style="width: 100%; margin-top: 13%; caret-color: transparent;" onclick="location.href='./newIdeaRoom'"
+    <img class="makeRoomImg" style="width: 100%; margin-top: 6%; caret-color: transparent;" onclick="location.href='./newIdeaRoom'"
         src="<c:url value='/resources/mainBanner.png' />" alt="no Img" />
 </div>
 		<div class="section-wrapper fade-in">
@@ -780,19 +780,18 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 		</div>
-					<!-- 팝업창 추가 -->
+		<!-- 팝업창 추가 -->
 			<div class="popup-overlay">
-				<div class="popup">
-					<div class="delete">
-						<img src="./resources/delete.png" alt="Delete"
-							style="width: 40px; height: 40px;">
-					</div>
-					<img id="popup-image" src=""
-						style="display: none; width: 200px; height: 170px;">
-					<p class="popup-message"></p>
-					<button class="popup-dont-show">오늘 하루 보지 않기</button>
-					<button class="popup-close">닫기</button>
-				</div>
+			    <div class="popup">
+			    	<div class="delete">
+			    		<img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
+			    	</div>
+			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
+			        <p class="popup-message"></p>
+			        <div style="text-align: right; margin-bottom: 5px;"><a href="./noticeList">알림함 바로가기</a></div>
+			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
+			        <button class="popup-close">닫기</button>
+			    </div>
 			</div>
 	</div>
 <!-- Guide 섹션 추가 -->
