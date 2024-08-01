@@ -8,11 +8,11 @@
 <style>
 .reportList-body {
 	font-family: Arial, sans-serif;
-	background-color: #FFFFf1;
+	background-color: #FFFFff;
 }
 
 .container {
-	width: 80%;
+	width: 60%;
 	margin: 0 auto;
 	background-color: white;
 	padding: 20px;
@@ -165,9 +165,6 @@
 
 <body class="reportList-body">
 	<%@ include file="../header.jsp"%>
-	<div class="header1">
-		<img src="./resources/header2.jpg" alt="Header Image">
-	</div>
 	<div class="progress-header-container">
 		<h2 class="progress-header">진행중인 단계</h2>
 	</div>
@@ -185,14 +182,14 @@
 			<c:when test="${not empty reportList}">
 				<c:forEach var="report" items="${reportList}">
 					<div
-						class="idea ${report.stageId == 8 ? 'complete' : report.stageId == 7 ? 'draft' : ''}"
+						class="idea ${report.stageId == 6 ? 'complete' : report.stageId == 5 ? 'draft' : ''}"
 						onclick="handleIdeaClick('${report.stageId}', '${report.reportId}', '${report.roomId}')">
 						<div class="idea-left">
 							<h3>${report.reportTitle}</h3>
 							<br>
 						</div>
 						<div class="idea-right">
-							<p>${report.stageId == 8 ? '완료' : '작성중'}</p>
+							<p>${report.stageId == 6 ? '완료' : '작성중'}</p>
 						</div>
 					</div>
 				</c:forEach>

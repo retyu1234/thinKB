@@ -490,7 +490,7 @@
 }
 .makeRoomImg {
 	width: 100%;
-	margin-top: 13%;
+	margin-top: 3%;
 	caret-color: transparent;
 	border:none;
 	cursor: pointer; /* 커서가 포인터로 변경 */
@@ -654,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	<%@ include file="./header.jsp"%>
 	<div class="content">
 <div class="fade-in">
-    <img class="makeRoomImg" style="width: 100%; margin-top: 13%; caret-color: transparent;" onclick="location.href='./newIdeaRoom'"
+    <img class="makeRoomImg" style="width: 100%; margin-top: 6%; caret-color: transparent;" onclick="location.href='./newIdeaRoom'"
         src="<c:url value='/resources/mainBanner.png' />" alt="no Img" />
 </div>
 		<div class="section-wrapper fade-in">
