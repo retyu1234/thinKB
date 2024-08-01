@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="../header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -145,7 +144,7 @@ body {
 	margin-top: 20px;
 }
 
-.Mymodal {
+.modal {
 	display: none;
 	position: fixed;
 	z-index: 1000;
@@ -238,73 +237,66 @@ body {
 </style>
 </head>
 <body>
-	<div id="timer-section" style="margin-top: 100px;"><%@ include
-			file="../Timer.jsp"%></div>
 	<input type="hidden" id="session-user-id"
 		value="${sessionScope.userId}">
 	<input type="hidden" id="session-room-id"
 		value="${sessionScope.roomId}">
 
-	<div class="idea_header">
-		<jsp:include page="../header.jsp" />
-	</div>
-	<%@ include file="../leftSideBar.jsp"%>
-	<div class="content">
-		<c:if test="${not empty sessionScope.Message}">
-			<div class="alert">${sessionScope.Message}</div>
+	<c:if test="${not empty sessionScope.Message}">
+		<div class="alert">${sessionScope.Message}</div>
+	</c:if>
+	<!-- 방장인 경우에만 "다음 단계" 버튼을 표시 -->
+	<div class="vote-info-container">
+		<c:if test="${userId == meetingRoom.getRoomManagerId()}">
+			<div class="vote-info">
+				<h2>현재 투표 참여인원 : ${voteCnt}명 / ${total}명</h2>
+			</div>
+
+			<div class="next-step-container">
+				<form id="nextStageForm" action="./stage2Clear" method="post">
+					<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
+					<input type="hidden" name="stage" value="${meetingRoom.stageId}">
+					<button id="nextStepButton" class="vote-button"
+						onclick="goToNextStep()">다음 단계</button>
+				</form>
+			</div>
 		</c:if>
-		<!-- 방장인 경우에만 "다음 단계" 버튼을 표시 -->
-		<div class="vote-info-container">
-			<c:if test="${userId == meetingRoom.getRoomManagerId()}">
-				<div class="vote-info">
-					<h2>현재 투표 참여인원 : ${voteCnt}명 / ${total}명</h2>
-				</div>
+	</div>
 
-				<div class="next-step-container">
-					<form id="nextStageForm" action="./stage2Clear" method="post">
-						<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
-						<input type="hidden" name="stage" value="${meetingRoom.stageId}">
-						<button id="nextStepButton" class="vote-button"
-							onclick="goToNextStep()">다음 단계</button>
-					</form>
-				</div>
-			</c:if>
-		</div>
-
-		<div class="div">
-			<div class="selected-option">
-				<div class="topic-box"></div>
-				<div class="topic-title">
-					${meetingRoom.roomTitle} <input type="hidden" name="roomId"
-						value="${meetingRoom.roomId}">
-				</div>
-				<div class="wrapper">
-					<div class="topic-description">${meetingRoom.description}</div>
-				</div>
+	<div class="div">
+		<div class="selected-option">
+			<div class="topic-box"></div>
+			<div class="topic-title">
+				${meetingRoom.roomTitle} <input type="hidden" name="roomId"
+					value="${meetingRoom.roomId}">
 			</div>
-			<div class="idea-container">
-				<c:forEach var="idea" items="${ideas}">
-					<div class="idea-item">
-						<div
-							class="idea-circle <%-- ${votedIdeaId == idea.ideaID ? 'selected' : ''} --%>"
-							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'></div>
-						<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
-					</div>
-				</c:forEach>
+			<div class="wrapper">
+				<div class="topic-description">${meetingRoom.description}</div>
 			</div>
 		</div>
-		<button id="voteButton" class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+		<div class="idea-container">
+			<c:forEach var="idea" items="${ideas}">
+				<div class="idea-item">
+					<div
+						class="idea-circle <%-- ${votedIdeaId == idea.ideaID ? 'selected' : ''} --%>"
+						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'></div>
+					<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
+						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
+				</div>
+			</c:forEach>
+		</div>
+	</div>
+	<button id="voteButton" class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
 
-		<!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
-		<form id="nextStageForm" action="./stage2Clear" method="post">
-			<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
-			<input type="hidden" name="stage" value="${meetingRoom.stageId}">
-			<div style="text-align: right; margin-top: 20px;">
-				<button id="nextStepButton" class="vote-button"
-					style="display: none;" onclick="goToNextStep()">다음 단계</button>
-			</div>
-		</form>
+	<!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
+	<form id="nextStageForm" action="./stage2Clear" method="post">
+		<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
+		<input type="hidden" name="stage" value="${meetingRoom.stageId}">
+		<div style="text-align: right; margin-top: 20px;">
+			<button id="nextStepButton" class="vote-button"
+				style="display: none;" onclick="goToNextStep()">다음 단계</button>
+		</div>
+	</form>
 	</div>
 
 	<!-- Modal window -->
@@ -347,7 +339,7 @@ body {
 		</div>
 	</div>
 
-
+</body>
 	<script>
     let selectedIdea = null;
     let selectedIdeaId = null;
@@ -606,5 +598,4 @@ function goToNextStep() {
 }
 
 </script>
-</body>
 </html>
