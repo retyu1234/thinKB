@@ -323,14 +323,13 @@ public class IdeaOpinionsController {
 
 	// stage 5로 이동 = IdeaRoomController의 case 5 = (방장)보고서 작성화면/(사용자)요약보고서
 	@RequestMapping("/goStage5")
-	public String goStage5(@RequestParam("roomId") int roomId,
-		            	   HttpServletRequest request, HttpSession session, Model model) {
-		
+	public String goStage5(@RequestParam("roomId") int roomId, HttpServletRequest request,@RequestParam("stage") int stage,HttpSession session, Model model) {
+
 		Integer userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("userId", userId);
 		model.addAttribute("request", request);
 		model.addAttribute("roomId", roomId);
-		
+		model.addAttribute("stage", stage);
 		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
 		 // 모든 참가자의 기여도를 한 번에 업데이트
 	    ideaOpinionsDao.updateContributionLikeNum(roomId);

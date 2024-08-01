@@ -11,12 +11,11 @@
     <title>Home</title>
 <style>
 .header-container {
-	position: fixed;
 	top: 0;
-	left: 0; width : 100%;
+	left: 0;
 	z-index: 1000;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	width: 100%
+	width: 100%;
 }
 
 .header {
@@ -37,6 +36,9 @@
 	display: flex;
 	align-items: center;
 	padding: 10px 30px;
+	width:100%;
+	height:auto;
+	background-color:#ffffff;
 	z-index: 1000;
 }
 
@@ -45,8 +47,10 @@
 }
 
 .menu {
-	display: flex;
-	gap: 30px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 50px;
 }
 
 .menu a {
@@ -55,7 +59,12 @@
 	font-weight: bold;
 	margin: 0 10px;
 }
-
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    margin-right:7%;
+}
 .profile {
 	display: flex;
 	align-items: center;
@@ -74,6 +83,25 @@
 	cursor: pointer;
 	margin-left: 20px;
 }
+        #scrollToTopBtn {
+            position: fixed;
+            bottom: 4%;
+            right: 4%;
+            background-color: #ffcc00;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            display: none; /* 기본적으로 숨기기 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        #scrollToTopBtn:hover {
+            background-color: #D4AA00;
+        }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -312,7 +340,20 @@
         });
         // 주기적 업데이트 (3초마다)
         setInterval(updateNotifications, 3000);
+        // 스크롤 이벤트 리스너 추가
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 100) {
+                $("#scrollToTopBtn").fadeIn();
+            } else {
+                $("#scrollToTopBtn").fadeOut();
+            }
+        });
 
+        // 위로 가기 버튼 클릭 이벤트 리스너 추가
+        $("#scrollToTopBtn").click(function() {
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            return false;
+        });
     });
 </script>
 </head>
@@ -325,7 +366,6 @@
         <div class="header">
         
             <div class="menu">
-                <a href="./guide">사용가이드</a> 
                 <a href="./meetingList">회의방</a> 
                 <a href="./myReportList">내 보고서</a> 
                 <a href="./noticeList">알림함</a> 
@@ -333,6 +373,7 @@
                 <a href="./voteList">투표</a>
                 <a href="./pinList">핀메모(수정중)</a>
             </div>
+            <div class="right-section">
             <div class="profile">
             <a href="<c:url value='./mypage'/>">
                <c:choose>
@@ -358,7 +399,7 @@
                 </div>
             </div>
             <a href="<c:url value='/logout'/>"> <img src="<c:url value='/resources/logout.png'/>" alt="Logout Icon" class="logout-icon"> </a>
-        </div>
+        </div></div>
 </div>
     </header>
         <!-- 알림 상세 모달 -->
@@ -370,6 +411,7 @@
             <p id="modalMessage"></p>
         </div>
     </div>
+    <button id="scrollToTopBtn">▲</button>
 </body>
 
 </html>
