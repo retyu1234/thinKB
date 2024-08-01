@@ -145,7 +145,7 @@ body {
 	margin-top: 20px;
 }
 
-.modal {
+.Mymodal {
 	display: none;
 	position: fixed;
 	z-index: 1000;
