@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>아이디어 회의</title>
+<title>2차 의견</title>
 <style>
 .ideaOpinions2-body {
     margin: 0;
@@ -36,7 +36,7 @@
 /* 현재 단계 완료 참여자 수 */
 .countDone {
 	/* float: left;  */
-	font-size: 18pt;
+	font-size: 15pt;
 	margin-left: 50px;
 	margin-bottom: 100px;
 }
@@ -104,8 +104,9 @@
         margin-top: 20px;
         font-size: 20px;
     }
-    .opinion-entry {
-        background-color: #EEEEEE;
+    /* 기존 의견들 탭 */
+    .opinion-entry1 {
+        background-color: #EEEEEE; /* 연한회색 */
         padding: 10px;
         border-radius: 10px;
         margin-bottom: 10px;
@@ -113,6 +114,17 @@
         position: relative;
         text-align: left;
     }
+    /* 현재 의견들 탭 */
+    .opinion-entry2 {
+        background-color: #FFE297; /* 노란색 */
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        font-size: 20px;
+        position: relative;
+        text-align: left;
+    }
+    
     .opinion-header {
         display: flex;
         justify-content: space-between;
@@ -124,14 +136,16 @@
     }
     .name {
         margin-right: 10px;
+        font-size: 18pt;
         font-weight: bold;
     }
     .date {
-        font-size: 12px;
+        font-size: 12pt;
         color: #777;
     }
     .opinion-text {
         margin: 10px 0;
+        font-size: 15pt;
     }
     
     /* 좋아요 */
@@ -161,7 +175,7 @@
 
     
     .delete-button {
-        /* background-color: #dc3545; */
+        background-color: #FFE297;
         color: #777 !important;
         text-align: left; /* 좌측 정렬 */
         border: none;
@@ -372,7 +386,7 @@ function confirmNextStep() {
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="opinion" items="${previousOpinions}" varStatus="status">
-                                <li class="opinion-entry">
+                                <li class="opinion-entry1">
                                     <div class="opinion-header">
                                         <div class="name-date">
                                             <span class="name">${opinion.userName}</span>
@@ -400,7 +414,7 @@ function confirmNextStep() {
 		            </c:when>
 		            <c:otherwise>
 		                <c:forEach var="opinion" items="${currentOpinions}" varStatus="status">
-		                    <li class="opinion-entry">
+		                    <li class="opinion-entry2">
 		                        <div class="opinion-header">
                                     <div class="name-date">
                                         <span class="name">${opinion.userName}</span>
