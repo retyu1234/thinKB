@@ -9,7 +9,7 @@
 <title>thinKB - 회의방 만들기</title>
 <style>
 .content-banner {
-	margin-top: 150px; /* content 영역의 여백 설정 */
+	margin-top: 50px; /* content 영역의 여백 설정 */
 	margin-left: 15%;
 	margin-right: 15%;
 	margin-bottom: 30px;
@@ -22,7 +22,7 @@
 }
 
 .title {
-	font-size: 30px;
+	font-size: 18pt;
 	font-weight: bold;
 	color: black;
 	margin-top: 30px;
@@ -69,7 +69,7 @@
 }
 
 input.new-subject {
-	font-size: 15pt;
+	font-size: 13pt;
 	color: black;
 	border: 3px solid lightgrey;
 	border-radius: 10px;
@@ -349,7 +349,7 @@ body.modal-open {
 }
 .titleAndDetail-title {
 	margin: 0;
-	font-size: 22pt;
+	font-size: 18pt;
 	color: black;
 	font-weight: bold;
 }
@@ -371,7 +371,7 @@ body.modal-open {
 
 .userList-title {
     margin: 0;
-    font-size: 22pt;
+    font-size: 18pt;
     color: black;
     font-weight: bold;
     margin-right: 20px;
@@ -388,7 +388,7 @@ body.modal-open {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	font-size: 15pt;
+	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
 }
@@ -404,7 +404,7 @@ body.modal-open {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	font-size: 15pt;
+	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
 }

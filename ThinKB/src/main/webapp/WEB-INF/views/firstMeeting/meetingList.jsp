@@ -14,7 +14,7 @@ body {
 	padding: 20px;
 	margin-left: 17%;
 	margin-right: 17%;
-	margin-top: 150px;
+	/* margin-top: 150px; */
 }
 
 .container {
@@ -62,7 +62,7 @@ body {
 	height: 50px;
 	width: 80%;
 	border: 1px solid #ccc;
-	font-size: 1.3em;
+	font-size: 11pt;
 }
 
 .progress label {
@@ -84,7 +84,7 @@ body {
 .progress-header {
 	margin: 0;
 	padding: 10px 0;
-	font-size: 22pt;
+	font-size: 15pt;
 }
 
 /* <style> 태그 안에 다음 CSS를 추가하세요 */
@@ -137,7 +137,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	font-size: 1.2em;
+	font-size: 15px;
 	width: 80%;
 	cursor: pointer;
 	transition: box-shadow 0.3s ease, background-color 0.3s ease;
@@ -168,7 +168,7 @@ h2 {
 }
 
 .next-icon {
-	width: 15px;
+	width: 13px;
 	height: auto;
 	margin-left: 15px;
 	margin-right: 30px;
@@ -197,7 +197,7 @@ h2 {
 .idea h2 {
 	margin: 0 0 10px 0;
 	padding: 0;
-	font-size: 1.5em;
+	font-size: 15pt;
 	width: 100%;
 }
 
@@ -232,7 +232,7 @@ h2 {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	font-size: 15pt;
+	font-size: 9pt;
 	cursor: pointer;
 	font-weight: bold;
 }
@@ -248,9 +248,8 @@ h2 {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	font-size: 15pt;
+	font-size: 11pt;
 	cursor: pointer;
-	font-weight: bold;
 }
 
 .grey-button:hover {
