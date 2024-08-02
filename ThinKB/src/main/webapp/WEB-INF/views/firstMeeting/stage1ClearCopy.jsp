@@ -22,8 +22,8 @@ body, html {
 
 .room1-content {
 	padding: 20px;
-	margin-left: 17%;
-	margin-right: 17%;
+	margin-left: 20%;
+	margin-right: 20%;
 	z-index: 2;
 	/* margin-top: 120px; */
 }
@@ -292,7 +292,7 @@ body.reject-modal-open {
 
 		<!-- 5개 단계 표시 -->
 		<%
-		    String[] stages = {"아이디어 초안 제출하기", "좋은 초안에 투표하기", "다양한 관점 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
+		    String[] stages =  {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
 		    request.setAttribute("stages", stages);
 		%>
 		<div class="stages">
