@@ -423,7 +423,7 @@ body.modal-open {
 	
 <!-- 상단 배너영역 -->
 	<div class="content-banner">
-		<img src="<c:url value='./resources/newRoomBanner.png'/>" alt="Example Image" 
+		<img src="<c:url value='./resources/newRoomBanner.png'/>" alt="newRoomBanner" 
 		style="max-width: 100%; height: auto;">
 	</div>
 
