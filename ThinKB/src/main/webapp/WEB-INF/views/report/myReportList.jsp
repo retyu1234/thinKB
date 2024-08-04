@@ -10,7 +10,12 @@
 	font-family: Arial, sans-serif;
 	background-color: #FFFFff;
 }
-
+.content {
+	padding: 20px;
+	margin-left: 17%;
+	margin-right: 17%;
+	margin-top: 1%;
+}
 .container {
 	width: 60%;
 	margin: 0 auto;
@@ -19,16 +24,6 @@
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.header1 {
-	text-align: center;
-}
-
-.header1 img {
-	width: 100%;
-	height: auto;
-	max-height: 500px;
-	/* border-radius: 10px; */
-}
 
 .user-info p {
 	margin: 0;
@@ -165,6 +160,7 @@
 
 <body class="reportList-body">
 	<%@ include file="../header.jsp"%>
+	<div class="content">
 	<div class="progress-header-container">
 		<h2 class="progress-header">진행중인 단계</h2>
 	</div>
@@ -201,12 +197,12 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
-
+</div>
 	<script>
 		function handleIdeaClick(stageId, reportId, roomId) {
-		    if (stageId == 7) {
+		    if (stageId == 5) {
 		        window.location.href = '/editReport?reportId=' + reportId;
-		    } else if (stageId == 8) {
+		    } else if (stageId == 6) {
 		        // 다운로드 확인을 위한 alert
 		        var userConfirmed = window.confirm('보고서를 다운받으시겠습니까?');
 		        if (userConfirmed) {
@@ -285,4 +281,5 @@
 			filterIdeas();
 		});
 	</script>
+	</body>
 </html>

@@ -7,17 +7,14 @@
 <meta charset="UTF-8">
 <title>Left Sidebar</title>
 <style>
-.LeftSideBar_body {
-	display: flex;
-	margin: 10px;
-	padding: 0;
-	margin-top: 150px;
-}
-
 .leftSidebar {
+	position: fixed;
+	top: 180px; /* 나중에 수정 */
+	left: 0;
 	width: 15%;
-	background-color: #FFFFFF;
-	padding: 15px;
+	height: 100%;
+	padding: 20px;
+	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
 }
@@ -185,7 +182,7 @@
 </style>
 </head>
 
-<body class="LeftSideBar_body">
+<body>
 	<div class="leftSidebar">
 		<div class="section section1">${meetingRoom.roomTitle}</div>
 		<c:choose>
