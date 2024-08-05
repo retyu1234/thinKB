@@ -53,13 +53,13 @@ public class AddFunctionController {
 		model.addAttribute("userId", userId);
 		command = new ABTestList(sqlSession);
 		command.execute(model);
-		return "/addFunction/AorBList";
+		return "/addFunction/AorBListCopy";
 	}
 
 	// A/B테스트 생성 form
 	@RequestMapping("/makeAorB")
 	public String makeAorB() {
-		return "/addFunction/makeAorB";
+		return "/addFunction/makeAorBCopy";
 	}
 
 	// A/B 테스트를 생성 후 목록 페이지로 리다이렉트
