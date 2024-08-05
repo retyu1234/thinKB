@@ -25,7 +25,7 @@ public class MeetingRoomListCommand implements FirstMeetingCommand {
         int id = (Integer) map.get("id");
         int page = (Integer) map.get("page");
 
-        int pageSize = 10;
+        int pageSize = 8; // 10개에서 8개로 수정
         int start = (page - 1) * pageSize;
 
         // 진행중인 회의방 영역

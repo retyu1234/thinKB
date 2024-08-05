@@ -181,7 +181,6 @@
 }
 </style>
 </head>
-
 <body class="LeftSideBar_body">
 	<div class="leftSidebar">
 		<div class="section section1">${meetingRoom.roomTitle}</div>
@@ -309,3 +308,4 @@
 		});
 	</script>
 </html>
+
