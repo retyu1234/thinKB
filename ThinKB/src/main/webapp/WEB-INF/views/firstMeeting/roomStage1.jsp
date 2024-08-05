@@ -11,6 +11,8 @@ body, html {
 	margin: 0;
 	padding: 0;
 	font-family: Arial, sans-serif;
+	overflow-x: hidden;
+    width: 100%;
 }
 
 .room1-header {
@@ -20,22 +22,22 @@ body, html {
 
 .room1-content {
     padding: 20px;
-    margin-left: 17%; /* 또는 더 작은 값 */
-    margin-right: 17%;
+    margin-left: 20%; /* 또는 더 작은 값 */
+    margin-right: 20%;
     z-index: 2;
-    margin-top: 80px;
+    /* margin-top: 10px; */
 }
 
 .room1-title {
-	font-size: 22pt;
+	font-size: 20pt;
 	color: black;
 	font-weight: bold;
-	margin-top: 50px;
+	/* margin-top: 50px; */
 	margin-bottom: 20px;
 }
 
 .room1-title-detail {
-	font-size: 18pt;
+	font-size: 15pt;
 }
 
 /* 노란색 버튼 */
@@ -45,7 +47,7 @@ body, html {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	font-size: 15pt;
+	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
 }
@@ -61,7 +63,7 @@ body, html {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	font-size: 15pt;
+	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
 }
@@ -91,7 +93,7 @@ body, html {
 }
 
 input.room1-subject {
-	font-size: 15pt;
+	font-size: 13pt;
 	color: black;
 	border: 3px solid lightgrey;
 	border-radius: 20px;
@@ -165,7 +167,7 @@ input.room1-subject:focus {
 }
 .titleAndDetail-title {
 	margin: 0;
-	font-size: 22pt;
+	font-size: 18pt;
 	color: black;
 	font-weight: bold;
 }
@@ -184,6 +186,12 @@ input.room1-subject:focus {
     margin: 0 10px; /* 버튼 사이에 20px 간격을 만듭니다 (좌우 각각 10px) */
 }
 
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
+
 </style>
 </head>
 <script>
@@ -194,7 +202,7 @@ input.room1-subject:focus {
 		responseText.innerText = "api써서 받아온 응답이 보여집니다.";
 	}
 
-	function submitIdeaForm() {
+	function submitIdeaForm1() {
 	    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
 	    var ideaDetail = document.querySelector('input[name="ideaDetail"]').value.trim();
 	    var hasExistingIdea = ${result == true};
@@ -224,7 +232,7 @@ input.room1-subject:focus {
 	    // 폼 제출
 	    document.getElementById('myIdeaHidden').value = myIdea;
 	    document.getElementById('ideaDetailHidden').value = ideaDetail;
-	    document.getElementById('ideaForm').submit();
+	    document.getElementById('ideaForm1').submit();
 	}
 
 	function updateForm() {
@@ -341,17 +349,17 @@ input.room1-subject:focus {
 	});
 	
 	<%
-	    String[] stages = {"아이디어 초안 제출하기", "좋은 초안에 투표하기", "다양한 관점 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
+	    String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
 	    request.setAttribute("stages", stages);
 	%>
 
 </script>
-<body>
+<body style="margin: 0;">
 <!-- 헤더영역 -->
 	<header class="room1-header">
 		<%@ include file="../header.jsp"%>
 	</header>
- 	<%-- <%@ include file="../leftSideBar.jsp"%> --%>
+ 	<%@ include file="../leftSideBar.jsp"%>
 <!-- 컨텐츠 영역 시작 -->	
 	<div class="room1-content">
 	
@@ -380,6 +388,8 @@ input.room1-subject:focus {
     <!-- 제목, 상세설명 -->
     <div class="room1-title">[${info.getRoomTitle()}]</div>
     <div class="room1-title-detail">${info.getDescription()}</div>
+    
+    <hr class="line">
 	
 	<div>
 	<!-- 방장만 보이는 다음단계 버튼 -->
@@ -425,36 +435,33 @@ input.room1-subject:focus {
 		</div>
 		<div id="kb-ai-response" class="kb-ai-response">
 			<img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot"
-				class="ai-image"> <span id="ai-response-text">KB ai의 응답
-				내용이 여기에 표시됩니다.</span>
+				class="ai-image"> <span id="ai-response-text">KB ai의 응답 내용이 여기에 표시됩니다.</span>
 		</div>
 
 	<!-- 맨 하단 버튼영역 -->
 	<div class="button-container">
-		<button class="grey-button" onclick="showResponse()">KB ai에게
-			물어보기</button>
+		<button class="grey-button" onclick="showResponse()">KB ai에게 물어보기</button>
 
 
-		<form id="ideaForm" action="./submitIdea" method="post">
+		<form id="ideaForm1" action="./submitIdea" method="post">
 			<input type="hidden" name="roomId" value="${info.getRoomId()}">
 			<input type="hidden" name="stage" value="${stage}">
 			<input type="hidden" id="myIdeaHidden" name="myIdea">
 			<input type="hidden" id="ideaDetailHidden" name="ideaDetail">
 
 			<button type="button" id="submitButton" class="yellow-button"
-					onclick="submitIdeaForm()">아이디어 제출하기</button>
+					onclick="submitIdeaForm1()">아이디어 제출하기</button>
 
 		</form>
 
 		<form id="updateForm" action="./updateIdea" method="post">
 			<input type="hidden" name="roomId" value="${info.getRoomId()}">
-			<input type="hidden" name="stage" value="${stage}"> <input
-				type="hidden" id="myIdeaHidden2" name="myIdea"> <input
-				type="hidden" id="ideaDetailHidden2" name="ideaDetail">
+			<input type="hidden" name="stage" value="${stage}">
+			<input type="hidden" id="myIdeaHidden2" name="myIdea">
+			<input type="hidden" id="ideaDetailHidden2" name="ideaDetail">
 
 				<button type="button" id="updateButton" class="yellow-button"
-					 onclick="updateForm()">아이디어
-					수정하기</button>
+					 onclick="updateForm()">아이디어 수정하기</button>
 
 		</form>
 </div>

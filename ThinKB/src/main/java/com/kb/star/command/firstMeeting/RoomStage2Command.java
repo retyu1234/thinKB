@@ -39,14 +39,12 @@ public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
 		// 아이디어 목록 가져오기
 		List<Ideas> ideas = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeas", roomId);
 		model.addAttribute("ideas", ideas);
-		System.out.println(ideas);
 
 		List<IdeaReplys> ideaReplys = sqlSession.selectList("com.kb.star.util.IdeaDao.selectIdeaReplys", roomId);
 		model.addAttribute("ideaReplys", ideaReplys);
 
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
 		model.addAttribute("meetingRoom", meetingRoom);
-		System.out.println("회의실 정보: " + meetingRoom);
 		// 투표 상태 확인
 		params.put("userId", userId);
 		params.put("stageId", 2);
@@ -63,7 +61,6 @@ public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
 		//여기까지 leftSideBar 출력용
 
 		Integer votedIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
-		System.out.println("뽑은 아이디어" + votedIdeaId);
 		model.addAttribute("votedIdeaId", votedIdeaId);
 		boolean hasVoted = votedIdeaId != null;
 		model.addAttribute("hasVoted", hasVoted);

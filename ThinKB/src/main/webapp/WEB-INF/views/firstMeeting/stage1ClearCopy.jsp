@@ -11,6 +11,8 @@ body, html {
 	margin: 0;
 	padding: 0;
 	font-family: Arial, sans-serif;
+	overflow-x: hidden;
+    width: 100%;
 }
 
 .stage1clear-header {
@@ -20,17 +22,17 @@ body, html {
 
 .room1-content {
 	padding: 20px;
-	margin-left: 17%;
-	margin-right: 17%;
+	margin-left: 20%;
+	margin-right: 20%;
 	z-index: 2;
-	margin-top: 120px;
+	/* margin-top: 120px; */
 }
 
 .room1-title {
-	font-size: 22pt;
+	font-size: 20pt;
 	color: black;
 	font-weight: bold;
-	margin-top: 50px;
+	margin-top: 10px;
 	margin-bottom: 20px;
 }
 
@@ -56,7 +58,7 @@ body, html {
 .idea-title {
 	font-weight: bold;
 	margin: 5px 20px 5px 20px;
-	font-size: 18pt;
+	font-size: 15pt;
 	text-align: left;
 }
 
@@ -144,7 +146,7 @@ select {
 
 .titleAndDetail-title {
 	margin: 0;
-	font-size: 22pt;
+	font-size: 18pt;
 	color: black;
 	font-weight: bold;
 }
@@ -172,7 +174,7 @@ select {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	font-size: 15pt;
+	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
 }
@@ -187,7 +189,7 @@ select {
 	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
-	font-size: 15pt;
+	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
 }
@@ -268,22 +270,29 @@ body.reject-modal-open {
     width: 100%; /* 부모 요소의 전체 너비 사용 */
     box-sizing: border-box; /* padding과 border를 width에 포함 */
 }
+
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
+
 </style>
 </head>
-<body>
+<body style="margin: 0;">
 	<!-- 헤더영역 -->
 	<header class="stage1clear-header">
 		<%@ include file="../header.jsp"%>
 	</header>
 
 	<!-- 왼쪽 sideBar -->
-	<%-- <%@ include file="../leftSideBar.jsp"%> --%>
+	<%@ include file="../leftSideBar.jsp"%>
 
 	<div class="room1-content">
 
 		<!-- 5개 단계 표시 -->
 		<%
-		    String[] stages = {"아이디어 초안 제출하기", "좋은 초안에 투표하기", "다양한 관점 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
+		    String[] stages =  {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
 		    request.setAttribute("stages", stages);
 		%>
 		<div class="stages">
@@ -313,6 +322,8 @@ body.reject-modal-open {
 			<button type="button" class="grey-button" style="margin-top: 10px;">
 			아이디어 다시 받기</button>
 		</div>
+		
+		<hr class="line">
 
 		<!-- 모달 -->
 		<div id="ideaModal" class="reject-modal">
@@ -322,9 +333,9 @@ body.reject-modal-open {
 					<span class="reject-close">&times;</span>
 				</div>
 				<div class="reject-modal-body reject-modal-specific-content">
-					<div class="room1-title">아이디어 목록</div>
+					<div class="room1-title" style="font-size: 18pt;">아이디어 목록</div>
 					<div style="text-align: center;">
-						<form id="ideaForm" action="./goReset" method="post">
+						<form id="ideaForm2" action="./goReset" method="post">
 							<input type="hidden" name="roomId" value="${roomId}">
 							<input type="hidden" name="stage" value="${stage}">
 							<c:forEach var="li" items="${ideaList}" varStatus="status">
@@ -370,7 +381,7 @@ body.reject-modal-open {
 		</div>
 
 		<!-- 아이디어 목록 -->
-		<div class="room1-title">아이디어 목록</div>
+		<div class="room1-title" style="font-size: 18pt; margin-top: 30px;">아이디어 목록</div>
 		<div style="text-align: center;">
 				<c:forEach var="li" items="${ideaList}" varStatus="status">
 					<div class="idea-box">
@@ -387,8 +398,7 @@ body.reject-modal-open {
 
 			<div class="titleAndDetail" style="margin-top: 80px;">
 				<div class="titleAndDetail-title">아이디어 투표 진행시 타이머 설정</div>
-				<div class="titleAndDetail-detail">현재까지 제출된 아이디어를 바탕으로 투표를
-					진행하는 경우, 투표를 할 수 있는 시간을 정해주세요.</div>
+				<div class="titleAndDetail-detail">상단의 아이디어를 바탕으로 투표를 진행 시 투표 가능 시간을 정해주세요.</div>
 			</div>
 			<form action="./goStage2" id="goStageForm" method="post">
 				<input type="hidden" name="roomId" value="${roomId}">
@@ -468,7 +478,7 @@ body.reject-modal-open {
 	  }
 	  
 	  if (allSelected && timerInputted) {
-	    document.getElementById('ideaForm').submit();
+	    document.getElementById('ideaForm2').submit();
 	  } else {
 	    if (!allSelected) {
 	      alert('모든 아이디어에 대해 반려 사유를 선택해주세요.');

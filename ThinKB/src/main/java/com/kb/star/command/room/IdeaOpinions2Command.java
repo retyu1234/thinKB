@@ -129,7 +129,6 @@ public class IdeaOpinions2Command implements RoomCommand {
             ideaOpinionsDao.updateStatus2(userId, ideaId, roomId, false);
         }
         
-
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
 		model.addAttribute("meetingRoom", meetingRoom);

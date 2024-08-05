@@ -2,7 +2,9 @@ package com.kb.star.controller;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,9 @@ import com.kb.star.command.room.IdeaOpinionsClear2Command;
 import com.kb.star.command.room.IdeaOpinionsClearCommand;
 import com.kb.star.command.room.IdeaOpinionsCommand;
 import com.kb.star.dto.IdeaOpinionsDto;
+import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.NotiDto;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
 
@@ -94,7 +98,7 @@ public class IdeaOpinionsController {
     @RequestMapping("/addOpinion")
     public String addOpinion(@ModelAttribute IdeaOpinionsDto opinionForm, HttpSession session, 
                              @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId, Model model) {
-        Integer userId = (Integer) session.getAttribute("userId");
+    	Integer userId = (Integer) session.getAttribute("userId");
         opinionForm.setUserID(userId);
         opinionForm.setIdeaID(ideaId);  
         opinionForm.setCreatedAt(new Timestamp(new Date().getTime())); 
@@ -161,7 +165,7 @@ public class IdeaOpinionsController {
     // ideaOpinionsClear.jsp
     @RequestMapping("/ideaOpinionsClear")
     public String ideaOpinionsClear(HttpServletRequest request, Model model,
-						    		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId) {
+						    		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpSession session) {
     	
     	model.addAttribute("request", request);
     	model.addAttribute("roomId", roomId);
@@ -171,6 +175,23 @@ public class IdeaOpinionsController {
         RoomDao dao=sqlSession.getMapper(RoomDao.class);
         MeetingRooms info = dao.roomDetailInfo(roomId);
         model.addAttribute("meetingRoom", info);
+        
+    	// leftSideBar.jsp 출력용
+		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
+		List<Ideas> yesPickList = dao.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", yesPickList);
+
+		
+    	Integer userId = (Integer) session.getAttribute("userId");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("roomId", roomId);
+		params.put("ideaId", ideaId);
+
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+		model.addAttribute("roomMessage", roomMessage);
+		// 여기까지 leftSideBar 출력용
+        
     	
         return "/firstMeeting/ideaOpinionsClear";
     }
