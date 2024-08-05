@@ -30,7 +30,7 @@
 	font-family: Arial;
 	font-size: 15pt;
 	font-weight: bold;
-	text-align: center;
+	text-align: left;
 	padding: 5%;
 	box-sizing: border-box;
 }
@@ -51,7 +51,7 @@
 	font-size: 13pt;
 	font-weight: regular;
 	margin-bottom: 15px;
-	text-align: center;
+	text-align: left;
 	padding: 10px;
 	margin-left: -5px;
 }
@@ -62,7 +62,7 @@
 	font-family: Arial;
 	font-size: 13pt;
 	font-weight: regular;
-	text-align: center;
+	text-align: left;
 	padding: 5px;
 	margin-left: -5px;
 	cursor: pointer;

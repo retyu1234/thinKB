@@ -203,6 +203,8 @@ body {
 </head>
 
 <body>
+
+<!--헤더 영역 -->
 	<%@ include file="../header.jsp"%>
 	<div class="header1">
 		<img src="./resources/header2.jpg" alt="Header Image">

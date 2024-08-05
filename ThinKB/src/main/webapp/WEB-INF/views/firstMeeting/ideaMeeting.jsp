@@ -11,6 +11,16 @@ body {
 	font-family: 'Inter', sans-serif;
 	margin-top: 50px;
 	padding: 0;
+	margin-bottom: 100px;
+}
+
+.ideaMeeting-contents {
+	display: flex;
+	flex-direction: column;
+	margin-left: 20%;
+	margin-right: 20%;
+	/*  	justify-content: center;  */
+	height: 100vh; /* Ensure it takes the full viewport height */
 }
 
 .content {
@@ -27,36 +37,22 @@ body {
 	z-index: 1000;
 }
 
-.topic-box {
-	width: 962px;
-	height: 100%;
-	position: absolute;
-	margin: 0 !important;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
-		rgba(0, 0, 0, 0.25);
-	border-radius: var(- -br-31xl) 0 var(- -br-31xl) 0;
-	background-color: rgba(255, 255, 255, 0.36);
-	border: 1px solid #7f6000;
-	box-sizing: border-box;
+.ideaMeeting-topic-box {
+	margin-left: 3%;
+	margin-right: 3%;
 }
 
 .topic-title {
-	width: 50px;
-	position: relative;
-	font-weight: 600;
-	display: inline-block;
-	z-index: 1;
+	font-size: 18pt;
+	color: black;
+	font-weight: bold;
+	margin-top: 50px;
+	margin-bottom: 20px;
 }
 
 .topic-description {
-	flex: 1;
-	position: relative;
-	display: inline-block;
-	max-width: 100%;
-	z-index: 1;
+	font-size: 14pt;
+	margin-bottom: 70px;
 }
 
 .idea-container {
@@ -69,8 +65,6 @@ body {
 .modal-idea-container {
 	width: 100%;
 	height: 87px;
-	/* 	position: absolute;
-	margin: 0 !important; */
 	top: 0;
 	right: 0;
 	left: 0;
@@ -84,24 +78,35 @@ body {
 	display: flex;
 	align-items: center;
 	margin-top: 10px;
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-bottom: 1.5%
+	
 }
 
 .idea-circle {
-	width: 96px;
-	height: 96px;
+	width: 30px;
+	height: 30px;
 	border-radius: 50%;
-	background-color: #EEEEEE;
-	margin-right: 10px;
+	background-image: url('./resources/Uncheck.png');
+	background-size: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	margin-right: 30px;
 	cursor: pointer;
+	position: relative; /* Added for positioning the background image */
 }
 
 .idea-circle.selected {
-	background-color: #FFCE20;
+	background-image: url('./resources/Check.png');
+	background-size: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 .idea-box {
-	width: 849px;
-	height: 96px;
+	width: 100%;
+	height: 70px;
 	background-color: #EEEEEE;
 	border-radius: 10px;
 	display: flex;
@@ -109,16 +114,16 @@ body {
 	align-items: center;
 	font-size: 20px;
 	cursor: pointer;
+	position: relative;
+	height: 70px; /* Added for positioning the "투표됨" text */
 }
 
 .idea-box.selected {
 	align-self: stretch;
 	flex: 1;
 	position: relative;
-	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
-		rgba(0, 0, 0, 0.25);
 	border-radius: var(- -br-31xl);
-	background-color: #ffc000;
+	background-color: #EEEEEE;
 	max-width: 100%;
 }
 
@@ -126,22 +131,30 @@ body {
 	align-self: stretch;
 	flex: 1;
 	position: relative;
-	box-shadow: 0 5px 10px rgba(255, 255, 255, 0.25) inset, 0 4px 4px
-		rgba(0, 0, 0, 0.25);
 	border-radius: var(- -br-31xl);
-	background-color: #A9A9A9;
+	background-color: #FFE297;
 	max-width: 100%;
 }
 
+.idea-box.voted::after {
+	content: '투표됨';
+	position: absolute;
+	right: 40px;
+	color: #007AFF;
+	font-size: 16px;
+	font-weight: bold;
+}
+
 .vote-button {
-	width: 216px;
-	height: 53px;
+	width: 150px;
+	height: 40px;
 	background-color: #FFCE20;
 	border: none;
 	border-radius: 10px;
-	font-size: 20px;
+	font-size: 13px;
 	cursor: pointer;
-	margin-top: 20px;
+	margin-top: 40px;
+	font-weight: bold;
 }
 
 .modal {
@@ -217,22 +230,89 @@ body {
 	background-color: #EEEEEE;
 }
 
-.vote-info-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin: 0 auto; /* 중앙 정렬 */
-	padding: 0 15%; /* 좌우에 15%씩 패딩 추가 */
-	box-sizing: border-box; /* 패딩을 너비에 포함 */
-	margin-bottom: 10px;
+.next-step-container {
+	margin-right: 30px;
+	font-size: 13pt;
+}
+
+/* 노란색 버튼 */
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
 }
 
 .vote-info {
-	text-align: left;
+	margin-right: 30px;
+	font-size: 14pt;
 }
 
-.next-step-container {
-	text-align: right;
+/* 5단계 css 추가 */
+.stage-info {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-top: -50px;
+}
+
+.stages {
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 0;
+	font-size: 13pt;
+	margin-top: 50px;
+}
+
+.stage {
+	flex: 1;
+	text-align: center;
+	padding: 3px; /* 5px에서 3px로 줄임 */
+	margin: 0 2px; /* 좌우 여백 추가 */
+	cursor: pointer;
+	text-decoration: none;
+	color: #000;
+	white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
+	overflow: hidden; /* 넘치는 텍스트 숨김 */
+	text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+}
+
+.active {
+	color: #FFD700;
+	font-weight: bold;
+}
+
+.inactive {
+	color: #999;
+	pointer-events: none;
+}
+/* 배너 추가  */
+.ideaMeeting-banner {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+	margin-bottom: -50px;
+}
+
+.ideaMeeting-vote-container {
+	margin-top: 50px;
+	align-items: center;
+}
+
+.vote-button-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
 }
 </style>
 </head>
@@ -245,58 +325,93 @@ body {
 	<c:if test="${not empty sessionScope.Message}">
 		<div class="alert">${sessionScope.Message}</div>
 	</c:if>
-	<!-- 방장인 경우에만 "다음 단계" 버튼을 표시 -->
-	<div class="vote-info-container">
-		<c:if test="${userId == meetingRoom.getRoomManagerId()}">
-			<div class="vote-info">
-				<h2>현재 투표 참여인원 : ${voteCnt}명 / ${total}명</h2>
-			</div>
 
-			<div class="next-step-container">
-				<form id="nextStageForm" action="./stage2Clear" method="post">
-					<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
-					<input type="hidden" name="stage" value="${meetingRoom.stageId}">
-					<button id="nextStepButton" class="vote-button"
-						onclick="goToNextStep()">다음 단계</button>
-				</form>
-			</div>
-		</c:if>
+	<%
+	String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
+	request.setAttribute("stages", stages);
+	%>
+
+	<!-- 상단, 좌측, 우측 헤더 -->
+	<div class="ideaMeeting-header">
+		<header class="site-header">
+			<%@ include file="../header.jsp"%>
+		</header>
+		<div class="left-header">
+			<%@ include file="../leftSideBar.jsp"%>
+		</div>
+		<div class="right-header">
+			<%@ include file="../rightSideBar.jsp"%>
+		</div>
 	</div>
 
-	<div class="div">
-		<div class="selected-option">
-			<div class="topic-box"></div>
-			<div class="topic-title">
-				${meetingRoom.roomTitle} <input type="hidden" name="roomId"
-					value="${meetingRoom.roomId}">
-			</div>
-			<div class="wrapper">
-				<div class="topic-description">${meetingRoom.description}</div>
-			</div>
-		</div>
-		<div class="idea-container">
-			<c:forEach var="idea" items="${ideas}">
-				<div class="idea-item">
-					<div
-						class="idea-circle <%-- ${votedIdeaId == idea.ideaID ? 'selected' : ''} --%>"
-						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'></div>
-					<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-						onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
-				</div>
+	<!-- 메인 콘텐츠 -->
+	<div class="ideaMeeting-contents">
+
+		<!-- 5개 단계 표시 -->
+		<div class="stages">
+			<c:forEach var="stage" items="${stages}" varStatus="status">
+				<c:choose>
+					<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+						<a
+							href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}"
+							class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+							${status.index + 1}. ${stage} </a>
+					</c:when>
+					<c:otherwise>
+						<div class="stage inactive">${status.index + 1}.${stage}</div>
+					</c:otherwise>
+				</c:choose>
 			</c:forEach>
 		</div>
-	</div>
-	<button id="voteButton" class="vote-button" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
 
-	<!-- 타이머 끝났을때 방장만 보이는 다음단계 버튼 -->
-	<form id="nextStageForm" action="./stage2Clear" method="post">
-		<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
-		<input type="hidden" name="stage" value="${meetingRoom.stageId}">
-		<div style="text-align: right; margin-top: 20px;">
-			<button id="nextStepButton" class="vote-button"
-				style="display: none;" onclick="goToNextStep()">다음 단계</button>
+		<!-- 배너  -->
+		<div class="ideaMeeting-banner">
+			<img src="<c:url value='./resources/ideaMeetingBanner.png'/>"
+				alt="Example Image" style="min-width: 100%; height: auto;">
 		</div>
-	</form>
+
+
+		<!-- 투표 내용 -->
+		<div class="ideaMeeting-vote-container">
+			<!-- 회의 방 내용 -->
+			<div class="ideaMeeting-topic-box">
+				<div class="topic-title">
+					[${meetingRoom.roomTitle}] <input type="hidden" name="roomId"
+						value="${meetingRoom.roomId}">
+				</div>
+				<div class="topic-description">${meetingRoom.description}</div>
+			</div>
+
+			<!-- 방장만 보이는 다음단계 버튼 -->
+			<form id="nextStageForm" action="./stage2Clear" method="post">
+				<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
+				<input type="hidden" name="stage" value="${meetingRoom.stageId}">
+				<div class="stage-info" style="margin-bottom: 50px;">
+					<c:if test="${userId == meetingRoom.getRoomManagerId()}">
+						<div class="vote-info">현재 투표 참여인원 : ${voteCnt}명 / ${total}명</div>
+						<button id="nextStepButton" class="yellow-button"
+							onclick="goToNextStep()">다음 단계</button>
+					</c:if>
+				</div>
+			</form>
+			<div class="ideaMeeting-idea-container">
+				<c:forEach var="idea" items="${ideas}">
+					<div class="idea-item">
+						<div
+							class="idea-circle <%-- ${votedIdeaId == idea.ideaID ? 'selected' : ''} --%>"
+							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'></div>
+						<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
+							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'>${idea.title}</div>
+					</div>
+				</c:forEach>
+			</div>
+			<div class="vote-button-container">
+				<button id="voteButton" class="yellow-button"
+					style="margin-top: 50px;" onclick="submitVote()">
+					${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+			</div>
+
+		</div>
 	</div>
 
 	<!-- Modal window -->
@@ -338,8 +453,6 @@ body {
 			</div>
 		</div>
 	</div>
-
-</body>
 	<script>
     let selectedIdea = null;
     let selectedIdeaId = null;
@@ -591,11 +704,13 @@ body {
         document.getElementById("nextStepButton").style.display = "block";
     }
 	document.getElementById("voteButton").style.display = "none";
-}
+	}
 
-function goToNextStep() {
+	function goToNextStep() {
 	document.getElementById('nextStageForm').submit();
-}
+	}
+
 
 </script>
+</body>
 </html>
