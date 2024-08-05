@@ -10,7 +10,9 @@ import org.springframework.ui.Model;
 
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.UsersDto;
+import com.kb.star.util.NotiDao;
 import com.kb.star.util.RoomDao;
 
 public class ManagerIdeaListCommand implements RoomCommand {
@@ -52,6 +54,13 @@ public class ManagerIdeaListCommand implements RoomCommand {
 		
 		String timer = dao.roomTimerInfo(roomId); // 사이드바용 타이머
 		model.addAttribute("timer", timer);
+		
+		//왼쪽 사이드바 알림
+		int id = (Integer) map.get("id");
+		NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
+		List<NotiDto> roomMessage = notiDao.getMessagesByIdeaId(id, roomId, 0);
+		model.addAttribute("roomMessage", roomMessage);
+		
 	}
 
 }

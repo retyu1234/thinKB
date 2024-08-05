@@ -13,11 +13,15 @@
 	padding: 0;
 	margin-top: 150px;
 }
+
 .leftSidebar {
 	position: fixed;
+	top: 180px; /* 나중에 수정 */
+	left: 0;
 	width: 15%;
-	background-color: #FFFFFF;
-	padding: 15px;
+	height: 100%;
+	padding: 20px;
+	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
 }
@@ -279,5 +283,8 @@
 			});
 		});
 	</script>
+
+
 </body>
 </html>
+

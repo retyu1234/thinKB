@@ -44,7 +44,7 @@
     justify-content: center;
 }
 .timer-message {
-    font-size: 13pt;
+    font-size: 12pt;
     margin-left: 40px;
     font-weight: normal;
 }
