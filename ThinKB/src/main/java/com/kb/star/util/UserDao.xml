@@ -262,4 +262,43 @@
     ORDER BY 
         t.endTime ASC
 </select>
+
+    <select id="getUserContributions" resultMap="ContributionDetailMap">
+        SELECT 
+            mr.RoomID,
+            mr.RoomTitle,
+            mrm.ContributionCnt
+        FROM MeetingRooms mr
+        JOIN MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID
+        WHERE mrm.UserID = #{userId}
+          AND mr.IsDelete = 0
+          AND mrm.IsDelete = 0
+        ORDER BY mrm.ContributionCnt DESC
+    </select>
+    <select id="getMeetingRoomStats" resultMap="MeetingRoomStatsMap">
+    <![CDATA[
+    SELECT 
+        SUM(CASE WHEN mr.StageID < 6 THEN 1 ELSE 0 END) as ongoing_meetings,
+        SUM(CASE WHEN mr.StageID >= 6 THEN 1 ELSE 0 END) as completed_meetings,
+        COUNT(*) as total_meetings,
+        COALESCE(SUM(mrm.ContributionCnt), 0) as total_contribution
+    FROM MeetingRooms mr
+    JOIN MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID
+    WHERE mrm.UserID = #{userId}
+      AND mr.IsDelete = 0
+      AND mrm.IsDelete = 0
+    ]]>
+</select>
+        <resultMap id="MeetingRoomStatsMap" type="com.kb.star.dto.MeetingRoomStats">
+        <result property="ongoingMeetings" column="ongoing_meetings"/>
+        <result property="completedMeetings" column="completed_meetings"/>
+        <result property="totalMeetings" column="total_meetings"/>
+        <result property="totalContribution" column="total_contribution"/>
+    </resultMap>
+
+    <resultMap id="ContributionDetailMap" type="com.kb.star.dto.ContributionDetail">
+        <result property="roomId" column="RoomID"/>
+        <result property="roomTitle" column="RoomTitle"/>
+        <result property="contribution" column="ContributionCnt"/>
+    </resultMap>
 </mapper>

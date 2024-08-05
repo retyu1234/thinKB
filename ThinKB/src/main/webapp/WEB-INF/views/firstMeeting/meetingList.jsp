@@ -14,7 +14,7 @@ body {
 	padding: 20px;
 	margin-left: 17%;
 	margin-right: 17%;
-	margin-top: 150px;
+	margin-top: 1%;
 }
 
 .container {
@@ -23,21 +23,6 @@ body {
 	background-color: white;
 	padding: 20px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.header1 {
-	text-align: center;
-}
-
-.header1 img {
-	width: 100%;
-	height: auto;
-	max-height: 500px;
-	/* border-radius: 10px; */
-}
-
-.user-info p {
-	margin: 0;
 }
 
 .button-container {
