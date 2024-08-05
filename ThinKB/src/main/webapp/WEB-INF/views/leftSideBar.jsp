@@ -166,10 +166,6 @@
 }
 </style>
 </head>
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'main' of https://github.com/retyu1234/thinKB.git
 <body class="LeftSideBar_body">
 	<div class="leftSidebar">
 		<div class="section section1">${meetingRoom.roomTitle}</div>

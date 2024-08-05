@@ -361,7 +361,6 @@ h1 {
             var currentTab = urlParams.get('currentTab')
             var roomId = urlParams.get('roomId');
             var ideaId = urlParams.get('ideaId');
-            
             if (currentTab && roomId && ideaId) {
                 showTab(currentTab, '#FFE297', roomId, ideaId);
             } else {
@@ -557,8 +556,6 @@ request.setAttribute("stages", stages);%>
 				<div class="tab tab-strict" onclick="showTab('tab-strict', '#FFE297', '${roomId}', '${ideaId}')">실현가능성</div>
 			</div>
 
-
-			<!-- 겍관적관점 -->
 			<div class="opinion-section">
 				<div id="tab-smart" class="tab-content active">
 					<div class="tabExplain" style="margin-left: -920px;">현황, 관련 데이터 등 <br> 객관적인 관점을 작성해주세요.</div>
@@ -600,8 +597,8 @@ request.setAttribute("stages", stages);%>
 						</c:if>
 						<c:if test="${2 - userOpinionCount > 0}">
 							<form:form method="post" action="./addOpinion"
-								class="input-form" modelAttribute="opinionForm">
-								<%-- onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" > --%>
+								class="input-form" modelAttribute="opinionForm"
+								onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" >
 								<form:hidden path="hatColor" value="Smart" />
 								<form:hidden path="currentTab" value="tab-smart" />
 								<form:hidden path="roomId" value="${roomId}" />
@@ -624,7 +621,7 @@ request.setAttribute("stages", stages);%>
 				</div>
 
 
-				<!-- 기대효과 -->
+
 				<div id="tab-positive" class="tab-content">
 					<div class="tabExplain" style="margin-left: -250px;">긍정적인 의견과 장점을 작성해주세요. </div>
 
@@ -668,8 +665,9 @@ request.setAttribute("stages", stages);%>
 						</c:if>
 						<c:if test="${2 - userOpinionCount > 0}">
 							<form:form method="post" action="./addOpinion"
-								modelAttribute="opinionForm" class="input-form">
-								<%-- onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount}, ${userOpinionCount})" > --%>
+								modelAttribute="opinionForm"
+								onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount}, ${userOpinionCount})"
+								class="input-form">
 								<form:hidden path="hatColor" value="Positive" />
 								<form:hidden path="currentTab" value="tab-positive" />
 								<form:hidden path="roomId" value="${roomId}" />
@@ -692,7 +690,7 @@ request.setAttribute("stages", stages);%>
 
 
 
-				<!-- 문제점 -->
+
 				<div id="tab-worry" class="tab-content">
 				    <div class="tabExplain" style="margin-left: 290px;"> 아이디어에 대한 보완점 <br> 또는 우려사항을 작성해주세요.</div>
 				    
@@ -732,8 +730,9 @@ request.setAttribute("stages", stages);%>
 				        </c:if>
 				        <c:if test="${2 - userOpinionCount > 0}">
 				            <form:form method="post" action="./addOpinion"
-				                modelAttribute="opinionForm" class="input-form">
-				                <%-- onsubmit="return validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount}, ${userOpinionCount})" > --%>
+				                modelAttribute="opinionForm"
+				                onsubmit="return validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount}, ${userOpinionCount})"
+				                class="input-form">
 				                <form:hidden path="hatColor" value="Worry" />
 				                <form:hidden path="currentTab" value="tab-worry" />
 				                <form:hidden path="roomId" value="${roomId}" />
@@ -752,7 +751,7 @@ request.setAttribute("stages", stages);%>
 				</div>
 
 
-			<!-- 실현가능성 -->
+
 			<div id="tab-strict" class="tab-content">
 			    <div class="tabExplain" style="margin-left: 930px;"> 개발 비용, 실현 가능성 등 <br> 현실적 관점을 작성해주세요. </div>
 			    
@@ -793,8 +792,9 @@ request.setAttribute("stages", stages);%>
 			        </c:if>
 			        <c:if test="${2 - userOpinionCount > 0}">
 			            <form:form method="post" action="./addOpinion"
-			                modelAttribute="opinionForm" class="input-form">
-			                <%-- onsubmit="return validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount}, ${userOpinionCount})" > --%>
+			                modelAttribute="opinionForm"
+			                onsubmit="return validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount}, ${userOpinionCount})"
+			                class="input-form">
 			                <form:hidden path="hatColor" value="Strict" />
 			                <form:hidden path="currentTab" value="tab-strict" />
 			                <form:hidden path="roomId" value="${roomId}" />
