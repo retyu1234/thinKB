@@ -536,48 +536,44 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 20px;
+    width: 100%;
+    gap: 10px;
 }
-/* 노란색 버튼 */
+
+.button {
+    display: inline-block;
+    width: auto;
+    min-width: 120px; /* 최소 너비 설정 */
+    max-width: 80%; /* 최대 너비를 팝업의 80%로 제한 */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .yellow-button {
-	background-color: #FFCC00;
-	color: black;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 10px;
-	font-size: 13pt;
-	cursor: pointer;
-	font-weight: bold;
-	text-decoration: none;
-	max-width: 200px;
+    background-color: #FFCC00;
+    color: black;
 }
 
 .yellow-button:hover {
-	background-color: #D4AA00;
-	text-decoration: none;
+    background-color: #D4AA00;
 }
 
 .grey-button {
-	background-color: #978A8F;
-	color: white;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 10px;
-	font-size: 13pt;
-	cursor: pointer;
-	font-weight: bold;
-	max-width: 200px;
+    background-color: #978A8F;
+    color: white;
 }
 
 .grey-button:hover {
-	background-color: #60584C;
-}
-
-/* 버튼 스타일 수정 */
-.grey-button, .yellow-button {
-    width: 80%; /* 버튼 너비 조정 */
-    max-width: 200px;
-    margin: 5px 0; /* 상하 여백 추가 */
+    background-color: #60584C;
 }
 
 </style>
@@ -851,9 +847,9 @@ document.addEventListener('DOMContentLoaded', function() {
 			        <img id="popup-image" src="" style="display: none; width: 180px; height: 150px;">
 			        <p class="popup-message"></p>
 			        <div class="popup-buttons">
-			        	<a href="./noticeList" class="yellow-button">알림함 바로가기</a>
-			            <button class="grey-button">오늘 하루 보지 않기</button>
-			        </div>
+					    <a href="./noticeList" class="button yellow-button">알림함 바로가기</a>
+					    <button class="button grey-button">오늘 하루 보지 않기</button>
+					</div>
 			    </div>
 			</div>
 	</div>

@@ -200,14 +200,15 @@
 		Users where UserId=#{param1}
 	</select>
 	
-	<!-- 페이지네이션 -->
+	<!-- 페이지네이션/ 완료된것은 제일 마지막 페이지로 보내기 -->
 	<select id="myAllMeetingRoomPaginated" resultType="com.kb.star.dto.MeetingRooms">
 	    SELECT mr.*
 	    FROM MeetingRooms mr
 	    INNER JOIN MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID
 	    WHERE mr.IsDelete = 0
 	      AND mrm.UserID = #{userId}
-	    ORDER BY mr.RoomID DESC
+	    ORDER BY CASE WHEN mr.StageID = 6 THEN 1 ELSE 0 END,
+    	mr.RoomID DESC
 	    LIMIT #{start}, #{pageSize}
 	</select>
 
