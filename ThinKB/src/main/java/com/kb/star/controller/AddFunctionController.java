@@ -77,7 +77,7 @@ public class AddFunctionController {
 		model.addAttribute("request", request);
 		command = new ABTestDetail(sqlSession);
 		command.execute(model);
-		return "/addFunction/userABTest";
+		return "/addFunction/userABTestCopy";
 	}
 
 	// ab테스트 투표
@@ -97,7 +97,7 @@ public class AddFunctionController {
 		model.addAttribute("request", request);
 		command = new ABTestDetail(sqlSession);
 		command.execute(model);
-		return "/addFunction/resultABTest";
+		return "/addFunction/resultABTestCopy";
 	}
 
 	// 투표 생성 폼
