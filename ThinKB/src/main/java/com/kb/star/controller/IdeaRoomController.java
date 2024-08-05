@@ -99,7 +99,6 @@ public class IdeaRoomController {
 	            command.execute(model);
 	         // 세션에서 에러 메시지를 가져와서 모델에 추가
 	            String errorMessage = (String) model.asMap().get("Message");
-	            System.out.println("이게 메세지다: " + errorMessage);
 	            if (errorMessage != null) {
 	                model.addAttribute("errorMessage", errorMessage);
 	                session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
