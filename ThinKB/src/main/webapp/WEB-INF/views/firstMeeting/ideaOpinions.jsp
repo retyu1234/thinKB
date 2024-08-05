@@ -416,12 +416,12 @@ h1 {
             }
             var allTabs = document.getElementsByClassName('tab');
             for (var j = 0; j < allTabs.length; j++) {
-                allTabs[j].classList.remove('active');
+                allTabs[j].style.borderBottom = 'none';
             }
 
             // 선택된 탭 컨텐츠와 탭을 활성화
             document.getElementById(tabName).classList.add('active');
-            document.querySelector('.tab.' + tabName).classList.add('active');
+            document.querySelector('.tab.' + tabName).style.borderBottom = '5px solid ' + color;
 
             // 폼의 currentTab 값을 업데이트
             var currentTabInputs = document.querySelectorAll('input[name="currentTab"]');
@@ -429,9 +429,9 @@ h1 {
                 currentTabInputs[k].value = tabName;
             }
 
-            // URL을 업데이트
+            // URL을 업데이트하여 필요한 매개변수 포함
             history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
-        }
+        };
 
     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창
         window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount) {
@@ -617,11 +617,19 @@ request.setAttribute("stages", stages);%>
 								필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
 							</div>
 						</c:if>
+<%-- 						<c:if test="${currentOpinionCount >= maxComments}">
+							<div style="margin-left: 80px; margin-bottom: 200px;">
+								의견 작성 제한 인원을 초과하였습니다. 다른 의견 탭에 의견을 작성해주세요.
+							</div>
+						</c:if> --%>
 					</div>
 					<div class="comment-ended" style="display: none; margin-left: 100px;">
 						타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
 					</div>
+					
+					
 				</div>
+			</div>
 
 
 				<!-- 기대효과 -->
@@ -683,11 +691,10 @@ request.setAttribute("stages", stages);%>
 						<c:if test="${2 - userOpinionCount == 0}">
 							<div style="margin-left: 80px; margin-bottom: 200px;">필수 의견
 								2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-						</c:if>
+						</c:if>					
 					</div>
-					<div class="comment-ended"
-						style="display: none; margin-left: 100px;">타이머가 종료되었습니다. 더
-						이상 의견을 작성할 수 없습니다.</div>
+					<div class="comment-ended" style="display: none; margin-left: 100px;">
+						타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
 				</div>
 
 
