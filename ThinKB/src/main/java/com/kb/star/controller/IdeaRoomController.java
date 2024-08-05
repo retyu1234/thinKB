@@ -245,7 +245,7 @@ public class IdeaRoomController {
 		command = new ManagerIdeaListCommand(sqlSession);
 		command.execute(model);
 
-		return "firstMeeting/stage1Clear";
+		return "firstMeeting/stage1ClearCopy";
 	}
 
 	// 초안에 대한 투표진행화면으로 이동
@@ -302,6 +302,17 @@ public class IdeaRoomController {
 
 		return "redirect:/ideaOpinionsList";
 	}
+	
+	//테스트용
+//	@RequestMapping("/testStage1")
+//	public String testStage1(HttpServletRequest request, Model model) {
+//		model.addAttribute("roomId", 172);
+//		model.addAttribute("stage", 1);
+//
+//		command = new ManagerIdeaListCommand(sqlSession);
+//		command.execute(model);
+//		return "firstMeeting/stage1ClearCopy";
+//	}
 
 
 }
