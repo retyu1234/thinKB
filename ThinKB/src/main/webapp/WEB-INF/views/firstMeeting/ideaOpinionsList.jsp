@@ -37,26 +37,35 @@
     width: 48%;
     margin-bottom: 20px;
 }
+
+/* 객관적관점, 기대효과, 문제점, 실현가능성 박스 */
 .box {
-    background-color: #FFFFFF;
-    border: 1px solid #FFE297;
+    background-color: #ffffff;
+    /* border: 1px solid #FFE297; */
     border-radius: 10px;
     padding: 10px;
     height: 350px;
     overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* 그림자 추가 */
 }
+.section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
 
 /* 탭 제목 */
 .tab-title {
-    font-size: 18pt;
+    font-size: 15pt;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
     padding: 10px;
     cursor: pointer;
     border-radius: 10px 10px 0 0;
     color: #000000;
-    color: #000000;
-    border-bottom: 6px solid #FFE297;
+    /* border-bottom: 6px solid #FFE297; */
 }
 /* .tab-smart { background-color: #007bff; }
 .tab-positive { background-color: #ffc107; color: #000000; }
@@ -68,7 +77,7 @@
     padding: 0;
 }
 .opinion-entry {
-    background-color: #EEEEEE;
+    background-color: #ffeeee;
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
@@ -86,13 +95,15 @@
 
 .name {
     font-weight: bold;
+    font-size: 11pt;
 }
 .date {
-    font-size: 12pt;
+    font-size: 8pt;
     color: #777;
 }
 .opinion-text {
     margin-top: 5px;
+    font-size: 10pt;
 }
 .no-opinions {
     color: #ccc;
@@ -121,22 +132,29 @@
 	<div class="title">[${ideaTitle}]</div>
 
     <div class="columns">
+    
+    	<!-- 객관적관점 -->
         <div class="column">
             <div class="box">
-                <div class="tab-title tab-smart" onclick="navigateToTab('tab-smart')">객관적관점</div>
+	            <div class="section-header">
+					<div class="tab-title tab-smart" onclick="navigateToTab('tab-smart')">객관적관점</div>
+					<img src="./resources/nextIcon.png" onclick="navigateToTab('tab-smart')"
+					style="width: 15px; height: 15px; float: right; margin-right: 20px; cursor: pointer;">
+				</div>
+				
                 <ul class="opinion-list">
                     <c:choose>
                         <c:when test="${empty smartOpinions}">
                             <li class="no-opinions">
                             <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
                                 <br><br> 의견이 아직 등록되지 않았어요!
                             </li>
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="opinion" items="${smartOpinions}" varStatus="status">
                                 <c:if test="${status.index < 3}">
-                                    <li class="opinion-entry" onclick="navigateToTab('tab-smart')">
+                                    <li class="opinion-entry" onclick="navigateToTab('tab-smart')" style="background-color: #E7F3FF;">
                                         <div class="opinion-header">
                                             <span class="name">${opinion.userName}</span>
                                             <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
@@ -150,22 +168,29 @@
                 </ul>
             </div>
         </div>
+        
+        <!-- 기대효과 -->
         <div class="column">
             <div class="box">
-                <div class="tab-title tab-positive" onclick="navigateToTab('tab-positive')">기대효과</div>
+            	<div class="section-header">
+					<div class="tab-title tab-positive" onclick="navigateToTab('tab-positive')">기대효과</div>
+					<img src="./resources/nextIcon.png" onclick="navigateToTab('tab-positive')"
+					style="width: 15px; height: 15px; float: right; margin-right: 20px; cursor: pointer;">
+				</div>
+				
                 <ul class="opinion-list">
                     <c:choose>
                         <c:when test="${empty positiveOpinions}">
                             <li class="no-opinions">
                             <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
                                 <br><br> 의견이 아직 등록되지 않았어요!
                             </li>
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="opinion" items="${positiveOpinions}" varStatus="status">
                                 <c:if test="${status.index < 3}">
-                                    <li class="opinion-entry" onclick="navigateToTab('tab-positive')">
+                                    <li class="opinion-entry" onclick="navigateToTab('tab-positive')" style="background-color: #FFFFE7;">
                                         <div class="opinion-header">
                                             <span class="name">${opinion.userName}</span>
                                             <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
@@ -179,15 +204,22 @@
                 </ul>
             </div>
         </div>
+        
+        <!-- 문제점 -->
         <div class="column">
             <div class="box">
-                <div class="tab-title tab-worry" onclick="navigateToTab('tab-worry')">문제점</div>
+            	<div class="section-header">
+					<div class="tab-title tab-worry" onclick="navigateToTab('tab-worry')">문제점</div>
+					<img src="./resources/nextIcon.png" onclick="navigateToTab('tab-worry')"
+					style="width: 15px; height: 15px; float: right; margin-right: 20px; cursor: pointer;">
+				</div>
+                
                 <ul class="opinion-list">
                     <c:choose>
                         <c:when test="${empty worryOpinions}">
                             <li class="no-opinions">
                             <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
                                 <br><br> 의견이 아직 등록되지 않았어요!
                             </li>
                         </c:when>
@@ -208,22 +240,29 @@
                 </ul>
             </div>
         </div>
+        
+        <!-- 실현가능성 -->
         <div class="column">
             <div class="box">
-                <div class="tab-title tab-strict" onclick="navigateToTab('tab-strict')">실현가능성</div>
+            	<div class="section-header">
+					<div class="tab-title tab-strict" onclick="navigateToTab('tab-strict')">실현가능성</div>
+					<img src="./resources/nextIcon.png" onclick="navigateToTab('tab-strict')"
+					style="width: 15px; height: 15px; float: right; margin-right: 20px; cursor: pointer;">
+				</div>
+                
                 <ul class="opinion-list">
                     <c:choose>
                         <c:when test="${empty strictOpinions}">
                             <li class="no-opinions">
                             <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
                                 <br><br> 의견이 아직 등록되지 않았어요!
                             </li>
                         </c:when>
                         <c:otherwise>
                             <c:forEach var="opinion" items="${strictOpinions}" varStatus="status">
                                 <c:if test="${status.index < 3}">
-                                    <li class="opinion-entry" onclick="navigateToTab('tab-strict')">
+                                    <li class="opinion-entry" onclick="navigateToTab('tab-strict')" style="background-color: #EDFFE7;">
                                         <div class="opinion-header">
                                             <span class="name">${opinion.userName}</span>
                                             <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>

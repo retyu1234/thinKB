@@ -108,7 +108,7 @@
 .tab {
 	padding: 15px 25px;
 	cursor: pointer;
-	font-size: 18pt;
+	font-size: 15pt;
 	font-weight: bold;
 	color: #909090; /* 기본 색상 */
 	transition: background-color 0.3s ease, color 0.3s ease;
@@ -157,14 +157,14 @@
 } */
 /* 탭 설명 */
 .tabExplain {
-	font-size: 15pt;
+	font-size: 10pt;
 	margin-bottom: 50px;
 	text-align: center; /* 가운데 정렬 */
 }
 
 /* 추가 작성 의견수, 작성된 전체 의견 갯수, 최대 작성 가능, 추가 가능 */ 
 .opinion-counts {
-	font-size: 13pt;
+	font-size: 12pt;
 	font-weight: bold;
 	display: flex;
 	justify-content: flex-end;
@@ -219,22 +219,21 @@ h1 {
 	display: flex;
 	align-items: center;
 }
-
 .name {
-	margin-right: 10px;
-	font-size: 15pt;
-	font-weight: bold;
+    margin-right: 10px;
+    font-size: 13pt;
+    font-weight: bold;
 }
-
 .date {
-	font-size: 12pt;
-	color: #777;
+    font-size: 10pt;
+    color: #777;
 }
-
 .opinion-text {
-	margin: 10px 0;
-	font-size: 15pt;
+    margin: 10px 0;
+    font-size: 10pt;
 }
+    
+
 
 .delete-button {
 	background-color: #EEEEEE;
@@ -248,12 +247,12 @@ h1 {
 
 /* 등록된 의견이 없을 때 */
 .no-opinions {
-	color: #ccc; /* 연한 회색 */
+	color: #909090; /* 기본 색상 */
 	font-style: italic; /* 기울임꼴로 표시 */
 	text-align: center;
 	margin-top: 20px;
 	margin-bottom: 100px;
-	font-size: 25px;
+	font-size: 13pt;
 }
 
 .no-opinions img {
@@ -276,6 +275,7 @@ h1 {
 	border-top: 1px solid #000;
 	padding-top: 10px;
 	flex-wrap: nowrap; /* 요소들이 한 줄에 유지되도록 설정 */
+	font-size: 12pt;
 }
 
 .opinion-textarea {
@@ -416,12 +416,12 @@ h1 {
             }
             var allTabs = document.getElementsByClassName('tab');
             for (var j = 0; j < allTabs.length; j++) {
-                allTabs[j].style.borderBottom = 'none';
+                allTabs[j].classList.remove('active');
             }
 
             // 선택된 탭 컨텐츠와 탭을 활성화
             document.getElementById(tabName).classList.add('active');
-            document.querySelector('.tab.' + tabName).style.borderBottom = '5px solid ' + color;
+            document.querySelector('.tab.' + tabName).classList.add('active');
 
             // 폼의 currentTab 값을 업데이트
             var currentTabInputs = document.querySelectorAll('input[name="currentTab"]');
@@ -429,9 +429,9 @@ h1 {
                 currentTabInputs[k].value = tabName;
             }
 
-            // URL을 업데이트하여 필요한 매개변수 포함
+            // URL을 업데이트
             history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
-        };
+        }
 
     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창
         window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount) {
@@ -561,7 +561,7 @@ request.setAttribute("stages", stages);%>
 			<!-- 겍관적관점 -->
 			<div class="opinion-section">
 				<div id="tab-smart" class="tab-content active">
-					<div class="tabExplain" style="margin-left: -920px;">현황, 관련 데이터 등 <br> 객관적인 관점을 작성해주세요.</div>
+					<div class="tabExplain" style="margin-left: -840px;">현황, 관련 데이터 등 <br> 객관적인 관점을 작성해주세요.</div>
 					<div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
 						내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
 						현재 탭의 작성된 의견 수: ${smartOpinionCount}/(최대)${maxComments}
@@ -617,11 +617,11 @@ request.setAttribute("stages", stages);%>
 								필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
 							</div>
 						</c:if>
-<%-- 						<c:if test="${currentOpinionCount >= maxComments}">
+						<c:if test="${currentOpinionCount >= maxComments}">
 							<div style="margin-left: 80px; margin-bottom: 200px;">
 								의견 작성 제한 인원을 초과하였습니다. 다른 의견 탭에 의견을 작성해주세요.
 							</div>
-						</c:if> --%>
+						</c:if>
 					</div>
 					<div class="comment-ended" style="display: none; margin-left: 100px;">
 						타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
@@ -761,7 +761,7 @@ request.setAttribute("stages", stages);%>
 
 			<!-- 실현가능성 -->
 			<div id="tab-strict" class="tab-content">
-			    <div class="tabExplain" style="margin-left: 930px;"> 개발 비용, 실현 가능성 등 <br> 현실적 관점을 작성해주세요. </div>
+			    <div class="tabExplain" style="margin-left: 840px;"> 개발 비용, 실현 가능성 등 <br> 현실적 관점을 작성해주세요. </div>
 			    
 			    <div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
 			    	내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 

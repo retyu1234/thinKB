@@ -99,7 +99,7 @@
 .tab {
     padding: 15px 25px;
 	cursor: pointer;
-	font-size: 18pt;
+	font-size: 15pt;
 	font-weight: bold;
 	color: #909090; /* 기본 색상 */
 	transition: background-color 0.3s ease, color 0.3s ease;
@@ -143,7 +143,7 @@
     padding: 12px;
     border-radius: 5px;
     box-sizing: border-box;
-    font-size: 13pt;
+    font-size: 12pt;
     font-weight: bold;
 }
 .opinion-textarea:focus {
@@ -183,15 +183,16 @@
         color: #fff;
     }
     .no-opinions {
-        color: #ccc;
-        font-style: italic;
-        text-align: center;
-        margin-top: 20px;
-        font-size: 20px;
+        color: #909090; /* 기본 색상 */
+	font-style: italic; /* 기울임꼴로 표시 */
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 100px;
+	font-size: 13pt;
     }
     /* 기존 의견들, 현재 의견들 */
     .opinion-title {
-    	font-size: 18pt;
+    	font-size: 15pt;
     	font-weight: bold;
     }
     /* 기존 의견들 탭 */
@@ -226,16 +227,16 @@
     }
     .name {
         margin-right: 10px;
-        font-size: 15pt;
+        font-size: 13pt;
         font-weight: bold;
     }
     .date {
-        font-size: 12pt;
+        font-size: 10pt;
         color: #777;
     }
     .opinion-text {
         margin: 10px 0;
-        font-size: 15pt;
+        font-size: 10pt;
     }
     
     /* 좋아요 */
@@ -408,7 +409,7 @@ function onTimerEnd() {
     // 모든 사용자
  	console.log("Timer ended");
 
- 	// 모든 comment-section, comment-full, comment-ended 요소를 숨깁니다
+ 	// 모든 comment-section, comment-full 요소를 숨깁니다
     document.querySelectorAll(".comment-section, .comment-full").forEach(function(el) {
         el.style.display = "none";
     });

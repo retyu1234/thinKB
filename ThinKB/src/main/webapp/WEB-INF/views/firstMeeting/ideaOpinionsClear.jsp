@@ -7,17 +7,16 @@
 <meta charset="UTF-8">
 <title>2차 의견 타이머 설정</title>
 <style>
+
 .content-container {
 	padding: 20px;
 	margin-left: 15%;
 	margin-right: 15%;
 	position: relative;
 	z-index: 2;
+	width: 60%;
 }
 
-body {
-    padding-top: 100px;
-}
 
 table {
 	width: 70%;
@@ -100,15 +99,13 @@ tr:hover {
 </style>
 
 </head>
-<body>
+<body style=""margin: 0;">
 	<%@ include file="../header.jsp"%>
+	<%@ include file="../leftSideBar.jsp"%>
+	<%@ include file="../rightSideBar.jsp"%>
 	
-	<c:if test="${userId == meetingRoom.roomManagerId}">
-	<%@ include file="../sideBar.jsp"%></c:if>
 
-	<div class="content-container">
-		<h1>2차 의견 타이머 설정</h1>
-
+<!-- 	<div class="content-container"> -->
 			<form action="./goStage4" id="goStage4" method="post">
 				<input type="hidden" name="roomId" value="${roomId}">
 				<input type="hidden" name="ideaId" value="${ideaId}"> 
@@ -126,12 +123,11 @@ tr:hover {
 					<span class="error-message" id="timerError"></span>
 				</div>
 				
-				<div style="text-align: center;">
+				<div style="text-align: center; margin-top: 50px;">
 					<button type="submit" class="button">의견 받기</button>
 				</div>
 			</form>
 		</div>
-</div>
 
 <script>
 document.getElementById('goStage4').addEventListener('submit', function(e) {

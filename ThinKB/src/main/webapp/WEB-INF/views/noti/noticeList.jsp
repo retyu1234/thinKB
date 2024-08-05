@@ -257,24 +257,28 @@
     </div>
 
     <div class="notification-list">
-	    <c:forEach var="notification" items="${notifications}">
-	        <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
-	            <div class="notification-content">
-	            <c:if test="${notification.getIdeaID() != 0}">
-	                <div class="title">대상 아이디어: [${notification.idea.title}]</div>
-	            </c:if>
-	                <div><p>${notification.message}</p></div>
-	                <div>회의방 제목: ${notification.roomTitle}</div>
-	            </div>
-	            <div class="notification-date">
-	            	<div class="delete" data-id="${notification.notificationID}">
-					    <img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
-					</div>
-	                <div class="date">${notification.createdAt}</div>
-	            </div>
-	        </div>
-	    </c:forEach>
-	</div>
+    <c:forEach var="notification" items="${notifications}">
+        <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
+           <div class="notification-content">
+                <c:choose>
+                    <c:when test="${notification.getIdeaID() != 0}">
+                        <div class="title">아이디어 제목: [${notification.idea.title}]</div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="title">회의방 제목: ${notification.roomTitle}</div>
+                    </c:otherwise>
+                </c:choose>
+                <div><p>${notification.message}</p></div>
+            </div>
+            <div class="notification-date">
+                <div class="delete" data-id="${notification.notificationID}">
+                    <img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
+                </div>
+                <div class="date">${notification.createdAt}</div>
+            </div>
+        </div>
+    </c:forEach>
+</div>
 </div>
 
 <!-- 모달 창 -->

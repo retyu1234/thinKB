@@ -211,7 +211,7 @@ public class IdeaOpinionsController {
 		IdeaOpinionsClearCommand ideaOpinionsClearCommand = new IdeaOpinionsClearCommand(sqlSession);
 		ideaOpinionsClearCommand.execute(model);
 
-		return "redirect:/ideaOpinions2";
+		return "redirect:/ideaOpinionsList";
 	}
     
     
