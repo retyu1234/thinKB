@@ -1,5 +1,6 @@
 package com.kb.star.command.room;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.ui.Model;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
+import com.kb.star.dto.UsersDto;
 import com.kb.star.util.RoomDao;
 
 public class AfterVoteCommand implements RoomCommand {
@@ -46,9 +48,8 @@ public class AfterVoteCommand implements RoomCommand {
 		List<Ideas> yesPickList = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", yesPickList);
 
-		
 		int userId = (Integer) map.get("userId");
-		System.out.println("map.get:" +userId);
+		System.out.println("map.get:" + userId);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);
 		params.put("roomId", roomId);
@@ -57,6 +58,20 @@ public class AfterVoteCommand implements RoomCommand {
 		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
 		model.addAttribute("roomMessage", roomMessage);
 		// 여기까지 leftSideBar 출력용
+
+		// 오른쪽 사이드바
+		List<Integer> userIdList = dao.roomIdFormember(roomId);
+		List<UsersDto> userList = new ArrayList<UsersDto>();
+		for (int ids : userIdList) {
+			UsersDto user = dao.whosMember(ids);
+			if (user != null) {
+				userList.add(user);
+			}
+		}
+		model.addAttribute("userList", userList);
+		
+		String timer = dao.roomTimerInfo(roomId);
+		model.addAttribute("timer", timer);
 	}
 
 }
