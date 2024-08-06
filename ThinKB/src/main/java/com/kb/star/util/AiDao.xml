@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kb.star.util.AiDao">
+    <insert id="insertAiLog">
+        INSERT INTO AiLog (UserID, AiContent, AiQuestion, RoomID)
+        VALUES (#{param1}, #{param4}, #{param3}, #{param2})
+    </insert>
+    <select id="getUserAilog" resultType="com.kb.star.dto.AiLogDto">
+    	        SELECT a.*,
+            u.UserName,
+            u.ProfileImg
+        FROM 
+            AiLog a
+        JOIN 
+            Users u ON a.UserID = u.UserID
+        WHERE 
+            a.UserID = #{param1} AND a.RoomID = #{param2}
+    </select>
+</mapper>

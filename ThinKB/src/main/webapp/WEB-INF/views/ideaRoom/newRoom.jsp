@@ -82,6 +82,20 @@ input.new-subject:focus {
 	border-color: #FFD700; /* 포커스 시 테두리 색상 */
 	outline: none; /* 기본 포커스 스타일 제거 */
 }
+textarea.new-subject {
+	font-size: 13pt;
+	color: black;
+	border: 3px solid lightgrey;
+	border-radius: 10px;
+	padding: 20px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+textarea.new-subject:focus {
+	border-color: #FFD700; /* 포커스 시 테두리 색상 */
+	outline: none; /* 기본 포커스 스타일 제거 */
+}
 
 .calendar-icon {
 	font-size: 24px;
@@ -444,12 +458,10 @@ body.modal-open {
 
 	<!-- 아이디어 회의 상세설명 -->
 			<div class="titleAndDetail">
-				<div class="titleAndDetail-title">아이디어 회의 상세설명</div>
+				<div class="titleAndDetail-title">아이디어 회의 상세설명</div><button type="button" id="autoCompleteBtn" class="yellow-button">자동완성</button>
 				<div class="titleAndDetail-detail">회의 주제에 대한 상세한 설명을 입력해주세요. ex) 참고할 수 있는 관련문서, 보고서 등</div>
 			</div>
-			<input type="text" class="new-subject" style="height: 150px;"
-				name="content"
-				placeholder="여기에 작성해주세요">
+<textarea id="content" class="new-subject" style="height: 400px; width: 100%; resize: vertical;" name="content" placeholder="여기에 작성해주세요"></textarea>
 	<!-- 회의종료일 -->
 			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
@@ -1027,7 +1039,48 @@ body.modal-open {
 			}
 		};
 	</script>
+<script type="text/javascript">
+document.getElementById('autoCompleteBtn').addEventListener('click', function(event) {
+    event.preventDefault(); // 기본 동작 방지
 
+    var title = document.querySelector('input[name="title"]').value;
+    if (title.trim() === '') {
+        alert('먼저 회의 주제를 입력해주세요.');
+        return;
+    }
+
+    this.disabled = true;
+    this.textContent = '로딩 중...';
+
+    fetch('./getAiResponse?userInput=' + encodeURIComponent(title), {
+        method: 'GET'
+    })
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById('content').value = data;
+        this.disabled = false;
+        this.textContent = '자동완성';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        this.disabled = false;
+        this.textContent = '자동완성';
+        alert('AI 응답을 가져오는 데 실패했습니다.');
+    });
+});
+
+// textarea에서 엔터 키 눌렀을 때 폼 제출 방지
+document.getElementById('content').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // 엔터 키의 기본 동작 방지
+        var cursorPosition = this.selectionStart;
+        var textBeforeCursor = this.value.substring(0, cursorPosition);
+        var textAfterCursor = this.value.substring(cursorPosition);
+        this.value = textBeforeCursor + '\n' + textAfterCursor;
+        this.selectionStart = this.selectionEnd = cursorPosition + 1;
+    }
+});
+</script>
 
 </body>
 </html>
