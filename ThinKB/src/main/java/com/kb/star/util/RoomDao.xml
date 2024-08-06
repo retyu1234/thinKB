@@ -349,4 +349,18 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 <select id="whosMember" resultType="com.kb.star.dto.UsersDto">
 	SELECT * from Users WHERE UserID = #{param1}
 </select>
+
+<!-- 마지막 단계 사용자가보는 로드맵에 필요한 데이터 -->
+<select id="totalIdea" resultType="com.kb.star.dto.Ideas">
+	SELECT * FROM Ideas WHERE RoomID = #{param1} and IsDelete = 0
+</select>
+
+<select id="ideaIdForOpinion" resultType="com.kb.star.dto.IdeaOpinionsDto">
+	SELECT * FROM IdeaOpinions WHERE IdeaID = #{param1} and IsDelete = 0
+</select>
+
+<select id="memberForRoomId" resultType="com.kb.star.dto.MeetingRoomMember">
+	SELECT * from MeetingRoomMembers WHERE RoomID = #{param1}
+</select>
+
 </mapper>
