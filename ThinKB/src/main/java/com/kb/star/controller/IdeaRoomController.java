@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.kb.star.command.ai.AiService;
 import com.kb.star.command.ai.AiService2;
 import com.kb.star.command.firstMeeting.RoomStage2Command;
@@ -44,6 +46,7 @@ import com.kb.star.command.roomManger.SendNotiUser;
 import com.kb.star.command.roomManger.UpdateRoomInfo;
 import com.kb.star.command.roomManger.UserManagement;
 import com.kb.star.dto.AiLogDto;
+import com.kb.star.dto.IdeaSummaryDto;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.AiDao;
 import com.kb.star.util.RoomDao;
@@ -200,12 +203,10 @@ public class IdeaRoomController {
 				command.execute(model);
 				model.addAttribute("currentTab","smart");
 				return "redirect:/ideaOpinions2";
-
-	        case 5:
-	            command = new ReportView(sqlSession);
-	            command.execute(model);
-	            return "report/roomStage7";
-
+	    	case 5:
+	    	    command = new ReportView(sqlSession);
+	    	    command.execute(model);
+			    return "report/roomStage7";
 	        default:
 	            return "main";
 	    }

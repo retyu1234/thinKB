@@ -129,14 +129,40 @@ html {
 	margin-top: 30px;
 	margin-left: 10%;
 	margin-right: 10%;
+	margin-bottom: 5%;
 }
 
-.idea-container h4 {font-siz
-	
+.idea-list {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
+.idea-button {
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.idea-button:hover {
+    background-color: #e0e0e0;
+}
+
+.idea-container {
+margin-bottom: 30px;
+}
+.idea-container h4 {
+    font-size: 18pt;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+}
 .summary-report h3 {
 	font-size: 22pt;
+	margin-bottom: 20px;
 }
 
 .four-hat-container {
@@ -147,9 +173,7 @@ html {
 }
 
 .hat-section {
-	border-radius: 10px;
-	padding: 15px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+margin-bottom: 20px;
 }
 
 .hat-section h4 {
@@ -158,12 +182,17 @@ html {
 	font-size: 1.2em;
 	margin-bottom: 15px;
 }
+.hat-section h5 {
+    font-size: 16pt;
+    margin-bottom: 10px;
+    color: #333;
+}
 
 .idea-item {
-	background-color: rgba(255, 255, 255, 0.8);
-	border-radius: 5px;
-	padding: 10px;
-	margin-bottom: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
 }
 
 .idea-item h5 {
@@ -172,24 +201,8 @@ html {
 }
 
 .idea-item p {
-	margin: 0;
-	font-size: 0.9em;
-}
-
-.worry {
-	background-color: #FFD1DC;
-}
-
-.positive {
-	background-color: #BAFFC9;
-}
-
-.smart {
-	background-color: #BAE1FF;
-}
-
-.strict {
-	background-color: #FFFFBA;
+    margin: 0;
+    font-size: 13px;
 }
 
 .reportToggleBtn {
@@ -478,52 +491,61 @@ var quill = new Quill('#report-content', {
     };
 </script>
 				</div>
-				<div class="summary-report">
-					<h3>
-						📌요약 보고서
-						<button class="reportToggleBtn" onclick="toggleSummary()">🔽</button>
-					</h3>
-					<div id="summaryContent" style="display: none;">
-						<c:forEach var="idea"
-							items="${ideaSummaries.stream().map(s->s.ideaId).distinct().toList()}"
-							varStatus="ideaStatus">
-							<div class="idea-container">
-								<h4>${ideaStatus.index + 1}안:
-									${ideaSummaries.stream().filter(s->s.ideaId == idea).findFirst().get().ideaTitle}</h4>
-								<div class="four-hat-container">
-									<c:forEach var="hatColor" items="Worry,Positive,Smart,Strict">
-										<div class="hat-section ${hatColor.toLowerCase()}">
-											<h5>${hatColor}</h5>
-											<c:forEach var="opinion" items="${ideaSummaries}">
-												<c:if
-													test="${opinion.ideaId == idea && opinion.hatColor eq hatColor}">
-													<div class="idea-item">
-														<p>${opinion.opinionText}(작성자:
-															${opinion.opinionUserName}, 좋아요: ${opinion.likeNum})</p>
-													</div>
-												</c:if>
-											</c:forEach>
-										</div>
-									</c:forEach>
-								</div>
-							</div>
-						</c:forEach>
-					</div>
-				</div>
+<div class="summary-report">
+    <h3>📌요약 보고서<button class="reportToggleBtn" onclick="toggleSummary()">🔽</button></h3>
+    <div id="summaryContent">
+        <c:forEach var="idea" items="${ideaSummaries.stream().map(s->s.ideaId).distinct().toList()}" varStatus="ideaStatus">
+            <div class="idea-container">
+                <h4>아이디어&nbsp;${ideaStatus.index + 1}. ${ideaSummaries.stream().filter(s->s.ideaId == idea).findFirst().get().ideaTitle}</h4>
+                <c:forEach var="hatColor" items="Worry,Positive,Smart,Strict">
+                    <div class="hat-section">
+                        <h5>
+    <c:choose>
+        <c:when test="${hatColor == 'Worry'}">문제점/보완</c:when>
+        <c:when test="${hatColor == 'Positive'}">기대효과</c:when>
+        <c:when test="${hatColor == 'Smart'}">객관적 관점</c:when>
+        <c:when test="${hatColor == 'Strict'}">실현가능성</c:when>
+    </c:choose>
+</h5>
+                        <c:forEach var="opinion" items="${ideaSummaries}">
+                            <c:if test="${opinion.ideaId == idea && opinion.hatColor eq hatColor}">
+                                <div class="idea-item">
+                                    <p style="font-size:13pt; margin-bottom:1%;">${opinion.opinionText}</p>
+                                    <p>(작성자: ${opinion.opinionUserName}, 좋아요: ${opinion.likeNum})</p>
+                                </div>
+                            </c:if>
+                        </c:forEach>
+                    </div>
+                </c:forEach>
+            </div>
+        </c:forEach>
+    </div>
+</div>
 			</div>
                 <%@ include file="../rightSideBar.jsp"%>
             </div>
         </div>
     </div>
 	<script>
-		function toggleSummary() {
-			var content = document.getElementById("summaryContent");
-			if (content.style.display === "none") {
-				content.style.display = "block";
-			} else {
-				content.style.display = "none";
-			}
-		}
+	function toggleSummary() {
+	    var content = document.getElementById("summaryContent");
+	    if (content.style.display === "none") {
+	        content.style.display = "block";
+	    } else {
+	        content.style.display = "none";
+	    }
+	}
+
+	function toggleIdea(ideaId) {
+	    var ideaContainers = document.getElementsByClassName("idea-container");
+	    for (var i = 0; i < ideaContainers.length; i++) {
+	        ideaContainers[i].style.display = "none";
+	    }
+	    var selectedIdea = document.getElementById("idea-" + ideaId);
+	    if (selectedIdea) {
+	        selectedIdea.style.display = "block";
+	    }
+	}
 	</script>
 </body>
 </html>
