@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -13,7 +15,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,10 @@ public class AiService2 {
 	@Value("${openai.api.key}")
 	private String apiKey;
 	private final String apiUrl = "https://api.openai.com/v1/chat/completions";
+    @PostConstruct
+    public void init() {
+        System.out.println("AiService initialized with API key: " + apiKey);
+    }
 
 	public String getAiResponse(String userInput) {
 		System.out.println("NAVER API 키 : " + apiKey);
@@ -76,4 +81,5 @@ public class AiService2 {
 			return "오류가 발생했습니다: " + e.getMessage();
 		}
 	}
+
 }

@@ -78,8 +78,7 @@ public class IdeaRoomController {
 		@RequestMapping(value = "/getAiResponse", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
 		@ResponseBody
 		public String getAiResponse(@RequestParam("userInput") String userInput) {
-			UserListCommand userListCommand2 = new UserListCommand(sqlSession);
-			String response = userListCommand2.getAiResponse(userInput);
+			String response = aiService.getAiResponse(userInput);
 
 			// UTF-8로 인코딩
 			byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
