@@ -66,9 +66,7 @@ public class FirstMeetingController<Command> {
 		Integer userId = (Integer) session.getAttribute("userId");
 
 		model.addAttribute("ideaId", ideaId);
-		System.out.println("뽑은 아이디어 컨트롤러에 전달된거" + ideaId);
 		model.addAttribute("selectedIdea", selectedIdea);
-		System.out.println("전달된 selectedIdea 값:" + selectedIdea);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("userId", userId);
 		model.addAttribute("session", session);
@@ -128,9 +126,6 @@ public class FirstMeetingController<Command> {
 	@ResponseBody
 	public String submitReplyAnswer(@RequestParam Map<String, String> payload, HttpSession session, Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");
-		// 콘솔에 전달받은 payload 출력
-		System.out.println("Received payload: " + payload);
-
 		model.addAttribute("userId", userId);
 		model.addAttribute("ideaId", payload.get("ideaId"));
 		model.addAttribute("roomId", payload.get("roomId"));

@@ -35,6 +35,7 @@
 		ON
 		t.ABTestID = r.ABTestID
 		ORDER BY
+		participated ASC,
 		t.CreatedAt DESC
 	</select>
 	<!-- abTest 개별방 -->

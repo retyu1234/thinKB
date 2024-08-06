@@ -1,5 +1,8 @@
 package com.kb.star.controller;
 
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,17 +10,27 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.kb.star.command.ai.AiService;
+import com.kb.star.command.ai.AiService2;
 import com.kb.star.command.firstMeeting.RoomStage2Command;
 import com.kb.star.command.report.ReportView;
 import com.kb.star.command.room.AfterVoteCommand;
 import com.kb.star.command.room.ManagerIdeaListCommand;
 import com.kb.star.command.room.ResetCommand;
 import com.kb.star.command.room.RoomCommand;
+import com.kb.star.command.room.StageEndCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.StageThreeCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
@@ -33,7 +46,10 @@ import com.kb.star.command.roomManger.RoomManagement;
 import com.kb.star.command.roomManger.SendNotiUser;
 import com.kb.star.command.roomManger.UpdateRoomInfo;
 import com.kb.star.command.roomManger.UserManagement;
+import com.kb.star.dto.AiLogDto;
+import com.kb.star.dto.IdeaSummaryDto;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.util.AiDao;
 import com.kb.star.util.RoomDao;
 
 @Controller
@@ -41,7 +57,10 @@ public class IdeaRoomController {
 
 	RoomCommand command = null;
 	public SqlSession sqlSession;
-
+	@Autowired
+	private AiService aiService;
+	@Autowired
+	private AiService2 aiService2;
 	@Autowired
 	public IdeaRoomController(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
@@ -59,7 +78,77 @@ public class IdeaRoomController {
 		command.execute(model);
 		return "ideaRoom/newRoom";
 	}
+	// 회의방 설정시 주제상세 ai
+		@RequestMapping(value = "/getAiResponse", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+		@ResponseBody
+		public String getAiResponse(@RequestParam("userInput") String userInput) {
+			String response = aiService.getAiResponse(userInput);
 
+			// UTF-8로 인코딩
+			byte[] bytes = response.getBytes(StandardCharsets.UTF_8);
+			return new String(bytes, StandardCharsets.UTF_8);
+		}
+		//아이디어 작성 ai
+		@RequestMapping(value = "/getAiResponse1", method = RequestMethod.POST, consumes = "application/json", produces = "application/json;charset=UTF-8")
+		@ResponseBody
+		public String getAiResponse(@RequestBody String payload, HttpSession session) {
+			Gson gson = new Gson();
+			Map<String, String> responseMap = new HashMap<>();
+
+			try {
+				// payload를 Map으로 변환
+				Map<String, String> requestMap = gson.fromJson(payload, Map.class);
+
+				String userInput = requestMap.get("userInput");
+				int roomId;
+				Object roomIdObj = requestMap.get("roomId");
+				if (roomIdObj instanceof Number) {
+					roomId = ((Number) roomIdObj).intValue();
+				} else if (roomIdObj instanceof String) {
+					roomId = Integer.parseInt((String) roomIdObj);
+				} else {
+					throw new IllegalArgumentException("Invalid roomId type");
+				}
+				int userId = (Integer) session.getAttribute("userId");
+
+				String response = aiService2.getAiResponse(userInput);
+
+				// AI 로그 저장
+				AiDao aiDao = sqlSession.getMapper(AiDao.class);
+				aiDao.insertAiLog(userId, roomId, userInput, response);
+
+				responseMap.put("aiResponse", response);
+			} catch (Exception e) {
+				System.err.println("Error in getAiResponse: " + e.getMessage());
+				e.printStackTrace();
+				responseMap.put("error", "An error occurred: " + e.getMessage());
+			}
+
+	// Map을 JSON 문자열로 변환하여 반환
+			return gson.toJson(responseMap);
+		}
+		//나의 ai 이력
+		@RequestMapping(value = "/getUserAiLog", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
+		@ResponseBody
+		public String getUserAiLog(@RequestParam("userId") int userId, @RequestParam("roomId") int roomId) {
+		    Gson gson = new Gson();
+		    try {
+		        AiDao aiDao = sqlSession.getMapper(AiDao.class);
+		        List<AiLogDto> logs = aiDao.getUserAilog(userId, roomId);
+		        String jsonResponse = gson.toJson(logs);
+		        // UTF-8로 인코딩
+		        byte[] bytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
+		        return new String(bytes, StandardCharsets.UTF_8);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        Map<String, String> errorResponse = new HashMap<>();
+		        errorResponse.put("error", "Error occurred: " + e.getMessage());
+		        String jsonError = gson.toJson(errorResponse);
+		        // 에러 응답도 UTF-8로 인코딩
+		        byte[] errorBytes = jsonError.getBytes(StandardCharsets.UTF_8);
+		        return new String(errorBytes, StandardCharsets.UTF_8);
+		    }
+		}
 	@RequestMapping("/makeRoom")
 	public String makeRoom(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
@@ -99,7 +188,6 @@ public class IdeaRoomController {
 	            command.execute(model);
 	         // 세션에서 에러 메시지를 가져와서 모델에 추가
 	            String errorMessage = (String) model.asMap().get("Message");
-	            System.out.println("이게 메세지다: " + errorMessage);
 	            if (errorMessage != null) {
 	                model.addAttribute("errorMessage", errorMessage);
 	                session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
@@ -116,12 +204,18 @@ public class IdeaRoomController {
 	    	case 4:
 				command = new StageThreeCommand(sqlSession);
 				command.execute(model);
+				// model.addAttribute("currentTab","smart");
 				return "redirect:/ideaOpinionsList";
 
 	        case 5:
 	            command = new ReportView(sqlSession);
 	            command.execute(model);
 	            return "report/roomStage7";
+	            
+	        case 6:
+	        	command = new StageEndCommand(sqlSession);
+	        	command.execute(model);
+	            return "firstMeeting/roomResult";
 
 	        default:
 	            return "main";

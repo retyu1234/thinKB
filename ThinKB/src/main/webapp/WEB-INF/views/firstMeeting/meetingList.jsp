@@ -226,28 +226,35 @@ body {
 }
 
 .no-room {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	background-color: white;
-	border-radius: 20px;
-	font-weight: bold;
-	align-items: center;
-	height: 300px;
-	margin-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 20px;
+    font-weight: bold;
+    height: 300px;
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 50px;
+    text-align: center;
 }
 
-.no-room .contents {
-	color: grey;
-	font-size: 20px;
-	text-align: center;
-	margin-bottom: 10px;
+.no-room-contents {
+    color: grey;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 10px;
+    width: 100%; /* 추가: 너비를 100%로 설정 */
 }
 
-.no-rooms .img {
-	width: 100px; /* 이미지 너비 조정 */
-	height: auto; /* 높이 자동 조정 */
-	margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
+.no-room-img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 10px;
+    display: block; /* 추가: 이미지를 블록 요소로 변경 */
+    margin-left: auto; /* 추가: 좌우 마진을 자동으로 설정 */
+    margin-right: auto; /* 추가: 좌우 마진을 자동으로 설정 */
 }
 
 .pagination {
@@ -441,14 +448,15 @@ body {
 		                </c:forEach>
 		            </c:if>
 		        </div>
-    </c:forEach>
-    <div class="no-room" style="display: none;">
-        <img src="./resources/noContent.png" alt="no Contents"
-            style="width: 100px; height: auto; margin-bottom: 10px;">
-        <div class="contents">선택한 단계의 회의방이 없어요.</div>
-        <div class="contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
-    </div>
-</div>
+    		</c:forEach>		
+		</div>
+		
+<!-- 회의방 없는경우 div따로 뺌 -->
+ 		<div class="no-room" style="display: none;">
+		    <img class="no-room-img" src="./resources/noContent.png" alt="no Contents">
+		    <div class="no-room-contents">선택한 단계의 회의방이 없어요.</div>
+		    <div class="no-room-contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
+		</div>
 
 
 		<!-- 페이지네이션 추가 -->
