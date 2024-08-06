@@ -362,17 +362,15 @@ h1 {
             var roomId = urlParams.get('roomId');
             var ideaId = urlParams.get('ideaId');
             
-            if (currentTab && roomId && ideaId) {
-                showTab(currentTab, '#FFE297', roomId, ideaId);
-            } else {
-                // URL 파라미터가 없는 경우 기본적으로 '객관적관점' 탭 활성화
-                showTab('tab-smart', '#FFE297', '${roomId}', '${ideaId}');
+            if (roomId && ideaId) {
+                if (currentTab) {
+                    // 사용자가 특정 탭을 선택한 경우
+                    showTab(currentTab, '#FFE297', roomId, ideaId);
+                } else {
+                    // 처음 페이지에 접속한 경우 (currentTab이 없는 경우)
+                    showTab('tab-smart', '#FFE297', roomId, ideaId);
+                }
             }
-            
-         	// 메시지 처리
-            <c:if test="${not empty message}">
-                alert('${message}');
-            </c:if>
         };
 
 /*         function getTabColor(tabName) {
@@ -431,6 +429,13 @@ h1 {
 
             // URL을 업데이트
             history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
+            
+         // URL 업데이트
+            if (tabName !== 'tab-smart' || (urlParams.get('currentTab') && urlParams.get('currentTab') !== 'tab-smart')) {
+                history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
+            } else {
+                history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}`);
+            }
         }
 
     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창

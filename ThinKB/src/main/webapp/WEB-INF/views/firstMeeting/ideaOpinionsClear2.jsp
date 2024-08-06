@@ -14,6 +14,7 @@
 	position: relative;
 	z-index: 2;
 	width: 70%;
+	text-align: center; 
 }
 .ideaList {
 	text-align: left; 
@@ -63,17 +64,24 @@ tr:hover {
 	font-weight: bold;
 }
 
-.button {
-	background-color: #4CAF50;
+/* 보고서 작성하러 가기 버튼 */
+.btn-write {
+	background-color: #FFCC00;
 	border: none;
-	color: white;
+	color: #000;
 	padding: 15px 32px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 13pt;
 	margin: 4px 2px;
 	cursor: pointer;
+	text-align: center; 
+	margin-top: 50px;"
+	margin: 0 auto;
+}
+.btn-write:hover {
+	background-color: #D4AA00;
 }
 </style>
 
@@ -115,8 +123,8 @@ tr:hover {
 	                </c:forEach>
 	            </table>
 				
-				<div style="text-align: center; margin-top: 50px;">
-					<button type="submit" class="button">보고서 작성하러가기</button>
+				<div>
+					<button type="submit" class="btn-write">보고서 작성하러가기</button>
 				</div>
 			</form>
 	</div>

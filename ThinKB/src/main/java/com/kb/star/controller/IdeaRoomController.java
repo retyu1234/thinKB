@@ -110,7 +110,7 @@ public class IdeaRoomController {
 	            command = new StageThreeCommand(sqlSession);
 	            command.execute(model);
 	            model.addAttribute("currentTab","smart");
-				return "redirect:/ideaOpinions";
+	            return "redirect:/ideaOpinions?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=smart";
 	            
 
 	    	case 4:

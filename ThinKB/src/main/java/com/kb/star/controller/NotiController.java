@@ -47,24 +47,30 @@ public class NotiController {
 	// 알림 목록 페이지
 	@RequestMapping("/noticeList")
 	public String noticeList(HttpServletRequest request, Model model, HttpSession session) {
-		System.out.println("NoticeController - noticeList");
 
 		Integer userId = (Integer) session.getAttribute("userId"); // 세션에 담긴 userId 가져오기
 
 		NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
 		// model.addAttribute("notifications", notiDao.getAllNoti(userId)); // 알림 목록 데이터
-		// 가져오기
+		
 		List<NotiDto> notifications = notiDao.getAllNoti(userId); // 알림 목록 데이터 가져오기
 
 		// 알림에 아이디어 제목 정보를 추가
 		for (NotiDto notification : notifications) {
-			Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
-			notification.setIdea(idea);
-
-			// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
-			MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
-			if (meetingRoom != null) {
-				notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+			if (notification.getIdeaID() != 0) {  // ideaID가 0이 아닌 경우에만 처리
+				Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
+				notification.setIdea(idea);
+				// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
+				MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
+				if (meetingRoom != null) {
+					notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+				}
+			} else { // ideaID가 0인 경우
+				// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
+				MeetingRooms meetingRoom = notiDao.getRoomTitleById(notification.getRoomId());
+				if (meetingRoom != null) {
+					notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+				}
 			}
 		}
 
