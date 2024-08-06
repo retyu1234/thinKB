@@ -362,6 +362,7 @@ input.room1-subject:focus {
     overflow-wrap: break-word;
     word-wrap: break-word;
     hyphens: auto;
+    
 }
 #descriptionContent pre {
     white-space: pre-wrap;
@@ -369,9 +370,84 @@ input.room1-subject:focus {
     max-width: 100%;
     margin: 0;
 }
+textarea.room1-subject {
+	font-size: 13pt;
+	color: black;
+	border: 3px solid lightgrey;
+	border-radius: 20px;
+	padding: 20px;
+	width: 100%;
+	box-sizing: border-box;
+	white-space: pre-wrap;
+	font-family: Arial, sans-serif; /* 원하는 폰트로 변경 */
+    font-size: 13pt;
+}
+
+textarea.room1-subject:focus {
+	border-color: #FFD700; /* 포커스 시 테두리 색상 */
+	outline: none; /* 기본 포커스 스타일 제거 */
+}
+.loading-hidden {
+  display: none;
+}
+
+#loading-screen {
+display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.thinking-brain {
+  font-size: 100px;
+  animation: pulse 1.5s infinite;
+}
+
+.loading-text {
+  font-size: 24px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.loading-dots span {
+  font-size: 36px;
+  animation: blink 1.4s infinite both;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
 </style>
 </head>
 <script>
+
 	function showResponse() {
 		const responseDiv = document.getElementById("kb-ai-response");
 		const responseText = document.getElementById("ai-response-text");
@@ -587,6 +663,15 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 </script>
 <script type="text/javascript">
+function showLoadingScreen() {
+	  document.getElementById('loading-screen').style.display = 'flex';
+	  document.getElementById('kb-ai-response').style.display = 'none';
+	}
+
+function hideLoadingScreen() {
+	  document.getElementById('loading-screen').style.display = 'none';
+	  document.getElementById('kb-ai-response').style.display = 'flex';
+	}
 function adjustResponseHeight() {
     const container = document.getElementById('kb-ai-response');
     const wrapper = document.getElementById('ai-response-wrapper');
@@ -663,10 +748,12 @@ function showOtherQuery() {
 function sendQuery() {
     const query = document.getElementById('query-input').value;
     const roomId = ${info.getRoomId()};
+
     sendAiRequest(query, roomId);
 }
 
 function sendAiRequest(query, roomId) {
+	showLoadingScreen();
     fetch('./getAiResponse1', {
         method: 'POST',
         headers: {
@@ -707,6 +794,7 @@ function sendAiRequest(query, roomId) {
             responseContainer.style.display = 'flex';
             responseWrapper.style.alignItems = 'flex-start';
             responseWrapper.style.justifyContent = 'flex-start';
+            hideLoadingScreen();
             adjustResponseHeight();
         } else {
             console.error('Response elements not found');
@@ -714,10 +802,12 @@ function sendAiRequest(query, roomId) {
     })
     .catch(error => {
         console.error('Error:', error);
+        
         const responseText = document.getElementById('ai-response-text');
         if (responseText) {
             responseText.innerHTML = `AI 응답을 가져오는 데 실패했습니다. 에러: ${error.message}`;
         }
+        hideLoadingScreen();
         adjustResponseHeight();
     });
 }
@@ -809,9 +899,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			<div class="titleAndDetail-detail">내가 작성한 아이디어에 대해 자세히 설명해주세요.</div>
 		</div>
 		<div style="margin-bottom: 50px;">
-			<input type="text" id="ideaDetailInput" class="room1-subject" style="height: 150px;"
-				name="ideaDetail" placeholder="여기에 작성해주세요" 
-				value="${result == true ? submittedIdea.getDescription() : ''}">
+<textarea id="ideaDetailInput" class="room1-subject" style="height: 150px;"
+    name="ideaDetail" placeholder="여기에 작성해주세요">${result == true ? submittedIdea.getDescription() : ''}</textarea>
 		</div>
 		
 	<!-- ai영역 -->
@@ -820,6 +909,17 @@ document.addEventListener('DOMContentLoaded', function() {
 			
 			<div class="titleAndDetail-detail">아래 AI에게 물어보기 버튼을 눌러 의견을 확인할 수 있어요.</div>
 		</div>
+		        <div id="loading-screen" style="display: none;">
+  <div class="loading-content">
+    <div class="thinking-brain">
+      🤔
+    </div>
+    <div class="loading-text">AI가 열심히 생각 중입니다...</div>
+    <div class="loading-dots">
+      <span>.</span><span>.</span><span>.</span>
+    </div>
+  </div>
+</div>
 <div id="kb-ai-response" class="kb-ai-response">
     <div class="ai-image-container">
         <img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot" class="ai-image">
