@@ -76,11 +76,11 @@ public class LoginController {
 		return "redirect:/mypage";
 	}
 	//관리자메인
-	@RequestMapping("/adminMain")
-	public String adminMain(HttpServletRequest request,Model model) {
-		
-		return "adminMain";
-	}
+//	@RequestMapping("/adminMain")
+//	public String adminMain(HttpServletRequest request,Model model) {
+//		
+//		return "adminMain";
+//	}
 	//로그아웃
 	@RequestMapping("/logout")
 	public String logout(HttpServletRequest request) {

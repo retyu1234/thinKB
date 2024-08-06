@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.kb.star.util.AdminDao">
+
+	<!-- 베스트 직원 목록(ID,이름,이미지)+토탈마일리지 가져오기 -->
+	<select id="getBestEmployees" resultType="com.kb.star.dto.AdminDto">
+		SELECT u.UserID, u.UserName, u.ProfileImg, a.TotalContribution
+        FROM Users u
+        JOIN (
+            SELECT UserID, SUM(ContributionCnt) AS TotalContribution
+            FROM MeetingRoomMembers
+            GROUP BY UserID
+            ORDER BY TotalContribution DESC
+        ) a ON u.UserID = a.UserID
+        ORDER BY a.TotalContribution DESC
+	</select>
+	
+	<!-- 베스트 사용횟수 팀 정보(팀ID, 팀이름, 사용횟수) 가져오기 -->
+	<select id="getBestUsage" resultType="com.kb.star.dto.AdminDto">
+        SELECT d.DepartmentID, d.DepartmentName, TopDepartments.DepartmentCount
+        FROM Departments d
+        JOIN (
+            SELECT DepartmentID, COUNT(*) AS DepartmentCount
+            FROM MeetingRooms
+            WHERE StageID = 6
+            GROUP BY DepartmentID
+            ORDER BY DepartmentCount DESC
+        ) AS TopDepartments
+        ON d.DepartmentID = TopDepartments.DepartmentID
+        ORDER BY TopDepartments.DepartmentCount DESC
+    </select>
+
+	
+
+</mapper>
