@@ -99,7 +99,6 @@ public class IdeaRoomController {
 	            command.execute(model);
 	         // 세션에서 에러 메시지를 가져와서 모델에 추가
 	            String errorMessage = (String) model.asMap().get("Message");
-	            System.out.println("이게 메세지다: " + errorMessage);
 	            if (errorMessage != null) {
 	                model.addAttribute("errorMessage", errorMessage);
 	                session.removeAttribute("Message"); // 에러 메시지를 세션에서 제거
@@ -132,6 +131,7 @@ public class IdeaRoomController {
 	public String submitIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
 			@RequestParam("myIdea") String myIdea, @RequestParam("ideaDetail") String ideaDetail,
 			@RequestParam("stage") int stage, Model model) {
+		System.out.println("submitIdea()실행되는지");
 		HttpSession session = request.getSession();
 		int userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("userId", userId);
@@ -149,6 +149,7 @@ public class IdeaRoomController {
 	public String updateIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
 			@RequestParam("myIdea") String myIdea, @RequestParam("ideaDetail") String ideaDetail,
 			@RequestParam("stage") int stage, Model model) {
+		System.out.println("/updateIdea()실행되는지");
 		HttpSession session = request.getSession();
 		int userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("userId", userId);
@@ -242,6 +243,10 @@ public class IdeaRoomController {
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
 
+		HttpSession session = request.getSession();
+		int id = (Integer) session.getAttribute("userId");
+		model.addAttribute("id", id);
+		
 		command = new ManagerIdeaListCommand(sqlSession);
 		command.execute(model);
 

@@ -189,47 +189,63 @@
 }
 
 .popup {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%); /* 화면의 가운데에 뜨게끔 설정 */
-	background: white;
-	padding: 40px;
-	min-height: 150px; /* 팝업창의 최소 높이 설정 */
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-	z-index: 1001;
-	color: #000; /* 텍스트 색상 검정으로 설정 */
-	text-align: center;
-	border: 4px solid #ffc107; /* 굵은 노란색 테두리 추가 */
-	box-sizing: border-box; /* 패딩과 테두리를 포함한 전체 크기 계산 */
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 30px;
+    min-width: 280px; /* 최소 너비를 줄임 */
+    min-height: 250px;
+    width: 60%; /* 화면 너비의 60%로 줄임 */
+    max-width: 400px; /* 최대 너비를 줄임 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    color: #000;
+    text-align: center;
+    border-radius: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 /* 삭제버튼 */
 .delete {
-	position: absolute;
-	top: 1px; /* 팝업창 상단에서의 거리 */
-	right: 1px; /* 팝업창 오른쪽에서의 거리 */
-	cursor: pointer;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 5px;
-	display: flex;
-	align-items: center; /* 세로로 가운데 정렬 */
-	justify-content: center; /* 가로로 가운데 정렬 */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 28px; /* X 버튼 크기 증가 */
+    width: 40px; /* 크기 증가 */
+    height: 40px; /* 크기 증가 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    transition: color 0.3s ease;
+}
+
+.delete::before {
+    content: "\00d7"; /* X 문자 */
+    color: #333;
+}
+
+.delete:hover::before {
+    color: #ff0000;
 }
 
 .popup img {
 	display: block;
 	margin: 0 auto 20px; /* 가운데 정렬 및 아래쪽 마진 추가 */
-	max-width: 100%; /* 이미지가 팝업창을 넘지 않도록 설정 */
-	height: auto; /* 이미지 비율 유지 */
+	/* max-width: 100%; */ /* 이미지가 팝업창을 넘지 않도록 설정 */
+	height: 100px; /* 이미지 비율 유지 */
+	width: auto;
 }
 
 .popup-message {
-	font-size: 1.3em;
+	font-size: 15pt;
 	margin-bottom: 15px;
 	/* font-weight: bold; */ /* 글자를 두껍게 설정 */
 }
@@ -516,6 +532,50 @@
     opacity: 1;
     transform: translateY(0);
 }
+.popup-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.button {
+    display: inline-block;
+    width: auto;
+    min-width: 120px; /* 최소 너비 설정 */
+    max-width: 80%; /* 최대 너비를 팝업의 80%로 제한 */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    font-size: 13pt;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.yellow-button {
+    background-color: #FFCC00;
+    color: black;
+}
+
+.yellow-button:hover {
+    background-color: #D4AA00;
+}
+
+.grey-button {
+    background-color: #978A8F;
+    color: white;
+}
+
+.grey-button:hover {
+    background-color: #60584C;
+}
+
 </style>
 <!-- FullCalendar CSS -->
 <link
@@ -783,14 +843,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		<!-- 팝업창 추가 -->
 			<div class="popup-overlay">
 			    <div class="popup">
-			    	<div class="delete">
-			    		<img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
-			    	</div>
-			    	<img id="popup-image" src="" style="display: none; width: 200px; height: 170px;">
+			        <div class="delete"></div>
+			        <img id="popup-image" src="" style="display: none; width: 180px; height: 150px;">
 			        <p class="popup-message"></p>
-			        <div style="text-align: right; margin-bottom: 5px;"><a href="./noticeList">알림함 바로가기</a></div>
-			        <button class="popup-dont-show">오늘 하루 보지 않기</button>
-			        <button class="popup-close">닫기</button>
+			        <div class="popup-buttons">
+					    <a href="./noticeList" class="button yellow-button">알림함 바로가기</a>
+					    <button class="button grey-button">오늘 하루 보지 않기</button>
+					</div>
 			    </div>
 			</div>
 	</div>
@@ -958,8 +1017,8 @@ $(document).ready(function() {
 	    var unreadCount = ${unreadCount}; 
 	    console.log("Unread Count:", unreadCount);
 	    if (unreadCount > 0) {
-	    	$('#popup-image').attr('src', './resources/bibi1.png').show(); // 이미지 URL 설정
-	        $('.popup-message').text("읽지 않은 " + unreadCount + "개의 알림이 도착 !");
+	    	$('#popup-image').attr('src', './resources/Alarm.png').show(); // 이미지 URL 설정
+	        $('.popup-message').text("읽지 않은 알림이 " + unreadCount + "개 있어요!");
 	        $('.popup-overlay').show();
 	    }
 	}
