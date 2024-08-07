@@ -576,6 +576,69 @@
     background-color: #60584C;
 }
 
+
+
+
+/* 세번째 줄 */
+.best-sections-wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+
+.best-section {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 30px;
+    padding: 20px;
+    margin: 0 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.best-content {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.best-item {
+    text-align: center;
+    margin: 0 5px;
+}
+
+.profile-container {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 10px;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.medal {
+    position: absolute;
+    bottom: -2px;
+    left: -3px;
+    width: 20px;
+    height: 30px;
+}
+
+.best-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.best-description {
+    font-size: 12px;
+    color: #666;
+}
+
 </style>
 <!-- FullCalendar CSS -->
 <link
@@ -840,6 +903,80 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 		</div>
+		
+		<!-- 3번째 줄 -->
+		<div class="best-sections-wrapper fade-in">
+		    <div class="best-section">
+		        <div class="section-header">
+		            <div class="section-title">🏆 베스트 직원</div>
+		        </div>
+		        <div class="best-content">
+				    <c:forEach var="employee" items="${bestEmployees}" varStatus="status">
+				        <div class="best-item">
+				            <div class="profile-container">
+				            	<c:url var="profileImgUrl" value="/upload/${employee.profileImg}" />
+               					<img src="${profileImgUrl}" alt="${employee.userName}" class="profile-image">
+				                
+				                <c:choose>
+				                    <c:when test="${status.index == 0}">
+				                        <img src="<c:url value='/resources/gold-medal.png' />" alt="금메달" class="medal">
+				                    </c:when>
+				                    <c:when test="${status.index == 1}">
+				                        <img src="<c:url value='/resources/silver-medal.png' />" alt="은메달" class="medal">
+				                    </c:when>
+				                    <c:otherwise>
+				                        <img src="<c:url value='/resources/bronze-medal.png' />" alt="동메달" class="medal">
+				                    </c:otherwise>
+				                </c:choose>
+				                
+				            </div>
+				            <p class="best-name">${employee.userName}</p>
+				            <p class="best-description">기여도: ${employee.totalContribution}</p>
+				        </div>
+				    </c:forEach>
+				</div>
+		    </div>
+		    <div class="best-section">
+			    <div class="section-header">
+			        <div class="section-title">📈 베스트 사용량</div>
+			    </div>
+			    <div class="best-content">
+			        <c:forEach var="usage" items="${bestUsage}" varStatus="status">
+			            <div class="best-item">
+			                <div class="profile-container">
+			                    <img src="<c:url value='/resources/department${status.index + 1}.png' />" alt="${usage.departmentName}" class="profile-image">
+			                </div>
+			                <p class="best-name">${usage.departmentName}</p>
+			                <p class="best-description">사용 횟수: ${usage.departmentCount}</p>
+			            </div>
+			        </c:forEach>
+			    </div>
+			</div>
+		    <div class="best-section">
+		        <div class="section-header">
+		            <div class="section-title">👥 베스트 팀</div>
+		        </div>
+		        <%-- <div class="best-content">
+		            <div class="best-item">
+		                <img src="<c:url value='/resources/team1.png' />" alt="1등 팀" class="profile-image">
+		                <p class="best-name">혁신팀</p>
+		                <p class="best-description">최고 성과</p>
+		            </div>
+		            <div class="best-item">
+		                <img src="<c:url value='/resources/team2.png' />" alt="2등 팀" class="profile-image">
+		                <p class="best-name">기획팀</p>
+		                <p class="best-description">창의적 기획</p>
+		            </div>
+		            <div class="best-item">
+		                <img src="<c:url value='/resources/team3.png' />" alt="3등 팀" class="profile-image">
+		                <p class="best-name">개발팀</p>
+		                <p class="best-description">빠른 실행력</p>
+		            </div>
+		        </div> --%>
+		    </div>
+		</div>
+				
+		
 		<!-- 팝업창 추가 -->
 			<div class="popup-overlay">
 			    <div class="popup">

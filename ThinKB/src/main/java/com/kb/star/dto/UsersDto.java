@@ -13,6 +13,7 @@ public class UsersDto {
 	private boolean isAdmin;
 	private String profileImg;
 	
+	
 	public int getUserId() {
 		return userId;
 	}
@@ -73,6 +74,5 @@ public class UsersDto {
 	public void setProfileImg(String profileImg) {
 		this.profileImg = profileImg;
 	}
-	
 	
 }

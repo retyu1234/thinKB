@@ -42,7 +42,6 @@
 	background-color:#ffffff;
 	z-index: 1000;
 }
-
 .logo img {
 	height: 40px;
 }
@@ -372,7 +371,7 @@
                 <a href="./noticeList">알림함</a> 
                 <a href="./AorBList">A/B테스트</a> 
                 <a href="./voteList">투표</a>
-                <a href="./pinList">핀메모(수정중)</a>
+                <a href="./pinList">핀메모</a>
             </div>
             <div class="right-section">
             <div class="profile">

@@ -13,21 +13,28 @@
 	margin-right: 15%;
 	position: relative;
 	z-index: 2;
+	width: 70%;
+	text-align: center; 
 }
-
-body {
-    padding-top: 100px;
+.ideaList {
+	text-align: left; 
+	margin-top: 50px;
+	width: 70%;
+	font-weight: bold;
+	font-size: 18pt;
 }
 
 table {
 	width: 70%;
 	margin-left: auto;
     margin-right: auto;
+    font-size: 13pt;
 }
 
 th, td {
 	border: 1px solid #ddd;
-	padding: 8px;
+	padding: 10px; /* padding을 사용하여 셀 내부의 여백을 추가 */
+    height: 40px; /* 각 셀의 최소 높이를 50px로 설정 */
 	text-align: center;
 }
 
@@ -44,21 +51,6 @@ tr:hover {
 	background-color: #f5f5f5;
 }
 
-.rank-1, .rank-2, .rank-3 {
-	font-weight: bold;
-}
-
-.rank-1 {
-	color: gold;
-	font-weight: bold;
-	font-size: 13pt;
-}
-
-.rank-2 {
-	color: silver;
-	font-weight: bold;
-	font-size: 13pt;
-}
 
 .timer-container {
 	margin-top: 30px;
@@ -72,36 +64,44 @@ tr:hover {
 	font-weight: bold;
 }
 
-.button {
-	background-color: #4CAF50;
+/* 보고서 작성하러 가기 버튼 */
+.btn-write {
+	background-color: #FFCC00;
 	border: none;
-	color: white;
+	color: #000;
 	padding: 15px 32px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 13pt;
 	margin: 4px 2px;
 	cursor: pointer;
+	text-align: center; 
+	margin-top: 50px;"
+	margin: 0 auto;
+}
+.btn-write:hover {
+	background-color: #D4AA00;
 }
 </style>
 
 </head>
-<body>
-	<%@ include file="../header.jsp"%>
-	
-	<c:if test="${userId == meetingRoom.roomManagerId}">
-	<%@ include file="../sideBar.jsp"%></c:if>
+<body style="margin: 0;">
+	<div class="stage3-header">
+		<%@ include file="../header.jsp"%>
+	</div>
+	<%@ include file="../leftSideBar.jsp"%>
+	<%@ include file="../rightSideBar.jsp"%>
 
 	<div class="content-container">
-		<h1>보고서 작성 설정</h1>
 
 			<form action="./goStage5" id="goStage5" method="get">
 				<input type="hidden" name="roomId" value="${roomId}">
 				<input type="hidden" name="ideaId" value="${ideaId}"> 
 				<input type="hidden" name="stage" value=5>
-				<h2 style="text-align: left; margin-top: 50px;">아이디어 목록</h2>
+				
 	            <table>
+	           	 	<div class="ideaList" style="margin-left: 230px; margin-bottom: 30px;"> 아이디어 목록 - 완료여부</div>
 	                <tr>
 	                    <th>아이디어 제목</th>
 	                    <th>2차의견 완료 여부</th>
@@ -110,17 +110,21 @@ tr:hover {
 	                    <tr>
 	                        <td>${idea.title}</td>
 	                        <td>
-	                            <c:choose>
-	                                <c:when test="${idea.stageID == 5}">완료</c:when>
-	                                <c:when test="${idea.stageID == 4}">진행중</c:when>
-	                            </c:choose>
+	                             <c:choose>
+							        <c:when test="${idea.stageID == 5}">
+							            <span style="color: blue;">완료</span>
+							        </c:when>
+							        <c:when test="${idea.stageID == 4}">
+							            <span style="color: red;">진행중</span>
+							        </c:when>
+							    </c:choose>
 	                        </td>
 	                    </tr>
 	                </c:forEach>
 	            </table>
 				
-				<div style="text-align: center;">
-					<button type="submit" class="button">보고서 작성하러가기</button>
+				<div>
+					<button type="submit" class="btn-write">보고서 작성하러가기</button>
 				</div>
 			</form>
 	</div>
@@ -156,4 +160,3 @@ document.getElementById('goStage5').addEventListener('submit', function(e) {
 	
 </body>
 </html>
-

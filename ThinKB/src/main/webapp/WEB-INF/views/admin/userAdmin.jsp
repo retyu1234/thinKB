@@ -187,10 +187,10 @@
 
 		<div class="employee-list-container">
 			<div class="employee-list-header">
+                <div class="employee-header-item">부서</div>
+				<div class="employee-header-item">팀</div>
 				<div class="employee-header-item">직원명</div>
 				<div class="employee-header-item">직원번호</div>
-				<div class="employee-header-item">부서</div>
-				<div class="employee-header-item">팀</div>
 				<div class="employee-header-item">이메일</div>
 				<div class="employee-header-item">삭제</div>
 			</div>
@@ -200,10 +200,10 @@
 						<c:when
 							test="${employee.isDelete == null ? false : !employee.isDelete && employee.userId != 1}">
 							<div class="employee-item">
-								<div class="employee-info">${employee.userName}</div>
-								<div class="employee-info">${employee.userId}</div>
 								<div class="employee-info">${employee.departmentName}</div>
 								<div class="employee-info">${employee.teamName}</div>
+								<div class="employee-info">${employee.userName}</div>
+								<div class="employee-info">${employee.userId}</div>
 								<div class="employee-info">${employee.email}</div>
 								<div class="employee-info">
 									<button class="employee-delete-button"
