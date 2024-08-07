@@ -42,7 +42,6 @@
 	background-color:#ffffff;
 	z-index: 1000;
 }
-
 .logo img {
 	height: 40px;
 }

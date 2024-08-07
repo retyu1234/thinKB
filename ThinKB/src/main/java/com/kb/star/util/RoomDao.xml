@@ -270,7 +270,7 @@
 <select id="ideaPickNum" resultType="com.kb.star.dto.Ideas">
 	SELECT t.IdeaID, t.UserID, t.RoomID, t.Title, t.Description, t.IsDelete, t.StageID, t.PickNum, t.isReject from
 	(SELECT i.*, COALESCE(SUM(m.ContributionCnt), 0) AS TotalContribution FROM Ideas i LEFT JOIN MeetingRoomMembers m 
-	ON i.UserID = m.UserID WHERE i.RoomID = #{param1} AND i.IsDelete = 0 AND i.StageID = 1 AND i.isReject = 0 GROUP BY i.UserID, i.IdeaID
+	ON i.UserID = m.UserID WHERE i.RoomID = #{param1} AND i.IsDelete = 0 AND i.isReject = 0 GROUP BY i.UserID, i.IdeaID
 	ORDER by PickNum desc, TotalContribution desc) t
 </select>
 

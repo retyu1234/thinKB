@@ -12,7 +12,7 @@
     font-family: Arial, sans-serif;
     width: 60%;
     margin: 0 auto; /* 가운데 정렬을 위한 설정 */
-    margin-top: 120px;
+    margin-top: 50px;
 }
 
 .notification-container {
@@ -26,7 +26,6 @@
     background-color: #ffc107;
     padding: 20px; /* 패딩 두께 증가 */
     border-radius: 5px;
-    font-size: 1.2em; /* 글자 크기 증가 */
 }
 
 .noticeListheader img {
@@ -46,7 +45,7 @@
 .tab {
     padding: 15px 30px; /* 탭 두께 증가 */
     cursor: pointer;
-    font-size: 1.2em; /* 글자 크기 증가 */
+    font-size: 15pt;
     /* background-color: #f0f0f0; /* 기본 탭 색상 */ */
     margin-right: 5px; /* 탭 간격 */
     border-radius: 5px;
@@ -78,7 +77,7 @@
     border-radius: 5px;
     background-color: #fff8e1;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    font-size: 1.1em; /* 글자 크기 증가 */
+    font-size: 13pt;
     cursor: pointer;
 }
 
@@ -98,13 +97,15 @@
 
 /* 아이디어 제목 */
 .title {
+	font-size: 15pt;
     font-weight: bold; 
-    font-size: 1.3em; 
-    margin-bottom: 20px;
     color : #333333;
+    display: flex;
+    align-items: center;
 }
 /* 날짜 */
 .notification-date  {
+	font-size: 10pt;
     right: 10px; /* 오른쪽 여백 설정 */
     text-align: right;
 	align-self: flex-end;
@@ -205,20 +206,19 @@
     background-color: #e0a800;
 }
 
-.yellow-button {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
+/* 모두 읽음 버튼 */
+.btn-allRead {
+	background-color: #FFCC00;
+	color: #000;
 	padding: 10px 20px; /* 버튼의 여백 */
 	border: none; /* 테두리 없음 */
 	border-radius: 10px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
+	font-size: 13pt; 
 	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
 	font-weight: bold;
 }
-
-.yellow-button:hover {
-	background-color: #696969;
-	color: white;
+.btn-allRead:hover {
+	background-color: #D4AA00;
 }
 
 </style>
@@ -227,19 +227,19 @@
 <%@ include file="../header.jsp"%>
 <div class="noticeListBody">
     <div class="notification-container">
-        <div class="noticeListheader">
+        <%-- <div class="noticeListheader">
             <div>
                 <img src="./resources/bell.png" alt="알림">
             </div>
             <c:set var="userName" value="${sessionScope.userName}" />
             <div class="user">${userName}님</div> <!-- 세션의 userName 출력 -->
-        </div>
+        </div> --%>
      <!-- 모두읽음 버튼 추가 -->   
 	<div style="margin: 20px;">
         <form id="allReadForm" action="./allRead" method="post">
 		    <input type="hidden" name="userId" value="${userId}">
 		    <div style="text-align: right;">
-		        <button type="submit" class="yellow-button">모두 읽음</button>
+		        <button type="submit" class="btn-allRead">모두 읽음</button>
 		    </div>
 		</form>
 	</div>
@@ -257,24 +257,34 @@
     </div>
 
     <div class="notification-list">
-	    <c:forEach var="notification" items="${notifications}">
-	        <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
-	            <div class="notification-content">
-	            <c:if test="${notification.getIdeaID() != 0}">
-	                <div class="title">대상 아이디어: [${notification.idea.title}]</div>
-	            </c:if>
-	                <div><p>${notification.message}</p></div>
-	                <div>회의방 제목: ${notification.roomTitle}</div>
-	            </div>
-	            <div class="notification-date">
-	            	<div class="delete" data-id="${notification.notificationID}">
-					    <img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
-					</div>
-	                <div class="date">${notification.createdAt}</div>
-	            </div>
-	        </div>
-	    </c:forEach>
-	</div>
+    <c:forEach var="notification" items="${notifications}">
+        <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
+           <div class="notification-content">
+                <c:choose>
+                    <c:when test="${notification.getIdeaID() != 0}">
+                        <div class="title">
+                        	<img src="./resources/idea.png" style="width:40px; height:40px; margin-right:7px;" alt="아이디어제목"> 
+                        	[${notification.idea.title}]
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                    	<div class="title">
+                    		<img src="./resources/meeting.png" style="width:35px; height:35px; margin-right:10px;" alt="회의방제목"> 
+                        	 [${notification.roomTitle}]
+                        </div>
+                    </c:otherwise>
+                </c:choose>
+                <div style="margin-left: 40px;">${notification.message}</div>
+            </div>
+            <div class="notification-date">
+                <div class="delete" data-id="${notification.notificationID}">
+                    <img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
+                </div>
+                <div class="date">${notification.createdAt}</div>
+            </div>
+        </div>
+    </c:forEach>
+</div>
 </div>
 
 <!-- 모달 창 -->
@@ -343,6 +353,9 @@ $(document).ready(function() {
         
         // 알림을 읽음 상태로 업데이트
         // window.location.href = `./updateRead/\${notificationId}`;
+        
+     	// 화면 유지하기 위해 스크롤 위치 저장
+        localStorage.setItem('scrollPosition', $(window).scrollTop());
     });
     
 	 // 알림 삭제 기능
@@ -371,6 +384,13 @@ $(document).ready(function() {
             window.location.href = `./updateRead/\${currentNotificationId}`;
         }
     });
+    
+ 	// 스크롤 위치 복원
+    if (localStorage.getItem('scrollPosition') !== null) {
+        $(window).scrollTop(localStorage.getItem('scrollPosition'));
+        localStorage.removeItem('scrollPosition');
+    }
+ 	
 });
 </script>
 </body>

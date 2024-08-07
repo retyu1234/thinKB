@@ -1,29 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ThinkKB</title>
+<title>thinKB - 보고서 목록</title>
 <style>
-.reportList-body {
-	font-family: Arial, sans-serif;
-	background-color: #FFFFff;
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
 }
-.content {
+.report-body {
+	font-family: Arial, sans-serif;
+}
+
+.report-banner {
+	margin-top: 50px; /* content 영역의 여백 설정 */
+	margin-left: 15%;
+	margin-right: 15%;
+	margin-top: 1%;
+}
+
+.report-content {
 	padding: 20px;
 	margin-left: 17%;
 	margin-right: 17%;
 	margin-top: 1%;
 }
-.container {
-	width: 60%;
-	margin: 0 auto;
-	background-color: white;
-	padding: 20px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
 
 .user-info p {
 	margin: 0;
@@ -36,109 +40,145 @@
 }
 
 .progress-container {
-	display: flex;
-	justify-content: center;
-	margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
 }
 
 .progress {
-	background-color: #ffffff;
-	padding: 10px;
-	border-radius: 25px;
-	display: flex;
-	justify-content: space-around;
-	height: 50px;
-	width: 80%;
-	border: 1px solid #ccc;
-	font-size: 1.3em;
-	justify-content: flex-start; /* 전체 컨테이너에서 왼쪽 정렬 */
+    background-color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: 80%;
+    border: 1px solid #ccc;
+    font-size: 1.1em;
+    margin-bottom: 50px;
 }
 
 .progress label {
-	display: flex;
-	align-items: center;
-	margin-left: 40px; /* 레이블 간의 간격 조정 */
+    display: flex;
+    align-items: center;
+    margin: 0 50px;
 }
 
 .progress input {
-	margin-right: 5px;
+    margin-right: 5px;
 }
 
-/* 진행중인 단계 */
+/* 진행중인 단계 스타일은 그대로 유지 */
 .progress-header-container {
-	display: flex;
-	justify-content: left;
-	width: 80%;
-	margin: 0 auto;
-	margin-top: 50px;
-	
+    display: flex;
+    justify-content: left;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 10px;
 }
 
 .progress-header {
-	margin: 0;
-	padding: 10px 0;
-	
+    margin: 0;
+    padding: 10px 0;
 }
 /*  */
-.ideas {
-	margin: 70px 20px;
+.reports {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 0;
+    width: 100%;
 }
 
-.idea {
-	padding: 20px 20px;
-	background-color: #ffffff;
-	border-radius: 10px;
-	margin-top: 30px;
-	margin-left: auto;
-	margin-right: auto;
-	height: 100px;
-	width: 80%;
-	border: none;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 1.2em; /* 글자 크기를 키움 */
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+.report {
+    width: calc(50% - 15px);
+    min-height: 200px;
+    padding: 15px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; 
+    margin-bottom: 20px;
 }
 
-.noIdea {
-	padding: 20px 20px;
-	background-color: #ffffff;
-	border-radius: 10px;
-	margin-top: 30px;
-	margin-left: auto;
-	margin-right: auto;
-	height: 100px;
-	width: 80%;
-	border: none;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	font-size: 1.2em; /* 글자 크기를 키움 */
+.report:hover {
+    transform: translateY(-5px);
 }
 
-.idea h3, .idea p {
-	margin: 0;
+/* 추가: 화면 크기가 작아질 때 한 줄에 하나씩 표시 */
+@media (max-width: 768px) {
+    .report {
+        width: 100%;
+    }
 }
 
-.idea-left {
-	text-align: left;
+.report.complete {
+    background-color: #f0f0f0;
 }
 
-.idea-right {
-	text-align: right;
-	align-self: flex-end;
-	justify-content: flex-end;
-	display: flex;
-	flex-direction: column;
-}
-.idea.complete {
-    background-color: #CEFBC9; /* 완료 색상 */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.report.draft {
+    background-color: #fffbe6;
 }
 
-.idea.draft {
-    background-color: #FFFFFF; /* 작성중 색상 */
+.status-tag {
+    align-self: flex-start;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 11pt;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.report.complete .status-tag {
+    background-color: #4a4a4a;
+    color: white;
+}
+
+.report.draft .status-tag {
+    background-color: #ffd700;
+    color: black;
+}
+
+.report-title {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.related-room {
+    color: blue;
+    font-size: 10pt;
+    margin-bottom: 5px;
+}
+
+.room-title-container {
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.room-title {
+    font-size: 13pt;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.report-action {
+    font-size: 11pt;
+    text-align: right;
+    margin-top: auto;
 }
 .yellow-button {
 	background-color: #ffc107;
@@ -158,9 +198,18 @@
 </style>
 </head>
 
-<body class="reportList-body">
+<body class="report-body">
+	<!-- 헤더 영역 -->
 	<%@ include file="../header.jsp"%>
-	<div class="content">
+	
+	<!-- 상단 배너영역 -->
+	<div class="report-banner">
+		<img src="<c:url value='./resources/myReportBanner.png'/>" alt="abtestBanner" 
+		style="max-width: 100%; height: auto;">
+	</div>
+	
+	<!-- 단계별 조회 -->
+	<div class="report-content">
 	<div class="progress-header-container">
 		<h2 class="progress-header">진행중인 단계</h2>
 	</div>
@@ -173,88 +222,95 @@
 				onchange="filterIdeas()"> 작성완료</label>
 		</div>
 	</div>
-	<div class="ideas">
-		<c:choose>
-			<c:when test="${not empty reportList}">
-				<c:forEach var="report" items="${reportList}">
-					<div
-						class="idea ${report.stageId == 6 ? 'complete' : report.stageId == 5 ? 'draft' : ''}"
-						onclick="handleIdeaClick('${report.stageId}', '${report.reportId}', '${report.roomId}')">
-						<div class="idea-left">
-							<h3>${report.reportTitle}</h3>
-							<br>
-						</div>
-						<div class="idea-right">
-							<p>${report.stageId == 6 ? '완료' : '작성중'}</p>
-						</div>
-					</div>
-				</c:forEach>
-			</c:when>
-			<c:otherwise>
-				<div class="noIdea">
-					<p>리스트가 없습니다.</p>
-				</div>
-			</c:otherwise>
-		</c:choose>
+	
+	<!-- 보고서 목록 -->
+<%-- 	<div class="reports">
+	    <c:choose>
+	        <c:when test="${not empty reportList}">
+	            <c:forEach var="report" items="${reportList}" varStatus="status">
+	                <div class="report ${report.stageId == 6 ? 'complete' : report.stageId == 5 ? 'draft' : ''}"
+	                    onclick="handleIdeaClick('${report.stageId}', '${report.reportId}', '${report.roomId}')">
+	                    <div class="report-left">
+	                        <h3>${report.reportTitle}</h3>
+	                        <h3>${report.getRoomTitle()}</h3>
+	                    </div>
+	                    <div class="report-right">
+	                        <p>${report.stageId == 6 ? '완료' : '작성중'}</p>
+	                    </div>
+	                </div>
+	            </c:forEach>
+	        </c:when>
+	        <c:otherwise>
+	            <div class="noReport">
+	                <p>리스트가 없습니다.</p>
+	            </div>
+	        </c:otherwise>
+	    </c:choose>
+	</div> --%>
+	<!-- 보고서 목록 -->
+	<div class="reports">
+	    <c:forEach var="report" items="${reportList}" varStatus="status">
+	        <div class="report ${report.getStatus() == '완료' ? 'complete' : 'draft'}"
+	             onclick="handleIdeaClick('${report.stageId}', '${report.reportId}', '${report.roomId}')">
+	            <div class="status-tag">${report.getStatus() == '완료' ? '제출 완료' : '작성중'}</div>
+	            <h3 class="report-title">${report.getReportTitle()}</h3>
+	            <p class="related-room">연결된 아이디어 회의방</p>
+	            <div class="room-title-container">
+	                <p class="room-title">${report.getRoomTitle()}</p>
+	            </div>
+	            <p class="report-action">
+	                ${report.getStatus() == '완료' ? '보고서 다운로드' : '보고서 수정하러가기'}
+	            </p>
+	        </div>
+	    </c:forEach>
 	</div>
+	
 </div>
 	<script>
-		function handleIdeaClick(stageId, reportId, roomId) {
-		    if (stageId == 5) {
-		        window.location.href = '/editReport?reportId=' + reportId;
-		    } else if (stageId == 6) {
-		        // 다운로드 확인을 위한 alert
-		        var userConfirmed = window.confirm('보고서를 다운받으시겠습니까?');
-		        if (userConfirmed) {
-		            window.location.href = './upload/formData_' + roomId + '.docx';
-		        }
-		    }
-		}
+	function filterIdeas() {
+	    var checkboxes = document.querySelectorAll('.progress input');
+	    var reports = document.querySelectorAll('.report'); // '.idea'를 '.report'로 변경
+	    var stageFilters = {
+	        'draft': false,
+	        'complete': false
+	    };
 
-		function filterIdeas() {
-			var checkboxes = document.querySelectorAll('.progress input');
-			var ideas = document.querySelectorAll('.idea');
-			var stageFilters = {
-				'draft' : false,
-				'complete' : false
-			};
+	    checkboxes.forEach(function(checkbox) {
+	        if (checkbox.checked) {
+	            var stage = checkbox.getAttribute('data-stage');
+	            if (stageFilters.hasOwnProperty(stage)) {
+	                stageFilters[stage] = true;
+	            }
+	        }
+	    });
 
-			checkboxes.forEach(function(checkbox) {
-				if (checkbox.checked) {
-					var stage = checkbox.getAttribute('data-stage');
-					if (stageFilters.hasOwnProperty(stage)) {
-						stageFilters[stage] = true;
-					}
-				}
-			});
+	    var draftChecked = stageFilters['draft'];
+	    var completeChecked = stageFilters['complete'];
+	    var anyFilterChecked = draftChecked || completeChecked;
 
-			var draftChecked = stageFilters['draft'];
-			var completeChecked = stageFilters['complete'];
-			var anyFilterChecked = draftChecked || completeChecked;
+	    reports.forEach(function(report) { // 'idea'를 'report'로 변경
+	        var reportStage = report.classList.contains('draft') ? 'draft'
+	                : report.classList.contains('complete') ? 'complete'
+	                : null;
+	        if (reportStage && stageFilters[reportStage]) {
+	            report.style.display = 'flex';
+	        } else if (!anyFilterChecked) {
+	            report.style.display = 'flex';
+	        } else {
+	            report.style.display = 'none';
+	        }
+	    });
 
-			ideas.forEach(function(idea) {
-				var ideaStage = idea.classList.contains('draft') ? 'draft'
-						: idea.classList.contains('complete') ? 'complete'
-								: null;
-				if (ideaStage && stageFilters[ideaStage]) {
-					idea.style.display = 'flex';
-				} else if (!anyFilterChecked) {
-					idea.style.display = 'flex';
-				} else {
-					idea.style.display = 'none';
-				}
-			});
-
-			// 전체 체크박스 상태 업데이트
-			var selectAllCheckbox = document.getElementById('selectAll');
-			if (draftChecked && completeChecked) {
-				selectAllCheckbox.checked = true;
-			} else if (!draftChecked && !completeChecked) {
-				selectAllCheckbox.checked = false;
-			} else {
-				selectAllCheckbox.indeterminate = true;
-			}
-		}
+	    // 전체 체크박스 상태 업데이트
+	    var selectAllCheckbox = document.getElementById('selectAll');
+	    if (draftChecked && completeChecked) {
+	        selectAllCheckbox.checked = true;
+	    } else if (!draftChecked && !completeChecked) {
+	        selectAllCheckbox.checked = false;
+	    } else {
+	        selectAllCheckbox.indeterminate = true;
+	    }
+	}
 
 		function toggleAll() {
 			var selectAllCheckbox = document.getElementById('selectAll');
@@ -280,6 +336,18 @@
 			});
 			filterIdeas();
 		});
+		
+		function handleIdeaClick(stageId, reportId, roomId) {
+		    if (stageId != 6) {
+		        window.location.href = '/editReport?reportId=' + reportId;
+		    } else if (stageId == 6) {
+		        // 다운로드 확인을 위한 alert
+		        var userConfirmed = window.confirm('보고서를 다운받으시겠습니까?');
+		        if (userConfirmed) {
+		            window.location.href = './upload/formData_' + roomId + '.docx';
+		        }
+		    }
+		}
 	</script>
 	</body>
 </html>

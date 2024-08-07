@@ -1,5 +1,7 @@
 package com.kb.star.command.roomManger;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +15,7 @@ import com.kb.star.command.room.RoomCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.TimersDto;
+import com.kb.star.dto.UsersDto;
 import com.kb.star.util.RoomDao;
 
 public class RoomManagement implements RoomCommand {
@@ -36,6 +39,17 @@ public class RoomManagement implements RoomCommand {
 		model.addAttribute("timers",dto1);
 		model.addAttribute("ideas",dto2);
 		model.addAttribute("roomId",roomId);
+		List<Integer> userIdList = dao.roomIdFormember(roomId);
+		List<UsersDto> userList = new ArrayList<UsersDto>();
+		for(int ids : userIdList) {
+			UsersDto user = dao.whosMember(ids);
+			if(user != null) {
+				userList.add(user);
+			}
+		}
+		model.addAttribute("userList", userList);
+		String timer = dao.roomTimerInfo(roomId);
+		model.addAttribute("timer", timer);
 		
 	}
 

@@ -11,11 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.kb.star.command.login.LoginCommand;
+import com.kb.star.dto.BestDto;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.ReportsDto;
 import com.kb.star.dto.TodoDto;
+import com.kb.star.util.BestDao;
 import com.kb.star.util.NotiDao;
 import com.kb.star.util.ReportDao;
 import com.kb.star.util.UserDao;
@@ -82,8 +84,7 @@ public class UserInfoCommand implements LoginCommand {
 
 		List<ReportsDto> repoDto = repoDao.getMyReportList(id);
 		model.addAttribute("reportList", repoDto);
-
-		// 추가 필요한 정보있으면 밑에 추가
+		
 
 		// 아이디어 목록을 저장할 맵
 		Map<Integer, List<Ideas>> roomIdeasMap = new HashMap<>();
@@ -93,6 +94,19 @@ public class UserInfoCommand implements LoginCommand {
 			roomIdeasMap.put(room.getRoomId(), ideasList);
 		}
 		model.addAttribute("roomIdeasMap", roomIdeasMap);
+		
+		
+		// 베스트 
+		BestDao bestDao = sqlSession.getMapper(BestDao.class);
+		
+		// 베스트 직원
+		List<BestDto> bestEmployees = bestDao.getBestEmployees();
+	    model.addAttribute("bestEmployees", bestEmployees);
+	    
+	    // 베스트 사용량 팀
+	    List<BestDto> bestUsage = bestDao.getBestUsage();
+	    model.addAttribute("bestUsage", bestUsage);
+		
 	}
 
 }

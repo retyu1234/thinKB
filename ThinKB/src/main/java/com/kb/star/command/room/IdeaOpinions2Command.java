@@ -1,5 +1,6 @@
 package com.kb.star.command.room;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
+import com.kb.star.dto.UsersDto;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
 
@@ -75,9 +77,15 @@ public class IdeaOpinions2Command implements RoomCommand {
         List<IdeaOpinionsDto> previousStrictOpinions = ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, "Strict");
 
         // 현재 탭에 이미 의견을 작성했는지 확인
-        String currentTab = map.get("currentTab").toString();
+        String currentTab = (String) map.get("currentTab");
+        if (currentTab == null || currentTab.isEmpty()) {
+            currentTab = "tab-smart"; // 기본값으로 '객관적관점' 탭 설정
+        }
+        model.addAttribute("currentTab", currentTab);
+        
         // 현재 탭
         String hatColor = getHatColorFromTab(currentTab);
+        model.addAttribute("currentHatColor", hatColor);
 
         List<IdeaOpinionsDto> currentOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, hatColor);
         
@@ -124,6 +132,17 @@ public class IdeaOpinions2Command implements RoomCommand {
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
 		model.addAttribute("meetingRoom", meetingRoom);
+		
+		//오른쪽 사이드바
+		List<Integer> userIdList = dao.roomIdFormember(roomId);
+		List<UsersDto> userList = new ArrayList<UsersDto>();
+		for(int ids : userIdList) {
+			UsersDto user = dao.whosMember(ids);
+			if(user != null) {
+				userList.add(user);
+			}
+		}
+		model.addAttribute("userList", userList);
 
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
