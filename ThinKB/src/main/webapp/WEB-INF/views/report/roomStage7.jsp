@@ -472,30 +472,52 @@ var quill = new Quill('#report-content', {
     theme: 'snow'
 });
 
-    // 저장된 내용 불러오기
-    var savedContent = `${reports.reportContent != null ? reports.reportContent : ''}`;
-    console.log("savedContent:", savedContent);
+//저장된 내용 불러오기
+var savedContent = `${reports.reportContent != null ? reports.reportContent : ''}`;
+console.log("savedContent:", savedContent);
 
-    if (savedContent && savedContent.trim() !== '') {
-        try {
-            // 줄바꿈 문자를 이스케이프 처리
-            savedContent = savedContent.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
-            var content = JSON.parse(savedContent);
-            quill.setContents(content);
-            console.log("Parsed content:", content);
-        } catch (e) {
-            console.log("JSON parsing failed, treating as HTML");
-            console.log("Parsing error:", e);
-            // JSON 파싱 실패 시, 원본 문자열을 그대로 사용
-            quill.root.innerHTML = `${reports.reportContent != null ? reports.reportContent : ''}`;
-        }
+if (savedContent && savedContent.trim() !== '') {
+    try {
+        // 줄바꿈 문자를 이스케이프 처리
+        savedContent = savedContent.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
+        var content = JSON.parse(savedContent);
+        quill.setContents(content);
+        // 초기 내용을 hidden input에 설정
+        document.getElementById('hidden-report-content').value = savedContent;
+    } catch (e) {
+        console.log("JSON parsing failed, treating as HTML");
+        console.log("Parsing error:", e);
+        // JSON 파싱 실패 시, 원본 문자열을 그대로 사용
+        quill.root.innerHTML = `${reports.reportContent != null ? reports.reportContent : ''}`;
+        // HTML 내용을 hidden input에 설정
+        document.getElementById('hidden-report-content').value = quill.root.innerHTML;
     }
+}
 
-    // 폼 제출 시 Quill 내용을 hidden input에 설정
-    document.querySelector('form').onsubmit = function() {
+// 실시간으로 내용 변경 감지 및 로깅
+quill.on('text-change', function() {
+    updateHiddenInput();
+});
+
+//hidden input 업데이트 함수
+function updateHiddenInput() {
+    try {
         var delta = quill.getContents();
-        document.getElementById('hidden-report-content').value = JSON.stringify(delta);
-    };
+        var content = JSON.stringify(delta);
+        document.getElementById('hidden-report-content').value = content;
+        console.log("Current content:", content);
+    } catch (error) {
+        console.error("Error updating content:", error);
+    }
+}
+
+// 폼 제출 시 Quill 내용을 hidden input에 설정
+document.querySelector('form').onsubmit = function() {
+    updateHiddenInput();
+    var content = document.getElementById('hidden-report-content').value;
+    console.log("Submitting content:", content);
+    return true; // 폼 제출 허용
+};
 </script>
 				</div>
 				<div class="summary-report">

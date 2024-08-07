@@ -32,6 +32,7 @@ import com.kb.star.command.room.AfterVoteCommand;
 import com.kb.star.command.room.ManagerIdeaListCommand;
 import com.kb.star.command.room.ResetCommand;
 import com.kb.star.command.room.RoomCommand;
+import com.kb.star.command.room.StageEndCommand;
 import com.kb.star.command.room.StageOneCommand;
 import com.kb.star.command.room.StageThreeCommand;
 import com.kb.star.command.room.SubmitIdeaCommand;
@@ -311,10 +312,16 @@ public class IdeaRoomController {
 				command.execute(model);
 				model.addAttribute("currentTab","smart");
 				return "redirect:/ideaOpinions2";
-	    	case 5:
-	    	    command = new ReportView(sqlSession);
-	    	    command.execute(model);
-			    return "report/roomStage7";
+	        case 5:
+	            command = new ReportView(sqlSession);
+	            command.execute(model);
+	            return "report/roomStage7";
+	            
+	        case 6:
+	        	command = new StageEndCommand(sqlSession);
+	        	command.execute(model);
+	            return "firstMeeting/roomResult";
+
 	        default:
 	            return "main";
 	    }

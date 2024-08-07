@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRoomMember;
 import com.kb.star.dto.MeetingRoomMembers;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.StageParticipationIdeas;
@@ -121,5 +123,11 @@ public interface RoomDao {
 	List<Integer> roomIdFormember(int roomId);
 
 	UsersDto whosMember(int id);
+
+	List<Ideas> totalIdea(int roomId);
+
+	List<IdeaOpinionsDto> ideaIdForOpinion(int firstNum);
+
+	List<MeetingRoomMember> memberForRoomId(int roomId);
 
 }
