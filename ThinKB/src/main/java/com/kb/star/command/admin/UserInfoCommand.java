@@ -1,4 +1,4 @@
-package com.kb.star.command.user;
+package com.kb.star.command.admin;
 
 import java.util.Collections;
 import java.util.Comparator;

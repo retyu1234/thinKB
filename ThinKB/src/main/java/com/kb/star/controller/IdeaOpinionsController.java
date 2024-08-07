@@ -211,7 +211,7 @@ public class IdeaOpinionsController {
 		IdeaOpinionsClearCommand ideaOpinionsClearCommand = new IdeaOpinionsClearCommand(sqlSession);
 		ideaOpinionsClearCommand.execute(model);
 
-		return "redirect:/ideaOpinions2";
+		return "redirect:/ideaOpinionsList";
 	}
     
     
@@ -222,13 +222,19 @@ public class IdeaOpinionsController {
     // 기존 의견들 불러오기
     @RequestMapping("/ideaOpinions2")
     public String viewIdeaDetails(HttpServletRequest request, Model model,
-    							@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, @RequestParam("currentTab") String currentTab) {
+    							@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, 
+    							@RequestParam(value = "currentTab", required = false) String currentTab) {
     	model.addAttribute("request", request);
     	model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
         model.addAttribute("currentTab", currentTab);
 //        int stage = Integer.parseInt((String) request.getParameter("stage"));
 //        model.addAttribute("stage", stage);
+        
+        if (currentTab == null || currentTab.isEmpty()) {
+            currentTab = "tab-smart";  // 기본값 설정
+        }
+        model.addAttribute("currentTab", currentTab);
         
         IdeaOpinions2Command ideaOpinions2Command = new IdeaOpinions2Command(sqlSession);
         ideaOpinions2Command.execute(model);

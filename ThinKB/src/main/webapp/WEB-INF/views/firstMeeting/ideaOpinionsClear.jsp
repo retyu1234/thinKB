@@ -7,71 +7,21 @@
 <meta charset="UTF-8">
 <title>2차 의견 타이머 설정</title>
 <style>
+
+
 .content-container {
-	padding: 20px;
-	margin-left: 15%;
-	margin-right: 15%;
-	position: relative;
-	z-index: 2;
-}
-
-body {
-    padding-top: 100px;
-}
-
-table {
-	width: 70%;
-	margin-left: auto;
-    margin-right: auto;
-}
-
-th, td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: center;
-}
-
-th {
-	background-color: #f2f2f2;
-	font-weight: bold;
-}
-
-tr:nth-child(even) {
-	background-color: #f9f9f9;
-}
-
-tr:hover {
-	background-color: #f5f5f5;
-}
-
-.rank-1, .rank-2, .rank-3 {
-	font-weight: bold;
-}
-
-.rank-1 {
-	color: gold;
-	font-weight: bold;
-	font-size: 13pt;
-}
-
-.rank-2 {
-	color: silver;
-	font-weight: bold;
-	font-size: 13pt;
-}
-
-.timer-container {
-	margin-top: 30px;
 	display: flex;
-	align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    width: 60%;
+	padding: 20px;
+	margin: 0 auto;
 }
 
-.timer-label {
-	margin-right: 10px;
-	font-size: 20px;
-	font-weight: bold;
-}
-
+/* 타이머 */
 .timer-input {
 	width: 60px;
 	padding: 8px;
@@ -80,35 +30,39 @@ tr:hover {
 	font-size: 16px;
 	text-align: center;
 }
-
 .timer-input:hover {
 	border-color: #ffcc00;
 }
 
-.button {
-	background-color: #4CAF50;
+/* 의견받기 버튼 */
+.btn-done {
+	width: 120px;
+	height: 50px;
 	border: none;
-	color: white;
-	padding: 15px 32px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	margin: 4px 2px;
+	background-color: #FFCC00;
+	color: #000;
+	font-weight: bold; /* 텍스트 두께를 두껍게 조정 */
+	font-size: 13pt;
+	padding: 0 20px;
+	border-radius: 5px;
 	cursor: pointer;
+	transition: background-color 0.3s ease;
+	display: block;
+    margin: 50px auto 0;
+}
+.btn-done:hover {
+	background-color: #D4AA00;
 }
 </style>
 
 </head>
-<body>
+<body style="margin: 0; display: flex;">
 	<%@ include file="../header.jsp"%>
+	<%@ include file="../leftSideBar.jsp"%>
+	<%@ include file="../rightSideBar.jsp"%>
 	
-	<c:if test="${userId == meetingRoom.roomManagerId}">
-	<%@ include file="../sideBar.jsp"%></c:if>
 
-	<div class="content-container">
-		<h1>2차 의견 타이머 설정</h1>
-
+	<div class="content-container"> 
 			<form action="./goStage4" id="goStage4" method="post">
 				<input type="hidden" name="roomId" value="${roomId}">
 				<input type="hidden" name="ideaId" value="${ideaId}"> 
@@ -126,13 +80,11 @@ tr:hover {
 					<span class="error-message" id="timerError"></span>
 				</div>
 				
-				<div style="text-align: center;">
-					<button type="submit" class="button">의견 받기</button>
+				<div>
+					<button type="submit" class="btn-done">의견 받기</button>
 				</div>
 			</form>
 		</div>
-</div>
-
 <script>
 document.getElementById('goStage4').addEventListener('submit', function(e) {
     e.preventDefault();
