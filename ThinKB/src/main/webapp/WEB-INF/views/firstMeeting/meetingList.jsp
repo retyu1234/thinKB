@@ -42,7 +42,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-/* 	margin: 10px 0; */
+	/* 	margin: 10px 0; */
 }
 
 .progress {
@@ -118,80 +118,78 @@ body {
 }
 
 .ideas {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px 30px;
-    padding: 10px;
-    margin-top: 40px;
-    margin-bottom: 50px;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px 30px;
+	padding: 10px;
+	margin-top: 40px;
+	margin-bottom: 50px;
 }
 
 .idea {
-    background-color: #F1EFE5;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease;
-    height: 240px;
+	background-color: #F1EFE5;
+	border-radius: 20px;
+	padding: 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	cursor: pointer;
+	transition: box-shadow 0.3s ease;
+	height: 240px;
 }
 
 .idea:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .team-tag {
-    align-self: flex-start;
-    background-color: #FFD700;
-    color: black;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8em;
-    margin-bottom: 10px;
-    transition: all 0.3s ease;
+	align-self: flex-start;
+	background-color: #FFD700;
+	color: black;
+	padding: 5px 10px;
+	border-radius: 15px;
+	font-size: 0.8em;
+	margin-bottom: 10px;
+	transition: all 0.3s ease;
 }
 
 .idea[data-stage="6"] {
-    background-color: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 .idea[data-stage="6"] .team-tag {
-    background-color: #808080;
-    color: #ffffff;
+	background-color: #808080;
+	color: #ffffff;
 }
 
-.idea[data-stage="6"] .room-title,
-.idea[data-stage="6"] .stage,
-.idea[data-stage="6"] .end-date {
-    color: #808080;
+.idea[data-stage="6"] .room-title, .idea[data-stage="6"] .stage, .idea[data-stage="6"] .end-date
+	{
+	color: #808080;
 }
 
 .room-title {
-    text-align: center;
-    font-weight: bold;
-    margin: 5px 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 15pt;
-    height: 3.6em; /* 2줄 높이에 맞춰 고정 (1.8em * 2) */
-    line-height: 1.8em; /* 줄 간격 설정 */
+	text-align: center;
+	font-weight: bold;
+	margin: 5px 0;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 15pt;
+	height: 3.6em; /* 2줄 높이에 맞춰 고정 (1.8em * 2) */
+	line-height: 1.8em; /* 줄 간격 설정 */
 }
 
-
 .stage, .end-date {
-    text-align: right;
-    font-size: 13pt;
-    margin-top: 10px;
-    margin-right: 10px;
+	text-align: right;
+	font-size: 13pt;
+	margin-top: 10px;
+	margin-right: 10px;
 }
 
 .stage {
-    margin-top: auto;
+	margin-top: auto;
 }
 
 .yellow-button {
@@ -226,35 +224,35 @@ body {
 }
 
 .no-room {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border-radius: 20px;
-    font-weight: bold;
-    height: 300px;
-    width: 100%;
-    margin: 0 auto;
-    margin-bottom: 50px;
-    text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	border-radius: 20px;
+	font-weight: bold;
+	height: 300px;
+	width: 100%;
+	margin: 0 auto;
+	margin-bottom: 50px;
+	text-align: center;
 }
 
 .no-room-contents {
-    color: grey;
-    font-size: 20px;
-    text-align: center;
-    margin-bottom: 10px;
-    width: 100%; /* 추가: 너비를 100%로 설정 */
+	color: grey;
+	font-size: 20px;
+	text-align: center;
+	margin-bottom: 10px;
+	width: 100%; /* 추가: 너비를 100%로 설정 */
 }
 
 .no-room-img {
-    width: 100px;
-    height: auto;
-    margin-bottom: 10px;
-    display: block; /* 추가: 이미지를 블록 요소로 변경 */
-    margin-left: auto; /* 추가: 좌우 마진을 자동으로 설정 */
-    margin-right: auto; /* 추가: 좌우 마진을 자동으로 설정 */
+	width: 100px;
+	height: auto;
+	margin-bottom: 10px;
+	display: block; /* 추가: 이미지를 블록 요소로 변경 */
+	margin-left: auto; /* 추가: 좌우 마진을 자동으로 설정 */
+	margin-right: auto; /* 추가: 좌우 마진을 자동으로 설정 */
 }
 
 .pagination {
@@ -283,34 +281,35 @@ body {
 .pagination a:hover:not(.active) {
 	background-color: #ddd;
 }
+
 .line-container {
-    width: 100%;
-    padding: 0 15px;
-    box-sizing: border-box;
+	width: 100%;
+	padding: 0 15px;
+	box-sizing: border-box;
 }
+
 .line {
-    border: none;
-    border-top: 2px solid #ffc107;
-    width: 100%;
-    margin: 10px 0;
-    transition: border-color 0.3s ease;
-} 
+	border: none;
+	border-top: 2px solid #ffc107;
+	width: 100%;
+	margin: 10px 0;
+	transition: border-color 0.3s ease;
+}
 
 .idea[data-stage="6"] .line {
-    border-top: 2px solid #808080;
+	border-top: 2px solid #808080;
 }
-
 </style>
 </head>
 
 <body>
 	<!-- 헤더 영역 -->
 	<%@ include file="../header.jsp"%>
-	
+
 	<!-- 상단 배너영역 -->
 	<div class="content-banner">
-		<img src="<c:url value='./resources/roomListBanner.png'/>" alt="roomListBanner" 
-		style="max-width: 100%; height: auto;">
+		<img src="<c:url value='./resources/roomListBanner.png'/>"
+			alt="roomListBanner" style="max-width: 100%; height: auto;">
 	</div>
 
 	<div class="meetingList-content">
@@ -339,7 +338,7 @@ body {
 		</div>
 
 		<!-- 회의방 목록 -->
-<%-- 		<div class="ideas">
+		<%-- 		<div class="ideas">
 
 			<c:forEach var="li" items="${roomList}">
 				<div class="idea" data-stage="${li.getStageId()}"
@@ -398,64 +397,66 @@ body {
 
 		</div> --%>
 		<div class="ideas">
-    		<c:forEach var="li" items="${roomList}">
-		        <div class="idea" data-stage="${li.getStageId()}"
-		            <c:if test="${li.getStageId() >= 3}">
+			<c:forEach var="li" items="${roomList}">
+				<div class="idea" data-stage="${li.getStageId()}"
+					<c:if test="${li.getStageId() >= 3}">
 		                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
 		                <c:forEach var="idea" items="${ideasList}">
-		                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${idea.getIdeaID()}'"
+		                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${idea.getStageID()}&ideaId=${idea.getIdeaID()}'"
 		                </c:forEach>
 		            </c:if>
-		            <c:if test="${li.getStageId() < 3}">
+					<c:if test="${li.getStageId() < 3}">
 		                onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'"
 		            </c:if>>
-		            <div class="team-tag">
-					    <c:choose>
-					        <c:when test="${li.getStageId() == 6}">
+					<div class="team-tag">
+						<c:choose>
+							<c:when test="${li.getStageId() == 6}">
 					            완료
 					        </c:when>
-					        <c:otherwise>
+							<c:otherwise>
 					            진행중
 					        </c:otherwise>
-					    </c:choose>
+						</c:choose>
 					</div>
-		            <div class="room-title">${li.getRoomTitle()}</div>
-		            <div class="line-container">
-        				<hr class="line">
-    				</div>
-		            <div class="stage">
-		                <c:choose>
-		                    <c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
-		                    <c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
-		                    <c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-		                    <c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
-		                    <c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
-		                    <c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
-		                </c:choose>
-		            </div>
-		            <div class="end-date">
-		            <c:forEach var="team" items="${teamInfo}">
-		                    <c:if test="${team.getTeamId() == li.getTeamId()}">
+					<div class="room-title">${li.getRoomTitle()}</div>
+					<div class="line-container">
+						<hr class="line">
+					</div>
+					<div class="stage">
+						<c:choose>
+							<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+							<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+							<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+							<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+							<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+							<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
+						</c:choose>
+					</div>
+					<div class="end-date">
+						<c:forEach var="team" items="${teamInfo}">
+							<c:if test="${team.getTeamId() == li.getTeamId()}">
 		                        ${team.getTeamName()} 주최
 		                    </c:if>
-		                </c:forEach>
-		            </div>
-		            <div class="end-date">~ ${li.getEndDate()}</div>
-		            <c:if test="${li.getStageId() >= 3}">
-		                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
-		                <c:forEach var="idea" items="${ideasList}">
-		                    <input type="hidden" name="ideaId" value="${idea.getIdeaID()}" />
-		                </c:forEach>
-		            </c:if>
-		        </div>
-    		</c:forEach>		
+						</c:forEach>
+					</div>
+					<div class="end-date">~ ${li.getEndDate()}</div>
+					<c:if test="${li.getStageId() >= 3}">
+						<c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
+						<c:forEach var="idea" items="${ideasList}">
+							<input type="hidden" name="ideaId" value="${idea.getIdeaID()}" />
+							<input type="hidden" name="stageId" value="${idea.getStageID()}" />
+						</c:forEach>
+					</c:if>
+				</div>
+			</c:forEach>
 		</div>
-		
-<!-- 회의방 없는경우 div따로 뺌 -->
- 		<div class="no-room" style="display: none;">
-		    <img class="no-room-img" src="./resources/noContent.png" alt="no Contents">
-		    <div class="no-room-contents">선택한 단계의 회의방이 없어요.</div>
-		    <div class="no-room-contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
+
+		<!-- 회의방 없는경우 div따로 뺌 -->
+		<div class="no-room" style="display: none;">
+			<img class="no-room-img" src="./resources/noContent.png"
+				alt="no Contents">
+			<div class="no-room-contents">선택한 단계의 회의방이 없어요.</div>
+			<div class="no-room-contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
 		</div>
 
 
@@ -481,48 +482,56 @@ body {
 			</c:if>
 
 		</div>
-</div>
+	</div>
 
 
-<script>
-function filterIdeas() {
-    var checkboxes = document.querySelectorAll('.progress input:checked');
-    var ideas = document.querySelectorAll('.idea');
-    var anyVisible = false;
+	<script>
+		function filterIdeas() {
+			var checkboxes = document
+					.querySelectorAll('.progress input:checked');
+			var ideas = document.querySelectorAll('.idea');
+			var anyVisible = false;
 
-    if (checkboxes.length === 0) {
-        // 체크된 박스가 없으면 모든 아이디어를 표시
-        ideas.forEach(function(idea) {
-            idea.style.display = 'flex';
-        });
-        anyVisible = true;
-    } else {
-        ideas.forEach(function(idea) {
-            var ideaStage = idea.getAttribute('data-stage');
-            var shouldShow = Array.from(checkboxes).some(function(checkbox) {
-                return checkbox.getAttribute('data-stage') === ideaStage;
-            });
-            idea.style.display = shouldShow ? 'flex' : 'none';
-            if (shouldShow) anyVisible = true;
-        });
-    }
+			if (checkboxes.length === 0) {
+				// 체크된 박스가 없으면 모든 아이디어를 표시
+				ideas.forEach(function(idea) {
+					idea.style.display = 'flex';
+				});
+				anyVisible = true;
+			} else {
+				ideas
+						.forEach(function(idea) {
+							var ideaStage = idea.getAttribute('data-stage');
+							var shouldShow = Array
+									.from(checkboxes)
+									.some(
+											function(checkbox) {
+												return checkbox
+														.getAttribute('data-stage') === ideaStage;
+											});
+							idea.style.display = shouldShow ? 'flex' : 'none';
+							if (shouldShow)
+								anyVisible = true;
+						});
+			}
 
-    // 표시할 아이디어가 없는 경우 메시지 표시
-    var noRoomMessage = document.querySelector('.no-room');
-    if (noRoomMessage) {
-        noRoomMessage.style.display = anyVisible ? 'none' : 'flex';
-    }
-}
+			// 표시할 아이디어가 없는 경우 메시지 표시
+			var noRoomMessage = document.querySelector('.no-room');
+			if (noRoomMessage) {
+				noRoomMessage.style.display = anyVisible ? 'none' : 'flex';
+			}
+		}
 
-document.addEventListener('DOMContentLoaded', function() {
-    var checkboxes = document.querySelectorAll('.progress input[type="checkbox"]');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', filterIdeas);
-    });
-    // 페이지 로드 시 초기 필터링 적용
-    filterIdeas();
-});
-</script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var checkboxes = document
+					.querySelectorAll('.progress input[type="checkbox"]');
+			checkboxes.forEach(function(checkbox) {
+				checkbox.addEventListener('change', filterIdeas);
+			});
+			// 페이지 로드 시 초기 필터링 적용
+			filterIdeas();
+		});
+	</script>
 
 </body>
 </html>
