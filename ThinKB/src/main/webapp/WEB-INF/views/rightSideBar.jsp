@@ -95,7 +95,7 @@
 </style>
 <div class="right-sidebar">
 	<!-- 타이머 영역 -->
-    <div class="sidebar-header">
+    <div id="timer-section" class="sidebar-header">
         <span class="sidebar-icon">⏱️</span>
         <span class="sidebar-title">타이머</span>
     </div>

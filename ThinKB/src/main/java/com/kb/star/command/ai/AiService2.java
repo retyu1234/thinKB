@@ -34,7 +34,6 @@ public class AiService2 {
     }
 
 	public String getAiResponse(String userInput) {
-		System.out.println("NAVER API 키 : " + apiKey);
 		HttpClient httpClient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(apiUrl);
 		httpPost.setHeader("Authorization", "Bearer " + apiKey);

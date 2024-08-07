@@ -7,14 +7,25 @@
 <meta charset="UTF-8">
 <title>thinKB - 아이디어 투표 결과</title>
 <style>
+<<<<<<< HEAD
+.content-container {
+	padding: 20px;
+	margin-left: 17%;
+	margin-right: 17%;
+	position: relative;
+	z-index: 2;
+=======
 body, html {
 	margin: 0;
 	padding: 0;
 	font-family: Arial, sans-serif;
 	overflow-x: hidden;
     width: 100%;
+>>>>>>> refs/heads/main
 }
 
+<<<<<<< HEAD
+=======
 .stage2clear-header {
 	position: relative;
 	z-index: 1;
@@ -105,6 +116,7 @@ body, html {
 	border: 2px solid lightgrey;
 }
 
+>>>>>>> refs/heads/main
 table {
 	width: 70%;
 	margin-left: auto;
@@ -182,6 +194,9 @@ tr:hover {
 	font-size: 16px;
 	margin: 4px 2px;
 	cursor: pointer;
+}
+#timer-section, #timer, #timer-message {
+    display: none;
 }
 </style>
 
