@@ -1052,11 +1052,15 @@ document.getElementById('autoCompleteBtn').addEventListener('click', function(ev
     this.disabled = true;
     this.textContent = '로딩 중...';
 
-    fetch('./getAiResponse?userInput=' + encodeURIComponent(title), {
+    // URL 인코딩을 사용하여 한글 및 특수문자 처리
+    var encodedTitle = encodeURIComponent(title);
+
+    fetch('./getAiResponse?userInput=' + encodedTitle, {
         method: 'GET'
     })
     .then(response => response.text())
     .then(data => {
+        // 받은 데이터가 이미 올바르게 인코딩되어 있다고 가정
         document.getElementById('content').value = data;
         this.disabled = false;
         this.textContent = '자동완성';

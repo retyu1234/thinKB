@@ -13,6 +13,7 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
+        /* background-color: #f0f8ff; */
         background-color: #f4f4f4;
     }
     .container {
@@ -21,18 +22,20 @@
     .content {
         flex: 1;
         padding: 20px;
+        font-size: 11pt;
     }
     
     /* 배너 */
     .banner {
 		background-color: #fff;
+		height: 100px;
 	    margin-bottom: 20px;
-	    padding: 20px;
+	    padding: 0px;
 	    border-radius: 5px;
 	    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 	    display: flex;
 	    justify-content: space-between; /* 양쪽 정렬 */
-	     align-items: center; /* 세로 중앙 정렬 */
+	    align-items: center; /* 세로 중앙 정렬 */
 	}
 	.banner-text {
 	    flex: 1;
@@ -46,37 +49,35 @@
 	    margin-right: 150px;
 	}
     
-    /* 사이드바 */
-    .sidebar {
-        width: 250px;
-        background-color: #333;
-        color: white;
-        height: 100vh;
-        padding-top: 20px;
-    }
-    .sidebar ul {
-        list-style-type: none;
-        padding: 0;
-    }
-    .sidebar li {
-        padding: 10px 20px;
-    }
-    .sidebar li:hover {
-        background-color: #444;
-    }
-
     
     /* 관리자 대시보드 */
     .header {
-        background-color: #fff;
         padding: 10px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        background-color: #fff;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .profile {
+        display: flex;
+        align-items: center;
+        margin-right: 50px;
+    }
+    .profile img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+    }
+    .img-logout {
+		width: 30px;
+		height: 30px;
+		cursor: pointer;
+		margin-left: 50px;
+		align-items: center;
+	}
     
-    /* 흰색 섹션 틀 */
+    /* 섹션 박스 */
     .section {
         background-color: #fff;
         margin-bottom: 20px;
@@ -84,41 +85,156 @@
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    /* 섹션별 제목 */
+    /* 절반 섹션 */
+    .section-container {
+	    display: flex;
+	    gap: 50px;
+	    /* justify-content: space-between; */
+	    margin-bottom: 20px;
+	}
+	.section-wrapper {
+	    width: 47%; /* 전체 너비의 48%를 차지하도록 설정 */
+	    display: flex;
+    	flex-direction: column;
+	}
+	.section-half {
+	    background-color: #fff;
+	    padding: 20px;
+	    border-radius: 5px;
+	    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	    flex-grow: 1; /* 남은 공간을 채우도록 설정 */
+	    display: flex;
+	    flex-direction: column;
+	}
+	/* 섹션별 제목 */
+	.section-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-top: 30px;
+		margin-bottom: 15px;
+	}
     .section-title {
-        font-size: 18pt;
+        font-size: 16pt;
         font-weight: bold;
-        margin-bottom: 15px;
     }
     .section-Intitle {
-    	font-size: 15px;
+    	font-size: 12pt;
     	margin-bottom: 15px;
-    	color: #978A8F;
+    	color: #007AFF;
+    	text-align: left;
     }
-
-    
-    /* 시스템 사용량 관리 */
-    .usage-management {
-	    display: flex;
+    /* 더보기 버튼 */
+    .more-button { 
+		border: none;
+		background-color: transparent; /* 배경색 제거 */
+		align-items: center;
+		cursor: pointer;
+		font-size: 9pt;
+		color: #007AFF;
+		margin-top: 10px;
 	}
-	.usage-graph {
+	.more-button:hover {
+		color: #0056B3;
+	}
+    
+    /* 일반적인 표들 */
+    table {
+        width: 100%;
+        border-collapse: collapse;/* 테이블 경계선을 합칩니다 */
+        text-align: center; /* 모든 글자를 가운데 정렬 */
+/*         flex-grow: 1;
+	    display: flex;
+	    flex-direction: column;  */
+    }
+    .table table {
+	    /* flex-grow: 1; */ 
+	}
+    th, td {
+        border: none; /* 모든 테이블 선 제거 */
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #f2f2f2;
+        /* background-color: #F2F9FF; */
+        border-bottom: 1px solid #ddd; /* 가로선만 남깁니다 */
+    }
+    td {
+	    border-bottom: 1px solid #ddd; /* 가로선만 남깁니다 */
+	}
+    tr:hover {
+       background-color: #f2f2f2;
+    }
+    
+    /* 프로젝트 관리 */
+    .approval-status {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .approval-box {
+        flex: 1;
+        text-align: center;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 5px;
+        margin: 0 10px;
+    }
+    .approval-box h3 {
+        color: #28a745;
+        margin-bottom: 10px;
+    }
+    .approval-box .count {
+        font-size: 24px;
+        font-weight: bold;
+    }
+	
+	/* 회원관리 */
+	.search-btn {
+		background-color: #FFCC00;
+		color: #000;
+		font-weight: bold; /* 텍스트 두께를 두껍게 조정 */
+		font-size: 9pt;
+		padding: 0 20px;
+		cursor: pointer;
+		border: none;
+		transition: background-color 0.3s ease;
+		/* width: 100px;
+		height: 50px;
+		border-radius: 5px; */
+	}
+	.search-btn:hover {
+		background-color: #D4AA00;
+	}
+	
+    /* 시스템 사용량 관리 */
+    .usage-graph {
+	    margin: 0 auto;
 	    flex: 1;
 	    margin-right: 10px; /* 그래프와 테이블 사이의 간격 조정 */
 	}
-	
+    .usage-management {
+	    display: flex;
+	    justify-content: space-between;
+	}
+	.usage-half {
+	    width: 48%; /* 각 half가 섹션의 절반을 차지하도록 설정 */
+	}
 	.usage-table {
 	    flex: 1;
 	    margin-left: 10px; /* 그래프와 테이블 사이의 간격 조정 */
 	    text-align: center; /* 모든 글자를 가운데 정렬 */
 	}
 	.usage-table table {
-	    width: 100%;
+	    width: 70%;
 	    border-collapse: collapse; /* 테이블 경계선을 합칩니다 */
 	    text-align: center; /* 테이블의 모든 글자를 가운데 정렬 */
 	}
 	.usage-table th, .usage-table td {
 	    border: none; /* 모든 테이블 선 제거 */
 	    padding: 8px;
+	    text-align: center;
 	}
 	.usage-table th {
 	    background-color: #f2f2f2;
@@ -128,24 +244,8 @@
 	    border-bottom: 1px solid #ddd; /* 가로선만 남깁니다 */
 	}
 	
-	
-	
-    
-        
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #f2f2f2;
-    }
-    
-    .search-box {
+	/* 회원관리 - 검색 */
+/*     .search-box {
         margin-bottom: 15px;
     }
     .search-box input {
@@ -158,58 +258,144 @@
         color: white;
         border: none;
         cursor: pointer;
-    }
+    } */
+    
 </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div class="container">
-    <div class="sidebar">
-        <ul>
-            <li>대시보드</li>
-            <li>프로젝트 관리</li>
-            <li>사용자 관리</li>
-            <li>통계</li>
-            <li>설정</li>
-        </ul>
-    </div>
+
+    <%@ include file="./adminSideBar.jsp"%>
+    
     <div class="content">
         <div class="header">
             <h1>관리자 대시보드</h1>
-            <div>
-                <button>연장/업그레이드</button>
-                <button>나가기</button>
-            </div>
+            <!-- 프로필 -->
+            <div class="profile">
+	            <a href="<c:url value='./mypage'/>">
+	                <c:choose>
+	                    <c:when test="${not empty profileImg}">
+	                        <img src="<c:url value='./upload/${profileImg}'/>" alt="Profile Image">
+	                    </c:when>
+	                    <c:otherwise>
+	                        <img src="<c:url value='./resources/profile1.png'/>" alt="Logo">
+	                    </c:otherwise>
+	                </c:choose>
+	            </a>
+	            <span>${userName} 님</span>
+	            
+	            <div>
+	                <a href="<c:url value='/logout'/>"> 
+	                <img src="<c:url value='/resources/logout.png'/>" class="img-logout" alt="img-logout"></a>
+	            </div>
+	        </div>
+	        <!-- 로그아웃 -->
+            
         </div>
         
-        <div class="section">
-            <div class="section-title">프로젝트 결재 목록</div>
-            <div class="table">
+        <!-- 프로젝트 관리 -->
+        <div class="section-container">
+        	<div class="section-wrapper">
+        	<div class="section-header">
+        		<div class="section-title">📋 프로젝트 관리</div>
+        		<button class="more-button" onclick="location.href='./meetingList'">+ 더보기</button>
+        	</div>
+        	<div class="section-half">
+        	<div class="section-Intitle">프로젝트 결재 현황</div>
+        		<div class="approval-status">
+		            <div class="approval-box">
+		                <h3>결재대기</h3>
+		                <div class="count">1건</div>
+		            </div>
+		            <div class="approval-box">
+		                <h3>결재중</h3>
+		                <div class="count">2건</div>
+		            </div>
+		            <div class="approval-box">
+		                <h3>결재완료</h3>
+		                <div class="count">4건</div>
+		            </div>
+		        </div>
+	            <!-- <div class="table">
+		            <table>
+		                <thead>
+		                    <tr>
+		                        <th>프로젝트명</th>
+		                        <th>팀 명</th>
+		                        <th>생성자</th>
+		                        <th>기안자</th>
+		                        <th>상태</th>
+		                    </tr>
+		                </thead>
+		                <tbody>
+		                    프로젝트 목록 데이터
+		                    <tr>
+		                        <td>프로젝트 A</td>
+		                        <td>인사팀</td>
+		                        <td>홍길동</td>
+		                        <td>2024-03-15</td>
+		                        <td>승인 대기</td>
+		                    </tr>
+		                    추가 행...
+		                </tbody>
+		            </table>
+		    	</div> -->
+	        </div>
+	    	</div>
+	    
+	    	<!-- 사용자 관리 -->
+	    	<div class="section-wrapper">
+	    	<div class="section-header">
+        		<div class="section-title">👥 사용자 관리</div>
+        		<button class="more-button" onclick="location.href='./userAdminView'">+ 더보기</button>
+        	</div>
+	        <div class="section-half">
+	        <div class="section-Intitle">직원 조회</div>
+	            <!-- <div class="search-box">
+	                <input type="text" id="searchInput" placeholder="검색할 내용을 입력해주세요">
+	                <button class="search-btn">검색</button>
+	            </div> -->
 	            <table>
 	                <thead>
 	                    <tr>
-	                        <th>프로젝트명</th>
-	                        <th>팀 명</th>
-	                        <th>생성자</th>
-	                        <th>생성일</th>
-	                        <th>상태</th>
+	                    	<th>부서</th>
+	                        <th>팀</th>
+	                        <th>직원명</th>
+	                        <th>직원번호</th>
+	                        <th>이메일</th>
+	                        <th>생일</th>
+	                        <th>재직여부</th>
 	                    </tr>
 	                </thead>
 	                <tbody>
-	                    <!-- 프로젝트 목록 데이터 -->
-	                    <tr>
-	                        <td>프로젝트 A</td>
-	                        <td>인사팀</td>
-	                        <td>홍길동</td>
-	                        <td>2024-03-15</td>
-	                        <td>승인 대기</td>
-	                    </tr>
-	                    <!-- 추가 행... -->
+	                    <c:forEach var="user" items="${userList}" varStatus="status">
+           					<c:if test="${status.index < 5}">
+					            <tr>
+					                <td>${user.departmentName}</td>
+					                <td>${user.teamName}</td>
+					                <td>${user.userName}</td>
+					                <td>${user.userId}</td>
+					                <td>${user.email}</td>
+					                <td>${user.birth}</td>
+					                <td><c:choose>
+					                    <c:when test="${user.delete == false}">Y</c:when>
+					                    <c:otherwise>N</c:otherwise>
+					                </c:choose></td>
+					            </tr>
+				            </c:if>
+				        </c:forEach>
 	                </tbody>
 	            </table>
+	        </div>
 	    	</div>
-        </div>
-        
-        <div class="section-title">📈 사용량 관리</div>
+	    </div>
+	    
+	    
+        <div class="section-header">
+       		<div class="section-title">📈 사용량 관리</div>
+       		<button class="more-button" onclick="location.href='./meetingList'">+ 더보기</button>
+       	</div>
         <!-- 배너 -->
         <div class="banner">
 		    <div class="banner-text">
@@ -217,14 +403,17 @@
 		    </div>
 		    <img src="<c:url value='/resources/chart.png'/>" alt="통계 차트">
 		</div>
-        <div class="section">
-            <div class="usage-management">
+        <div class="section usage-management">
+            <div class="usage-half">
 	            <div class="usage-graph">
-	                <!-- 차트를 그릴 캔버스 또는 div -->
-	                <!-- 차트 라이브러리를 사용하여 여기에 차트를 그립니다 -->
+	            	<div class="section-Intitle">사용량 그래프</div>
+	                <!-- 차트를 그릴 캔버스 -->
+	                <canvas id="usageChart"></canvas>
 	            </div>
+	         </div>
+	         <div class="usage-half">
 	            <div class="usage-table">
-	            <div class="section-Intitle">팀별 분석</div>
+	            	<div class="section-Intitle">팀별 분석</div>
 	                <table>
 	                    <thead>
 	                        <tr>
@@ -246,39 +435,55 @@
 	             </div>
 	    	</div>
         </div>
-        
-        <div class="section">
-            <div class="section-title">회원 관리</div>
-            <div class="search-box">
-                <input type="text" placeholder="회원 검색...">
-                <button>검색</button>
-            </div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>이름</th>
-                        <th>이메일</th>
-                        <th>가입일</th>
-                        <th>상태</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- 회원 목록 데이터 -->
-                    <tr>
-                        <td>김철수</td>
-                        <td>kim@example.com</td>
-                        <td>2024-01-01</td>
-                        <td>활성</td>
-                    </tr>
-                    <!-- 추가 행... -->
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="section">
-            <!-- 네 번째 섹션은 비워둠 -->
-        </div>
     </div>
 </div>
 </body>
 </html>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 테이블에서 데이터 추출
+    const table = document.querySelector('.usage-table table');
+    const departments = [];
+    const usageCounts = [];
+
+    table.querySelectorAll('tbody tr').forEach(row => {
+        departments.push(row.cells[0].textContent);
+        usageCounts.push(parseInt(row.cells[1].textContent));
+    });
+
+    // 차트 생성
+    const ctx = document.getElementById('usageChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: departments,
+            datasets: [{
+                label: '사용횟수',
+                data: usageCounts,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '사용횟수'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: '부서'
+                    }
+                }
+            }
+        }
+    });
+});
+
+</script>

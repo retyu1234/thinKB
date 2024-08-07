@@ -6,6 +6,15 @@
 
 <mapper namespace="com.kb.star.util.AdminDao">
 
+	<!-- 모든 사용자 정보 가져오기 -->
+    <select id="getUserList" resultType="com.kb.star.dto.AdminDto">
+        SELECT u.UserID, u.UserName, u.Email, u.birth, u.IsDelete, d.DepartmentName, t.TeamName
+        FROM Users u
+        LEFT JOIN Departments d ON u.DepartmentID = d.DepartmentID
+        LEFT JOIN Teams t ON u.TeamID = t.TeamID
+        ORDER BY u.IsDelete ASC, d.DepartmentName ASC, t.TeamName ASC, u.UserName ASC
+    </select>
+    
 	<!-- 베스트 직원 목록(ID,이름,이미지)+토탈마일리지 가져오기 -->
 	<select id="getBestEmployees" resultType="com.kb.star.dto.AdminDto">
 		SELECT u.UserID, u.UserName, u.ProfileImg, a.TotalContribution

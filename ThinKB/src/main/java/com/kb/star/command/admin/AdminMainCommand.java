@@ -31,6 +31,10 @@ public class AdminMainCommand implements Admin{
 		model.addAttribute("userId", userId);
         
 		AdminDao adminDao = sqlSession.getMapper(AdminDao.class);
+		
+		// 모든 사용자 정보
+        List<AdminDto> userList = adminDao.getUserList();
+        model.addAttribute("userList", userList);
      		
  		// 베스트 직원
  		List<AdminDto> bestEmployees = adminDao.getBestEmployees();

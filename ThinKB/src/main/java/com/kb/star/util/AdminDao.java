@@ -5,6 +5,9 @@ import java.util.List;
 import com.kb.star.dto.AdminDto;
 
 public interface AdminDao {
+	
+	// 모든 사용자 정보 가져오기
+	List<AdminDto> getUserList();
 
 	// 베스트 직원 목록(ID,이름,이미지)+토탈마일리지 가져오기
 	List<AdminDto> getBestEmployees();
