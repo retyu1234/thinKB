@@ -35,19 +35,15 @@ body, html {
 
 .abfd-title {
 	font-size: 24px;
-	font- color: #000000;
+	font-color: #000000;
 	text-align: left;
-	/* 	margin-left: 15%; */
 	font-weight: bold;
-	text-align: left;
 	margin-bottom: 5%;
 }
 
 .abfd-buttons {
 	display: flex;
 	justify-content: end;
-	/* 	margin-left: 15%;
-	margin-right: 15%; */
 }
 
 .yellow-button {
@@ -65,7 +61,6 @@ body, html {
 	background-color: #D4AA00;
 }
 
-/* 회색버튼 */
 .grey-button {
 	background-color: #978A8F;
 	color: white;
@@ -79,13 +74,12 @@ body, html {
 
 .grey-button:hover {
 	background-color: #60584C;
-	s
 }
 
 .abtestHeadImg {
 	width: auto;
-	background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
-	background-position: center; /* 이미지를 가운데 정렬 */
+	background-size: cover;
+	background-position: center;
 	background-repeat: no-repeat;
 }
 
@@ -93,7 +87,6 @@ body, html {
 	width: 30%;
 	margin-left: 8%;
 	margin-right: 2%;
-	/* 	background-color: red; */
 }
 
 .ab-feedback-detail-container {
@@ -117,14 +110,14 @@ body, html {
 }
 
 .submit-button {
-	background-color: #ffc107;
+	background-color: #60584C;
 	color: #ffffff;
-	font-size: 1.2em;
-	padding: 10px 20px;
+	font-size: 30pt;
+	font-weight: extra-bold;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
-	margin-top: 20px;
+	margin: 0;
 }
 
 .submit-button:hover {
@@ -143,7 +136,7 @@ body, html {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	z-index: 10; /* 높은 z-index 값을 주어 다른 요소들 위에 표시되도록 함 */
+	z-index: 15;
 }
 
 .coordinate-button::before {
@@ -157,8 +150,8 @@ body, html {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background-image: var(- -profile-img);
-	z-index: 11; /* 버튼보다 높은 z-index 값을 주어 이미지가 버튼 위에 표시되도록 함 */
+	background-image: var(--profile-img);
+	z-index: 16;
 }
 
 .coordinate-button::after {
@@ -171,7 +164,7 @@ body, html {
 	height: 0;
 	border: 10px solid transparent;
 	border-top-color: #60584C;
-	z-index: 9; /* 화살표가 이미지 아래에 위치하도록 함 */
+	z-index: 9;
 }
 
 .coordinate-form {
@@ -182,32 +175,41 @@ body, html {
 	z-index: 1000;
 	border-radius: 10px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	width: 300px; /* 폼의 너비 설정 */
+	width: 300px;
 	display: flex;
 	flex-direction: column;
 }
 
+.coordinate-form .form-header {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
 .coordinate-form textarea {
 	width: calc(100% - 50px); /* Submit 버튼 크기 고려하여 너비 조정 */
-	height: 40px;
+	height: 45px;
 	border-radius: 5px;
 	background-color: #EBEBEB;
 	padding: 10px;
 	box-sizing: border-box;
-	margin-bottom: 10px;
 	font-size: 14px;
 	color: #666;
-	border: none; /* 외곽선 제거 */
-	outline: none; /* 클릭 시 외곽선 제거 */
+	border: none;
+	outline: none;
+	resize: none;
+	font-family: Arial;
 }
 
 .coordinate-form textarea::placeholder {
-	color: #999; /* placeholder 텍스트 색상 */
+	color: #999;
+	font-size: 14px;
+	font-family: Arial;
 }
 
 .coordinate-form button {
 	padding: 5px 10px;
-	margin-right: 10px;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
@@ -224,10 +226,8 @@ body, html {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
 	font-size: 20px;
+	margin-left: 10px;
 }
 
 .coordinate-form .close-button {
@@ -237,9 +237,6 @@ body, html {
 	font-size: 20px;
 	font-weight: bold;
 	cursor: pointer;
-	position: absolute;
-	right: 10px;
-	top: 10px;
 }
 
 .coordinate-form .close-button:hover {
@@ -250,53 +247,44 @@ body, html {
 	background-color: transparent;
 	border: none;
 	padding: 10px 0;
-	margin-bottom: 10px;
+	margin-top: 10px;
 	display: flex;
 	flex-direction: column;
+	margin-left: 2%;
+	margin-right: 5%;
+}
+
+.coordinate-form .comment-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 5px;
+	margin-top: 10px;
 }
 
 .coordinate-form .comment strong {
 	font-size: 14px;
-	margin-bottom: 5px;
+	margin-right: 5px;
 }
 
 .coordinate-form .comment span {
-	font-size: 14px;
+	font-size: 13px;
 	color: #666;
 }
 
 .coordinate-form .comment .delete-button {
-	font-size: 12px;
+	font-size: 10px;
 	color: #aaa;
 	cursor: pointer;
 	border: none;
 	background: none;
 	padding: 0;
-	align-self: flex-end;
 }
 
 .coordinate-form .comment .delete-button:hover {
 	color: #000;
 }
-/* .comment {
-	background-color: #f5f5f5;
-	border: 1px solid #ccc;
-	padding: 10px;
-	margin-bottom: 10px;
-	position: relative;
-	border-radius: 5px;
-}
 
-.delete-button {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	color: white;
-	border: none;
-	padding: 5px;
-	cursor: pointer;
-	border-radius: 5px;
-} */
 .ab-feedback-message-detail {
 	width: 50%;
 	margin-right: 8%;
@@ -325,7 +313,6 @@ body, html {
 	margin-right: 10px;
 	background-image:
 		url('${pageContext.request.contextPath}/resources/ccoli.png');
-	/* background-size: cover; */
 	background-position: center;
 	justify-content: center;
 	display: flex;
@@ -380,7 +367,7 @@ body, html {
 	align-items: center;
 	padding: 10px 20px;
 	background-color: white;
-	border-radius: 50px;;
+	border-radius: 50px;
 	margin-bottom: 15px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	margin-left: 40px;
@@ -419,6 +406,7 @@ body, html {
 
 .abfd-comment-text {
 	font-size: 10pt;
+	margin-top: 5px;
 }
 </style>
 <script type="text/javascript">
@@ -427,6 +415,7 @@ body, html {
     };
 
     var currentTempButton = null;
+    var currentForm = null;
     var existingButtons = [];
 
     function sendCoordinates(event) {
@@ -437,6 +426,15 @@ body, html {
     }
 
     function createCoordinateButton(x, y, isExisting = false, profileImg = null) {
+        if (currentTempButton) {
+            document.body.removeChild(currentTempButton);
+            currentTempButton = null;
+        }
+        if (currentForm) {
+            document.body.removeChild(currentForm);
+            currentForm = null;
+        }
+
         var button = document.createElement("button");
         button.className = "coordinate-button";
         button.style.left = (x - 30) + "px";
@@ -454,37 +452,54 @@ body, html {
         if (isExisting) {
             existingButtons.push(button);
         } else {
-            if (currentTempButton) {
-                document.body.removeChild(currentTempButton);
-            }
             currentTempButton = button;
             showCommentForm(x, y);
         }
     }
 
     function showCommentForm(x, y) {
+        if (currentForm) {
+            document.body.removeChild(currentForm);
+            currentForm = null;
+        }
+
         var form = document.createElement("div");
         form.className = "coordinate-form";
         form.style.left = (x + 40) + "px";
         form.style.top = (y - 30) + "px";
 
-        var textarea = document.createElement("textarea");
-        form.appendChild(textarea);
-
-        var submitButton = document.createElement("button");
-        submitButton.className = "submit-button";
-        submitButton.innerHTML = "✔";
-        submitButton.onclick = function() { submitComment(x, y, textarea.value); };
-        form.appendChild(submitButton);
+        var formHeader = document.createElement("div");
+        formHeader.className = "form-header";
 
         var closeButton = document.createElement("button");
         closeButton.className = "close-button";
-        closeButton.innerHTML = "×";
+        closeButton.innerHTML = "x";
         closeButton.onclick = function() { closeCommentForm(form); };
-        form.appendChild(closeButton);
+        formHeader.appendChild(closeButton);
+
+        form.appendChild(formHeader);
+
+        var textareaContainer = document.createElement("div");
+        textareaContainer.style.display = "flex";
+        textareaContainer.style.alignItems = "center";
+
+        var textarea = document.createElement("textarea");
+        textarea.placeholder = "내용을 입력하세요";
+        textareaContainer.appendChild(textarea);
+
+        var submitButton = document.createElement("button");
+        submitButton.className = "submit-button";
+        submitButton.style.backgroundImage = "url('${pageContext.request.contextPath}/resources/sendbutton.png')";
+        submitButton.style.backgroundSize = "cover"; // 이미지가 버튼 크기에 맞게 조정되도록 함
+        submitButton.style.backgroundRepeat = "no-repeat"; // 이미지가 반복되지 않도록 함
+        submitButton.onclick = function() { submitComment(x, y, textarea.value); };
+        textareaContainer.appendChild(submitButton);
+
+
+        form.appendChild(textareaContainer);
 
         document.body.appendChild(form);
-        form.style.display = "block";
+        currentForm = form;
 
         displayCommentsAtPosition(x, y, form);
     }
@@ -495,6 +510,7 @@ body, html {
             document.body.removeChild(currentTempButton);
             currentTempButton = null;
         }
+        currentForm = null;
         location.reload();
     }
 
@@ -551,15 +567,24 @@ body, html {
 
                 var commentDiv = document.createElement("div");
                 commentDiv.className = "comment";
-                commentDiv.innerHTML = "<strong>" + userName + "</strong> " + commentText;
+
+                var commentHeader = document.createElement("div");
+                commentHeader.className = "comment-header";
+                commentHeader.innerHTML = "<strong>" + userName + "</strong>";
 
                 if (currentUserId === commentUserId) {
                     var deleteButton = document.createElement("button");
                     deleteButton.className = "delete-button";
                     deleteButton.innerHTML = "삭제";
                     deleteButton.onclick = function() { deleteComment(commentId, commentDiv); };
-                    commentDiv.appendChild(deleteButton);
+                    commentHeader.appendChild(deleteButton);
                 }
+
+                commentDiv.appendChild(commentHeader);
+
+                var commentContent = document.createElement("span");
+                commentContent.textContent = commentText;
+                commentDiv.appendChild(commentContent);
 
                 form.appendChild(commentDiv);
             }
@@ -685,10 +710,6 @@ body, html {
 				</c:choose>
 			</div>
 		</div>
-	</div>
-	<!-- 입력 폼 -->
-	<div class="coordinate-form">
-		<textarea placeholder="메모를 입력하세요"></textarea>
 	</div>
 
 </body>
