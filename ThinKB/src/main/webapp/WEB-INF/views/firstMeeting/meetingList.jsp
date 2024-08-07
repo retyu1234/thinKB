@@ -338,64 +338,6 @@ body {
 		</div>
 
 		<!-- 회의방 목록 -->
-		<%-- 		<div class="ideas">
-
-			<c:forEach var="li" items="${roomList}">
-				<div class="idea" data-stage="${li.getStageId()}"
-					<c:if test="${li.getStageId() >= 3}">
-                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
-                <c:forEach var="idea" items="${ideasList}">
-                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${idea.getIdeaID()}'"
-                </c:forEach>
-            </c:if>
-					<c:if test="${li.getStageId() < 3}">
-                onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'"
-            </c:if>>
-					<div class="idea-header">
-						<h2>
-							<span class="idea-icon">📝</span> <span class="room-title">${li.getRoomTitle()}</span>
-						</h2>
-						<img src="./resources/nextIcon.png" alt="더 보기" class="next-icon">
-					</div>
-					<div class="idea-details">
-						<p>종료일: ${li.getEndDate()}</p>
-						<p>
-							주최 팀명:
-							<c:forEach var="team" items="${teamInfo}">
-								<c:if test="${team.getTeamId() == li.getTeamId()}">
-                                ${team.getTeamName()}
-                            </c:if>
-							</c:forEach>
-						</p>
-						<p>
-							단계:
-							<c:choose>
-								<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
-								<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
-								<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-								<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
-								<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
-								<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
-							</c:choose>
-						</p>
-						<c:if test="${li.getStageId() >= 3}">
-							<c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
-							<c:forEach var="idea" items="${ideasList}">
-								<input type="hidden" name="ideaId" value="${idea.getIdeaID()}" />
-							</c:forEach>
-						</c:if>
-					</div>
-					</div>
-			</c:forEach>
-
-			<div class="no-room" style="display: none;">
-				<img src="./resources/noContent.png" alt="no Contents"
-					style="width: 100px; height: auto; margin-bottom: 10px;">
-				<div class="contents">선택한 단계의 회의방이 없어요.</div>
-				<div class="contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
-			</div>
-
-		</div> --%>
 		<div class="ideas">
 			<c:forEach var="li" items="${roomList}">
 				<div class="idea" data-stage="${li.getStageId()}"
