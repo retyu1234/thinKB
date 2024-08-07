@@ -5,20 +5,118 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>아이디어 투표 결과</title>
+<title>thinKB - 아이디어 투표 결과</title>
 <style>
+<<<<<<< HEAD
 .content-container {
 	padding: 20px;
-	margin-left: 15%;
-	margin-right: 15%;
+	margin-left: 17%;
+	margin-right: 17%;
 	position: relative;
 	z-index: 2;
+=======
+body, html {
+	margin: 0;
+	padding: 0;
+	font-family: Arial, sans-serif;
+	overflow-x: hidden;
+    width: 100%;
+>>>>>>> refs/heads/main
 }
 
-body {
-	padding-top: 100px;
+<<<<<<< HEAD
+=======
+.stage2clear-header {
+	position: relative;
+	z-index: 1;
 }
 
+.room2-content {
+	padding: 20px;
+	margin-left: 20%;
+	margin-right: 20%;
+	z-index: 2;
+	/* margin-top: 120px; */
+}
+.stages {
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 0;
+	font-size: 13pt;
+}
+
+.stage {
+	flex: 1;
+	text-align: center;
+	padding: 3px;
+	margin: 0 2px;
+	cursor: pointer;
+	text-decoration: none;
+	color: #000;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.active {
+	color: #FFD700;
+	font-weight: bold;
+}
+
+.inactive {
+	color: #999;
+	pointer-events: none;
+}
+
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
+}
+
+.grey-button {
+	background-color: #978A8F;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.grey-button:hover {
+	background-color: #60584C;
+}
+
+.room1-title {
+	font-size: 20pt;
+	color: black;
+	font-weight: bold;
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
+
+.room1-title-detail {
+	font-size: 15pt;
+}
+
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
+
+>>>>>>> refs/heads/main
 table {
 	width: 70%;
 	margin-left: auto;
@@ -75,8 +173,8 @@ tr:hover {
 .timer-input {
 	width: 60px;
 	padding: 8px;
-	border: 2px solid #666;
-	border-radius: 5px;
+	border: 3px solid lightgrey;
+	border-radius: 10px;
 	font-size: 16px;
 	text-align: center;
 }
@@ -97,17 +195,52 @@ tr:hover {
 	margin: 4px 2px;
 	cursor: pointer;
 }
+#timer-section, #timer, #timer-message {
+    display: none;
+}
 </style>
 
 </head>
 <body>
-	<%@ include file="../header.jsp"%>
-		<%@ include file="../leftSideBar.jsp"%>
-	<div class="content-container">
-		<h1>아이디어 투표결과</h1>
-		<h3>1, 2위 아이디어만 추가 의견 받기가 가능합니다(동순위 발생 시 아이디어 제공자의 누적 기여도가 높은순으로
-			선택됩니다.)</h3>
+	<!-- 헤더영역 -->
+	<header class="stage2clear-header">
+		<%@ include file="../header.jsp"%>
+	</header>
+
+	<!-- 왼쪽 sideBar -->
+	<%@ include file="../leftSideBar.jsp"%>
+
+	<div class="room2-content">
+
+		<!-- 5개 단계 표시 -->
+		<%
+		    String[] stages =  {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
+		    request.setAttribute("stages", stages);
+		%>
+		<div class="stages">
+			<c:forEach var="stage" items="${stages}" varStatus="status">
+				<c:choose>
+					<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+						<a
+							href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}"
+							class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+							${status.index + 1}. ${stage} </a>
+					</c:when>
+					<c:otherwise>
+						<div class="stage inactive">${status.index + 1}. ${stage}</div>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</div>
+		
+		<!-- 상단 회의방 이름, 단계 설명 -->
+		<div class="room1-title">[${meetingRoom.getRoomTitle()}] 아이디어 투표결과</div>
+		<div class="room1-title-detail">1, 2위 아이디어만 추가 의견 받기가 가능해요.</div>
+			<div class="room1-title-detail">(동순위 발생 시 아이디어 제공자의 누적 기여도가 높은순으로 선택됩니다.)</div>
+		<hr class="line">
+
 		<div>
+		<div class="room1-title" style="font-size: 18pt; margin-top: 30px;">투표 결과</div>
 			<table>
 				<tr>
 					<th>순위</th>
@@ -150,49 +283,36 @@ tr:hover {
 				</div>
 
 				<div style="text-align: center;">
-					<button type="submit" class="button">의견 받기</button>
+					<button type="submit" class="yellow-button">의견 받기</button>
 				</div>
 			</form>
 		</div>
+	<!-- 오른쪽 sideBar -->
+	<%@ include file="../rightSideBar.jsp"%>
+	
 	</div>
 	<script>
-		document
-				.getElementById('goStage3Form')
-				.addEventListener(
-						'submit',
-						function(e) {
-							e.preventDefault();
+		document.getElementById('goStage3Form').addEventListener('submit', function(e) {
+			e.preventDefault();
+			var timerHours = this.querySelector('input[name="timer_hours"]').value;
+			var timerMinutes = this.querySelector('input[name="timer_minutes"]').value;
+			var timerSeconds = this.querySelector('input[name="timer_seconds"]').value;
 
-							var timerHours = this
-									.querySelector('input[name="timer_hours"]').value;
-							var timerMinutes = this
-									.querySelector('input[name="timer_minutes"]').value;
-							var timerSeconds = this
-									.querySelector('input[name="timer_seconds"]').value;
-
-							if (timerHours === "" && timerMinutes === ""
-									&& timerSeconds === "") {
-								alert('타이머 설정을 위해 최소한 하나의 시간 단위를 입력해주세요.');
-
-								// 입력 필드 강조
-								this
-										.querySelectorAll(
-												'input[type="number"]')
-										.forEach(
-												function(input) {
-													input.style.border = "2px solid red";
-												});
-							} else {
-								// 정상 상태로 복원
-								this.querySelectorAll('input[type="number"]')
-										.forEach(function(input) {
-											input.style.border = "";
-										});
-
-								// 모든 조건이 만족되면 폼을 수동으로 제출합니다.
-								this.submit();
-							}
-						});
+			if (timerHours === "" && timerMinutes === "" && timerSeconds === "") {
+				alert('타이머 설정을 위해 최소한 하나의 시간 단위를 입력해주세요.');
+				// 입력 필드 강조
+				this.querySelectorAll('input[type="number"]').forEach(
+					function(input) {\input.style.border = "2px solid red";
+				});
+				} else {
+				// 정상 상태로 복원
+					this.querySelectorAll('input[type="number"]').forEach(function(input) {
+						input.style.border = "";
+					});
+				// 모든 조건이 만족되면 폼을 수동으로 제출합니다.
+				this.submit();
+				}
+		});
 	</script>
 
 </body>

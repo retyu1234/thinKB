@@ -11,22 +11,18 @@
 .newRoom-body {
 	margin: 0;
 	padding: 0;
-	background-image:
-		url('${pageContext.request.contextPath}/resources/23029.jpg');
-	background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
-	background-position: center; /* 이미지를 가운데 정렬 */
-	background-repeat: no-repeat;
-	height: 400px; /* 요소의 높이를 400px로 고정 */
+	caret-color: transparent;
 }
 
 .content {
-	padding: 20px; /* content 영역의 여백 설정 */
-	margin-left: 25%;
-	margin-right: 25%;
+	padding: 30px; /* content 영역의 여백 설정 */
+	margin-left: 20%;
+	margin-right: 20%;
+	caret-color: transparent;
 }
 
 .title {
-	font-size: 30px;
+	font-size: 18pt;
 	font-weight: bold;
 	color: black;
 	margin-top: 30px;
@@ -185,21 +181,22 @@
 	margin: 20px;
 }
 
-.btn {
-	display: inline-block;
-	padding: 10px 20px;
-	font-size: 16px;
+/* 노란색 버튼 */
+.yellow-button {
+	background-color: #FFCC00;
 	color: black;
-	background-color: #e6b800;
+	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
+	font-size: 13pt;
 	cursor: pointer;
+	font-weight: bold;
 }
 
-.btn:hover {
-	background-color: #696969;
-	color: white;
+.yellow-button:hover {
+	background-color: #D4AA00;
 }
+
 
 .modal {
 	display: none;
@@ -260,31 +257,7 @@
 	border-bottom: 1px solid #ddd;
 }
 
-.btn-secondary, .btn-primary {
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 16px;
-}
 
-.btn-secondary {
-	background-color: gray;
-	color: white;
-}
-
-.btn-primary {
-	background-color: blue;
-	color: white;
-}
-
-.btn-secondary:hover {
-	background-color: darkgray;
-}
-
-.btn-primary:hover {
-	background-color: darkblue;
-}
 
 .error-message {
 	color: red;
@@ -350,6 +323,22 @@
 	color: red;
 	font-size: 0.9em;
 }
+#timer-section, #timer, #timer-message {
+    display: none;
+}
+.manageTop{
+	display: flex;
+	justify-content: space-between;
+}
+#backButton{
+	border: none;
+	background-color: #ffffff;
+	font-size: 26pt;
+	transition: font-size 0.3s ease; 
+}
+#backButton:hover{
+	font-size: 30pt;
+}
 </style>
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
@@ -360,6 +349,12 @@ document.addEventListener('DOMContentLoaded', function() {
         url.searchParams.set('roomId', roomId);
         link.href = url.toString();
     });
+
+    document.getElementById('backButton').addEventListener('click', function() {
+        var roomId = '${meetingRoom.roomId}';
+        var stageId = '${meetingRoom.stageId}';
+        window.location.href = './roomDetail?roomId=' + roomId + '&stage=' + stageId;
+    });
 });
 </script>
 </head>
@@ -368,11 +363,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	<div class="newRoom-body">
 		<%@ include file="../header.jsp"%>
 	</div>
-	<c:if test="${userId == meetingRoom.roomManagerId}">
-		<%@ include file="../sideBar.jsp"%>
-	</c:if>
+
+		<%@ include file="../leftSideBar.jsp"%>
+		<%@ include file="../rightSideBar.jsp"%>
+	
 
 	<div class="content">
+	<div class="manageTop">
+	<h2 style="font-size:20pt">⚙️회의방 관리</h2>
+	<button id="backButton">🔙</button></div><hr>
 		<form action="./updateRoomInfo" method="post"
 			onsubmit="return validateForm()">
 			<input type="hidden" name="roomId" value="${meetingRoom.roomId}" />
@@ -423,7 +422,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			</div>
 
 			<div class="title" style="margin-top: 70px;">타이머 설정 변경</div>
-			<h2>아이디어별 타이머</h2>
 
 			<c:set var="hasNonZeroIdea" value="false" />
 			<c:forEach var="timer" items="${timers}">
@@ -496,7 +494,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			</c:choose>
 
 			<div style="margin: 70px; text-align: center;">
-				<button class="btn" type="submit">수정하기</button>
+				<button class="yellow-button" type="submit">수정하기</button>
 			</div>
 		</form>
 	</div>

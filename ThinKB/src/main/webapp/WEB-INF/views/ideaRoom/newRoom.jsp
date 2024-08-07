@@ -459,7 +459,7 @@ body.modal-open {
 	<!-- 아이디어 회의 상세설명 -->
 			<div class="titleAndDetail">
 				<div class="titleAndDetail-title">아이디어 회의 상세설명</div><button type="button" id="autoCompleteBtn" class="yellow-button">자동완성</button>
-				<div class="titleAndDetail-detail">회의 주제에 대한 상세한 설명을 입력해주세요. ex) 참고할 수 있는 관련문서, 보고서 등</div>
+				<div class="titleAndDetail-detail">상세 설명을 직접 입력하거나, 자동완성(KB AI) 버튼을 통해 채울 수 있어요.</div>
 			</div>
 <textarea id="content" class="new-subject" style="height: 400px; width: 100%; resize: vertical;" name="content" placeholder="여기에 작성해주세요"></textarea>
 	<!-- 회의종료일 -->
@@ -1041,27 +1041,26 @@ body.modal-open {
 	</script>
 <script type="text/javascript">
 document.getElementById('autoCompleteBtn').addEventListener('click', function(event) {
-    event.preventDefault(); // 기본 동작 방지
-
+    event.preventDefault();
     var title = document.querySelector('input[name="title"]').value;
     if (title.trim() === '') {
         alert('먼저 회의 주제를 입력해주세요.');
         return;
     }
-
     this.disabled = true;
     this.textContent = '로딩 중...';
 
-    // URL 인코딩을 사용하여 한글 및 특수문자 처리
-    var encodedTitle = encodeURIComponent(title);
+    // UTF-8로 인코딩 후 Base64 인코딩
+    var encodedTitle = btoa(unescape(encodeURIComponent(title)));
 
     fetch('./getAiResponse?userInput=' + encodedTitle, {
         method: 'GET'
     })
     .then(response => response.text())
     .then(data => {
-        // 받은 데이터가 이미 올바르게 인코딩되어 있다고 가정
-        document.getElementById('content').value = data;
+        // Base64 디코딩 후 UTF-8 디코딩
+        var decodedData = decodeURIComponent(escape(atob(data)));
+        document.getElementById('content').value = decodedData;
         this.disabled = false;
         this.textContent = '자동완성';
     })
