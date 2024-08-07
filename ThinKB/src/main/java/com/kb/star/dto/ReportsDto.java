@@ -10,6 +10,7 @@ public class ReportsDto {
 	private boolean isFinal;
 	private String createAt;
 	private String updateAt;
+	private String roomTitle;
     private int stageId;
     private String status;
     
@@ -72,6 +73,12 @@ public class ReportsDto {
 	}
 	public void setUpdateAt(String updateAt) {
 		this.updateAt = updateAt;
+	}
+	public String getRoomTitle() {
+		return roomTitle;
+	}
+	public void setRoomTitle(String roomTitle) {
+		this.roomTitle = roomTitle;
 	}
 	
 }

@@ -115,11 +115,11 @@
         r.IsFinal,
         r.CreatedAt,
         r.UpdatedAt,
+        mr.RoomTitle,
         mr.StageID,
         CASE 
             WHEN mr.StageID = 6 THEN '완료'
-            WHEN mr.StageID = 5 THEN '작성중'
-            ELSE '기타'
+            ELSE '작성중'
         END AS Status
     FROM 
         Reports r
