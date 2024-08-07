@@ -132,153 +132,107 @@ body, html {
 }
 
 .coordinate-button {
-	position: absolute;
-	background-color: #60584C;
-	border: none;
-	width: 60px;
-	height: 60px;
-	cursor: pointer;
-	border-radius: 30px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 10; /* 높은 z-index 값을 주어 다른 요소들 위에 표시되도록 함 */
+    position: absolute;
+    background-color: #60584C;
+    border: none;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10; /* 높은 z-index 값을 주어 다른 요소들 위에 표시되도록 함 */
 }
 
 .coordinate-button::before {
-	content: "";
-	position: absolute;
-	width: 45px;
-	height: 45px;
-	border-radius: 50%;
-	background-size: cover;
-	background-position: center;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-image: var(- -profile-img);
-	z-index: 11; /* 버튼보다 높은 z-index 값을 주어 이미지가 버튼 위에 표시되도록 함 */
+    content: "";
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: var(--profile-img);
+    z-index: 11; /* 버튼보다 높은 z-index 값을 주어 이미지가 버튼 위에 표시되도록 함 */
 }
 
 .coordinate-button::after {
-	content: "";
-	position: absolute;
-	bottom: -17px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: 0;
-	height: 0;
-	border: 10px solid transparent;
-	border-top-color: #60584C;
-	z-index: 9; /* 화살표가 이미지 아래에 위치하도록 함 */
+    content: "";
+    position: absolute;
+    bottom: -17px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border: 10px solid transparent;
+    border-top-color: #60584C;
+    z-index: 9; /* 화살표가 이미지 아래에 위치하도록 함 */
 }
-
 .coordinate-form {
-	position: absolute;
-	background-color: white;
-	border: 1px solid #ccc;
-	padding: 20px;
-	z-index: 1000;
-	border-radius: 10px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	width: 300px; /* 폼의 너비 설정 */
-	display: flex;
-	flex-direction: column;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 1000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 250px;
 }
 
 .coordinate-form textarea {
-	width: calc(100% - 50px); /* Submit 버튼 크기 고려하여 너비 조정 */
-	height: 40px;
-	border-radius: 5px;
-	background-color: #EBEBEB;
-	padding: 10px;
-	box-sizing: border-box;
-	margin-bottom: 10px;
-	font-size: 14px;
-	color: #666;
-	border: none; /* 외곽선 제거 */
-	outline: none; /* 클릭 시 외곽선 제거 */
+    width: 100%;
+    height: 60px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
 }
 
-.coordinate-form textarea::placeholder {
-	color: #999; /* placeholder 텍스트 색상 */
+ .coordinate-form button {
+    padding: 5px 10px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
-
-.coordinate-form button {
-	padding: 5px 10px;
-	margin-right: 10px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-}
-
+ 
 .coordinate-form .submit-button {
-	width: 40px;
-	height: 40px;
-	border-radius: 50%;
-	background-color: #60584C;
-	color: white;
-	border: none;
-	cursor: pointer;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	right: 10px;
-	bottom: 10px;
-	font-size: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-
 .coordinate-form .close-button {
-	background-color: transparent;
-	border: none;
-	color: #aaa;
-	font-size: 20px;
-	font-weight: bold;
-	cursor: pointer;
-	position: absolute;
-	right: 10px;
-	top: 10px;
+    background-color: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
 }
-
 .coordinate-form .close-button:hover {
-	color: #000;
+    color: #000;
 }
-
-.coordinate-form .comment {
-	background-color: transparent;
-	border: none;
-	padding: 10px 0;
-	margin-bottom: 10px;
-	display: flex;
-	flex-direction: column;
-}
-
-.coordinate-form .comment strong {
-	font-size: 14px;
-	margin-bottom: 5px;
-}
-
-.coordinate-form .comment span {
-	font-size: 14px;
-	color: #666;
-}
-
-.coordinate-form .comment .delete-button {
-	font-size: 12px;
-	color: #aaa;
-	cursor: pointer;
-	border: none;
-	background: none;
-	padding: 0;
-	align-self: flex-end;
-}
-
-.coordinate-form .comment .delete-button:hover {
-	color: #000;
-}
-/* .comment {
+.comment {
 	background-color: #f5f5f5;
 	border: 1px solid #ccc;
 	padding: 10px;
@@ -296,7 +250,8 @@ body, html {
 	padding: 5px;
 	cursor: pointer;
 	border-radius: 5px;
-} */
+}
+
 .ab-feedback-message-detail {
 	width: 50%;
 	margin-right: 8%;
@@ -551,12 +506,12 @@ body, html {
 
                 var commentDiv = document.createElement("div");
                 commentDiv.className = "comment";
-                commentDiv.innerHTML = "<strong>" + userName + "</strong> " + commentText;
+                commentDiv.innerHTML = "<strong>" + userName + ":</strong> " + commentText;
 
                 if (currentUserId === commentUserId) {
                     var deleteButton = document.createElement("button");
                     deleteButton.className = "delete-button";
-                    deleteButton.innerHTML = "삭제";
+                    deleteButton.innerHTML = "Delete";
                     deleteButton.onclick = function() { deleteComment(commentId, commentDiv); };
                     commentDiv.appendChild(deleteButton);
                 }
@@ -648,48 +603,43 @@ body, html {
 				<div class="ab-feedback-title">${abtest.testName}</div>
 				<div class="ab-feedback-date">${abtest.createdAt}</div>
 				<c:choose>
-					<c:when test="${empty comments}">
-						<div class="abfd-comment">
-							<div class="abfd-comment-profile">
-								<img
-									src="${pageContext.request.contextPath}/resources/ccoli.png"
-									alt="ThinKB" class="profile-img">
-							</div>
-							<div class="abfd-comment-detail">
-								<div class="abfd-comment-userInfo">
-									<div class="abfd-comment-userName">ThinKB</div>
-									<div class="abfd-comment-date">2024-01-01</div>
-								</div>
-								<div class="abfd-comment-text">첫 메모를 등록해보세요!</div>
-							</div>
-						</div>
-					</c:when>
-					<c:otherwise>
-						<c:forEach var="abfd" items="${comments}">
-							<div class="abfd-comment">
-								<div class="abfd-comment-profile">
-									<img
-										src="${pageContext.request.contextPath}/upload/${abfd.userProfileImg}"
-										alt="${abfd.userName}" class="profile-img">
-								</div>
-								<div class="abfd-comment-detail">
-									<div class="abfd-comment-userInfo">
-										<div class="abfd-comment-userName">${abfd.userName}</div>
-										<div class="abfd-comment-date">${abfd.timestamp}</div>
-									</div>
-									<div class="abfd-comment-text">${abfd.commentText}</div>
-								</div>
-							</div>
-						</c:forEach>
-					</c:otherwise>
+				    <c:when test="${empty comments}">
+				        <div class="abfd-comment">
+				            <div class="abfd-comment-profile">
+				                <img
+				                    src="${pageContext.request.contextPath}/resources/ccoli.png"
+				                    alt="ThinKB" class="profile-img">
+				            </div>
+				            <div class="abfd-comment-detail">
+				                <div class="abfd-comment-userInfo">
+				                    <div class="abfd-comment-userName">ThinKB</div>
+				                    <div class="abfd-comment-date">2024-01-01</div>
+				                </div>
+				                <div class="abfd-comment-text">첫 메모를 등록해보세요!</div>
+				            </div>
+				        </div>
+				    </c:when>
+				    <c:otherwise>
+				        <c:forEach var="abfd" items="${comments}">
+				            <div class="abfd-comment">
+				                <div class="abfd-comment-profile">
+				                    <img
+				                        src="${pageContext.request.contextPath}/upload/${abfd.userProfileImg}"
+				                        alt="${abfd.userName}" class="profile-img">
+				                </div>
+				                <div class="abfd-comment-detail">
+				                    <div class="abfd-comment-userInfo">
+				                        <div class="abfd-comment-userName">${abfd.userName}</div>
+				                        <div class="abfd-comment-date">${abfd.timestamp}</div>
+				                    </div>
+				                    <div class="abfd-comment-text">${abfd.commentText}</div>
+				                </div>
+				            </div>
+				        </c:forEach>
+				    </c:otherwise>
 				</c:choose>
 			</div>
 		</div>
 	</div>
-	<!-- 입력 폼 -->
-	<div class="coordinate-form">
-		<textarea placeholder="메모를 입력하세요"></textarea>
-	</div>
-
 </body>
 </html>

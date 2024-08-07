@@ -30,10 +30,26 @@
 	<!-- AbTestId로 메모 가져오기 -->
 	<select id="getCommentsByAbTestId"
 		resultType="com.kb.star.dto.UserCommentsDto">
-		SELECT * FROM UserComments
-		WHERE AssociatedID=#{abTestId}
-		AND AssociationType='AB' AND IsDelete=0
+		SELECT
+		uc.CommentID,
+		uc.AssociatedID,
+		uc.UserID,
+		uc.CommentText,
+		uc.X,
+		uc.Y,
+		u.UserName,
+		u.ProfileImg as userProfileImg,
+		uc.Timestamp
+		FROM
+		UserComments uc
+		INNER JOIN
+		Users u ON uc.UserID = u.UserID
+		WHERE
+		uc.AssociatedID = #{abTestId}
+		AND uc.AssociationType = 'AB'
+		AND uc.IsDelete = 0
 	</select>
+
 
 	<!-- 개별 메모 삭제하기 (IsDelete를 1로 설정) -->
 	<update id="deleteComment">
@@ -115,7 +131,8 @@
 	<update id="updatePinTestStatus">
 		UPDATE PinTests
 		SET status = 1
-		WHERE pinTestId = #{pinTestId}
+		WHERE pinTestId =
+		#{pinTestId}
 	</update>
 
 

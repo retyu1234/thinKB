@@ -218,7 +218,7 @@ public class AddFunctionController {
 		model.addAttribute("userId", userId);
 		command = new ABFeedbackListCommand(sqlSession);
 		command.execute(model);
-		return "/addFunction/AorBFeedbackList";
+		return "/addFunction/AorBFeedbackListCopy";
 	}
 
 	// 핀테스트 목록

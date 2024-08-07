@@ -9,8 +9,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.ui.Model;
 
 import com.kb.star.dto.AorBDto;
-import com.kb.star.dto.UsersDto;
+import com.kb.star.dto.UserCommentsDto;
 import com.kb.star.util.AorBDao;
+import com.kb.star.util.PinTestsDao;
 import com.kb.star.util.UserDao;
 
 public class ABFeedbackListCommand implements AddCommand {
@@ -28,18 +29,23 @@ public class ABFeedbackListCommand implements AddCommand {
 		int userId = (Integer) map.get("userId");
 
 		AorBDao dao = sqlSession.getMapper(AorBDao.class);
-		int departmentId = getDepartmentIdForUser(userId); // Implement this method to get department ID from userId
+		int departmentId = getDepartmentIdForUser(userId);
 		List<AorBDto> dto = dao.getAorBFeedbackList(departmentId);
+
+		PinTestsDao user = sqlSession.getMapper(PinTestsDao.class);
+		for (AorBDto abDto : dto) {
+			List<UserCommentsDto> comments = user.getCommentsByAbTestId(abDto.getABTestID());
+			abDto.setParticipated(comments != null && !comments.isEmpty());
+		}
 		model.addAttribute("feedbackTests", dto);
 		System.out.println(dto);
+
 	}
 
 	private int getDepartmentIdForUser(int userId) {
-
-		int id = userId;
 		UserDao dao = sqlSession.getMapper(UserDao.class);
-		int departmentId = dao.userDepartmentId(id); // 내 아이디로 부서를 조회함
+		int departmentId = dao.userDepartmentId(userId);
 		System.out.println("departmentId : " + departmentId);
-		return departmentId; // Placeholder value
+		return departmentId;
 	}
 }
