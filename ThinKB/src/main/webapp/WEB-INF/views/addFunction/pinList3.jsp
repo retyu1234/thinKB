@@ -277,13 +277,13 @@ function filterTests() {
 
 function redirectToDetail(pinTestId, status) {
     // 상태에 따라 다른 URL로 리디렉션
-/*     if (status === 'complete') {
+    if (status === 'complete') {
         // 완료된 경우 다른 URL로 이동
         window.location.href = './completedPinTestDetail?pinTestId=' + pinTestId;
-    } else { */
+    } else {
         // 미완료된 경우 기본 URL로 이동
         window.location.href = './pinTestDetail?pinTestId=' + pinTestId;
-/*     } */
+    }
 }
 </script>
 </html>

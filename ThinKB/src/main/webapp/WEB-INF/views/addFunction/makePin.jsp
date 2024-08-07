@@ -13,11 +13,8 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #ffffff;
-    /* display: flex; */
     justify-content: center;
     align-items: center;
-    /* height: 100vh; */
-    /* margin: 0; */
 }
 
 .container {

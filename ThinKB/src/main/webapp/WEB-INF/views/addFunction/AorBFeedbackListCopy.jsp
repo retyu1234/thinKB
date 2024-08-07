@@ -111,32 +111,32 @@ html, body {
 }
 
 .ab-feedback-tests {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: flex-start; /* 변경: space-between에서 flex-start로 */
-	margin: 30px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* 변경: space-between에서 flex-start로 */
+    margin: 30px 30px;
 }
 
 .ab-feedback-test {
-	width: calc(33.33% - 20px); /* 변경: 30%에서 calc(33.33% - 20px)로 */
-	height: 400px;
-	margin-bottom: 50px;
-	margin-left: 10px;
-	margin-right: 15px; /* 추가: 오른쪽 마진 추가 */
-	padding: 20px;
-	border-radius: 20px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	cursor: pointer;
-	transition: all 0.3s ease;
-	box-sizing: border-box;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    width: calc(33.33% - 20px); /* 변경: 30%에서 calc(33.33% - 20px)로 */
+    height: 400px;
+    margin-bottom: 50px;
+    margin-left: 10px;
+    margin-right: 15px; /* 추가: 오른쪽 마진 추가 */
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* 추가: 3n번째 요소의 오른쪽 마진 제거 */
 .ab-feedback-test:nth-child(3n) {
-	margin-right: 0;
+    margin-right: 0;
 }
 
 .ab-feedback-test.hidden {
@@ -212,26 +212,32 @@ html, body {
 		<div class="progress-container">
 			<div class="progress">
 				<label><input type="checkbox" id="selectAll"
-					onchange="toggleSelectAll(this)">전체 선택</label> <label><input
-					type="checkbox" data-stage="incomplete" onchange="filterTests()">진행 중</label>
+					onchange="toggleSelectAll(this)">전체 선택</label> 
+				<label><input
+					type="checkbox" data-stage="incomplete" onchange="filterTests()">미참여</label>
 				<label><input type="checkbox" data-stage="complete"
-					onchange="filterTests()">종료</label>
+					onchange="filterTests()">참여 완료</label>
 			</div>
 		</div>
 		<div class="ab-feedback-tests">
-			<c:forEach var="test" items="${pinTests}">
-				<div
-					class="ab-feedback-test ${test.status == 1 ? 'complete' : 'incomplete'}"
-					onclick="redirectToDetail(${test.pinTestId}, '${test.status == 1 ? 'complete' : 'incomplete'}')"
-					data-status="${test.status == 1 ? 'status-complete' : 'status-incomplete'}">
+			<c:forEach var="test" items="${feedbackTests}">
+				<div class="ab-feedback-test ${test.participated ? 'complete' : 'incomplete'}"
+					onclick="redirectToFeedback(${test.ABTestID})">
 					<div
-						class="ab-feedback-test-status ${test.status == 1 ? 'status-complete' : 'status-incomplete'}">
-						${test.status == 1 ? '종료' : '진행중'}</div>
+						class="ab-feedback-test-status ${test.participated ? 'status-complete' : 'status-incomplete'}">
+						${test.participated ? '참여 완료' : '미참여'}</div>
 					<div class="ab-feedback-test-name">
 						<h3>${test.testName}</h3>
 					</div>
 					<div class="ab-feedback-test-images">
-						<img src="./upload/${test.fileName}" alt="Name">
+						<c:choose>
+							<c:when test="${test.resultANum > test.resultBNum}">
+								<img src="./upload/${test.variantA}" alt="imageA">
+							</c:when>
+							<c:otherwise>
+								<img src="./upload/${test.variantB}" alt="imageB">
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</c:forEach>
@@ -273,17 +279,6 @@ function filterTests() {
             test.classList.remove('hidden'); // 모두 보임
         }
     });
-}
-
-function redirectToDetail(pinTestId, status) {
-    // 상태에 따라 다른 URL로 리디렉션
-/*     if (status === 'complete') {
-        // 완료된 경우 다른 URL로 이동
-        window.location.href = './completedPinTestDetail?pinTestId=' + pinTestId;
-    } else { */
-        // 미완료된 경우 기본 URL로 이동
-        window.location.href = './pinTestDetail?pinTestId=' + pinTestId;
-/*     } */
 }
 </script>
 </html>
