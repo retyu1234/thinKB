@@ -133,33 +133,35 @@ html {
 }
 
 .idea-list {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+	display: flex;
+	gap: 10px;
+	margin-bottom: 20px;
 }
 
 .idea-button {
-    padding: 10px 20px;
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+	padding: 10px 20px;
+	background-color: #f0f0f0;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
 .idea-button:hover {
-    background-color: #e0e0e0;
+	background-color: #e0e0e0;
 }
 
 .idea-container {
-margin-bottom: 30px;
+	margin-bottom: 30px;
 }
+
 .idea-container h4 {
-    font-size: 18pt;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 5px;
+	font-size: 18pt;
+	margin-bottom: 15px;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 5px;
 }
+
 .summary-report h3 {
 	font-size: 22pt;
 	margin-bottom: 20px;
@@ -173,7 +175,7 @@ margin-bottom: 30px;
 }
 
 .hat-section {
-margin-bottom: 20px;
+	margin-bottom: 20px;
 }
 
 .hat-section h4 {
@@ -182,17 +184,18 @@ margin-bottom: 20px;
 	font-size: 1.2em;
 	margin-bottom: 15px;
 }
+
 .hat-section h5 {
-    font-size: 16pt;
-    margin-bottom: 10px;
-    color: #333;
+	font-size: 16pt;
+	margin-bottom: 10px;
+	color: #333;
 }
 
 .idea-item {
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
+	background-color: #f9f9f9;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 10px;
 }
 
 .idea-item h5 {
@@ -201,8 +204,8 @@ margin-bottom: 20px;
 }
 
 .idea-item p {
-    margin: 0;
-    font-size: 13px;
+	margin: 0;
+	font-size: 13px;
 }
 
 .reportToggleBtn {
@@ -311,33 +314,36 @@ margin-bottom: 20px;
 	display: flex;
 	flex-direction: column;
 }
+
 .stages {
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
 	font-size: 12pt;
 }
+
 .stage {
-    flex: 1;
-    text-align: center;
-    padding: 3px; /* 5px에서 3px로 줄임 */
-    margin: 0 2px; /* 좌우 여백 추가 */
-    cursor: pointer;
-    text-decoration: none;
-    color: #000;
-    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
-    overflow: hidden; /* 넘치는 텍스트 숨김 */
-    text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+	flex: 1;
+	text-align: center;
+	padding: 3px; /* 5px에서 3px로 줄임 */
+	margin: 0 2px; /* 좌우 여백 추가 */
+	cursor: pointer;
+	text-decoration: none;
+	color: #000;
+	white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
+	overflow: hidden; /* 넘치는 텍스트 숨김 */
+	text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
 }
+
 .active {
 	color: #FFD700;
 	font-weight: bold;
 }
+
 .inactive {
 	color: #999;
 	pointer-events: none;
 }
-
 </style>
 <script>
 	function handleFormSubmit(event) {
@@ -358,32 +364,32 @@ margin-bottom: 20px;
 </script>
 
 </head>
-<body style="margin: 0; overflow-x:hidden; width:100%">
+<body style="margin: 0; overflow-x: hidden; width: 100%">
 
 	<div class="page-container">
 		<%@ include file="../header.jsp"%>
-	        <div class="content-wrapper">
-	        <%@ include file="../leftSideBar.jsp"%>
-            <div class="center-content">
+		<div class="content-wrapper">
+			<%@ include file="../leftSideBar.jsp"%>
+			<div class="center-content">
 
 				<div class="report-form-container">
 					<!-- 5개 단계 표시 -->
-	<div class="stages">
-        <c:forEach var="stage" items="${stages}" varStatus="status">
-            <c:choose>
-                <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-                    <a href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}" class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-                        ${status.index + 1}. ${stage}
-                    </a>
-                </c:when>
-                <c:otherwise>
-                    <div class="stage inactive">
-                        ${status.index + 1}. ${stage}
-                    </div>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-    </div>
+					<div class="stages">
+						<c:forEach var="stage" items="${stages}" varStatus="status">
+							<c:choose>
+								<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+									<a
+										href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}"
+										class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+										${status.index + 1}. ${stage} </a>
+								</c:when>
+								<c:otherwise>
+									<div class="stage inactive">${status.index + 1}. ${stage}
+									</div>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</div>
 					<h2>🗒️아이디어 보고서 작성</h2>
 					<form action="./submitForm" method="post"
 						onsubmit="handleFormSubmit(event)">
@@ -476,6 +482,7 @@ var quill = new Quill('#report-content', {
             savedContent = savedContent.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
             var content = JSON.parse(savedContent);
             quill.setContents(content);
+            console.log("Parsed content:", content);
         } catch (e) {
             console.log("JSON parsing failed, treating as HTML");
             console.log("Parsing error:", e);
@@ -491,41 +498,49 @@ var quill = new Quill('#report-content', {
     };
 </script>
 				</div>
-<div class="summary-report">
-    <h3>📌요약 보고서<button class="reportToggleBtn" onclick="toggleSummary()">🔽</button></h3>
-    <div id="summaryContent">
-        <c:forEach var="idea" items="${ideaSummaries.stream().map(s->s.ideaId).distinct().toList()}" varStatus="ideaStatus">
-            <div class="idea-container">
-                <h4>아이디어&nbsp;${ideaStatus.index + 1}. ${ideaSummaries.stream().filter(s->s.ideaId == idea).findFirst().get().ideaTitle}</h4>
-                <c:forEach var="hatColor" items="Worry,Positive,Smart,Strict">
-                    <div class="hat-section">
-                        <h5>
-    <c:choose>
-        <c:when test="${hatColor == 'Worry'}">문제점/보완</c:when>
-        <c:when test="${hatColor == 'Positive'}">기대효과</c:when>
-        <c:when test="${hatColor == 'Smart'}">객관적 관점</c:when>
-        <c:when test="${hatColor == 'Strict'}">실현가능성</c:when>
-    </c:choose>
-</h5>
-                        <c:forEach var="opinion" items="${ideaSummaries}">
-                            <c:if test="${opinion.ideaId == idea && opinion.hatColor eq hatColor}">
-                                <div class="idea-item">
-                                    <p style="font-size:13pt; margin-bottom:1%;">${opinion.opinionText}</p>
-                                    <p>(작성자: ${opinion.opinionUserName}, 좋아요: ${opinion.likeNum})</p>
-                                </div>
-                            </c:if>
-                        </c:forEach>
-                    </div>
-                </c:forEach>
-            </div>
-        </c:forEach>
-    </div>
-</div>
+				<div class="summary-report">
+					<h3>
+						📌요약 보고서
+						<button class="reportToggleBtn" onclick="toggleSummary()">🔽</button>
+					</h3>
+					<div id="summaryContent">
+						<c:forEach var="idea"
+							items="${ideaSummaries.stream().map(s->s.ideaId).distinct().toList()}"
+							varStatus="ideaStatus">
+							<div class="idea-container">
+								<h4>아이디어&nbsp;${ideaStatus.index + 1}.
+									${ideaSummaries.stream().filter(s->s.ideaId == idea).findFirst().get().ideaTitle}</h4>
+								<c:forEach var="hatColor" items="Worry,Positive,Smart,Strict">
+									<div class="hat-section">
+										<h5>
+											<c:choose>
+												<c:when test="${hatColor == 'Worry'}">문제점/보완</c:when>
+												<c:when test="${hatColor == 'Positive'}">기대효과</c:when>
+												<c:when test="${hatColor == 'Smart'}">객관적 관점</c:when>
+												<c:when test="${hatColor == 'Strict'}">실현가능성</c:when>
+											</c:choose>
+										</h5>
+										<c:forEach var="opinion" items="${ideaSummaries}">
+											<c:if
+												test="${opinion.ideaId == idea && opinion.hatColor eq hatColor}">
+												<div class="idea-item">
+													<p style="font-size: 13pt; margin-bottom: 1%;">${opinion.opinionText}</p>
+													<p>(작성자: ${opinion.opinionUserName}, 좋아요:
+														${opinion.likeNum})</p>
+												</div>
+											</c:if>
+										</c:forEach>
+									</div>
+								</c:forEach>
+							</div>
+						</c:forEach>
+					</div>
+				</div>
 			</div>
-                <%@ include file="../rightSideBar.jsp"%>
-            </div>
-        </div>
-    </div>
+			<%@ include file="../rightSideBar.jsp"%>
+		</div>
+	</div>
+	</div>
 	<script>
 	function toggleSummary() {
 	    var content = document.getElementById("summaryContent");

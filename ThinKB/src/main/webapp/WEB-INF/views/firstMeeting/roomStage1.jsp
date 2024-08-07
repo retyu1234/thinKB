@@ -13,6 +13,8 @@ body, html {
 	font-family: Arial, sans-serif;
 	overflow-x: hidden;
     width: 100%;
+    caret-color: transparent;
+    
 }
 
 .room1-header {
@@ -457,7 +459,7 @@ display: none;
 
 	function submitIdeaForm1() {
 	    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
-	    var ideaDetail = document.querySelector('input[name="ideaDetail"]').value.trim();
+	    var ideaDetail = document.querySelector('textarea[name="ideaDetail"]').value.trim();
 	    var hasExistingIdea = ${result == true};
 	    var originalIdea = "${submittedIdea.getTitle()}";
 	    var originalDetail = "${submittedIdea.getDescription()}";
@@ -467,7 +469,7 @@ display: none;
 	        if (myIdea === "" || ideaDetail === "") {
 	            // 필드가 비어있으면 원래 값으로 복원
 	            document.querySelector('input[name="myIdea"]').value = originalIdea;
-	            document.querySelector('input[name="ideaDetail"]').value = originalDetail;
+	            document.querySelector('textarea[name="ideaDetail"]').value = originalDetail;
 	            alert("아이디어와 상세 설명을 비워둘 수 없습니다. 원래 값으로 복원됩니다.");
 	            return;
 	        } else if (myIdea === originalIdea && ideaDetail === originalDetail) {
@@ -490,14 +492,14 @@ display: none;
 
 	function updateForm() {
 	    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
-	    var ideaDetail = document.querySelector('input[name="ideaDetail"]').value.trim();
+	    var ideaDetail = document.querySelector('textarea[name="ideaDetail"]').value.trim();
 	    var originalIdea = "${submittedIdea.getTitle()}";
 	    var originalDetail = "${submittedIdea.getDescription()}";
 
 	    if (myIdea === "" || ideaDetail === "") {
 	        // 필드가 비어있으면 원래 값으로 복원
 	        document.querySelector('input[name="myIdea"]').value = originalIdea;
-	        document.querySelector('input[name="ideaDetail"]').value = originalDetail;
+	        document.querySelector('textarea[name="ideaDetail"]').value = originalDetail;
 	        alert("아이디어와 상세 설명을 비워둘 수 없습니다. 이전에 작성했던 내용이 복원됩니다.");
 	        return;
 	    } else if (myIdea === originalIdea && ideaDetail === originalDetail) {
@@ -753,13 +755,20 @@ function sendQuery() {
 }
 
 function sendAiRequest(query, roomId) {
-	showLoadingScreen();
+    showLoadingScreen();
+    
+    console.log("Original query:", query);  // 원본 쿼리 출력
+    
+    // UTF-8로 인코딩 후 Base64 인코딩
+    const encodedQuery = btoa(unescape(encodeURIComponent(query)));
+    console.log("Encoded query:", encodedQuery);  // 인코딩된 쿼리 출력
+    
     fetch('./getAiResponse1', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ userInput: query, roomId: Number(roomId)})
+        body: JSON.stringify({ userInput: encodedQuery, roomId: Number(roomId)})
     })
     .then(response => {
         if (!response.ok) {
@@ -767,39 +776,42 @@ function sendAiRequest(query, roomId) {
         }
         return response.text();
     })
-    .then(data => {
-        let jsonData;
-        try {
-            jsonData = JSON.parse(data);
-        } catch (e) {
-            throw new Error('Invalid JSON response from server');
-        }
-
-        const responseText = document.getElementById('ai-response-text');
-        const responseContainer = document.getElementById('kb-ai-response');
-        const responseWrapper = document.getElementById('ai-response-wrapper');
-        
-        if (responseText && responseContainer && responseWrapper) {
-            if (jsonData.error) {
-                // 서버에서 오류 응답을 보낸 경우
-                responseText.innerHTML = `오류가 발생했습니다: ${jsonData.error.message}`;
-            } else if (jsonData.aiResponse) {
-                // 정상적인 AI 응답인 경우
-                responseText.innerHTML = jsonData.aiResponse.replace(/\n/g, '<br>');
-            } else {
-                // 예상치 못한 응답 형식인 경우
-                responseText.innerHTML = '예상치 못한 응답 형식입니다.';
-            }
-            
-            responseContainer.style.display = 'flex';
-            responseWrapper.style.alignItems = 'flex-start';
-            responseWrapper.style.justifyContent = 'flex-start';
-            hideLoadingScreen();
-            adjustResponseHeight();
+.then(data => {
+    console.log("Received data:", data);  // 받은 데이터 출력
+    let jsonData;
+    try {
+        jsonData = JSON.parse(data);
+        console.log("Parsed JSON data:", jsonData);  // 파싱된 JSON 데이터 출력
+    } catch (e) {
+        console.error("JSON parsing error:", e);
+        throw new Error('Invalid JSON response from server');
+    }
+    const responseText = document.getElementById('ai-response-text');
+    const responseContainer = document.getElementById('kb-ai-response');
+    const responseWrapper = document.getElementById('ai-response-wrapper');
+    
+    if (responseText && responseContainer && responseWrapper) {
+        if (jsonData.error) {
+            console.error("Server error:", jsonData.error);
+            responseText.innerHTML = `오류가 발생했습니다: ${jsonData.error}`;
+        } else if (jsonData.aiResponse) {
+            // Base64 디코딩 과정 제거
+            console.log("AI response:", jsonData.aiResponse);  // AI 응답 출력
+            responseText.innerHTML = jsonData.aiResponse.replace(/\n/g, '<br>');
         } else {
-            console.error('Response elements not found');
+            console.error("Unexpected response format:", jsonData);
+            responseText.innerHTML = '예상치 못한 응답 형식입니다.';
         }
-    })
+        
+        responseContainer.style.display = 'flex';
+        responseWrapper.style.alignItems = 'flex-start';
+        responseWrapper.style.justifyContent = 'flex-start';
+        hideLoadingScreen();
+        adjustResponseHeight();
+    } else {
+        console.error('Response elements not found');
+    }
+})
     .catch(error => {
         console.error('Error:', error);
         

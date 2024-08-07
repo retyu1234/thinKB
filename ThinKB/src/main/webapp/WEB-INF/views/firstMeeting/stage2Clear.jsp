@@ -9,14 +9,10 @@
 <style>
 .content-container {
 	padding: 20px;
-	margin-left: 15%;
-	margin-right: 15%;
+	margin-left: 17%;
+	margin-right: 17%;
 	position: relative;
 	z-index: 2;
-}
-
-body {
-	padding-top: 100px;
 }
 
 table {
@@ -97,12 +93,16 @@ tr:hover {
 	margin: 4px 2px;
 	cursor: pointer;
 }
+#timer-section, #timer, #timer-message {
+    display: none;
+}
 </style>
 
 </head>
-<body>
+<body style="margin:0;">
 	<%@ include file="../header.jsp"%>
 		<%@ include file="../leftSideBar.jsp"%>
+		<%@ include file="../rightSideBar.jsp"%>
 	<div class="content-container">
 		<h1>아이디어 투표결과</h1>
 		<h3>1, 2위 아이디어만 추가 의견 받기가 가능합니다(동순위 발생 시 아이디어 제공자의 누적 기여도가 높은순으로
