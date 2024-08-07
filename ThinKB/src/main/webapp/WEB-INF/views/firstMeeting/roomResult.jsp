@@ -359,7 +359,7 @@ body, html {
 .scrolling-banner {
     display: flex;
     width: 200%;
-    animation: scrollBanner 5s linear infinite;
+    animation: scrollBanner 10s linear infinite;
 }
 
 .scrolling-banner-img {
@@ -628,8 +628,8 @@ body, html {
 	<div class="scrolling-banner-outer fade-in-section">
 	    <div class="scrolling-banner-container">
 	        <div class="scrolling-banner">
-		        <img src="<c:url value='./resources/ideaslist.png'/>" alt="Fighting Banner" class="scrolling-banner-img">
-		        <img src="<c:url value='./resources/ideaslist.png'/>" alt="Fighting Banner" class="scrolling-banner-img">
+		        <img src="<c:url value='./resources/imgtest.png'/>" alt="Fighting Banner" class="scrolling-banner-img">
+		        <img src="<c:url value='./resources/imgtest.png'/>" alt="Fighting Banner" class="scrolling-banner-img">
 	    	</div>
 	    </div>
 	</div>
