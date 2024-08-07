@@ -83,7 +83,6 @@
 .room:hover {
 	background-color: #e0e0e0; /* 호버 시 배경색 변경 */
 }
-
 .room-link {
 	text-decoration: none;
 	color: inherit;
@@ -128,7 +127,13 @@
 	margin-bottom: 10px;
 	margin-left: 10px;
 }
-
+.notiTruncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline;
+    max-width: 100%;
+}
 .more-button {
 	background: none;
 	border: none;
@@ -152,15 +157,23 @@
 	border-radius: 15px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 	cursor: pointer; /* 커서를 손 모양으로 변경 */
+	overflow: hidden; 
+	transition: background-color 0.3s ease;
 }
 
 .notification.unread {
 	/* background-color: #cce5ff; */ /* 읽지 않은 알림의 파란색 배경 */
 	background-color: #fffde7; /* 연노랑색 */
 }
+.notification.unread:hover {
+	background-color: #AB9A80;
+}
 
 .notification.read {
 	background-color: #f0f0f0; /* 읽은 알림의 회색 배경 */
+}
+.notification.read:hover {
+	background-color: #e0e0e0;
 }
 
 .notification-time {
@@ -169,12 +182,17 @@
 }
 
 .notification-content {
-	color: #333;
-	margin-bottom: 0;
+    margin: 5px 0 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .notiRoomTitle {
 	margin: 0;
+	   white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 /* 읽지 않은 메세지 팝업 스타일 */
 .popup-overlay {
@@ -352,6 +370,9 @@
 	margin-bottom: 10px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.todo-item:hover{
+	background-color: #e0e0e0;
+}
 
 .todo-item.completed {
 	background-color: #e0e0e0;
@@ -362,21 +383,87 @@
 	font-weight: bold;
 	margin-bottom: 5px;
 }
-
+.fc-event {
+    border: none;
+    border-radius: 3px;
+    padding: 2px 5px;
+}
 .todo-content {
 	margin: 0;
 }
+.fc-day-other .fc-daygrid-day-number {
+    opacity: 0.5;
+}
+.fc-daygrid-day-number {
+    font-weight: bold;
+    color: #495057;
+}
+.fc-scrollgrid-sync-table {
+    height: 100% !important;
+}
 
+.fc-daygrid-body {
+    height: auto !important;
+}
+
+.fc-daygrid-body table {
+    height: 100% !important;
+}
+
+.fc .fc-daygrid-body-unbalanced .fc-daygrid-day-events {
+    position: relative !important;
+    min-height: 0 !important;
+}
+
+.fc-daygrid-day-frame {
+    height: 100% !important;
+    min-height: auto !important;
+}
+.fc-button-primary {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: #ffffff !important; /* 아이콘 색상 */
+    font-weight:bold;
+    font-size:25pt;
+    transition: all 0.3s ease;
+}
+
+.fc-button-primary:hover {
+    background-color: transparent !important;
+    border: none !important;
+    transform: scale(1.2); /* 호버 시 아이콘 크기 20% 증가 */
+}
+.fc-day-header {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 10px 0 !important;
+    background-color: #f1f3f5;
+}
+
+.fc-day {
+    transition: background-color 0.3s ease;
+}
+
+.fc-day:hover {
+    background-color: #f8f9fa;
+}
 #calendar {
-	height: 100%; /* 부모 요소의 높이에 맞춤 */
+	height: 100%;
+    max-height: 500px; /* 부모 요소의 높이에 맞춤 */
 }
 
 .fc-daygrid-day {
 	height: 5% !important; /* 일자별 높이 조정 */
 }
-
+.fc-header-toolbar {
+    background-color: #978A8F;
+    padding: 15px;
+}
 .fc-toolbar-title {
-	font-size: 1.2em !important; /* 월 표시 글자 크기 축소 */
+	font-size: 1.1em !important;
+    font-weight: bold;
+    color: #ffffff;
 }
 
 .fc-day-today {
@@ -391,7 +478,13 @@
 .fc-header-toolbar, .fc-col-header {
 	margin-bottom: 0.5em !important;
 }
-
+.fc {
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 .fc-col-header-cell {
 	padding: 2px 0 !important;
 }
@@ -711,13 +804,14 @@ document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
-        height: '100%',
-        aspectRatio: 1,
+        height: 'auto',
+        aspectRatio: 1.35,
         headerToolbar: {
             left: 'prev',
             center: 'title',
             right: 'next'
         },
+        dayMaxEvents: 0,
         dateClick: function(info) {
             // 이전에 선택된 날짜의 클래스 제거
             var prevSelected = document.querySelector('.fc-day-selected');
@@ -882,7 +976,7 @@ document.addEventListener('DOMContentLoaded', function() {
 									<c:if test="${notification.getIdeaID() != 0}">
                         *${notification.idea.title}*&nbsp;&nbsp;
                     </c:if>
-									${notification.message}
+									<span class="notiTruncate-text">${notification.message}</span>
 								</p>
 						</div>
 					</c:forEach>
