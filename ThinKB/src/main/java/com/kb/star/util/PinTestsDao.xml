@@ -43,10 +43,12 @@
 		FROM
 		UserComments uc
 		INNER JOIN
-		Users u ON uc.UserID = u.UserID
+		Users u ON uc.UserID =
+		u.UserID
 		WHERE
 		uc.AssociatedID = #{abTestId}
-		AND uc.AssociationType = 'AB'
+		AND uc.AssociationType =
+		'AB'
 		AND uc.IsDelete = 0
 	</select>
 
@@ -104,10 +106,26 @@
 	<!-- pinTestId로 메모 가져오기 -->
 	<select id="getCommentsByPinTestId"
 		resultType="com.kb.star.dto.UserCommentsDto">
-		SELECT * FROM UserComments
-		WHERE AssociatedID=#{pinTestId}
-		AND AssociationType='PinTest' AND
-		IsDelete=0
+		SELECT
+		uc.CommentID,
+		uc.AssociatedID,
+		uc.UserID,
+		uc.CommentText,
+		uc.X,
+		uc.Y,
+		u.UserName,
+		u.ProfileImg as userProfileImg,
+		uc.Timestamp
+		FROM
+		UserComments uc
+		INNER JOIN
+		Users u ON uc.UserID =
+		u.UserID
+		WHERE
+		uc.AssociatedID = #{pinTestId}
+		AND uc.AssociationType =
+		'PinTest'
+		AND uc.IsDelete = 0
 	</select>
 
 
