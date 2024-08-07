@@ -37,7 +37,10 @@ body, html {
 }
 
 .room1-title-detail {
-	font-size: 15pt;
+	font-size: 13pt;
+	position: relative;
+    width: 100%;
+    overflow: hidden;
 }
 
 /* 노란색 버튼 */
@@ -108,27 +111,97 @@ input.room1-subject:focus {
 }
 
 .kb-ai-response {
-	font-size: 15pt;
-	color: black;
-	border: 1px solid #ddd;
-	border-radius: 10px;
-	padding: 20px;
-	background-color: #f0f0f0;
-	margin-top: 20px;
-	margin-bottom: 50px;
-	display: none; /* 처음에는 보이지 않도록 설정 */
-	display: flex; /* 추가: flex 컨테이너로 설정 */
-	align-items: center; /* 추가: 세로 중앙 정렬 */
-	height: 150px;
+    display: flex;
+    font-size: 15pt;
+    color: black;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f0f0f0;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    min-height: 300px;
+    max-height: 550px;
+    width: 100%;
+    overflow: hidden;
 }
 
+#ai-response-wrapper {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+}
+#ai-response-text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-height: 100%; /* wrapper의 높이를 넘지 않도록 설정 */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤 표시 */
+}
+#other-query {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+#query-input {
+    width: 100%;
+    padding-right: 40px;
+}
+.search-container {
+    position: relative;
+    width: 100%;
+}
+.search-button {
+    position: absolute;
+    right: 15px; /* 오른쪽 여백 조정 */
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px; /* 이모티콘 크기 조정 */
+    padding: 0;
+    line-height: 1;
+}
+.search-button span {
+    position: relative;
+    top: -2px; /* 미세 조정 */
+    font-size:22pt;
+}
+
+/* input 필드의 테두리 스타일을 유지하면서 버튼을 안쪽에 배치 */
+#query-input:focus {
+    outline: none;
+}
+.ai-image-container {
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 .ai-image {
 	width: 115px; /* 이미지 크기 조절 */
 	height: auto;
 	margin-right: 30px; /* 이미지와 텍스트 사이 간격 */
 	margin-left: 30px; 
+	
+}
+.ai-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 20px;
+    overflow: hidden;
 }
 
+.ai-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1%;
+    margin-bottom: 10px;
+}
 .stages {
 	display: flex;
 	justify-content: space-between;
@@ -191,10 +264,190 @@ input.room1-subject:focus {
 	margin-bottom: 15px;
 	border: 2px solid lightgrey;
 }
+.aiModal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
 
+.aiModal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 800px;
+    border-radius: 10px;
+}
+
+.aiClose {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.aiClose:hover,
+.aiClose:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* 채팅 스타일 */
+#aiLogChat {
+    height: 700px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.aiChat-message {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.aiUser-message {
+    justify-content: flex-start;
+}
+
+.ai-message {
+    justify-content: flex-end;
+}
+
+.aiMessage-content {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.aiUser-message .aiMessage-content {
+    background-color: #f1f0f0;
+}
+
+.ai-message .aiMessage-content {
+    background-color: #FFD700;
+}
+
+.aiProfile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.ai-img {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+}
+.aiMessage-content, #descriptionContent {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#descriptionContent {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    
+}
+#descriptionContent pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    margin: 0;
+}
+textarea.room1-subject {
+	font-size: 13pt;
+	color: black;
+	border: 3px solid lightgrey;
+	border-radius: 20px;
+	padding: 20px;
+	width: 100%;
+	box-sizing: border-box;
+	white-space: pre-wrap;
+	font-family: Arial, sans-serif; /* 원하는 폰트로 변경 */
+    font-size: 13pt;
+}
+
+textarea.room1-subject:focus {
+	border-color: #FFD700; /* 포커스 시 테두리 색상 */
+	outline: none; /* 기본 포커스 스타일 제거 */
+}
+.loading-hidden {
+  display: none;
+}
+
+#loading-screen {
+display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-content {
+  text-align: center;
+}
+
+.thinking-brain {
+  font-size: 100px;
+  animation: pulse 1.5s infinite;
+}
+
+.loading-text {
+  font-size: 24px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.loading-dots span {
+  font-size: 36px;
+  animation: blink 1.4s infinite both;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
 </style>
 </head>
 <script>
+
 	function showResponse() {
 		const responseDiv = document.getElementById("kb-ai-response");
 		const responseText = document.getElementById("ai-response-text");
@@ -354,6 +607,224 @@ input.room1-subject:focus {
 	%>
 
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+// 모달 관련 스크립트
+    var aiModal = document.getElementById("aiLogModal");
+    var aiBtn = document.querySelector("button[onclick='openAiLogModal()']");
+    var aiSpan = document.querySelector(".aiClose");
+
+    function openAiLogModal() {
+        aiModal.style.display = "block";
+        loadAiLog();
+    }
+
+    if (aiSpan) {
+        aiSpan.onclick = function() {
+            aiModal.style.display = "none";
+        }
+    }
+
+    window.onclick = function(event) {
+        if (event.target == aiModal) {
+            aiModal.style.display = "none";
+        }
+    }
+
+    // openAiLogModal 함수를 전역 스코프에 노출
+    window.openAiLogModal = openAiLogModal;
+
+    function loadAiLog() {
+        var userId = ${userId};
+        var roomId = ${info.getRoomId()};
+        fetch(`./getUserAiLog?userId=${userId}&roomId=${roomId}`)
+            .then(response => response.json())
+            .then(data => {
+                var chatHtml = '';
+                data.forEach(function(log) {
+                    var profileImg = log.profileImg;
+                    var aiQuestion = log.aiQuestion.replace(/\n/g, '<br>');
+                    var aiContent = log.aiContent.replace(/\n/g, '<br>');
+                    var aiImgSrc = "<c:url value='/resources/aiImg.png'/>";
+
+                    chatHtml += '<div class="aiChat-message aiUser-message">' +
+                                '<img src="./upload/' + profileImg + '" alt="User" class="aiProfile-img">' +
+                                '<div class="aiMessage-content">' + aiQuestion + '</div>' +
+                                '</div>' +
+                                '<div class="aiChat-message ai-message">' +
+                                '<div class="aiMessage-content">' + aiContent + '</div>' +
+                                '<img src="' + aiImgSrc + '" alt="AI" class="ai-img">' +
+                                '</div>';
+                });
+                document.getElementById('aiLogChat').innerHTML = chatHtml;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+});
+</script>
+<script type="text/javascript">
+function showLoadingScreen() {
+	  document.getElementById('loading-screen').style.display = 'flex';
+	  document.getElementById('kb-ai-response').style.display = 'none';
+	}
+
+function hideLoadingScreen() {
+	  document.getElementById('loading-screen').style.display = 'none';
+	  document.getElementById('kb-ai-response').style.display = 'flex';
+	}
+function adjustResponseHeight() {
+    const container = document.getElementById('kb-ai-response');
+    const wrapper = document.getElementById('ai-response-wrapper');
+    const text = document.getElementById('ai-response-text');
+    const otherQuery = document.getElementById('other-query');
+    const buttons = document.querySelector('.ai-buttons');
+    
+    if (!container || !wrapper || !text || !buttons) {
+        console.error('One or more required elements not found');
+        return;
+    }
+    
+    // Reset heights
+    container.style.height = '';
+    wrapper.style.height = '';
+    
+    // Calculate available height
+    const containerHeight = container.offsetHeight;
+    const otherQueryHeight = otherQuery.offsetHeight;
+    const buttonsHeight = buttons.offsetHeight;
+    const availableHeight = containerHeight - otherQueryHeight - buttonsHeight - 40; // 40px for padding
+    
+    // Set wrapper height
+    wrapper.style.height = `${availableHeight}px`;
+    
+    // Adjust container height if needed
+    const contentHeight = text.offsetHeight + otherQueryHeight + buttonsHeight + 40;
+    if (contentHeight > containerHeight) {
+        container.style.height = `${Math.min(contentHeight, 550)}px`; // 최대 높이를 550px로 제한
+    }
+    
+    // 텍스트 내용이 적을 경우 중앙 정렬 유지
+    if (text.offsetHeight < wrapper.offsetHeight) {
+        wrapper.style.alignItems = 'center';
+        wrapper.style.justifyContent = 'center';
+    } else {
+        wrapper.style.alignItems = 'flex-start';
+        wrapper.style.justifyContent = 'flex-start';
+    }
+}
+
+function showFeedback() {
+    const roomTitle = document.querySelector('.room1-title').textContent.trim().replace(/^\[|\]$/g, '');
+    const ideaTitle = document.getElementById('myIdeaInput').value.trim();
+    const ideaContent = document.getElementById('ideaDetailInput').value.trim();
+    const roomId = ${info.getRoomId()}; // JSP 표현식을 사용하여 roomId를 가져옵니다.
+    if (!ideaTitle || !ideaContent) {
+        alert('아이디어 제목과 내용을 모두 입력해주세요.');
+        return;
+    }
+    
+    var query = '"' + roomTitle + '"에 대해 [제목: "' + ideaTitle + '" 내용: "' + ideaContent + '"] 아이디어를 만들었는데\n' +
+    '시장 조사:\n' +
+    '- 이 아이디어와 유사한 제품이나 서비스는 시장에 어떤 형태로 존재하고 있나요?\n' +
+    '- 이 아이디어가 목표 시장에서 어떻게 차별화될 수 있을까요?\n\n' +
+    '피드백:\n' +
+    '- 이 아이디어에 대한 피드백을 제공해 줄 수 있나요? 개선할 점이나 보완할 점이 있다면 무엇인가요?';
+
+    sendAiRequest(query, roomId);
+}
+let isOtherQueryVisible = false;
+
+function showOtherQuery() {
+    const otherQuery = document.getElementById('other-query');
+    if (isOtherQueryVisible) {
+        otherQuery.style.display = 'none';
+        isOtherQueryVisible = false;
+    } else {
+        otherQuery.style.display = 'block';
+        isOtherQueryVisible = true;
+    }
+}
+
+function sendQuery() {
+    const query = document.getElementById('query-input').value;
+    const roomId = ${info.getRoomId()};
+
+    sendAiRequest(query, roomId);
+}
+
+function sendAiRequest(query, roomId) {
+	showLoadingScreen();
+    fetch('./getAiResponse1', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userInput: query, roomId: Number(roomId)})
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.text();
+    })
+    .then(data => {
+        let jsonData;
+        try {
+            jsonData = JSON.parse(data);
+        } catch (e) {
+            throw new Error('Invalid JSON response from server');
+        }
+
+        const responseText = document.getElementById('ai-response-text');
+        const responseContainer = document.getElementById('kb-ai-response');
+        const responseWrapper = document.getElementById('ai-response-wrapper');
+        
+        if (responseText && responseContainer && responseWrapper) {
+            if (jsonData.error) {
+                // 서버에서 오류 응답을 보낸 경우
+                responseText.innerHTML = `오류가 발생했습니다: ${jsonData.error.message}`;
+            } else if (jsonData.aiResponse) {
+                // 정상적인 AI 응답인 경우
+                responseText.innerHTML = jsonData.aiResponse.replace(/\n/g, '<br>');
+            } else {
+                // 예상치 못한 응답 형식인 경우
+                responseText.innerHTML = '예상치 못한 응답 형식입니다.';
+            }
+            
+            responseContainer.style.display = 'flex';
+            responseWrapper.style.alignItems = 'flex-start';
+            responseWrapper.style.justifyContent = 'flex-start';
+            hideLoadingScreen();
+            adjustResponseHeight();
+        } else {
+            console.error('Response elements not found');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        
+        const responseText = document.getElementById('ai-response-text');
+        if (responseText) {
+            responseText.innerHTML = `AI 응답을 가져오는 데 실패했습니다. 에러: ${error.message}`;
+        }
+        hideLoadingScreen();
+        adjustResponseHeight();
+    });
+}
+//상세내역 토글
+document.addEventListener('DOMContentLoaded', function() {
+	const toggleButton = document.getElementById('toggleDescriptionButton');
+	const descriptionContent = document.getElementById('descriptionContent');
+
+	toggleButton.addEventListener('click', function() {
+		if (descriptionContent.style.display === 'none') {
+			descriptionContent.style.display = 'block';
+		} else {
+			descriptionContent.style.display = 'none';
+		}
+	});
+});
+</script>
 <body style="margin: 0;">
 <!-- 헤더영역 -->
 	<header class="room1-header">
@@ -387,7 +858,12 @@ input.room1-subject:focus {
     
     <!-- 제목, 상세설명 -->
     <div class="room1-title">[${info.getRoomTitle()}]</div>
-    <div class="room1-title-detail">${info.getDescription()}</div>
+<div class="room1-title-detail">
+    <button id="toggleDescriptionButton" class="grey-button">설명 보기/숨기기</button>
+    <div id="descriptionContent" style="display:none;">
+        <pre>${info.getDescription()}</pre>
+    </div>
+</div>
     
     <hr class="line">
 	
@@ -423,25 +899,52 @@ input.room1-subject:focus {
 			<div class="titleAndDetail-detail">내가 작성한 아이디어에 대해 자세히 설명해주세요.</div>
 		</div>
 		<div style="margin-bottom: 50px;">
-			<input type="text" id="ideaDetailInput" class="room1-subject" style="height: 150px;"
-				name="ideaDetail" placeholder="여기에 작성해주세요" 
-				value="${result == true ? submittedIdea.getDescription() : ''}">
+<textarea id="ideaDetailInput" class="room1-subject" style="height: 150px;"
+    name="ideaDetail" placeholder="여기에 작성해주세요">${result == true ? submittedIdea.getDescription() : ''}</textarea>
 		</div>
 		
 	<!-- ai영역 -->
 	<div class="titleAndDetail">
-			<div class="titleAndDetail-title">나의 아이디어에 대한 KB AI 의견</div>
+			<div class="titleAndDetail-title">나의 아이디어에 대한 KB AI 의견<button class="grey-button" style="margin-left:20px;" onclick="openAiLogModal()">나의 Ai 이력</button></div>
+			
 			<div class="titleAndDetail-detail">아래 AI에게 물어보기 버튼을 눌러 의견을 확인할 수 있어요.</div>
 		</div>
-		<div id="kb-ai-response" class="kb-ai-response">
-			<img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot"
-				class="ai-image"> <span id="ai-response-text">KB ai의 응답 내용이 여기에 표시됩니다.</span>
-		</div>
+		        <div id="loading-screen" style="display: none;">
+  <div class="loading-content">
+    <div class="thinking-brain">
+      🤔
+    </div>
+    <div class="loading-text">AI가 열심히 생각 중입니다...</div>
+    <div class="loading-dots">
+      <span>.</span><span>.</span><span>.</span>
+    </div>
+  </div>
+</div>
+<div id="kb-ai-response" class="kb-ai-response">
+    <div class="ai-image-container">
+        <img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot" class="ai-image">
+    </div>
+    <div class="ai-content">
+        <div class="ai-buttons">
+            <button class="grey-button" onclick="showFeedback()">피드백</button>
+            <button class="grey-button" onclick="showOtherQuery()">기타</button>
+        </div>
+        <div id="other-query">
+            <div class="search-container">
+                <input type="text" id="query-input" class="room1-subject" placeholder="질문을 입력하세요">
+                <button onclick="sendQuery()" class="search-button" aria-label="검색">
+                    <span>🔎</span>
+                </button>
+            </div>
+        </div>
+        <div id="ai-response-wrapper">
+            <span id="ai-response-text">KB ai의 응답 내용이 여기에 표시됩니다.</span>
+        </div>
+    </div>
+</div>
 
 	<!-- 맨 하단 버튼영역 -->
 	<div class="button-container">
-		<button class="grey-button" onclick="showResponse()">KB ai에게 물어보기</button>
-
 
 		<form id="ideaForm1" action="./submitIdea" method="post">
 			<input type="hidden" name="roomId" value="${info.getRoomId()}">
@@ -467,5 +970,13 @@ input.room1-subject:focus {
 </div>
 	</div>
 	</div>
+	<!-- AI 로그 모달 -->
+<div id="aiLogModal" class="aiModal">
+    <div class="aiModal-content">
+        <span class="aiClose">&times;</span>
+        <h2>나의 AI 이력</h2>
+        <div id="aiLogChat"></div>
+    </div>
+</div>
 </body>
 </html>
