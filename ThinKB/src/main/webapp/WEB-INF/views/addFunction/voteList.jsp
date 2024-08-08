@@ -217,6 +217,9 @@ body {
 		<div class="progress-header-container">
 			<h2 class="progress-header">진행중인 단계</h2>
 		</div>
+
+		
+		
 		<div class="progress-container">
 			<div class="progress">
 				<label><input type="checkbox" data-stage="false"
@@ -244,6 +247,7 @@ body {
 							<h2>${li.title}</h2>
 							<div class="idea-details">
 								<p>종료일: ${li.endDate}</p>
+								<p>투표 생성자: ${li.createUserID}</p>
 								<p>
 									단계:
 									<c:choose>
@@ -267,6 +271,11 @@ body {
 				</c:otherwise>
 			</c:choose>
 		</div>
+		
+		
+			<c:forEach var="maker" items="${voteMaker}">
+		${maker.getUserName()}
+		</c:forEach>
 	</div>
 	<script>
 		function filterIdeas() {
