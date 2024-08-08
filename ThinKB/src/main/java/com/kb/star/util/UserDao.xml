@@ -221,47 +221,55 @@
 	</select>
 <!-- TodoList -->
 <select id="getUserTodoListForToday" resultType="com.kb.star.dto.TodoDto">
-    SELECT 
-        DATE_FORMAT(t.endTime, '%Y.%m.%d') AS dueDate,
-        mr.RoomTitle,mr.StageID,mr.RoomID,
-        s.Status AS stageStatus
-    FROM 
-        Timer t
-    JOIN 
-        MeetingRooms mr ON t.RoomID = mr.RoomID
-    JOIN 
-        Stages s ON mr.StageID = s.StageID
-    JOIN 
-        StageParticipation sp ON mr.RoomID = sp.RoomID AND mr.StageID = sp.StageID
-    WHERE 
-        sp.UserID = #{userId}
-        AND sp.Status = 0
-        AND DATE(t.endTime) = CURDATE()
-        AND t.endTime > NOW()  -- 현재 시간 이후의 항목만 선택
-    ORDER BY 
-        t.endTime ASC
+ SELECT 
+    DATE_FORMAT(MIN(t.endTime), '%Y.%m.%d') AS dueDate,
+    mr.RoomTitle,
+    mr.StageID,
+    mr.RoomID,
+    s.Status AS stageStatus
+FROM 
+    Timer t
+JOIN 
+    MeetingRooms mr ON t.RoomID = mr.RoomID
+JOIN 
+    Stages s ON mr.StageID = s.StageID
+JOIN 
+    StageParticipation sp ON mr.RoomID = sp.RoomID AND mr.StageID = sp.StageID
+WHERE 
+    sp.UserID = #{userId}
+    AND sp.Status = 0
+    AND DATE(t.endTime) = CURDATE()
+    AND t.endTime > NOW()  -- 현재 시간 이후의 항목만 선택
+GROUP BY 
+    mr.RoomID, mr.StageID
+ORDER BY 
+    MIN(t.endTime) ASC
 </select>
 <!-- 날짜별 todolist (기존 쿼리 수정) -->
 <select id="getUserTodoListByDate" resultType="com.kb.star.dto.TodoDto">
-    SELECT 
-        DATE_FORMAT(t.endTime, '%Y.%m.%d') AS dueDate,
-        mr.RoomTitle,mr.StageID,mr.RoomID,
-        s.Status AS stageStatus
-    FROM 
-        Timer t
-    JOIN 
-        MeetingRooms mr ON t.RoomID = mr.RoomID
-    JOIN 
-        Stages s ON mr.StageID = s.StageID
-    JOIN 
-        StageParticipation sp ON mr.RoomID = sp.RoomID AND mr.StageID = sp.StageID
-    WHERE 
-        sp.UserID = #{userId}
-        AND sp.Status = 0
-        AND DATE(t.endTime) = #{date}
-        AND t.endTime > NOW()  -- 현재 시간 이후의 항목만 선택
-    ORDER BY 
-        t.endTime ASC
+SELECT 
+    DATE_FORMAT(MIN(t.endTime), '%Y.%m.%d') AS dueDate,
+    mr.RoomTitle,
+    mr.StageID,
+    mr.RoomID,
+    s.Status AS stageStatus
+FROM 
+    Timer t
+JOIN 
+    MeetingRooms mr ON t.RoomID = mr.RoomID
+JOIN 
+    Stages s ON mr.StageID = s.StageID
+JOIN 
+    StageParticipation sp ON mr.RoomID = sp.RoomID AND mr.StageID = sp.StageID
+WHERE 
+    sp.UserID = #{userId}
+    AND sp.Status = 0
+    AND DATE(t.endTime) = #{date}
+    AND t.endTime > NOW()  -- 현재 시간 이후의 항목만 선택
+GROUP BY
+    mr.RoomID, mr.StageID, mr.RoomTitle, s.Status
+ORDER BY 
+    MIN(t.endTime) ASC
 </select>
 
     <select id="getUserContributions" resultMap="ContributionDetailMap">

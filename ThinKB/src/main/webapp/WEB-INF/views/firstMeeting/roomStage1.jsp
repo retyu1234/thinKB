@@ -939,7 +939,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="ai-content">
         <div class="ai-buttons">
             <button class="grey-button" onclick="showFeedback()">피드백</button>
-            <button class="grey-button" onclick="showOtherQuery()">기타</button>
+            <button class="grey-button" onclick="showOtherQuery()">추가질문</button>
         </div>
         <div id="other-query">
             <div class="search-container">
