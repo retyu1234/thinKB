@@ -308,15 +308,6 @@ body {
 	padding: 20px;
 }
 
-/* 배너 추가 */
-.ideaMeeting-banner {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 30px;
-	margin-bottom: -50px;
-}
-
 .ideaMeeting-vote-container {
 	margin-top: 50px;
 	align-items: center;
