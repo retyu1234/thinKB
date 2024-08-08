@@ -12,11 +12,23 @@ public class AddVoteDto {
 	private boolean isCompleted;
 
 	private Integer votedOptionId; // 투표된 옵션 ID
+	
+	private int createUserID;
 
 	// Getters and setters
+	
+	
 
 	public Integer getVotedOptionId() {
 		return votedOptionId;
+	}
+
+	public int getCreateUserID() {
+		return createUserID;
+	}
+
+	public void setCreateUserID(int createUserID) {
+		this.createUserID = createUserID;
 	}
 
 	public void setVotedOptionId(Integer votedOptionId) {

@@ -12,6 +12,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.kb.star.dto.Ideas;
 import com.kb.star.util.IdeaOpinionsDao;
 
 public class IdeaOpinionsClearCommand implements RoomCommand {
@@ -76,9 +77,6 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
 		// MeetingRooms에서 stage 4로 변경
 		ideaOpinionsDao.updateStage(roomId); 
 		
-		// Ideas에서 아이디어 StageID 4로 변경
-		ideaOpinionsDao.updateIdeaStage(ideaId);
-		
 		// StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기
 		List<Integer> users = ideaOpinionsDao.RoomForUserList(roomId);
 		for(Integer list : users) {
@@ -90,8 +88,6 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
 		model.addAttribute("roomId", roomId);
 	    model.addAttribute("ideaId", ideaId);
 	    model.addAttribute("stage", 4);
-	    
-        
 	   
     }
 }

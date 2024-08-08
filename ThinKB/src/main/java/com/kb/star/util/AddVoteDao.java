@@ -16,7 +16,7 @@ import com.kb.star.dto.UsersDto;
 public interface AddVoteDao {
 
 	// 새로운 투표 생성
-	void insertNewVote(String title, String departmentId, String endDate);
+	void insertNewVote(String title, String departmentId, String endDate, String id);
 
 	int voteIdConfirm(String departmentId);
 
@@ -42,5 +42,7 @@ public interface AddVoteDao {
 	void updateCompletedStatus();
 
 	Integer getUserOptionIdForVote(Map<String, Object> params);
+
+	List<UsersDto> whosVoteMaker();
 
 }

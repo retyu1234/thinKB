@@ -75,6 +75,9 @@ public interface IdeaOpinionsDao {
 	// StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기
 	void insertStageParticipation(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("list") Integer list);
     
+	// ideaOpinionsClear.jsp
+	// Ideas 테이블에서 제목, stageID 가져오기
+	List<Ideas> getIdeasInfo(@Param("roomId") int roomId); // Ideas = IdeasDto
 
 	
     
@@ -143,7 +146,7 @@ public interface IdeaOpinionsDao {
 	
 	// ideaOpinionsClear2.jsp
 	// Ideas 테이블에서 제목, stageID 가져오기
-	List<Ideas> getIdeasInfo(@Param("roomId") int roomId); // Ideas = IdeasDto
+	List<Ideas> getIdeasInfo2(@Param("roomId") int roomId); // Ideas = IdeasDto
 
 
     
