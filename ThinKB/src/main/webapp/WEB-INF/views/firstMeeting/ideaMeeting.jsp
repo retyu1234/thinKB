@@ -71,8 +71,8 @@ body {
 }
 
 .idea-circle {
-	width: 30px;
-	height: 30px;
+	width: 40px;
+	height: 40px;
 	border-radius: 50%;
 	background-image: url('./resources/Uncheck.png');
 	background-size: 100%;
@@ -170,21 +170,21 @@ body {
 }
 
 .closeIdea {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	color: #aaa;
+	font-size: 28px;
+	font-weight: bold;
+	cursor: pointer;
 }
 
-.closeIdea:hover,
-.closeIdea:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+.closeIdea:hover, .closeIdea:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
 }
+
 .wrapper {
 	align-self: stretch;
 	display: flex;
@@ -225,12 +225,12 @@ body {
 
 /* 추가된 CSS 스타일 */
 .modal-idea-box.reply {
-	background-color: #FFFFFF; 
+	background-color: #FFFFFF;
 	align-self: flex-start;
 }
 
 .modal-idea-box.reply-answer {
-	background-color: #FFE297;/* 노란색 */
+	background-color: #FFE297; /* 노란색 */
 	align-self: flex-end;
 	pointer-events: none;
 	cursor: default;
@@ -339,8 +339,25 @@ body {
 	text-align: right;
 	display: block;
 }
+
 .modal-content-inner {
-    margin-top: 40px; /* x 버튼 아래로 내용 이동 */
+	margin-top: 40px; /* x 버튼 아래로 내용 이동 */
+}
+
+/* 회색버튼 */
+.grey-button {
+	background-color: #978A8F;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.grey-button:hover {
+	background-color: #60584C;
 }
 
 #input-reply-container {
@@ -420,6 +437,41 @@ body {
 	font-size: 16pt;
 	font-weight: bold;
 }
+
+#descriptionContent {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+}
+
+/* Add this new CSS rule */
+#descriptionContent {
+	margin-top: 10px;
+	padding: 10px;
+	background-color: #F9F9F9;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	max-width: 100%;
+	box-sizing: border-box;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	hyphens: auto;
+}
+
+/* Adjust the stage-info rule */
+.stage-info {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	margin-top: 20px;
+	/* Adjust the margin to provide space below the descriptionContent */
+}
+
+#descriptionContent pre {
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	max-width: 100%;
+	margin: 0;
+}
 </style>
 </head>
 <body>
@@ -470,13 +522,6 @@ body {
 			</c:forEach>
 		</div>
 
-		<!-- 배너  -->
-		<div class="ideaMeeting-banner">
-			<img src="<c:url value='./resources/ideaMeetingBanner.png'/>"
-				alt="Example Image" style="min-width: 100%; height: auto;">
-		</div>
-
-
 		<!-- 투표 내용 -->
 		<div class="ideaMeeting-vote-container">
 			<!-- 회의 방 내용 -->
@@ -485,38 +530,42 @@ body {
 					[${meetingRoom.roomTitle}] <input type="hidden" name="roomId"
 						value="${meetingRoom.roomId}">
 				</div>
-				<div class="topic-description">${meetingRoom.description}</div>
-			</div>
-
-			<!-- 방장만 보이는 다음단계 버튼 -->
-			<form id="nextStageForm" action="./stage2Clear" method="post">
-				<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
-				<input type="hidden" name="stage" value="${meetingRoom.stageId}">
-				<div class="stage-info" style="margin-bottom: 50px;">
-					<c:if test="${userId == meetingRoom.getRoomManagerId()}">
-						<div class="vote-info">현재 투표 참여인원 : ${voteCnt}명 / ${total}명</div>
-						<button id="nextStepButton" class="yellow-button"
-							onclick="goToNextStep()">다음 단계</button>
-					</c:if>
+				<button id="toggleDescriptionButton" class="grey-button">설명
+					보기/숨기기</button>
+				<div id="descriptionContent" style="display: none;">
+					<pre>${meetingRoom.description}</pre>
 				</div>
-			</form>
-			<div class="ideaMeeting-idea-container">
-				<c:forEach var="idea" items="${ideas}">
-					<div class="idea-item">
-						<div
-							class="idea-circle <%-- ${votedIdeaId == idea.ideaID ? 'selected' : ''} --%>"
-							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'></div>
-						<div class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-							onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'>${idea.title}</div>
+				<!-- 방장만 보이는 다음단계 버튼 -->
+				<form id="nextStageForm" action="./stage2Clear" method="post">
+					<input type="hidden" name="roomId" value="${meetingRoom.roomId}">
+					<input type="hidden" name="stage" value="${meetingRoom.stageId}">
+					<div class="stage-info">
+						<c:if test="${userId == meetingRoom.getRoomManagerId()}">
+							<div class="vote-info">현재 투표 참여인원 : ${voteCnt}명 / ${total}명</div>
+							<button id="nextStepButton" class="yellow-button"
+								onclick="goToNextStep()">다음 단계</button>
+						</c:if>
 					</div>
-				</c:forEach>
+				</form>
 			</div>
-			<div class="vote-button-container">
-				<button id="voteButton" class="yellow-button"
-					style="margin-top: 50px;" onclick="submitVote()">
-					${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+			<!-- Idea Voting Section -->
+			<div>
+				<div class="ideaMeeting-idea-container">
+					<c:forEach var="idea" items="${ideas}">
+						<div class="idea-item">
+							<div class="idea-circle"
+								onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'></div>
+							<div
+								class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
+								onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'>${idea.title}</div>
+						</div>
+					</c:forEach>
+				</div>
+				<div class="vote-button-container">
+					<button id="voteButton" class="yellow-button"
+						style="margin-top: 50px;" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
+				</div>
 			</div>
-
 		</div>
 	</div>
 
@@ -811,6 +860,20 @@ body {
 	function goToNextStep() {
 	document.getElementById('nextStageForm').submit();
 	}
+	
+	//상세내역 토글
+	document.addEventListener('DOMContentLoaded', function() {
+		const toggleButton = document.getElementById('toggleDescriptionButton');
+		const descriptionContent = document.getElementById('descriptionContent');
+
+		toggleButton.addEventListener('click', function() {
+			if (descriptionContent.style.display === 'none') {
+				descriptionContent.style.display = 'block';
+			} else {
+				descriptionContent.style.display = 'none';
+			}
+		});
+	});
 
 
 </script>
