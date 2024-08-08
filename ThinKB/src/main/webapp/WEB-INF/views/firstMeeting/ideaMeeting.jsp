@@ -308,15 +308,6 @@ body {
 	padding: 20px;
 }
 
-/* 배너 추가 */
-.ideaMeeting-banner {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-top: 30px;
-	margin-bottom: -50px;
-}
-
 .ideaMeeting-vote-container {
 	margin-top: 50px;
 	align-items: center;
@@ -469,13 +460,6 @@ body {
 				</c:choose>
 			</c:forEach>
 		</div>
-
-		<!-- 배너  -->
-		<div class="ideaMeeting-banner">
-			<img src="<c:url value='./resources/ideaMeetingBanner.png'/>"
-				alt="Example Image" style="min-width: 100%; height: auto;">
-		</div>
-
 
 		<!-- 투표 내용 -->
 		<div class="ideaMeeting-vote-container">
