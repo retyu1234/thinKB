@@ -180,6 +180,27 @@ html, body {
     text-align: right;
     margin-top: auto;
 }
+
+.no-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 50px 0;
+    margin-bottom: 100px;
+}
+
+.no-content img {
+    max-width: 200px;
+    margin-bottom: 20px;
+}
+
+.no-content p {
+    font-size: 15pt;
+    text-align: center;
+    color: #666;
+}
 .yellow-button {
 	background-color: #ffc107;
 	color: white;
@@ -195,6 +216,7 @@ html, body {
 .yellow-button:hover {
 	background-color: #e0a800;
 }
+
 </style>
 </head>
 
@@ -249,20 +271,30 @@ html, body {
 	</div> --%>
 	<!-- 보고서 목록 -->
 	<div class="reports">
-	    <c:forEach var="report" items="${reportList}" varStatus="status">
-	        <div class="report ${report.getStatus() == '완료' ? 'complete' : 'draft'}"
-	             onclick="handleIdeaClick('${report.stageId}', '${report.reportId}', '${report.roomId}')">
-	            <div class="status-tag">${report.getStatus() == '완료' ? '제출 완료' : '작성중'}</div>
-	            <h3 class="report-title">${report.getReportTitle()}</h3>
-	            <p class="related-room">연결된 아이디어 회의방</p>
-	            <div class="room-title-container">
-	                <p class="room-title">${report.getRoomTitle()}</p>
+	    <c:choose>
+	        <c:when test="${empty reportList}">
+	            <div class="no-content">
+	                <img src="<c:url value='./resources/noContent.png'/>" alt="No Content">
+	                <p>내가 작성한 보고서가 아직 없어요!</p>
 	            </div>
-	            <p class="report-action">
-	                ${report.getStatus() == '완료' ? '보고서 다운로드' : '보고서 수정하러가기'}
-	            </p>
-	        </div>
-	    </c:forEach>
+	        </c:when>
+	        <c:otherwise>
+	            <c:forEach var="report" items="${reportList}" varStatus="status">
+	                <div class="report ${report.getStatus() == '완료' ? 'complete' : 'draft'}"
+	                     onclick="handleIdeaClick('${report.stageId}', '${report.reportId}', '${report.roomId}')">
+	                    <div class="status-tag">${report.getStatus() == '완료' ? '제출 완료' : '작성중'}</div>
+	                    <h3 class="report-title">${report.getReportTitle()}</h3>
+	                    <p class="related-room">연결된 아이디어 회의방</p>
+	                    <div class="room-title-container">
+	                        <p class="room-title">${report.getRoomTitle()}</p>
+	                    </div>
+	                    <p class="report-action">
+	                        ${report.getStatus() == '완료' ? '보고서 다운로드' : '보고서 수정하러가기'}
+	                    </p>
+	                </div>
+	            </c:forEach>
+	        </c:otherwise>
+	    </c:choose>
 	</div>
 	
 </div>

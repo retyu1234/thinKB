@@ -3,12 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kb.star.util.AddVoteDao">
-
+<!-- #{param4} 투표방 만든사람 추가 -->
 	<insert id="insertNewVote">
 		INSERT INTO AddVote
 		(Title, DepartmentID, EndDate,
-		IsCompleted)
-		values (#{param1},#{param2},#{param3},0)
+		IsCompleted, createUserID)
+		values (#{param1},#{param2},#{param3},0,#{param4})
 	</insert>
 
 	<select id="voteIdConfirm" resultType="int">
@@ -102,6 +102,11 @@
 		SELECT OptionID
 		FROM VoteParticipations
 		WHERE UserID = #{userId} AND AddVoteID = #{addVoteId}
+	</select>
+	
+	<!-- 투표 만든사람 찾기위해 모든 직원정보 담기 -->
+	<select id="whosVoteMaker" resultType="com.kb.star.dto.UsersDto">
+		SELECT u.UserID, u.UserName from Users u
 	</select>
 
 
