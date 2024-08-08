@@ -426,7 +426,66 @@ body.modal-open {
 .grey-button:hover {
 	background-color: #60584C;
 }
+/*로딩*/
+.loading-hidden {
+  display: none;
+}
 
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ .loading-hidden {
+    display: none !important;
+  }
+.loading-content {
+  text-align: center;
+}
+
+.thinking-brain {
+  font-size: 100px;
+  animation: pulse 1.5s infinite;
+}
+
+.loading-text {
+  font-size: 24px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.loading-dots span {
+  font-size: 36px;
+  animation: blink 1.4s infinite both;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+/*로딩끝*/
 </style>
 </head>
 <body>
@@ -434,7 +493,18 @@ body.modal-open {
 	<div>
 		<%@ include file="../header.jsp"%>
 	</div>
-	
+	<!--ai 로딩 -->
+  <div id="loading-screen" class="loading-hidden">
+    <div class="loading-content">
+      <div class="thinking-brain">
+        🤔
+      </div>
+      <div class="loading-text">AI가 열심히 생각 중입니다...</div>
+      <div class="loading-dots">
+        <span>.</span><span>.</span><span>.</span>
+      </div>
+    </div>
+  </div>	
 <!-- 상단 배너영역 -->
 	<div class="content-banner">
 		<img src="<c:url value='./resources/newRoomBanner.png'/>" alt="newRoomBanner" 
@@ -1040,6 +1110,12 @@ body.modal-open {
 		};
 	</script>
 <script type="text/javascript">
+//로딩 화면 요소
+const loadingScreen = document.getElementById('loading-screen');
+
+// 자동 완성 버튼
+const autoCompleteBtn = document.getElementById('autoCompleteBtn');
+
 document.getElementById('autoCompleteBtn').addEventListener('click', function(event) {
     event.preventDefault();
     var title = document.querySelector('input[name="title"]').value;
@@ -1047,6 +1123,9 @@ document.getElementById('autoCompleteBtn').addEventListener('click', function(ev
         alert('먼저 회의 주제를 입력해주세요.');
         return;
     }
+
+    // 로딩 화면 표시
+    loadingScreen.classList.remove('loading-hidden');
     this.disabled = true;
     this.textContent = '로딩 중...';
 
@@ -1063,12 +1142,16 @@ document.getElementById('autoCompleteBtn').addEventListener('click', function(ev
         document.getElementById('content').value = decodedData;
         this.disabled = false;
         this.textContent = '자동완성';
+     // 로딩 화면 숨기기
+        loadingScreen.classList.add('loading-hidden');
     })
     .catch(error => {
         console.error('Error:', error);
         this.disabled = false;
         this.textContent = '자동완성';
         alert('AI 응답을 가져오는 데 실패했습니다.');
+     // 로딩 화면 숨기기
+        loadingScreen.classList.add('loading-hidden');
     });
 });
 

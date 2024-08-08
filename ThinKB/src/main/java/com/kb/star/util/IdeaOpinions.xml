@@ -172,6 +172,14 @@
 		    AND RoomID = #{roomId}
 		)
 	</insert>
+	
+	<!-- ideaOpinionsClear.jsp -->
+	<!-- Ideas 테이블에서 제목, stageID 가져오기 -->
+	<select id="getIdeasInfo" resultType="com.kb.star.dto.Ideas">
+        SELECT Title as title, StageID as stageID
+        FROM Ideas
+        WHERE RoomID = #{roomId} and StageID >=3
+    </select>
     
     
     
@@ -376,11 +384,11 @@
 	
 	<!-- ideaOpinionsClear2.jsp -->
 	<!-- Ideas 테이블에서 제목, stageID 가져오기 -->
-	<select id="getIdeasInfo" resultType="com.kb.star.dto.Ideas">
+ 	<select id="getIdeasInfo2" resultType="com.kb.star.dto.Ideas">
         SELECT Title as title, StageID as stageId
         FROM Ideas
         WHERE RoomID = #{roomId} and StageID >=4
-    </select>
+    </select> 
     
     
     
