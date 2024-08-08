@@ -1,6 +1,7 @@
 package com.kb.star.controller;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,7 @@ import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
+import com.kb.star.dto.UsersDto;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
 
@@ -43,7 +45,7 @@ public class IdeaOpinionsController {
     // ideaOpinionsList.jsp
     // http://localhost:8080/star/ideaOpinionsList?roomId=49&ideaId=31
     
-    // 4가지 의견 한 번에 보기 
+    // 4가지 의견 한 번에 보기 1
     @RequestMapping("/ideaOpinionsList")
     public String viewOpinions(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
         model.addAttribute("roomId", roomId);
@@ -54,7 +56,6 @@ public class IdeaOpinionsController {
         IdeaOpinionsCommand.execute(model);
         return "/firstMeeting/ideaOpinionsList"; 
     }
-    
     
 	// ideaOpinions.jsp
 	// http://localhost:8080/star/ideaOpinions?roomId=49&ideaId=31&currentTab=tab-smart
@@ -191,6 +192,31 @@ public class IdeaOpinionsController {
 		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
 		model.addAttribute("roomMessage", roomMessage);
 		// 여기까지 leftSideBar 출력용
+		
+		//오른쪽 사이드바
+		List<Integer> userIdList = dao.roomIdFormember(roomId);
+		List<UsersDto> userList = new ArrayList<UsersDto>();
+		for(int ids : userIdList) {
+			UsersDto user = dao.whosMember(ids);
+			if(user != null) {
+				userList.add(user);
+			}
+		}
+		model.addAttribute("userList", userList); 
+		
+		// 타이머
+		String timer = dao.roomTimerInfo(roomId);
+		model.addAttribute("timer", timer);
+		
+		// Ideas에서 아이디어 StageID 4로 변경
+		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+        ideaOpinionsDao.updateIdeaStage(ideaId);
+		
+		// Ideas 테이블에서 Title과 StageID 가져오기
+	    List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
+        model.addAttribute("ideasInfo", ideasInfo);
+        
+    	
         
     	
         return "/firstMeeting/ideaOpinionsClear";
@@ -211,10 +237,22 @@ public class IdeaOpinionsController {
 		IdeaOpinionsClearCommand ideaOpinionsClearCommand = new IdeaOpinionsClearCommand(sqlSession);
 		ideaOpinionsClearCommand.execute(model);
 
-		return "redirect:/ideaOpinionsList";
+		return "redirect:/ideaOpinionsList2";
 	}
     
     
+    // 4가지 의견 한 번에 보기 2
+    @RequestMapping("/ideaOpinionsList2")
+    public String ideaOpinionsList2(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
+        model.addAttribute("roomId", roomId);
+        model.addAttribute("ideaId", ideaId);
+        model.addAttribute("request", request);
+        
+        IdeaOpinions2Command ideaOpinions2Command = new IdeaOpinions2Command(sqlSession);
+        ideaOpinions2Command.execute(model);
+
+        return "/firstMeeting/ideaOpinionsList2"; 
+    }
 
     // ideaOpinions2.jsp
     // http://localhost:8080/star/ideaOpinions2?roomId=49&ideaId=31&currentTab=tab-smart
