@@ -117,7 +117,7 @@
     function navigateToTab(currentTab) {
         var roomId = '${roomId}';
         var ideaId = '${ideaId}';
-        var url = '<c:url value="/ideaOpinions"/>' + '?roomId=' + roomId
+        var url = '<c:url value="/ideaOpinions2"/>' + '?roomId=' + roomId
                 + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
         window.location.href = url;
     }
