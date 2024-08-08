@@ -1,5 +1,6 @@
 package com.kb.star.command.room;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.UsersDto;
 import com.kb.star.util.IdeaOpinionsDao;
+import com.kb.star.util.RoomDao;
 
 public class IdeaOpinionsClear2Command implements RoomCommand {
 
@@ -61,8 +64,24 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
 	    model.addAttribute("ideaId", ideaId);
 	    model.addAttribute("stage", 5);
 	    
+	    // 오른쪽 사이드바
+	    RoomDao dao = sqlSession.getMapper(RoomDao.class);
+		List<Integer> userIdList = dao.roomIdFormember(roomId);
+		List<UsersDto> userList = new ArrayList<UsersDto>();
+		for(int ids : userIdList) {
+			UsersDto user = dao.whosMember(ids);
+			if(user != null) {
+				userList.add(user);
+			}
+		}
+		model.addAttribute("userList", userList);
+		
+		// 타이머
+		String timer = dao.roomTimerInfo(roomId);
+		model.addAttribute("timer", timer);
+	    
 	    // Ideas 테이블에서 Title과 StageID 가져오기
-	    List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
+	    List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo2(roomId);
         model.addAttribute("ideasInfo", ideasInfo);
 	   
     }

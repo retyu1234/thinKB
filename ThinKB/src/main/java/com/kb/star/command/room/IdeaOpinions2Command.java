@@ -75,7 +75,12 @@ public class IdeaOpinions2Command implements RoomCommand {
         List<IdeaOpinionsDto> previousPositiveOpinions = ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, "Positive");
         List<IdeaOpinionsDto> previousWorryOpinions = ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, "Worry");
         List<IdeaOpinionsDto> previousStrictOpinions = ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, "Strict");
+        model.addAttribute("previousSmartOpinions", previousSmartOpinions);
+        model.addAttribute("previousPositiveOpinions", previousPositiveOpinions);
+        model.addAttribute("previousWorryOpinions", previousWorryOpinions);
+        model.addAttribute("previousStrictOpinions", previousStrictOpinions);
 
+        
         // 현재 탭에 이미 의견을 작성했는지 확인
         String currentTab = (String) map.get("currentTab");
         if (currentTab == null || currentTab.isEmpty()) {
@@ -87,19 +92,27 @@ public class IdeaOpinions2Command implements RoomCommand {
         String hatColor = getHatColorFromTab(currentTab);
         model.addAttribute("currentHatColor", hatColor);
 
+        // 탭별로 현재 의견 전체를 가져오는 로직
         List<IdeaOpinionsDto> currentOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, hatColor);
+        model.addAttribute("currentOpinions", currentOpinions);
+        
+        // 각 탭별로 현재 의견을 가져오는 로직
+        List<IdeaOpinionsDto> smartOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, "Smart");
+        List<IdeaOpinionsDto> positiveOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, "Positive");
+        List<IdeaOpinionsDto> worryOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, "Worry");
+        List<IdeaOpinionsDto> strictOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, "Strict");
+        model.addAttribute("smartOpinions", smartOpinions);
+        model.addAttribute("positiveOpinions", positiveOpinions);
+        model.addAttribute("worryOpinions", worryOpinions);
+        model.addAttribute("strictOpinions", strictOpinions);
+        
         
         // 사용자가 특정 의견에 좋아요를 눌렀는지 확인하여 설정
         for (IdeaOpinionsDto opinion : currentOpinions) {
             opinion.setLikedByCurrentUser(ideaOpinionsDao.checkUserLikedOpinion(userId, opinion.getOpinionID()));
         }
 
-        model.addAttribute("previousSmartOpinions", previousSmartOpinions);
-        model.addAttribute("previousPositiveOpinions", previousPositiveOpinions);
-        model.addAttribute("previousWorryOpinions", previousWorryOpinions);
-        model.addAttribute("previousStrictOpinions", previousStrictOpinions);
         
-        model.addAttribute("currentOpinions", currentOpinions);
         model.addAttribute("previousOpinions", ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, hatColor));
         
         

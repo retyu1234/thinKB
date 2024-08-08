@@ -7,7 +7,22 @@
 <meta charset="UTF-8">
 <title>보고서 작성 설정</title>
 <style>
-.content-container {
+html, body {
+	max-width: 100%;
+	overflow-x: hidden;
+}
+
+.opinion2-body {
+	font-family: Arial, sans-serif;
+}
+
+.opinion2-content {
+	padding: 20px;
+	margin-left: 17%;
+	margin-right: 17%;
+	margin-top: 1%;
+}
+/* .content-container {
 	padding: 20px;
 	margin-left: 15%;
 	margin-right: 15%;
@@ -15,70 +30,50 @@
 	z-index: 2;
 	width: 70%;
 	text-align: center; 
+} */
+
+/* 아이디어 목록 */
+table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
 }
 .ideaList {
-	text-align: left; 
-	margin-top: 50px;
-	width: 70%;
-	font-weight: bold;
-	font-size: 18pt;
+    text-align: left;
+    margin-top: 50px;
+    width: 100%;
+    font-weight: bold;
+    font-size: 18pt;
 }
 
-table {
-	width: 70%;
-	margin-left: auto;
-    margin-right: auto;
-    font-size: 13pt;
-}
-
-th, td {
-	border: 1px solid #ddd;
-	padding: 10px; /* padding을 사용하여 셀 내부의 여백을 추가 */
-    height: 40px; /* 각 셀의 최소 높이를 50px로 설정 */
-	text-align: center;
-}
-
-th {
-	background-color: #f2f2f2;
-	font-weight: bold;
-}
-
-tr:nth-child(even) {
-	background-color: #f9f9f9;
-}
-
-tr:hover {
-	background-color: #f5f5f5;
-}
-
-
-.timer-container {
-	margin-top: 30px;
-	display: flex;
-	align-items: center;
-}
-
-.timer-label {
-	margin-right: 10px;
-	font-size: 20px;
-	font-weight: bold;
-}
 
 /* 보고서 작성하러 가기 버튼 */
 .btn-write {
-	background-color: #FFCC00;
+	width: auto;
+    height: 50px;
 	border: none;
+    background-color: #FFCC00;
 	color: #000;
-	padding: 15px 32px;
-	text-align: center;
+	font-weight: bold;
+    font-size: 13pt;
+    padding: 0 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    display: block;
+    margin: 50px auto 0;
+	/* text-align: center;
 	text-decoration: none;
-	display: inline-block;
-	font-size: 13pt;
-	margin: 4px 2px;
-	cursor: pointer;
-	text-align: center; 
-	margin-top: 50px;"
-	margin: 0 auto;
+	display: inline-block; */
 }
 .btn-write:hover {
 	background-color: #D4AA00;
@@ -86,22 +81,20 @@ tr:hover {
 </style>
 
 </head>
-<body style="margin: 0;">
-	<div class="stage3-header">
-		<%@ include file="../header.jsp"%>
-	</div>
+<body class="opinion2-body">
+	<%@ include file="../header.jsp"%>
+	
 	<%@ include file="../leftSideBar.jsp"%>
 	<%@ include file="../rightSideBar.jsp"%>
 
-	<div class="content-container">
-
+	<div class="opinion2-content">
 			<form action="./goStage5" id="goStage5" method="get">
 				<input type="hidden" name="roomId" value="${roomId}">
 				<input type="hidden" name="ideaId" value="${ideaId}"> 
 				<input type="hidden" name="stage" value=5>
 				
 	            <table>
-	           	 	<div class="ideaList" style="margin-left: 230px; margin-bottom: 30px;"> 아이디어 목록 - 완료여부</div>
+	           	 	<div class="ideaList">아이디어 목록 - 완료여부</div>
 	                <tr>
 	                    <th>아이디어 제목</th>
 	                    <th>2차의견 완료 여부</th>

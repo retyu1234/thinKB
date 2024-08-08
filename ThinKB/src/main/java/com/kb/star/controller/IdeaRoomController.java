@@ -306,14 +306,14 @@ public class IdeaRoomController {
 	            command = new StageThreeCommand(sqlSession);
 	            command.execute(model);
 	            model.addAttribute("currentTab","smart");
-	            return "redirect:/ideaOpinions?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=smart";
+	            return "redirect:/ideaOpinionsList?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=smart";
 	            
 
 	    	case 4:
 				command = new StageThreeCommand(sqlSession);
 				command.execute(model);
 				// model.addAttribute("currentTab","smart");
-				return "redirect:/ideaOpinionsList";
+				return "redirect:/ideaOpinionsList2";
 
 	        case 5:
 	            command = new ReportView(sqlSession);
