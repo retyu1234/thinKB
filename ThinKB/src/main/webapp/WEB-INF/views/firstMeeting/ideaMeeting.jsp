@@ -418,7 +418,7 @@ body {
 	font-size: 10pt;
 	cursor: pointer;
 	font-weight: bold;
-	margin-left: 10px; /* 버튼과 입력 필드 사이의 간격 추가 */
+	margin-left: 11px; /* 버튼과 입력 필드 사이의 간격 추가 */
 }
 
 #input-button:hover {
