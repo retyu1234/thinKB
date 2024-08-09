@@ -418,11 +418,15 @@ body, html {
     var currentTempButton = null;
     var currentForm = null;
     var existingButtons = [];
+    var pinTestStatus = ${pinTest.status}; // JSP에서 모델 값을 JavaScript 변수로 설정
 
     function sendCoordinates(event) {
         var x = event.clientX + window.scrollX;
         var y = event.clientY + window.scrollY;
 
+		if(pinTestStatus===1){
+			return;
+		}        
         createCoordinateButton(x, y);
     }
 
@@ -519,6 +523,11 @@ body, html {
     function submitComment(x, y, commentText) {
         var pinTestId = document.getElementById("pinTestId").value;
         var userId = document.getElementById("userId").value;
+        
+        if (pinTestStatus === 1) {
+            alert("이미 종료된 메모는 추가 등록이 불가능합니다.");
+            return; // 함수 종료, submitComment가 수행되지 않음
+        }
 
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "${pageContext.request.contextPath}/addComment", true);
