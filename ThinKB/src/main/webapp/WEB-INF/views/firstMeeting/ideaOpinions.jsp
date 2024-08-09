@@ -282,6 +282,7 @@ h1 {
 	width: calc(100% - 110px); /* 버튼 너비(100px)와 여백(10px)을 고려한 너비 */
 	height: 50px;
 	margin-right: 10px;
+	margin-bottom: 50px;
 	border: 2px solid #ccc;
 	/* border: 4px solid #ffc107; */
 	padding: 12px; /* 패딩을 더 두껍게 조정 */
@@ -310,6 +311,7 @@ h1 {
 	border-radius: 5px;
 	cursor: pointer;
 	transition: background-color 0.3s ease;
+	margin-bottom: 50px;
 }
 .btn-write:hover {
 	background-color: #D4AA00;
@@ -358,18 +360,17 @@ h1 {
         
         window.onload = function() {
             var urlParams = new URLSearchParams(window.location.search);
-            var currentTab = urlParams.get('currentTab')
+            /* var currentTab = urlParams.get('currentTab') */
             var roomId = urlParams.get('roomId');
             var ideaId = urlParams.get('ideaId');
             
-            if (roomId && ideaId) {
-                if (currentTab) {
-                    // 사용자가 특정 탭을 선택한 경우
-                    showTab(currentTab, '#FFE297', roomId, ideaId);
-                } else {
-                    // 처음 페이지에 접속한 경우 (currentTab이 없는 경우)
-                    showTab('tab-smart', '#FFE297', roomId, ideaId);
-                }
+            /* if (roomId && ideaId) {
+                showTab(currentTab, '#FFE297', roomId, ideaId);
+            } */
+            
+            var currentTab = "${currentTab}";
+            if (currentTab) {
+                showTab(currentTab, '#FFE297', '${roomId}', '${ideaId}');
             }
         };
 
@@ -382,31 +383,7 @@ h1 {
                 default: return '#007bff';
             }
         } */
-
-/*         window.showTab = function(tabName, color, roomId, ideaId) {
-            var tabs = document.getElementsByClassName('tab-content');
-            for (var i = 0; i < tabs.length; i++) {
-                tabs[i].classList.remove('active');
-            }
-            document.getElementById(tabName).classList.add('active');
-            document.querySelector('.tab-content.active').style.borderColor = color;
-
-            var allTabs = document.getElementsByClassName('tab');
-            for (var j = 0; j < allTabs.length; j++) {
-                allTabs[j].style.borderBottom = 'none';
-            }
-            document.querySelector('.tab.' + tabName).style.borderBottom = '5px solid ' + color;
-
-            // 폼의 currentTab 값을 업데이트
-            var currentTabInputs = document.querySelectorAll('input[name="currentTab"]');
-            for (var k = 0; k < currentTabInputs.length; k++) {
-                currentTabInputs[k].value = tabName;
-            }
-
-            // URL을 업데이트하여 필요한 매개변수 포함
-            history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}&currentTab=${tabName}`);
-        } */
-        window.showTab = function(tabName, color, roomId, ideaId) {
+        /* window.showTab = function(tabName, color, roomId, ideaId) {
             // 모든 탭 컨텐츠와 탭을 비활성화
             var tabs = document.getElementsByClassName('tab-content');
             for (var i = 0; i < tabs.length; i++) {
@@ -436,15 +413,44 @@ h1 {
             } else {
                 history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}`);
             }
-        }
+        } */
+        window.showTab = function(tabName, color, roomId, ideaId) {
+            // 모든 탭 컨텐츠와 탭을 비활성화
+            var tabs = document.getElementsByClassName('tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            var allTabs = document.getElementsByClassName('tab');
+            for (var j = 0; j < allTabs.length; j++) {
+                allTabs[j].classList.remove('active');
+            }
+
+            // 선택된 탭 컨텐츠와 탭을 활성화
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector('.tab.' + tabName).classList.add('active');
+
+            // 폼의 currentTab 값을 업데이트
+            var currentTabInputs = document.querySelectorAll('input[name="currentTab"]');
+            for (var k = 0; k < currentTabInputs.length; k++) {
+                currentTabInputs[k].value = tabName;
+            }
+
+            // URL을 업데이트
+            history.replaceState(null, '', '?roomId=' + roomId + '&ideaId=' + ideaId + '&currentTab=' + tabName);
+            
+         	// 폼의 hidden input 업데이트
+            document.querySelectorAll('form input[name="currentTab"]').forEach(function(input) {
+                input.value = tabName;
+            });
+        };
 
     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창
         window.validateAndSubmitForm = function(tabName, maxComments, currentOpinionCount) {
             var opinionText = document.querySelector('#' + tabName + ' .opinion-textarea').value.trim();
             if (opinionText === '') {
                 alert('의견을 입력해주세요!');
-            } else if (currentOpinionCount >= maxComments) {
-                alert('의견 작성 제한 인원을 초과하였습니다. \n다른 의견 탭에 의견을 작성해주세요');
+            /* } else if (currentOpinionCount >= maxComments) {
+                alert('의견 작성 제한 인원을 초과하였습니다. \n다른 의견 탭에 의견을 작성해주세요'); */
             } else {
                 document.querySelector('#' + tabName + ' form').submit();
             }
@@ -556,10 +562,18 @@ request.setAttribute("stages", stages);%>
 
 			<!-- 4가지 탭 -->
 			<div class="tabs">
-				<div class="tab tab-smart" onclick="showTab('tab-smart', '#FFE297', '${roomId}', '${ideaId}')">객관적관점</div>
-				<div class="tab tab-positive" onclick="showTab('tab-positive', '#FFE297', '${roomId}', '${ideaId}')">기대효과</div>
-				<div class="tab tab-worry" onclick="showTab('tab-worry', '#FFE297', '${roomId}', '${ideaId}')">문제점</div>
-				<div class="tab tab-strict" onclick="showTab('tab-strict', '#FFE297', '${roomId}', '${ideaId}')">실현가능성</div>
+				<div class="tab tab-smart" onclick="showTab('tab-smart', '#FFE297', '${roomId}', '${ideaId}')">객관적관점<br>
+					<div style="font-size: 11pt;">(추가작성 ${maxComments-smartOpinionCount}개 가능)</div>
+				</div>
+				<div class="tab tab-positive" onclick="showTab('tab-positive', '#FFE297', '${roomId}', '${ideaId}')">기대효과<br>
+					<div style="font-size: 11pt;">(추가작성 ${maxComments-positiveOpinionCount}개 가능)</div>
+				</div>
+				<div class="tab tab-worry" onclick="showTab('tab-worry', '#FFE297', '${roomId}', '${ideaId}')">문제점<br>
+					<div style="font-size: 11pt;">(추가작성 ${maxComments-worryOpinionCount}개 가능)</div>
+				</div>
+				<div class="tab tab-strict" onclick="showTab('tab-strict', '#FFE297', '${roomId}', '${ideaId}')">실현가능성<br>
+					<div style="font-size: 11pt;">(추가작성 ${maxComments-strictOpinionCount}개 가능)</div>
+				</div>
 			</div>
 
 
@@ -569,7 +583,7 @@ request.setAttribute("stages", stages);%>
 					<div class="tabExplain" style="margin-left: -840px;">현황, 관련 데이터 등 <br> 객관적인 관점을 작성해주세요.</div>
 					<div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
 						내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
-						현재 탭의 작성된 의견 수: ${smartOpinionCount}/(최대)${maxComments}
+						<%-- 현재 탭의 작성된 의견 수: ${smartOpinionCount}/(최대)${maxComments} --%>
 					</div>
 
 					<ul class="opinion-list">
@@ -600,41 +614,39 @@ request.setAttribute("stages", stages);%>
 					</ul>
 
 					<div class="comment-section">
-						<c:if test="${not empty error}">
-							<div class="error-message">${error}</div>
-						</c:if>
-						<c:if test="${2 - userOpinionCount > 0}">
-							<form:form method="post" action="./addOpinion"
-								class="input-form" modelAttribute="opinionForm">
-								<%-- onsubmit="return validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})" > --%>
-								<form:hidden path="hatColor" value="Smart" />
-								<form:hidden path="currentTab" value="tab-smart" />
-								<form:hidden path="roomId" value="${roomId}" />
-								<form:hidden path="ideaId" value="${ideaId}" />
-								<form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-								<button type="button" class="btn-write"
-									onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount}, ${userOpinionCount})">작성
-								</button>
-							</form:form>
-						</c:if>
-						<c:if test="${2 - userOpinionCount == 0}">
-							<div style="margin-left: 80px; margin-bottom: 200px;">
-								필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
-							</div>
-						</c:if>
-						<c:if test="${currentOpinionCount >= maxComments}">
-							<div style="margin-left: 80px; margin-bottom: 200px;">
-								의견 작성 제한 인원을 초과하였습니다. 다른 의견 탭에 의견을 작성해주세요.
-							</div>
-						</c:if>
+					    <c:if test="${not empty error}">
+					        <div class="error-message">${error}</div>
+					    </c:if>
+					    <c:choose>
+					        <c:when test="${2 - userOpinionCount > 0 && smartOpinionCount < maxComments}">
+					            <form:form method="post" action="./addOpinion"
+					                class="input-form" modelAttribute="opinionForm">
+					                <form:hidden path="hatColor" value="Smart" />
+					                <form:hidden path="currentTab" value="tab-smart" />
+					                <form:hidden path="roomId" value="${roomId}" />
+					                <form:hidden path="ideaId" value="${ideaId}" />
+					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
+					                <button type="button" class="btn-write"
+					                    onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성
+					                </button>
+					            </form:form>
+					        </c:when>
+					        <c:when test="${2 - userOpinionCount <= 0}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            </div>
+					        </c:when>
+					        <c:when test="${smartOpinionCount >= maxComments}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                의견 작성 제한 인원을 초과하였습니다. 다른 의견 탭에 의견을 작성해주세요.
+					            </div>
+					        </c:when>
+					    </c:choose>
 					</div>
-					<div class="comment-ended" style="display: none; margin-left: 100px;">
-						타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
+					<div class="comment-ended" style="display: none; margin-left: 80px; margin-bottom: 200px;">
+					    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
 					</div>
-					
-					
 				</div>
-			</div>
 
 
 				<!-- 기대효과 -->
@@ -643,7 +655,7 @@ request.setAttribute("stages", stages);%>
 
 					<div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
 						내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
-						현재 탭의 작성된 의견 수: ${positiveOpinionCount}/(최대)${maxComments}
+						<%-- 현재 탭의 작성된 의견 수: ${positiveOpinionCount}/(최대)${maxComments} --%>
 					</div>
 
 					<ul class="opinion-list">
@@ -676,30 +688,37 @@ request.setAttribute("stages", stages);%>
 					</ul>
 
 					<div class="comment-section">
-						<c:if test="${not empty error}">
-							<div class="error-message">${error}</div>
-						</c:if>
-						<c:if test="${2 - userOpinionCount > 0}">
-							<form:form method="post" action="./addOpinion"
-								modelAttribute="opinionForm" class="input-form">
-								<%-- onsubmit="return validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount}, ${userOpinionCount})" > --%>
-								<form:hidden path="hatColor" value="Positive" />
-								<form:hidden path="currentTab" value="tab-positive" />
-								<form:hidden path="roomId" value="${roomId}" />
-								<form:hidden path="ideaId" value="${ideaId}" />
-								<form:textarea path="opinionText" class="opinion-textarea"
-									placeholder="의견을 입력해주세요" />
-								<button type="button" class="btn-write"
-									onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount}, ${userOpinionCount})">작성</button>
-							</form:form>
-						</c:if>
-						<c:if test="${2 - userOpinionCount == 0}">
-							<div style="margin-left: 80px; margin-bottom: 200px;">필수 의견
-								2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-						</c:if>					
+					    <c:if test="${not empty error}">
+					        <div class="error-message">${error}</div>
+					    </c:if>
+					    <c:choose>
+					        <c:when test="${2 - userOpinionCount > 0 && positiveOpinionCount < maxComments}">
+					            <form:form method="post" action="./addOpinion"
+					                modelAttribute="opinionForm" class="input-form">
+					                <form:hidden path="hatColor" value="Positive" />
+					                <form:hidden path="currentTab" value="tab-positive" />
+					                <form:hidden path="roomId" value="${roomId}" />
+					                <form:hidden path="ideaId" value="${ideaId}" />
+					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
+					                <button type="button" class="btn-write"
+					                    onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount})">작성</button>
+					            </form:form>
+					        </c:when>
+					        <c:when test="${2 - userOpinionCount <= 0}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            </div>
+					        </c:when>
+					        <c:when test="${positiveOpinionCount >= maxComments}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                의견 작성 제한 인원을 초과하였습니다. 다른 의견 탭에 의견을 작성해주세요.
+					            </div>
+					        </c:when>
+					    </c:choose>
 					</div>
-					<div class="comment-ended" style="display: none; margin-left: 100px;">
-						타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+					<div class="comment-ended" style="display: none; margin-left: 80px; margin-bottom: 200px;">
+					    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
+					</div>
 				</div>
 
 
@@ -710,7 +729,7 @@ request.setAttribute("stages", stages);%>
 				    
 				    <div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
 				    	내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
-						현재 탭의 작성된 의견 수: ${worryOpinionCount}/(최대)${maxComments}
+						<%-- 현재 탭의 작성된 의견 수: ${worryOpinionCount}/(최대)${maxComments} --%>
 				    </div>
 				    
 				    <ul class="opinion-list">
@@ -739,92 +758,111 @@ request.setAttribute("stages", stages);%>
 				    </ul>
 				    
 				    <div class="comment-section">
-				        <c:if test="${not empty error}">
-				            <div class="error-message">${error}</div>
-				        </c:if>
-				        <c:if test="${2 - userOpinionCount > 0}">
-				            <form:form method="post" action="./addOpinion"
-				                modelAttribute="opinionForm" class="input-form">
-				                <%-- onsubmit="return validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount}, ${userOpinionCount})" > --%>
-				                <form:hidden path="hatColor" value="Worry" />
-				                <form:hidden path="currentTab" value="tab-worry" />
-				                <form:hidden path="roomId" value="${roomId}" />
-				                <form:hidden path="ideaId" value="${ideaId}" />
-				                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-				                <button type="button" class="btn-write"
-				                    onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount}, ${userOpinionCount})">작성</button>
-				            </form:form>
-				        </c:if>
-				        <c:if test="${2 - userOpinionCount == 0}">
-				            <div style="margin-left: 80px; margin-bottom: 200px;">필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-				        </c:if>
-				    </div>
-				    <div class="comment-ended" style="display: none; margin-left: 100px;">
-				        타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+					    <c:if test="${not empty error}">
+					        <div class="error-message">${error}</div>
+					    </c:if>
+					    <c:choose>
+					        <c:when test="${2 - userOpinionCount > 0 && worryOpinionCount < maxComments}">
+					            <form:form method="post" action="./addOpinion"
+					                modelAttribute="opinionForm" class="input-form">
+					                <form:hidden path="hatColor" value="Worry" />
+					                <form:hidden path="currentTab" value="tab-worry" />
+					                <form:hidden path="roomId" value="${roomId}" />
+					                <form:hidden path="ideaId" value="${ideaId}" />
+					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
+					                <button type="button" class="btn-write"
+					                    onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount})">작성</button>
+					            </form:form>
+					        </c:when>
+					        <c:when test="${2 - userOpinionCount <= 0}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            </div>
+					        </c:when>
+					        <c:when test="${worryOpinionCount >= maxComments}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                의견 작성 제한 인원을 초과하였습니다. 다른 의견 탭에 의견을 작성해주세요.
+					            </div>
+					        </c:when>
+					    </c:choose>
+					</div>
+					<div class="comment-ended" style="display: none; margin-left: 80px; margin-bottom: 200px;">
+					    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
+					</div>
 				</div>
 
 
-			<!-- 실현가능성 -->
-			<div id="tab-strict" class="tab-content">
-			    <div class="tabExplain" style="margin-left: 840px;"> 개발 비용, 실현 가능성 등 <br> 현실적 관점을 작성해주세요. </div>
-			    
-			    <div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
-			    	내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
-					현재 탭의 작성된 의견 수: ${strictOpinionCount}/(최대)${maxComments}
-			    </div>
-			    
-			    <ul class="opinion-list">
-			        <c:choose>
-			            <c:when test="${empty strictOpinions}">
-			                <li class="no-opinions"><img
-			                    src="./resources/noContents.png" alt="No opinions"
-			                    style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
-			                    <br> 의견이 아직 등록되지 않았어요! <br>
-			                <br></li>
-			            </c:when>
-			            <c:otherwise>
-			                <c:forEach var="opinion" items="${strictOpinions}">
-			                    <li class="opinion-entry">
-			                    <div class="name-date">
-			                        <span class="name">${opinion.userName}</span>
-			                        <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
-			                    </div>
-			                    <div class="opinion-text">${opinion.opinionText}</div>
-			                    <c:if test="${opinion.userID == userId}">
-			                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-strict')">삭제</button>
-			                    </c:if>
-			                    </li>
-			                </c:forEach>
-			            </c:otherwise>
-			        </c:choose>
-			    </ul>
-			    
-			    <div class="comment-section">
-			        <c:if test="${not empty error}">
-			            <div class="error-message">${error}</div>
-			        </c:if>
-			        <c:if test="${2 - userOpinionCount > 0}">
-			            <form:form method="post" action="./addOpinion"
-			                modelAttribute="opinionForm" class="input-form">
-			                <%-- onsubmit="return validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount}, ${userOpinionCount})" > --%>
-			                <form:hidden path="hatColor" value="Strict" />
-			                <form:hidden path="currentTab" value="tab-strict" />
-			                <form:hidden path="roomId" value="${roomId}" />
-			                <form:hidden path="ideaId" value="${ideaId}" />
-			                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
-			                <button type="button" class="btn-write"
-			                    onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount}, ${userOpinionCount})">작성</button>
-			            </form:form>
-			        </c:if>
-			        <c:if test="${2 - userOpinionCount == 0}">
-			            <div style="margin-left: 80px; margin-bottom: 200px;">필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.</div>
-			        </c:if>
-			    </div>
-			    <div class="comment-ended" style="display: none; margin-left: 100px;">
-			        타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
-			    </div>
-			</div>
-				
+				<!-- 실현가능성 -->
+				<div id="tab-strict" class="tab-content">
+				    <div class="tabExplain" style="margin-left: 840px;"> 개발 비용, 실현 가능성 등 <br> 현실적 관점을 작성해주세요. </div>
+				    
+				    <div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
+				    	내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
+						<%-- 현재 탭의 작성된 의견 수: ${strictOpinionCount}/(최대)${maxComments} --%>
+				    </div>
+				    
+				    <ul class="opinion-list">
+				        <c:choose>
+				            <c:when test="${empty strictOpinions}">
+				                <li class="no-opinions"><img
+				                    src="./resources/noContents.png" alt="No opinions"
+				                    style="width: 180px; height: 200px; vertical-align: middle; margin-right: 10px;">
+				                    <br> 의견이 아직 등록되지 않았어요! <br>
+				                <br></li>
+				            </c:when>
+				            <c:otherwise>
+				                <c:forEach var="opinion" items="${strictOpinions}">
+				                    <li class="opinion-entry">
+				                    <div class="name-date">
+				                        <span class="name">${opinion.userName}</span>
+				                        <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
+				                    </div>
+				                    <div class="opinion-text">${opinion.opinionText}</div>
+				                    <c:if test="${opinion.userID == userId}">
+				                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-strict')">삭제</button>
+				                    </c:if>
+				                    </li>
+				                </c:forEach>
+				            </c:otherwise>
+				        </c:choose>
+				    </ul>
+				    
+				    <div class="comment-section">
+					    <c:if test="${not empty error}">
+					        <div class="error-message">${error}</div>
+					    </c:if>
+					    <c:choose>
+					        <c:when test="${2 - userOpinionCount > 0 && strictOpinionCount < maxComments}">
+					            <form:form method="post" action="./addOpinion"
+					                modelAttribute="opinionForm" class="input-form">
+					                <form:hidden path="hatColor" value="Strict" />
+					                <form:hidden path="currentTab" value="tab-strict" />
+					                <form:hidden path="roomId" value="${roomId}" />
+					                <form:hidden path="ideaId" value="${ideaId}" />
+					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
+					                <button type="button" class="btn-write"
+					                    onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount})">작성</button>
+					            </form:form>
+					        </c:when>
+					        <c:when test="${2 - userOpinionCount <= 0}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            </div>
+					        </c:when>
+					        <c:when test="${strictOpinionCount >= maxComments}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                의견 작성 제한 인원을 초과하였습니다. 다른 의견 탭에 의견을 작성해주세요.
+					            </div>
+					        </c:when>
+					    </c:choose>
+					</div>
+					<div class="comment-ended" style="display: none; margin-left: 80px; margin-bottom: 200px;">
+					    타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
+					</div>
+				</div>
+			
+			
+			
 			</div>
 		</div>
 	</div>

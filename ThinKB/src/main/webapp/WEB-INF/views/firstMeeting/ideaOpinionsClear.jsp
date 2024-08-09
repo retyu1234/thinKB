@@ -105,6 +105,14 @@ th {
             <input type="hidden" name="ideaId" value="${ideaId}"> 
             <input type="hidden" name="stage" value="${stage}"> 
             
+            <%-- JSP 부분 --%>
+			<c:set var="allCompleted" value="true" />
+			<c:forEach items="${ideasInfo}" var="idea">
+			    <c:if test="${idea.stageID == 3}">
+			        <c:set var="allCompleted" value="false" />
+			    </c:if>
+			</c:forEach>
+
             <div class="ideaList">아이디어 목록 - 완료여부</div>
             <table>
                 <tr>
@@ -149,6 +157,14 @@ th {
 <script>
 document.getElementById('goStage4').addEventListener('submit', function(e) {
     e.preventDefault();
+    
+	var allCompleted = ${allCompleted}; // JSP 변수를 JavaScript로 전달
+    
+    if (!allCompleted) {
+        alert("아직 진행이 완료되지 않은 아이디어가 있습니다.");
+        return;
+    }
+    
     var timerHours = this.querySelector('input[name="timer_hours"]').value;
     var timerMinutes = this.querySelector('input[name="timer_minutes"]').value;
     var timerSeconds = this.querySelector('input[name="timer_seconds"]').value;
@@ -165,16 +181,16 @@ document.getElementById('goStage4').addEventListener('submit', function(e) {
         });
         
         // 모든 아이디어의 진행 상태 확인
-        var allCompleted = true;
+        /* var allCompleted = true;
         var ideaStatuses = document.querySelectorAll('table tr td:nth-child(2)');
         
         ideaStatuses.forEach(function(status) {
             if (status.textContent.trim() === '진행중') {
                 allCompleted = false;
             }
-        });
+        }); */
 
-        if (allCompleted) {
+        /* if (allCompleted) {
             var roomId = this.querySelector('input[name="roomId"]').value;
             var ideaId = this.querySelector('input[name="ideaId"]').value;
             var currentTab = 'tab-smart';
@@ -188,7 +204,19 @@ document.getElementById('goStage4').addEventListener('submit', function(e) {
             window.location.href = url;
         } else {
             alert("아직 진행이 완료되지 않은 아이디어가 있습니다.");
-        }
+        } */
+        
+        var roomId = this.querySelector('input[name="roomId"]').value;
+        var ideaId = this.querySelector('input[name="ideaId"]').value;
+        var currentTab = 'tab-smart';
+        
+        var url = this.action + '?roomId=' + roomId + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
+        
+        if (timerHours) url += '&timer_hours=' + timerHours;
+        if (timerMinutes) url += '&timer_minutes=' + timerMinutes;
+        if (timerSeconds) url += '&timer_seconds=' + timerSeconds;
+        
+        window.location.href = url;
     }
 });
 </script>

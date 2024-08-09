@@ -114,6 +114,8 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);
+		System.out.println("yesPickList :" + dao.yesPickIdeaList(roomId));
+		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);
 		params.put("roomId", roomId);
@@ -122,6 +124,7 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
 		model.addAttribute("roomMessage", roomMessage);
 		// 여기까지 leftSideBar 출력용
+		
 
 	}
 }

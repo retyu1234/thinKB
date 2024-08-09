@@ -14,6 +14,9 @@ public interface IdeaOpinionsDao {
     // 각 모자 색상에 따른 의견 5개 목록 검색
     List<IdeaOpinionsDto> findTop5ByHatColor(String hatColor);
     
+    // stage3인(=투표로 선택된) 아이디어만 찾는 쿼리
+    List<Ideas> yesPickIdeaList(int roomId);
+    
     
 	// ideaOpinions.jsp
     // 알림 테이블의 IdeaID컬럼으로 Ideas 테이블 정보 가져오기

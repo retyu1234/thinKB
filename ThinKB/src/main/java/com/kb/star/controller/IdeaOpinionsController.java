@@ -62,13 +62,15 @@ public class IdeaOpinionsController {
 	
 	// 아이디어 의견을 가져오는 메서드
     @RequestMapping("/ideaOpinions")
-    public String getIdeaOpinions(HttpServletRequest request, @RequestParam("roomId") int roomId,
-			@RequestParam("ideaId") int ideaId,@RequestParam("currentTab") String currentTab, Model model, ServletRequest session) {
+    public String getIdeaOpinions(HttpServletRequest request, Model model, ServletRequest session,
+    		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,
+    		@RequestParam(value = "currentTab", required = false, defaultValue = "tab-smart") String currentTab) {
     	
     	model.addAttribute("request", request);
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
-        model.addAttribute("currentTab", currentTab);
+        String activeHatColor = getHatColor(currentTab);
+        model.addAttribute("currentTab", activeHatColor);
         
         IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
         IdeaOpinionsCommand.execute(model);
@@ -81,6 +83,13 @@ public class IdeaOpinionsController {
         // 방장 ID 가져오기
         int roomManagerId = ideaOpinionsDao.getRoomManagerId(roomId);
         model.addAttribute("roomManagerId", roomManagerId);
+        
+//        // 세션에서 에러 메시지 가져오기
+//        String error = (String) session.getAttribute("error");
+//        if (error != null) {
+//            model.addAttribute("error", error);
+//            session.removeAttribute("error");  // 에러 메시지 사용 후 삭제
+//        }
 
         return "/firstMeeting/ideaOpinions";
     }
@@ -117,31 +126,44 @@ public class IdeaOpinionsController {
         
         // 사용자가 작성한 댓글 수와 작성한 탭 목록을 가져옴
         List<String> userCommentedTabs = ideaOpinionsDao.getUserCommentedTabs(userId, ideaId);
-        if (userCommentedTabs.contains(hatColor)) {
-            model.addAttribute("error", "이미 이 탭에 의견을 작성했습니다.");
-            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+        if (!userCommentedTabs.contains(hatColor)) {
+            ideaOpinionsDao.insertOpinion(opinionForm);
+            
+            // 두 개의 의견 작성 후 status 업데이트
+            userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId);
+            if (userOpinionCount >= 2) {
+                ideaOpinionsDao.updateStatus(userId, ideaId, roomId, true);
+            } else {
+                ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
+            }
         }
         
-        if (currentOpinionCount >= maxComments) {
-            model.addAttribute("error", "댓글 작성 제한 인원을 초과하였습니다.");
-            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
-        }
-        
-        if (userOpinionCount >= 2) {
-            model.addAttribute("error", "필수 댓글 2개 작성을 완료하셨습니다.");
-            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
-        }
-        
-        ideaOpinionsDao.insertOpinion(opinionForm);
-        
-        // 두 개의 의견 작성 후 status 업데이트
-        userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId);
-        if (userOpinionCount >= 2) {
-            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, true);
-            model.addAttribute("message", "필수 댓글 2개 작성을 완료하셨습니다.");
-        } else {
-            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
-        }
+//        if (userCommentedTabs.contains(hatColor)) {
+//            model.addAttribute("error", "이미 이 탭에 의견을 작성했습니다.");
+//            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+//        }
+//        
+//        if (currentOpinionCount >= maxComments) {
+//            model.addAttribute("error", "댓글 작성 제한 인원을 초과하였습니다.");
+//            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+//        }
+//        
+//        if (userOpinionCount >= 2) {
+//            model.addAttribute("error", "필수 댓글 2개 작성을 완료하셨습니다.");
+//            return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+//        }
+//
+//        
+//        ideaOpinionsDao.insertOpinion(opinionForm);
+//        
+//        // 두 개의 의견 작성 후 status 업데이트
+//        userOpinionCount = ideaOpinionsDao.getUserOpinionCount(userId, ideaId);
+//        if (userOpinionCount >= 2) {
+//            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, true);
+//            model.addAttribute("message", "필수 댓글 2개 작성을 완료하셨습니다.");
+//        } else {
+//            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
+//        }
         
         return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
     }

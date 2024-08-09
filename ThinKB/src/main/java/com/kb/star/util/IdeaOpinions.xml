@@ -16,6 +16,10 @@
         ORDER BY io.CreatedAt DESC
         LIMIT 5
     </select>
+    <!-- stage3인(=투표로 선택된) 아이디어만 찾는 쿼리 -->
+	<select id="yesPickIdeaList" resultType="com.kb.star.dto.Ideas">
+		SELECT * from Ideas WHERE RoomID=#{param1} and StageID>=3
+	</select>
     
     
     

@@ -17,94 +17,183 @@
     box-sizing: border-box;
 }
 
-/* 아이디어 제목 */
-.title {
-    font-weight: bold;
-    font-size: 22pt;
+/* 5단계 표시 */
+.stages {
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 0;
+	font-size: 13pt;
+}
+.stage {
+    flex: 1;
     text-align: center;
-    margin-top: 40px; 
-    margin-bottom: 40px; 
+    padding: 3px; /* 5px에서 3px로 줄임 */
+    margin: 0 2px; /* 좌우 여백 추가 */
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
 }
 
+/* 아이디어 제목 & 설명 */
+.ideaOpinionList-title1 {
+	font-size: 20pt;
+	color: #909090;
+	font-weight: bold;
+	margin-top: 40px;
+	/* font-style: italic; */
+}
+.ideaOpinionList-title2 {
+	font-size: 17pt;
+	color: black;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.ideaOpinionList-title-detail {
+	font-size: 13pt;
+	position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+/* 아이디어 설명보기 숨기기버튼 */
+.grey-button {
+	background-color: #978A8F;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+/* 다음 단계로 section */
+.rightAligned {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+/* 현재 단계 완료 참여자 수 */
+.countDone {
+	font-size: 13pt;
+	margin-right: 10px;
+}
+/* 다음단계로 버튼 */
+.nextStepButton {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	font-weight: bold;
+	cursor: pointer;
+	margin-right: 10px;
+}
+.nextStepButton:hover {
+	background-color: #D4AA00;
+}
+/* 구분선 */
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
+
+/* 가운데 내용 부분 */
 .columns {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
     width: 60%;
     margin: 0 auto;
 }
+
+/* 4가지 관점 */
 .column {
-    width: 48%;
+    width: 100%;
     margin-bottom: 20px;
 }
-
-/* 객관적관점, 기대효과, 문제점, 실현가능성 박스 */
 .box {
     background-color: #ffffff;
-    /* border: 1px solid #FFE297; */
     border-radius: 10px;
     padding: 10px;
-    height: 350px;
-    overflow-y: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* 그림자 추가 */
+    height: auto;
 }
-.section-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 10px;
-}
-
-
-/* 탭 제목 */
 .tab-title {
     font-size: 15pt;
     font-weight: bold;
-    text-align: left;
-    padding: 10px;
-    cursor: pointer;
-    border-radius: 10px 10px 0 0;
     color: #000000;
-    /* border-bottom: 6px solid #FFE297; */
 }
-/* .tab-smart { background-color: #007bff; }
-.tab-positive { background-color: #ffc107; color: #000000; }
-.tab-worry { background-color: #28a745; }
-.tab-strict { background-color: #dc3545; } */
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    padding: 10px;
+    border: 3px solid #ddd;
+    border-radius: 30px;
+}
+.next-icon {
+    width: 15px;
+    height: 15px;
+    margin-left: auto; /* 우측 정렬을 위해 추가 */
+    margin-right: 20px;
+    cursor: pointer;
+}
 
+/* 토글 */
+.toggle-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+    margin-right: 10px;
+}
+.toggle-icon.open {
+    transform: rotate(90deg);
+}
+
+/* 작성된 의견들 */
 .opinion-list {
     list-style-type: none;
     padding: 0;
+    display: none;
 }
 .opinion-entry {
-    background-color: #ffeeee;
     padding: 10px;
     border-radius: 10px;
-    margin-bottom: 10px;
-    font-size: 15pt;
+    margin-bottom: 20px;
     position: relative;
-    cursor: pointer;
-    text-align: left;
+    width: 90%;
+    margin: 0 auto;
 }
 .opinion-header {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     align-items: center;
     margin-bottom: 5px;
 }
-
 .name {
     font-weight: bold;
-    font-size: 11pt;
+    font-size: 13pt;
+    margin-left: 10px;
 }
 .date {
-    font-size: 8pt;
+    font-size: 10pt;
     color: #777;
+    margin-left: 15px;
 }
 .opinion-text {
     margin-top: 5px;
-    font-size: 10pt;
+    margin-left: 13pt;
+    font-size: 13pt;
 }
+
+/* 관점별 구분선 */
+.divider {
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+}
+
+/* 의견이 아직 등록되지 않았어요! */
 .no-opinions {
     color: #ccc;
     font-style: italic;
@@ -114,13 +203,32 @@
 }
 </style>
 <script>
-    function navigateToTab(currentTab) {
-        var roomId = '${roomId}';
-        var ideaId = '${ideaId}';
-        var url = '<c:url value="/ideaOpinions"/>' + '?roomId=' + roomId
-                + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
-        window.location.href = url;
+/* 회전 토글 */
+function toggleSection(sectionId) {
+    var content = document.getElementById(sectionId);
+    var icon = document.getElementById(sectionId + '-icon');
+    if (content.style.display === "none" || content.style.display === "") {
+        content.style.display = "block";
+        icon.classList.add('open');
+    } else {
+        content.style.display = "none";
+        icon.classList.remove('open');
     }
+}
+
+/* 탭 이름 클릭시 이동 */
+function navigateToTab(currentTab) {
+    var roomId = '${roomId}';
+    var ideaId = '${ideaId}';
+    var url = '<c:url value="/ideaOpinions"/>' + '?roomId=' + roomId
+            + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
+    window.location.href = url;
+}
+
+<%
+String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
+request.setAttribute("stages", stages);
+%>
 </script>
 </head>
 <body class="ideaOpinionsList-body">
@@ -128,154 +236,196 @@
 <%@ include file="../leftSideBar.jsp"%>
 <%@ include file="../rightSideBar.jsp"%>
 
-    <!-- 제목 -->
-	<div class="title">[${ideaTitle}]</div>
+<div class="columns">
 
-    <div class="columns">
+	<!-- 5개 단계 표시 -->
+	<div class="stages">
+	    <c:forEach var="stage" items="${stages}" varStatus="status">
+	        <c:choose>
+	            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+	                <a href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}" class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+	                    ${status.index + 1}. ${stage}
+	                </a>
+	            </c:when>
+	            <c:otherwise>
+	                <div class="stage inactive">
+	                    ${status.index + 1}. ${stage}
+	                </div>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	</div>
+
+	<!-- 제목 상세설명 -->
+<!-- 	<div class="ideaOpinionList-title1">
+	  {yesPickList[0] ? "아이디어 A" : "아이디어 B"}
+	</div> -->
+	<div class="ideaOpinionList-title1">
+		<c:choose>
+			<c:when test="${ideaId == yesPickList[0].ideaID}">
+	           아이디어 A
+	       	</c:when>
+			<c:otherwise>
+	           아이디어 B
+       		</c:otherwise>
+		</c:choose>
+	</div>
+	<div class="ideaOpinionList-title2">
+        [${ideaTitle}]
+    </div>
+	<button class="grey-button">설명 보기/숨기기</button>
+	
+	<!-- 방장이면 표시 -->
+	<div class="rightAligned">
+		<c:if test="${userId == roomManagerId}">
+			<!-- 현재 단계 완료 참여자 수 -->
+			<span class="countDone"> 현재 단계 완료 참여자 수:
+				${doneUserCount}/${userCount}</span>
+			<!-- 다음 단계로 버튼 -->
+			<button id="nextStepButton" class="nextStepButton"
+				onclick="confirmNextStep()">다음 단계로</button>
+		</c:if>
+	</div>
+	
+	<hr class="line">
+	
+	<div class="ideaOpinionList-title-detail">4가지 관점 중 2가지 관점을 골라 창의적인 의견을 작성해주세요!</div>
+	
+	<!-- 객관적관점 -->
+    <div class="column">
+        <div class="box">
+            <div class="section-header" onclick="toggleSection('smart-opinions')">
+			    <span id="smart-opinions-icon" class="toggle-icon">▶</span>
+			    <div class="tab-title tab-smart" onclick="navigateToTab('tab-smart')">객관적관점</div>
+			    <img src="./resources/nextIcon.png" onclick="navigateToTab('tab-smart')" class="next-icon">
+			</div>
+			
+            <ul id="smart-opinions" class="opinion-list">
+                <c:choose>
+                    <c:when test="${empty smartOpinions}">
+                        <li class="no-opinions">
+						<img src="./resources/noIdea.png" alt="No opinions"
+                                style="width: 60px; height: 80px; vertical-align: middle; margin-right: 10px;">
+                                <br> 의견이 아직 등록되지 않았어요!
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="opinion" items="${smartOpinions}">
+                            <li class="opinion-entry" style="background-color: #E7F3FF;">
+                                <div class="opinion-header">
+                                    <span class="name">${opinion.userName}</span>
+                                    <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
+                                </div>
+                                <div class="opinion-text">${opinion.opinionText}</div>
+                            </li>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
+        </div>
+        <div class="divider"></div>
+    </div>
     
-    	<!-- 객관적관점 -->
-        <div class="column">
-            <div class="box">
-	            <div class="section-header">
-					<div class="tab-title tab-smart" onclick="navigateToTab('tab-smart')">객관적관점</div>
-					<img src="./resources/nextIcon.png" onclick="navigateToTab('tab-smart')"
-					style="width: 15px; height: 15px; float: right; margin-right: 20px; cursor: pointer;">
-				</div>
-				
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty smartOpinions}">
-                            <li class="no-opinions">
-                            <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
-                                <br><br> 의견이 아직 등록되지 않았어요!
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${smartOpinions}" varStatus="status">
-                                <c:if test="${status.index < 3}">
-                                    <li class="opinion-entry" onclick="navigateToTab('tab-smart')" style="background-color: #E7F3FF;">
-                                        <div class="opinion-header">
-                                            <span class="name">${opinion.userName}</span>
-                                            <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
-                                        </div>
-                                        <div class="opinion-text">${opinion.opinionText}</div>
-                                    </li>
-                                </c:if>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
+    <!-- 기대효과 의견 목록 -->
+    <div class="column">
+        <div class="box">
+            <div class="section-header" onclick="toggleSection('positive-opinions')">
+            	<span id="smart-opinions-icon" class="toggle-icon">▶</span>
+			    <div class="tab-title tab-positive" onclick="navigateToTab('tab-positive')">기대효과</div>
+			    <img src="./resources/nextIcon.png" onclick="navigateToTab('tab-positive')" class="next-icon">
             </div>
+            <ul id="positive-opinions" class="opinion-list">
+                <c:choose>
+                    <c:when test="${empty positiveOpinions}">
+                        <li class="no-opinions">
+						<img src="./resources/noIdea.png" alt="No opinions"
+                                style="width: 60px; height: 80px; vertical-align: middle; margin-right: 10px;">
+                                <br> 의견이 아직 등록되지 않았어요!
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="opinion" items="${positiveOpinions}">
+                            <li class="opinion-entry" style="background-color: #fffde7;">
+                                <div class="opinion-header">
+                                    <span class="name">${opinion.userName}</span>
+                                    <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
+                                </div>
+                                <div class="opinion-text">${opinion.opinionText}</div>
+                            </li>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
         </div>
-        
-        <!-- 기대효과 -->
-        <div class="column">
-            <div class="box">
-            	<div class="section-header">
-					<div class="tab-title tab-positive" onclick="navigateToTab('tab-positive')">기대효과</div>
-					<img src="./resources/nextIcon.png" onclick="navigateToTab('tab-positive')"
-					style="width: 15px; height: 15px; float: right; margin-right: 20px; cursor: pointer;">
-				</div>
-				
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty positiveOpinions}">
-                            <li class="no-opinions">
-                            <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
-                                <br><br> 의견이 아직 등록되지 않았어요!
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${positiveOpinions}" varStatus="status">
-                                <c:if test="${status.index < 3}">
-                                    <li class="opinion-entry" onclick="navigateToTab('tab-positive')" style="background-color: #FFFFE7;">
-                                        <div class="opinion-header">
-                                            <span class="name">${opinion.userName}</span>
-                                            <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
-                                        </div>
-                                        <div class="opinion-text">${opinion.opinionText}</div>
-                                    </li>
-                                </c:if>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
+        <div class="divider"></div>
+    </div>
+    
+    <!-- 문제점 의견 목록 -->
+    <div class="column">
+        <div class="box">
+            <div class="section-header" onclick="toggleSection('worry-opinions')">
+                <span id="worry-opinions-icon" class="toggle-icon">▶</span>
+                <div class="tab-title tab-worry" onclick="navigateToTab('tab-worry')">문제점</div>
+			    <img src="./resources/nextIcon.png" onclick="navigateToTab('tab-worry')" class="next-icon">
             </div>
+            <ul id="worry-opinions" class="opinion-list">
+                <c:choose>
+                    <c:when test="${empty worryOpinions}">
+                        <li class="no-opinions">
+						<img src="./resources/noIdea.png" alt="No opinions"
+                                style="width: 60px; height: 80px; vertical-align: middle; margin-right: 10px;">
+                                <br> 의견이 아직 등록되지 않았어요!
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="opinion" items="${worryOpinions}">
+                            <li class="opinion-entry" style="background-color: #fffde7;">
+                                <div class="opinion-header">
+                                    <span class="name">${opinion.userName}</span>
+                                    <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
+                                </div>
+                                <div class="opinion-text">${opinion.opinionText}</div>
+                            </li>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
         </div>
-        
-        <!-- 문제점 -->
-        <div class="column">
-            <div class="box">
-            	<div class="section-header">
-					<div class="tab-title tab-worry" onclick="navigateToTab('tab-worry')">문제점</div>
-					<img src="./resources/nextIcon.png" onclick="navigateToTab('tab-worry')"
-					style="width: 15px; height: 15px; float: right; margin-right: 20px; cursor: pointer;">
-				</div>
-                
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty worryOpinions}">
-                            <li class="no-opinions">
-                            <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
-                                <br><br> 의견이 아직 등록되지 않았어요!
-                            </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${worryOpinions}" varStatus="status">
-                                <c:if test="${status.index < 3}">
-                                    <li class="opinion-entry" onclick="navigateToTab('tab-worry')">
-                                        <div class="opinion-header">
-                                            <span class="name">${opinion.userName}</span>
-                                            <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
-                                        </div>
-                                        <div class="opinion-text">${opinion.opinionText}</div>
-                                    </li>
-                                </c:if>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
+        <div class="divider"></div>
+    </div>
+    
+    <!-- 실현가능성 의견 목록 -->
+    <div class="column">
+        <div class="box">
+            <div class="section-header" onclick="toggleSection('strict-opinions')">
+                <span id="strict-opinions-icon" class="toggle-icon">▶</span>
+                <div class="tab-title tab-strict" onclick="navigateToTab('tab-strict')">실현가능성</div>
+			    <img src="./resources/nextIcon.png" onclick="navigateToTab('tab-strict')" class="next-icon">
             </div>
-        </div>
-        
-        <!-- 실현가능성 -->
-        <div class="column">
-            <div class="box">
-            	<div class="section-header">
-					<div class="tab-title tab-strict" onclick="navigateToTab('tab-strict')">실현가능성</div>
-					<img src="./resources/nextIcon.png" onclick="navigateToTab('tab-strict')"
-					style="width: 15px; height: 15px; float: right; margin-right: 20px; cursor: pointer;">
-				</div>
-                
-                <ul class="opinion-list">
-                    <c:choose>
-                        <c:when test="${empty strictOpinions}">
-                            <li class="no-opinions">
-                            <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
-                                <br><br> 의견이 아직 등록되지 않았어요!
+            <ul id="strict-opinions" class="opinion-list">
+                <c:choose>
+                    <c:when test="${empty strictOpinions}">
+                        <li class="no-opinions">
+						<img src="./resources/noIdea.png" alt="No opinions"
+                                style="width: 60px; height: 80px; vertical-align: middle; margin-right: 10px;">
+                                <br> 의견이 아직 등록되지 않았어요!
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <c:forEach var="opinion" items="${strictOpinions}">
+                            <li class="opinion-entry" style="background-color: #fffde7;">
+                                <div class="opinion-header">
+                                    <span class="name">${opinion.userName}</span>
+                                    <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
+                                </div>
+                                <div class="opinion-text">${opinion.opinionText}</div>
                             </li>
-                        </c:when>
-                        <c:otherwise>
-                            <c:forEach var="opinion" items="${strictOpinions}" varStatus="status">
-                                <c:if test="${status.index < 3}">
-                                    <li class="opinion-entry" onclick="navigateToTab('tab-strict')" style="background-color: #EDFFE7;">
-                                        <div class="opinion-header">
-                                            <span class="name">${opinion.userName}</span>
-                                            <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
-                                        </div>
-                                        <div class="opinion-text">${opinion.opinionText}</div>
-                                    </li>
-                                </c:if>
-                            </c:forEach>
-                        </c:otherwise>
-                    </c:choose>
-                </ul>
-            </div>
+                        </c:forEach>
+                    </c:otherwise>
+                </c:choose>
+            </ul>
         </div>
     </div>
+</div>
 </body>
 </html>
