@@ -529,6 +529,13 @@ body, html {
 		<div class="stages">
 			<c:forEach var="stage" items="${stages}" varStatus="status">
 				<c:choose>
+					<c:when
+						test="${meetingRoom.getStageId()>= 3}">
+						<a
+							href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+							class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+							${status.index + 1}. ${stage} </a>
+					</c:when>
 					<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
 						<a
 							href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}"
