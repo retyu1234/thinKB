@@ -246,23 +246,22 @@ body, html {
 }
 
 .modal-idea-box.reply-answer {
-    background-color: #FFE297; /* 노란색 */
-    align-self: flex-end;
-    pointer-events: none; /* 기본적으로 클릭 불가 */
-    cursor: default;
+	background-color: #FFE297; /* 노란색 */
+	align-self: flex-end;
+	pointer-events: none; /* 기본적으로 클릭 불가 */
+	cursor: default;
 }
 
 .modal-idea-box.reply-answer .delete-button {
-    pointer-events: auto; /* 삭제 버튼은 클릭 가능 */
-    cursor: pointer;
-    color: red;
-    background-color: transparent; /* 배경색 투명 */
-    border: none; /* 테두리 없애기 */
-    padding: 0; /* 기본 패딩 제거 */
-    font-size: 12px; /* 필요에 따라 글자 크기 조정 */
-    font-weight: bold;
+	pointer-events: auto; /* 삭제 버튼은 클릭 가능 */
+	cursor: pointer;
+	color: red;
+	background-color: transparent; /* 배경색 투명 */
+	border: none; /* 테두리 없애기 */
+	padding: 0; /* 기본 패딩 제거 */
+	font-size: 12px; /* 필요에 따라 글자 크기 조정 */
+	font-weight: bold;
 }
-
 
 .next-step-container {
 	margin-right: 30px;

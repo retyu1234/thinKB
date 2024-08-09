@@ -44,6 +44,7 @@ body, html {
 .abfd-buttons {
 	display: flex;
 	justify-content: end;
+	margin-right: 10%;
 }
 
 .yellow-button {
@@ -125,34 +126,33 @@ body, html {
 }
 
 .coordinate-button {
-	position: absolute;
-	background-color: #60584C;
-	border: none;
-	width: 60px;
-	height: 60px;
-	cursor: pointer;
-	border-radius: 30px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 10;
+    position: absolute;
+    background-color: #60584C;
+    border: none;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
 }
 
 .coordinate-button::before {
-	content: "";
-	position: absolute;
-	width: 45px;
-	height: 45px;
-	border-radius: 50%;
-	background-image: var(- -profile-img,
-		url('${pageContext.request.contextPath}/resources/ccoli.png'));
-	background-size: cover;
-	background-position: center;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	z-index: 11;
+    content: "";
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-size: cover;
+    background-position: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: var(--profile-img);
+    z-index: 16;
 }
 
 .coordinate-button::after {
@@ -442,7 +442,7 @@ body, html {
         button.style.top = (y - 30) + "px";
         
         if (profileImg) {
-            button.style.setProperty('--profile-img', `url('${profileImg}')`);
+            button.style.setProperty('--profile-img', 'url(' + profileImg + ')');
         }
 
         button.onclick = function(event) { 
@@ -636,100 +636,97 @@ body, html {
 	<div class="abfd-box">
 		<div class="abfd-title">핀 메모</div>
 		<div class="abfd-buttons">
-			<a href="./AorBFeedbackList"><button class="grey-button"
-					style="margin-right: 20px;">피드백 목록</button></a> <a
-				href="./completedTestDetail?abTestId=${abtest.ABTestID}"><button
-					class="yellow-button">A/B테스트 결과 보기</button></a>
+			<a href="./pinList"><button class="grey-button"
+					style="margin-right: 20px;">핀메모 목록</button></a>
+			<c:if test="${pinTest.userId == userId}">
+				<button class="yellow-button" onclick="stopTest()">피드백 그만받기</button>
+			</c:if>
 		</div>
-	</div>
-
-	<!-- 메인내용 -->
-	<div class="ab-feedback-container">
-		<!-- a/b테스트 선택된 이미지 -->
-		<div class="ab-feedback-image-detail" onclick="sendCoordinates(event)">
-			<div class="ab-feedback-detail-container">
-				<div class="choice">
-					<c:choose>
-						<c:when test="${not empty pinTest.fileName}">
-							<img
-								src="${pageContext.request.contextPath}/upload/${pinTest.fileName}"
-								alt="Image">
-						</c:when>
-						<c:otherwise>
-							<p>No image available</p>
-						</c:otherwise>
-					</c:choose>
-				</div>
-				<input type="hidden" id="pinTestId" name="pinTestId"
-					value="${pinTest.pinTestId}"> <input type="hidden"
-					id="userId" name="userId" value="${userId}">
-				<c:if test="${pinTest.userId == userId}">
-					<button class="stop-button" onclick="stopTest()">테스트 중단하기</button>
-				</c:if>
-				<div id="commentsData" style="display: none;">
-					<c:forEach var="comment" items="${comments}">
-						<div data-x="${comment.x}" data-y="${comment.y}"
-							data-username="${comment.userName}"
-							data-comment="${comment.commentText}"
-							data-comment-id="${comment.commentId}"
-							data-user-id="${comment.userID}"
-							data-profile-img="${pageContext.request.contextPath}/upload/${comment.userProfileImg}"></div>
-					</c:forEach>
-				</div>
-			</div>
-		</div>
-
-		<!-- 이미지에 달린 메모 -->
-		<div class="ab-feedback-message-detail">
-			<div class="how-to-feedback">
-				<div class="how-to-profile"></div>
-				<div class="how-to-text">
-					<a class="how-to-title">핀 메모 사용법</a> <br> <a
-						class="how-to-description">피드백이 필요한 부분을 클릭해 메모를 남겨보세요</a>
-				</div>
-			</div>
-			<div class="comments-container">
-				<div class="ab-feedback-title">${pinTest.testName}</div>
-				<div class="ab-feedback-date">${pinTest.createdAt}</div>
-				<c:choose>
-					<c:when test="${empty comments}">
-						<div class="abfd-comment">
-							<div class="abfd-comment-profile">
+		<!-- 메인내용 -->
+		<div class="ab-feedback-container">
+			<!-- a/b테스트 선택된 이미지 -->
+			<div class="ab-feedback-image-detail"
+				onclick="sendCoordinates(event)">
+				<div class="ab-feedback-detail-container">
+					<div class="choice">
+						<c:choose>
+							<c:when test="${not empty pinTest.fileName}">
 								<img
-									src="${pageContext.request.contextPath}/resources/ccoli.png"
-									alt="ThinKB" class="profile-img">
-							</div>
-							<div class="abfd-comment-detail">
-								<div class="abfd-comment-userInfo">
-									<div class="abfd-comment-userName">ThinKB</div>
-									<div class="abfd-comment-date">2024-01-01</div>
-								</div>
-								<div class="abfd-comment-text">첫 메모를 등록해보세요!</div>
-							</div>
-						</div>
-					</c:when>
-					<c:otherwise>
-						<c:forEach var="abfd" items="${comments}">
+									src="${pageContext.request.contextPath}/upload/${pinTest.fileName}"
+									alt="Image">
+							</c:when>
+							<c:otherwise>
+								<p>No image available</p>
+							</c:otherwise>
+						</c:choose>
+					</div>
+					<input type="hidden" id="pinTestId" name="pinTestId"
+						value="${pinTest.pinTestId}"> <input type="hidden"
+						id="userId" name="userId" value="${userId}">
+					<div id="commentsData" style="display: none;">
+						<c:forEach var="comment" items="${comments}">
+							<div data-x="${comment.x}" data-y="${comment.y}"
+								data-username="${comment.userName}"
+								data-comment="${comment.commentText}"
+								data-comment-id="${comment.commentId}"
+								data-user-id="${comment.userID}"
+								data-profile-img="${pageContext.request.contextPath}/upload/${comment.userProfileImg}"></div>
+						</c:forEach>
+					</div>
+				</div>
+			</div>
+
+			<!-- 이미지에 달린 메모 -->
+			<div class="ab-feedback-message-detail">
+				<div class="how-to-feedback">
+					<div class="how-to-profile"></div>
+					<div class="how-to-text">
+						<a class="how-to-title">핀 메모 사용법</a> <br> <a
+							class="how-to-description">피드백이 필요한 부분을 클릭해 메모를 남겨보세요</a>
+					</div>
+				</div>
+				<div class="comments-container">
+					<div class="ab-feedback-title">${pinTest.testName}</div>
+					<div class="ab-feedback-date">${pinTest.createdAt}</div>
+					<c:choose>
+						<c:when test="${empty comments}">
 							<div class="abfd-comment">
 								<div class="abfd-comment-profile">
 									<img
-										src="${pageContext.request.contextPath}/upload/${abfd.userProfileImg}"
-										alt="${abfd.userName}" class="profile-img">
+										src="${pageContext.request.contextPath}/resources/ccoli.png"
+										alt="ThinKB" class="profile-img">
 								</div>
 								<div class="abfd-comment-detail">
 									<div class="abfd-comment-userInfo">
-										<div class="abfd-comment-userName">${abfd.userName}</div>
-										<div class="abfd-comment-date">${abfd.timestamp}</div>
+										<div class="abfd-comment-userName">ThinKB</div>
+										<div class="abfd-comment-date">2024-01-01</div>
 									</div>
-									<div class="abfd-comment-text">${abfd.commentText}</div>
+									<div class="abfd-comment-text">첫 메모를 등록해보세요!</div>
 								</div>
 							</div>
-						</c:forEach>
-					</c:otherwise>
-				</c:choose>
+						</c:when>
+						<c:otherwise>
+							<c:forEach var="abfd" items="${comments}">
+								<div class="abfd-comment">
+									<div class="abfd-comment-profile">
+										<img
+											src="${pageContext.request.contextPath}/upload/${abfd.userProfileImg}"
+											alt="${abfd.userName}" class="profile-img">
+									</div>
+									<div class="abfd-comment-detail">
+										<div class="abfd-comment-userInfo">
+											<div class="abfd-comment-userName">${abfd.userName}</div>
+											<div class="abfd-comment-date">${abfd.timestamp}</div>
+										</div>
+										<div class="abfd-comment-text">${abfd.commentText}</div>
+									</div>
+								</div>
+							</c:forEach>
+						</c:otherwise>
+					</c:choose>
+				</div>
 			</div>
 		</div>
 	</div>
-
 </body>
 </html>
