@@ -130,4 +130,6 @@ public interface RoomDao {
 
 	List<MeetingRoomMember> memberForRoomId(int roomId);
 
+	List<RejectLog> rejectList(int roomId, int id);
+
 }

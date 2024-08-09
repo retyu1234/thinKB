@@ -14,7 +14,6 @@ body, html {
 	overflow-x: hidden;
     width: 100%;
     caret-color: transparent;
-    
 }
 
 .room1-header {
@@ -38,11 +37,17 @@ body, html {
 	margin-bottom: 20px;
 }
 
-.room1-title-detail {
+/* .room1-title-detail {
 	font-size: 13pt;
 	position: relative;
     width: 100%;
     overflow: hidden;
+}
+ */
+.room1-title-detail {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
 }
 
 /* 노란색 버튼 */
@@ -246,6 +251,25 @@ input.room1-subject:focus {
 	color: black;
 	font-weight: bold;
 }
+
+.ai-opinion-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-container {
+    display: flex;
+    align-items: center;
+}
+
+.titleAndDetail-title-link {
+    margin-left: 20px;
+    font-size: 13pt;
+    color: blue;
+    cursor: pointer;
+}
+
 .titleAndDetail-detail {
 	font-size: 13pt;
 }
@@ -446,6 +470,143 @@ display: none;
   20% { opacity: 1; }
   100% { opacity: 0.2; }
 }
+
+/* 반려이력보기 모달 */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    height: 50%;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.modal h2 {
+    margin-top: 0;
+}
+
+#rejectList {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.reject-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+#reapplyButton {
+    align-self: center;
+    margin-top: auto;
+}
+
+/* 토글 */
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-right: 10px;
+}
+
+.toggle-text {
+	font-family: Arial, sans-serif;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+#descriptionContent {
+	font-family: Arial, sans-serif;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+#descriptionContent pre {
+    font-family: Arial, sans-serif;
+    }
+
+.toggle-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    font-family: Arial, sans-serif;
+}
+
+.toggle-label {
+	font-family: Arial, sans-serif;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.toggle-label:before {
+	font-family: Arial, sans-serif;
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.toggle-input:checked + .toggle-label {
+    background-color: #FFCC00;
+}
+
+.toggle-input:checked + .toggle-label:before {
+    transform: translateX(26px);
+}
+
+.toggle-text {
+	font-family: Arial, sans-serif;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+
 </style>
 </head>
 <script>
@@ -825,135 +986,206 @@ function sendAiRequest(query, roomId) {
 }
 //상세내역 토글
 document.addEventListener('DOMContentLoaded', function() {
-	const toggleButton = document.getElementById('toggleDescriptionButton');
-	const descriptionContent = document.getElementById('descriptionContent');
+	const toggleSwitch = document.getElementById('toggleDescription');
+    const toggleText = document.querySelector('.toggle-text');
+    const descriptionContent = document.getElementById('descriptionContent');
 
-	toggleButton.addEventListener('click', function() {
-		if (descriptionContent.style.display === 'none') {
-			descriptionContent.style.display = 'block';
-		} else {
-			descriptionContent.style.display = 'none';
-		}
-	});
+    if (toggleSwitch) {  // 요소가 존재하는지 확인
+        toggleSwitch.addEventListener('change', function() {
+            if (this.checked) {
+                descriptionContent.style.display = 'block';
+                toggleText.textContent = '설명 숨기기';
+            } else {
+                descriptionContent.style.display = 'none';
+                toggleText.textContent = '설명 보기';
+            }
+        });
+    }
+});
+
+//반려이력 모달
+document.addEventListener("DOMContentLoaded", function() {
+    var modal = document.getElementById("rejectHistoryModal");
+    var btn = document.querySelector(".titleAndDetail-title-link");
+    var span = document.querySelector("#rejectHistoryModal .close");
+    var reapplyButton = document.getElementById("reapplyButton");
+
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    reapplyButton.onclick = function() {
+        var selectedRadio = document.querySelector('input[name="rejectSelect"]:checked');
+        if (selectedRadio) {
+            var index = selectedRadio.value;
+            var title = document.getElementById("againTitle" + index).textContent;
+            var content = document.getElementById("againContent" + index).textContent;
+            
+            document.getElementById("myIdeaInput").value = title;
+            document.getElementById("ideaDetailInput").value = content;
+            
+            modal.style.display = "none";
+        } else {
+            alert("다시 입력할 아이디어를 선택해주세요.");
+        }
+    }
 });
 </script>
 <body style="margin: 0;">
 <!-- 헤더영역 -->
 	<header class="room1-header">
 		<%@ include file="../header.jsp"%>
-	</header>
+	</header>	
  	<%@ include file="../leftSideBar.jsp"%>
-<!-- 컨텐츠 영역 시작 -->	
+ 	
+	<!-- 컨텐츠 영역 시작 -->	
 	<div class="room1-content">
 	
 	<!-- 사이드바 import -->
-
 	<%@ include file="../rightSideBar.jsp"%>
 	
-	<!-- 5개 단계 표시 -->
+<!-- 6개 단계 표시 -->
 	<div class="stages">
-        <c:forEach var="stage" items="${stages}" varStatus="status">
-            <c:choose>
-                <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-                    <a href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}" class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-                        ${status.index + 1}. ${stage}
-                    </a>
-                </c:when>
-                <c:otherwise>
-                    <div class="stage inactive">
-                        ${status.index + 1}. ${stage}
-                    </div>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-    </div>
+		<c:forEach var="stage" items="${stages}" varStatus="status">
+			<c:choose>
+				<c:when
+					test="${meetingRoom.getStageId()>= 3}">
+					<a
+						href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+						class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+						${status.index + 1}. ${stage} </a>
+				</c:when>
+				<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+					<a
+						href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}"
+						class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+						${status.index + 1}. ${stage} </a>
+				</c:when>
+				<c:otherwise>
+					<div class="stage inactive">${status.index + 1}.${stage}</div>
+				</c:otherwise>
+			</c:choose>
+		</c:forEach>
+	</div>
     
     <!-- 제목, 상세설명 -->
     <div class="room1-title">[${info.getRoomTitle()}]</div>
-<div class="room1-title-detail">
-    <button id="toggleDescriptionButton" class="grey-button">설명 보기/숨기기</button>
-    <div id="descriptionContent" style="display:none;">
-        <pre>${info.getDescription()}</pre>
-    </div>
-</div>
     
+	<%-- <div class="room1-title-detail">
+	    <button id="toggleDescriptionButton" class="grey-button">설명 보기/숨기기</button>
+	    <div id="descriptionContent" style="display:none;">
+	        <pre>${info.getDescription()}</pre>
+	    </div>
+	</div> --%>
+	<div class="room1-title-detail">
+	    <div class="toggle-container">
+	        <div class="toggle-switch">
+	            <input type="checkbox" id="toggleDescription" class="toggle-input">
+	            <label for="toggleDescription" class="toggle-label">
+	                <span class="toggle-inner"></span>
+	                <span class="toggle-switch"></span>
+	            </label>
+	        </div>
+	        <span class="toggle-text">설명 보기</span>
+	    </div>
+	    <div id="descriptionContent" style="display:none;">
+	        <pre>${info.getDescription()}</pre>
+	    </div>
+	</div>
+  
     <hr class="line">
 	
 	<div>
 	<!-- 방장만 보이는 다음단계 버튼 -->
-		<form id="nextStageForm" action="./stage1Clear" method="post">
-		    <input type="hidden" name="roomId" value="${info.getRoomId()}">
-		    <input type="hidden" name="stage" value="${stage}">
-		    <div class="stage-info" style="margin-bottom: 50px;">
-		        <c:if test="${userId == info.getRoomManagerId()}">
-		        <div class="submit-info">
-		            현재 아이디어 제출인원 : ${submit}명 / ${total}명
-		        </div>
-		            <button id="nextStageButton" class="yellow-button" onclick="nextStage()">다음 단계</button>
-		        </c:if>
-		    </div>
-		</form>
+	<form id="nextStageForm" action="./stage1Clear" method="post">
+	    <input type="hidden" name="roomId" value="${info.getRoomId()}">
+	    <input type="hidden" name="stage" value="${stage}">
+	    <div class="stage-info" style="margin-bottom: 50px;">
+	        <c:if test="${userId == info.getRoomManagerId()}">
+	        <div class="submit-info">
+	            현재 아이디어 제출인원 : ${submit}명 / ${total}명
+	        </div>
+	            <button id="nextStageButton" class="yellow-button" onclick="nextStage()">다음 단계</button>
+	        </c:if>
+	    </div>
+	</form>
 	
 	<!-- 아이디어 입력창 -->
-		<div class="titleAndDetail">
-			<div class="titleAndDetail-title">나의 아이디어</div>
-			<div class="titleAndDetail-detail">회의 주제에 대한 나의 아이디어를 작성해주세요.</div>
-		</div>
-		<div style="margin-bottom: 50px;">
-			<input type="text" id="myIdeaInput" class="room1-subject"
-				name="myIdea" placeholder="여기에 작성해주세요"
-				value="${result == true ? submittedIdea.getTitle() : ''}">
-		</div>
+	<div class="titleAndDetail">
+	    <div class="title-container">
+	        <div class="titleAndDetail-title">나의 아이디어</div>
+	        <div class="titleAndDetail-title-link">반려 이력보기 ></div>
+	    </div>
+	    <div class="titleAndDetail-detail">회의 주제에 대한 나의 아이디어를 작성해주세요.</div>
+	</div>
+		
+	<div style="margin-bottom: 50px;">
+		<input type="text" id="myIdeaInput" class="room1-subject" name="myIdea" 
+			placeholder="여기에 작성해주세요" value="${result == true ? submittedIdea.getTitle() : ''}">
+	</div>
 		
 	<!-- 아이디어 상세설명 입력창 -->
-		<div class="titleAndDetail">
-			<div class="titleAndDetail-title">아이디어에 대한 상세 설명</div>
-			<div class="titleAndDetail-detail">내가 작성한 아이디어에 대해 자세히 설명해주세요.</div>
-		</div>
-		<div style="margin-bottom: 50px;">
-<textarea id="ideaDetailInput" class="room1-subject" style="height: 150px;"
-    name="ideaDetail" placeholder="여기에 작성해주세요">${result == true ? submittedIdea.getDescription() : ''}</textarea>
-		</div>
+	<div class="titleAndDetail">
+		<div class="titleAndDetail-title">아이디어에 대한 상세 설명</div>
+		<div class="titleAndDetail-detail">내가 작성한 아이디어에 대해 자세히 설명해주세요.</div>
+	</div>
+		
+	<div style="margin-bottom: 50px;">
+		<textarea id="ideaDetailInput" class="room1-subject" style="height: 150px;"
+   			name="ideaDetail" placeholder="여기에 작성해주세요">${result == true ? submittedIdea.getDescription() : ''}</textarea>
+	</div>
 		
 	<!-- ai영역 -->
-	<div class="titleAndDetail">
-			<div class="titleAndDetail-title">나의 아이디어에 대한 KB AI 의견<button class="grey-button" style="margin-left:20px;" onclick="openAiLogModal()">나의 Ai 이력</button></div>
-			
-			<div class="titleAndDetail-detail">아래 AI에게 물어보기 버튼을 눌러 의견을 확인할 수 있어요.</div>
-		</div>
-		        <div id="loading-screen" style="display: none;">
-  <div class="loading-content">
-    <div class="thinking-brain">
-      🤔
-    </div>
-    <div class="loading-text">AI가 열심히 생각 중입니다...</div>
-    <div class="loading-dots">
-      <span>.</span><span>.</span><span>.</span>
-    </div>
-  </div>
-</div>
-<div id="kb-ai-response" class="kb-ai-response">
-    <div class="ai-image-container">
-        <img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot" class="ai-image">
-    </div>
-    <div class="ai-content">
-        <div class="ai-buttons">
-            <button class="grey-button" onclick="showFeedback()">피드백</button>
-            <button class="grey-button" onclick="showOtherQuery()">추가질문</button>
-        </div>
-        <div id="other-query">
-            <div class="search-container">
-                <input type="text" id="query-input" class="room1-subject" placeholder="질문을 입력하세요">
-                <button onclick="sendQuery()" class="search-button" aria-label="검색">
-                    <span>🔎</span>
-                </button>
-            </div>
-        </div>
-        <div id="ai-response-wrapper">
-            <span id="ai-response-text">KB ai의 응답 내용이 여기에 표시됩니다.</span>
-        </div>
-    </div>
-</div>
+	<div class="titleAndDetail ai-opinion-section">
+	    <div class="title-container">
+	        <div class="titleAndDetail-title">나의 아이디어에 대한 KB AI 의견</div>
+	        <div class="titleAndDetail-title-link" onclick="openAiLogModal()">나의 AI 이력 ></div>	
+	    </div>
+	    <button class="yellow-button" onclick="showFeedback()">AI에게 피드백받기</button>
+	</div>
+	
+	<div id="loading-screen" style="display: none;">
+ 		<div class="loading-content">
+   			<div class="thinking-brain">🤔</div>
+    		<div class="loading-text">AI가 열심히 생각 중입니다...</div>
+    		<div class="loading-dots">
+      			<span>.</span><span>.</span><span>.</span>
+    		</div>
+ 		 </div>
+	</div>
+	
+	<div id="kb-ai-response" class="kb-ai-response">
+	    <div class="ai-image-container">
+	        <img src="<c:url value='/resources/aiImg.png'/>" alt="AI Robot" class="ai-image">
+	    </div>
+	    <div class="ai-content">
+	        <div class="ai-buttons">
+	            <!-- <button class="grey-button" onclick="showFeedback()">피드백</button> -->
+	            <button class="grey-button" onclick="showOtherQuery()">다른 질문하기</button>
+	        </div>
+	        <div id="other-query">
+	            <div class="search-container">
+	                <input type="text" id="query-input" class="room1-subject" placeholder="질문을 입력하세요">
+	                <button onclick="sendQuery()" class="search-button" aria-label="검색">
+	                    <span>🔎</span>
+	                </button>
+	            </div>
+	        </div>
+	        <div id="ai-response-wrapper">
+	            <span id="ai-response-text">KB ai의 응답 내용이 여기에 표시됩니다.</span>
+	        </div>
+	    </div>
+	</div>
 
 	<!-- 맨 하단 버튼영역 -->
 	<div class="button-container">
@@ -979,16 +1211,42 @@ document.addEventListener('DOMContentLoaded', function() {
 					 onclick="updateForm()">아이디어 수정하기</button>
 
 		</form>
-</div>
 	</div>
+
 	</div>
+
+	</div>
+	
 	<!-- AI 로그 모달 -->
-<div id="aiLogModal" class="aiModal">
-    <div class="aiModal-content">
-        <span class="aiClose">&times;</span>
-        <h2>나의 AI 이력</h2>
-        <div id="aiLogChat"></div>
-    </div>
-</div>
+	<div id="aiLogModal" class="aiModal">
+	    <div class="aiModal-content">
+	        <span class="aiClose">&times;</span>
+	        <h2>나의 AI 이력</h2>
+	        <div id="aiLogChat"></div>
+	    </div>
+	</div>
+	
+	<!-- 반려 이력 모달 -->
+	<div id="rejectHistoryModal" class="modal">
+	    <div class="modal-content">
+	        <span class="close">&times;</span>
+	        <h2>반려 이력보기</h2>
+	        <p>이전에 이 회의방에 제출했지만 반려된 아이디어 목록이에요.<br>선택해서 다시 입력하기 버튼을 누르면 자동으로 세팅됩니다.</p>
+	        <div id="rejectList">
+	            <c:forEach var="reject" items="${rejectList}" varStatus="status">
+	                <div class="reject-item">
+	                    <input type="radio" name="rejectSelect" id="reject${status.index}" value="${status.index}">
+	                    <label for="reject${status.index}">
+	                        <div><span style="font-weight: bold;">아이디어</span>: <span id="againTitle${status.index}">${reject.getRejectIdeaTitle()}</span></div>
+	                        <div><span style="font-weight: bold;">상세설명</span>: <span id="againContent${status.index}">${reject.getDescription()}</span></div>
+	                        <div><span style="font-weight: bold;">반려사유</span>: <span>${reject.getRejectContents()}</span></div>
+	                    </label>
+	                </div>
+	            </c:forEach>
+	        </div>
+	        <button id="reapplyButton" class="yellow-button">다시 입력하기</button>
+	    </div>
+	</div>
+	
 </body>
 </html>
