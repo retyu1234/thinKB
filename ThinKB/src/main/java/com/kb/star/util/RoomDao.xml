@@ -124,21 +124,17 @@
 		RoomTitle=#{param1},Description=#{param2},EndDate=#{param3} where
 		RoomID=#{param4}
 	</update>
-	<!-- 방별 참여자 리스트 -->
-	<select id="selectCurrentMembers"
+	<!-- 방별 참여자 리스트(검색x) -->
+	<select id="selectCurrentMembersbefore"
 		resultType="com.kb.star.dto.MeetingRoomMembers">
-		SELECT u.UserID, u.UserName, u.Email, m.ContributionCnt,
-		d.DepartmentName, t.TeamName, m.RoomID
-		FROM MeetingRoomMembers m
-		JOIN Users u ON
-		m.UserID = u.UserID
-		JOIN Departments d ON u.DepartmentID =
-		d.DepartmentID
-		JOIN Teams t ON u.TeamID = t.TeamID
-		WHERE m.RoomID =
-		#{param1}
-		AND m.IsDelete = 0
-		AND u.IsDelete = 0
+SELECT DISTINCT u.UserID, u.UserName, u.Email, d.DepartmentName, t.TeamName
+FROM Users u
+JOIN Departments d ON u.DepartmentID = d.DepartmentID
+JOIN Teams t ON u.TeamID = t.TeamID
+LEFT JOIN MeetingRoomMembers m ON u.UserID = m.UserID AND m.RoomID = #{roomId}
+WHERE (m.UserID IS NULL OR m.IsDelete = 1)
+  AND u.IsDelete = 0 AND u.DepartmentID = #{departmentId}
+ORDER BY d.DepartmentName, t.TeamName, u.UserName
 	</select>
 	<!-- 참여자제외 한 유저리스트 -->
 	<select id="selectAvailableEmployees"
@@ -362,5 +358,21 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 <select id="memberForRoomId" resultType="com.kb.star.dto.MeetingRoomMember">
 	SELECT * from MeetingRoomMembers WHERE RoomID = #{param1}
 </select>
-
+<!-- 직원검색 -->
+<select id="selectCurrentMembers" resultType="com.kb.star.dto.MeetingRoomMembers">
+    SELECT m.RoomID, m.UserID, m.Role, m.ContributionCnt, 
+           u.UserName, u.Email, u.birth,
+           d.DepartmentName, t.TeamName
+    FROM MeetingRoomMembers m
+    JOIN Users u ON m.UserID = u.UserID
+    JOIN Departments d ON u.DepartmentID = d.DepartmentID
+    JOIN Teams t ON u.TeamID = t.TeamID
+    WHERE m.RoomID = #{roomId}
+    AND m.IsDelete = 0
+    AND u.IsDelete = 0
+    <if test="searchKeyword != null and searchKeyword != ''">
+        AND (u.UserName LIKE CONCAT('%', #{searchKeyword}, '%')
+        OR t.TeamName LIKE CONCAT('%', #{searchKeyword}, '%'))
+    </if>
+</select>
 </mapper>
