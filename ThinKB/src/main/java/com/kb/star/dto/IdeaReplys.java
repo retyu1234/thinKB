@@ -8,6 +8,8 @@ public class IdeaReplys {
     private int replyStep;
     private boolean isDelete;
     private String replyContent;
+    private int replyCount; // 추가된 필드
+    
 
     // Default constructor
     public IdeaReplys() {}
@@ -92,4 +94,12 @@ public class IdeaReplys {
                 ", replyContent='" + replyContent + '\'' +
                 '}';
     }
+
+	public int getReplyCount() {
+		return replyCount;
+	}
+
+	public void setReplyCount(int replyCount) {
+		this.replyCount = replyCount;
+	}
 }
