@@ -458,24 +458,90 @@ body, html {
 	font-size: 16pt;
 	font-weight: bold;
 }
-
-#descriptionContent {
-	white-space: pre-wrap;
-	word-wrap: break-word;
+/* 상세설명 - 토글 */
+.title-detail {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
 }
 
-/* Add this new CSS rule */
+.toggle-container {
+	display: flex;
+	align-items: center;
+}
+
+.toggle-switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+	margin-right: 10px;
+}
+
+.toggle-text {
+	font-family: Arial, sans-serif;
+	margin-left: 10px;
+	vertical-align: middle;
+}
+
 #descriptionContent {
+	font-family: Arial, sans-serif;
 	margin-top: 10px;
 	padding: 10px;
-	background-color: #F9F9F9;
+	background-color: #f9f9f9;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	max-width: 100%;
-	box-sizing: border-box;
-	overflow-wrap: break-word;
-	word-wrap: break-word;
-	hyphens: auto;
+}
+
+#descriptionContent pre {
+	font-family: Arial, sans-serif;
+}
+
+.toggle-input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+	font-family: Arial, sans-serif;
+}
+
+.toggle-label {
+	font-family: Arial, sans-serif;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	transition: .4s;
+	border-radius: 34px;
+}
+
+.toggle-label:before {
+	font-family: Arial, sans-serif;
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	transition: .4s;
+	border-radius: 50%;
+}
+
+.toggle-input:checked+.toggle-label {
+	background-color: #FFCC00;
+}
+
+.toggle-input:checked+.toggle-label:before {
+	transform: translateX(26px);
+}
+
+.toggle-text {
+	font-family: Arial, sans-serif;
+	margin-left: 10px;
+	vertical-align: middle;
 }
 
 /* Adjust the stage-info rule */
@@ -485,13 +551,6 @@ body, html {
 	align-items: center;
 	margin-top: 20px;
 	/* Adjust the margin to provide space below the descriptionContent */
-}
-
-#descriptionContent pre {
-	white-space: pre-wrap;
-	word-wrap: break-word;
-	max-width: 100%;
-	margin: 0;
 }
 </style>
 </head>
@@ -526,28 +585,22 @@ body, html {
 	<!-- 메인 콘텐츠 -->
 	<div class="ideaMeeting-contents">
 		<!-- 5개 단계 표시 -->
-		<div class="stages">
-			<c:forEach var="stage" items="${stages}" varStatus="status">
-				<c:choose>
-					<c:when
-						test="${meetingRoom.getStageId()>= 3}">
-						<a
-							href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
-							class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-							${status.index + 1}. ${stage} </a>
-					</c:when>
-					<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-						<a
-							href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}"
-							class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-							${status.index + 1}. ${stage} </a>
-					</c:when>
-					<c:otherwise>
-						<div class="stage inactive">${status.index + 1}.${stage}</div>
-					</c:otherwise>
-				</c:choose>
-			</c:forEach>
-		</div>
+	<div class="stages">
+	    <c:forEach var="stage" items="${stages}" varStatus="status">
+	        <c:choose>
+	            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+	                <a
+	                    href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+	                    class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+	                    ${status.index + 1}. ${stage}
+	                </a>
+	            </c:when>
+	            <c:otherwise>
+	                <div class="stage inactive">${status.index + 1}. ${stage}</div>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	</div>
 
 		<!-- 회의 방 내용 -->
 		<div class="ideaMeeting-topic-box">
@@ -555,11 +608,21 @@ body, html {
 				[${meetingRoom.roomTitle}] <input type="hidden" name="roomId"
 					value="${meetingRoom.roomId}">
 			</div>
-			<button id="toggleDescriptionButton" class="grey-button">설명
-				보기/숨기기</button>
-			<div id="descriptionContent" style="display: none;">
-				<pre>${meetingRoom.description}</pre>
+			<div class="title-detail">
+				<div class="toggle-container">
+					<div class="toggle-switch">
+						<input type="checkbox" id="toggleDescription" class="toggle-input">
+						<label for="toggleDescription" class="toggle-label"> <span
+							class="toggle-inner"></span> <span class="toggle-switch"></span>
+						</label>
+					</div>
+					<span class="toggle-text">설명 보기</span>
+				</div>
+				<div id="descriptionContent" style="display: none;">
+					<pre>${meetingRoom.getDescription()}</pre>
+				</div>
 			</div>
+
 			<hr class="line">
 			<div class="ideaMeeting-description">
 				다음 중 가장 좋은 아이디어에 투표해주세요. <br> 궁금한 점이 있다면 '질문하기'를 눌러서 작성자에게 질문할
@@ -949,16 +1012,21 @@ document.getElementById('nextStageForm').submit();
 
 //상세내역 토글
 document.addEventListener('DOMContentLoaded', function() {
-	const toggleButton = document.getElementById('toggleDescriptionButton');
-	const descriptionContent = document.getElementById('descriptionContent');
+	const toggleSwitch = document.getElementById('toggleDescription');
+    const toggleText = document.querySelector('.toggle-text');
+    const descriptionContent = document.getElementById('descriptionContent');
 
-	toggleButton.addEventListener('click', function() {
-		if (descriptionContent.style.display === 'none') {
-			descriptionContent.style.display = 'block';
-		} else {
-			descriptionContent.style.display = 'none';
-		}
-	});
+    if (toggleSwitch) {  // 요소가 존재하는지 확인
+        toggleSwitch.addEventListener('change', function() {
+            if (this.checked) {
+                descriptionContent.style.display = 'block';
+                toggleText.textContent = '설명 숨기기';
+            } else {
+                descriptionContent.style.display = 'none';
+                toggleText.textContent = '설명 보기';
+            }
+        });
+    }
 });
 </script>
 </body>
