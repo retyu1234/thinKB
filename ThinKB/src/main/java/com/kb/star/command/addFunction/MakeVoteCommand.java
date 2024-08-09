@@ -64,5 +64,7 @@ public class MakeVoteCommand implements AddCommand {
         }
 
         model.addAttribute("id", id);
+        
+        
     }
 }
