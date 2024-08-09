@@ -44,12 +44,6 @@ body, html {
 	z-index: 1000;
 }
 
-.ideaMeeting-topic-box {
-	/* 	margin-left: 3%;
-	margin-right: 3%; */
-	
-}
-
 .topic-title {
 	font-size: 20pt;
 	color: black;
@@ -137,10 +131,6 @@ body, html {
 	font-weight: bold;
 }
 
-.idea-box.voted {
-	font-weight: bold;
-}
-
 .vote-button {
 	width: 150px;
 	height: 40px;
@@ -208,13 +198,6 @@ body, html {
 	justify-content: flex-start;
 	box-sizing: border-box;
 	max-width: 100%;
-}
-
-.selected-option {
-	flex-direction: column;
-	padding: 26px 0 27px 77px;
-	position: relative;
-	gap: 11px;
 }
 
 .modal-idea-box {
@@ -294,7 +277,8 @@ body, html {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	margin-top: -50px;
+	margin-top: 20px;
+	/* Adjust the margin to provide space below the descriptionContent */
 }
 
 .stages {
@@ -491,11 +475,19 @@ body, html {
 	background-color: #f9f9f9;
 	border: 1px solid #ddd;
 	border-radius: 5px;
+	box-sizing: border-box;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	
 }
 
 #descriptionContent pre {
 	font-family: Arial, sans-serif;
+	hyphens: auto;
+	white-space: pre-wrap; /* 자동 줄바꿈을 허용 */
+	word-wrap: break-word; /* 단어 단위로 줄바꿈 */
 }
+
 
 .toggle-input {
 	opacity: 0;
@@ -543,15 +535,6 @@ body, html {
 	margin-left: 10px;
 	vertical-align: middle;
 }
-
-/* Adjust the stage-info rule */
-.stage-info {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	margin-top: 20px;
-	/* Adjust the margin to provide space below the descriptionContent */
-}
 </style>
 </head>
 <body>
@@ -585,22 +568,21 @@ body, html {
 	<!-- 메인 콘텐츠 -->
 	<div class="ideaMeeting-contents">
 		<!-- 5개 단계 표시 -->
-	<div class="stages">
-	    <c:forEach var="stage" items="${stages}" varStatus="status">
-	        <c:choose>
-	            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-	                <a
-	                    href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
-	                    class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-	                    ${status.index + 1}. ${stage}
-	                </a>
-	            </c:when>
-	            <c:otherwise>
-	                <div class="stage inactive">${status.index + 1}. ${stage}</div>
-	            </c:otherwise>
-	        </c:choose>
-	    </c:forEach>
-	</div>
+		<div class="stages">
+			<c:forEach var="stage" items="${stages}" varStatus="status">
+				<c:choose>
+					<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+						<a
+							href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+							class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+							${status.index + 1}. ${stage} </a>
+					</c:when>
+					<c:otherwise>
+						<div class="stage inactive">${status.index + 1}.${stage}</div>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+		</div>
 
 		<!-- 회의 방 내용 -->
 		<div class="ideaMeeting-topic-box">
