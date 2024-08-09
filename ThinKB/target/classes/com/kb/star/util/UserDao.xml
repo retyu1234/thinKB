@@ -121,13 +121,51 @@
 
 	<select id="myMeetingRoom"
 		resultType="com.kb.star.dto.MeetingRooms">
-		SELECT mr.* from MeetingRooms mr inner join
-		MeetingRoomMembers mrm on
-		mr.RoomID = mrm.RoomID
-		where mr.IsDelete = 0
-		and mrm.UserID = #{param1} and mr.EndDate >=
-		curdate() order by
-		mr.RoomID desc limit 4;
+<![CDATA[
+WITH RoomParticipation AS (
+    SELECT 
+        mr.RoomID,
+        CASE 
+            WHEN MIN(COALESCE(sp.Status, 0)) = 0 THEN 0
+            ELSE 1
+        END AS ParticipationStatus
+    FROM 
+        MeetingRooms mr
+    LEFT JOIN 
+        StageParticipation sp 
+        ON mr.RoomID = sp.RoomID 
+        AND mr.StageID = sp.StageID 
+        AND sp.UserID = #{param1}
+    WHERE 
+        mr.IsDelete = 0
+        AND mr.EndDate >= CURDATE()
+        AND mr.StageID < 6
+    GROUP BY 
+        mr.RoomID
+)
+SELECT 
+    mr.*, 
+    rp.ParticipationStatus,
+    u.UserName AS RoomManagerName
+FROM 
+    MeetingRooms mr
+INNER JOIN 
+    MeetingRoomMembers mrm 
+    ON mr.RoomID = mrm.RoomID
+INNER JOIN
+    RoomParticipation rp
+    ON mr.RoomID = rp.RoomID
+LEFT JOIN
+    Users u
+    ON mr.RoomManagerID = u.UserID
+WHERE 
+    mr.IsDelete = 0
+    AND mrm.UserID = #{param1}
+    AND mr.EndDate >= CURDATE()
+    AND mr.StageID < 6
+ORDER BY 
+    mr.RoomID DESC;
+]]>
 	</select>
 
 	<insert id="insertForwardStage1">
