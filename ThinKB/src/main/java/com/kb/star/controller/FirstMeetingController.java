@@ -27,6 +27,7 @@ import com.kb.star.command.firstMeeting.RoomStage2Command;
 import com.kb.star.command.firstMeeting.RoomStage2VoteCommand;
 import com.kb.star.command.firstMeeting.SubmitReplyAnswerCommand;
 import com.kb.star.command.firstMeeting.SubmitReplyCommand;
+import com.kb.star.command.firstMeeting.UpdateIsDeleteCommand;
 import com.kb.star.command.room.StageTwoCommand;
 import com.kb.star.dto.IdeaReplys;
 import com.kb.star.dto.Ideas;
@@ -45,17 +46,16 @@ public class FirstMeetingController<Command> {
 	}
 
 	// 진행 중인 회의 및 단계 + 희의정보 불러오는거 추가함 + 페이지네이션 추가
-    @RequestMapping("/meetingList")
-    public String meetingList(HttpServletRequest request, Model model, 
-                              @RequestParam(defaultValue = "1") int page) {
-        HttpSession session = request.getSession();
-        int id = (Integer) session.getAttribute("userId");
-        model.addAttribute("id", id);
-        model.addAttribute("page", page);
-        command = new MeetingRoomListCommand(sqlSession);
-        command.execute(model);
-        return "/firstMeeting/meetingList";
-    }
+	@RequestMapping("/meetingList")
+	public String meetingList(HttpServletRequest request, Model model, @RequestParam(defaultValue = "1") int page) {
+		HttpSession session = request.getSession();
+		int id = (Integer) session.getAttribute("userId");
+		model.addAttribute("id", id);
+		model.addAttribute("page", page);
+		command = new MeetingRoomListCommand(sqlSession);
+		command.execute(model);
+		return "/firstMeeting/meetingList";
+	}
 
 	// 아이디어 투표하기
 	// selectedIdea : 선택한 아이디어의 설명
@@ -84,6 +84,7 @@ public class FirstMeetingController<Command> {
 
 	// 아이디어에 달린 질문 가져오기
 	@RequestMapping(value = "/getIdeaReplies", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
+
 	@ResponseBody
 	public String getIdeaReplies(@RequestParam("ideaId") int ideaId) {
 		Map<String, Object> params = new HashMap<>();
@@ -101,13 +102,14 @@ public class FirstMeetingController<Command> {
 		}
 	}
 
+
 	// 아이디어에 질문 등록하기
 	@RequestMapping(value = "/submitReply", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded", produces = "text/plain")
 	@ResponseBody
 	public String submitReply(@RequestParam Map<String, String> payload, HttpSession session, Model model) {
 		Integer userId = (Integer) session.getAttribute("userId");
 
-		// 콘솔에 전달받은 payload 출력
+		// 콘솔에 전달받은 payload 출력ㄴ
 		System.out.println("Received payload: " + payload);
 
 		model.addAttribute("userId", userId);
@@ -137,4 +139,25 @@ public class FirstMeetingController<Command> {
 
 		return (String) model.asMap().get("result");
 	}
+	
+	// 댓글 삭제(논리적 삭제: IsDelete를 1로 설정)
+	@RequestMapping(value = "/deleteReply", method = RequestMethod.POST, consumes = "application/x-www-form-urlencoded", produces = "text/plain")
+	@ResponseBody
+	public String deleteReply(@RequestParam Map<String, String> payload, HttpSession session, Model model) {
+	    Integer userId = (Integer) session.getAttribute("userId");
+	    int ideaReplyId = Integer.parseInt(payload.get("ideaReplyId"));
+
+	    // 모델에 필요한 속성 추가
+	    model.addAttribute("userId", userId);
+	    model.addAttribute("ideaReplyId", ideaReplyId);
+
+	    // 댓글 논리적 삭제 커맨드 실행
+	    UpdateIsDeleteCommand command = new UpdateIsDeleteCommand(sqlSession);
+	    command.execute(model);
+
+	    // 결과 반환
+	    return (String) model.asMap().get("result");
+	}
+
+
 }
