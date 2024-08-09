@@ -375,4 +375,10 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
         OR t.TeamName LIKE CONCAT('%', #{searchKeyword}, '%'))
     </if>
 </select>
+<select id="rejectList" resultType="com.kb.star.dto.RejectLog">
+	SELECT rl.RejectContents rejectContents, i.Title rejectIdeaTitle, i.Description description 
+	from Ideas i inner join RejectLog rl on i.IdeaID = rl.IdeaID 
+	WHERE i.RoomID = #{param1} and i.UserID = #{param2} and i.isReject = 1
+</select>
+
 </mapper>

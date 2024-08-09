@@ -132,4 +132,6 @@ public interface RoomDao {
 	
 	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId,@Param("searchKeyword") String searchKeyword);
 
+	List<RejectLog> rejectList(int roomId, int id);
+
 }
