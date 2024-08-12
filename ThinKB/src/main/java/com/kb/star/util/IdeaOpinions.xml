@@ -16,6 +16,10 @@
         ORDER BY io.CreatedAt DESC
         LIMIT 5
     </select>
+    <!-- stage3인(=투표로 선택된) 아이디어만 찾는 쿼리 -->
+	<select id="yesPickIdeaList" resultType="com.kb.star.dto.Ideas">
+		SELECT * from Ideas WHERE RoomID=#{param1} and StageID>=3
+	</select>
     
     
     
@@ -148,7 +152,7 @@
     <!-- Ideas에서 아이디어 StageID 4로 변경 -->
     <update id="updateIdeaStage">
 		UPDATE Ideas SET StageID = 4
-		WHERE IdeaID = #{ideaId};
+		WHERE RoomID = #{roomId} and StageID=3;
 	</update>
     
     <!-- 방번호별 참여자리스트 -->
@@ -367,7 +371,7 @@
     <!-- Ideas에서 아이디어 StageID 5로 변경 -->
     <update id="updateIdeaStage5">
 		UPDATE Ideas SET StageID = 5
-		WHERE IdeaID = #{ideaId};
+		WHERE RoomID = #{roomId} and StageID=4;
 	</update>
 	
 	<!-- 방번호별 참여자리스트 -->

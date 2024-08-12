@@ -37,9 +37,9 @@ public class UserInfoCommand implements LoginCommand {
 
 		// 진행중인 회의방 영역
 		UserDao dao = sqlSession.getMapper(UserDao.class);
-		List<MeetingRooms> dto = dao.myMeetingRoom(id); // 종료안된것중에 젤 최근꺼 세개
+		List<MeetingRooms> dto = dao.myMeetingRoom(id); // 종료안된것중에 완료전
 		model.addAttribute("roomList", dto);
-
+		
 		NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
 		List<NotiDto> notifications = notiDao.getAllNoti(id); // 알림 목록 데이터 가져오기
 
@@ -53,13 +53,22 @@ public class UserInfoCommand implements LoginCommand {
 			if (!notification.isRead()) {
 				unreadCount++;
 			}
-			Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
-			notification.setIdea(idea);
+			if (notification.getIdeaID() != 0) {
+				Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
+				notification.setIdea(idea);
 
-			// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
-			MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
-			if (meetingRoom != null) {
-				notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+				// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
+				MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
+				if (meetingRoom != null) {
+					notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+				}
+
+			} else { // ideaID가 0인 경우
+				// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
+				MeetingRooms meetingRoom = notiDao.getRoomTitleById(notification.getRoomId());
+				if (meetingRoom != null) {
+					notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+				}
 			}
 		}
 

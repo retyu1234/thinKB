@@ -82,6 +82,10 @@ public class StageOneCommand implements RoomCommand {
 		NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
 		List<NotiDto> roomMessage = notiDao.getMessagesByIdeaId(id, roomId, 0);
 		model.addAttribute("roomMessage", roomMessage);
+		
+		// 반려내용담기
+		List<RejectLog> rejectList = dao.rejectList(roomId, id);
+		model.addAttribute("rejectList", rejectList);
 	}
 
 }

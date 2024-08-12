@@ -6,6 +6,8 @@ public class RejectLog {
 	private int roomId;
 	private int ideaId;
 	private String rejectContents;
+	private String rejectIdeaTitle;
+	private String description;
 	
 	public int getRejectId() {
 		return rejectId;
@@ -30,6 +32,18 @@ public class RejectLog {
 	}
 	public void setRejectContents(String rejectContents) {
 		this.rejectContents = rejectContents;
+	}
+	public String getRejectIdeaTitle() {
+		return rejectIdeaTitle;
+	}
+	public void setRejectIdeaTitle(String rejectIdeaTitle) {
+		this.rejectIdeaTitle = rejectIdeaTitle;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

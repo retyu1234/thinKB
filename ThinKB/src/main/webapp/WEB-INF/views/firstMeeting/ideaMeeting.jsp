@@ -44,12 +44,6 @@ body, html {
 	z-index: 1000;
 }
 
-.ideaMeeting-topic-box {
-	/* 	margin-left: 3%;
-	margin-right: 3%; */
-	
-}
-
 .topic-title {
 	font-size: 20pt;
 	color: black;
@@ -137,10 +131,6 @@ body, html {
 	font-weight: bold;
 }
 
-.idea-box.voted {
-	font-weight: bold;
-}
-
 .vote-button {
 	width: 150px;
 	height: 40px;
@@ -210,13 +200,6 @@ body, html {
 	max-width: 100%;
 }
 
-.selected-option {
-	flex-direction: column;
-	padding: 26px 0 27px 77px;
-	position: relative;
-	gap: 11px;
-}
-
 .modal-idea-box {
 	width: auto; /* 글자 양에 따라 가로폭 조절 */
 	height: 10%;
@@ -246,23 +229,22 @@ body, html {
 }
 
 .modal-idea-box.reply-answer {
-    background-color: #FFE297; /* 노란색 */
-    align-self: flex-end;
-    pointer-events: none; /* 기본적으로 클릭 불가 */
-    cursor: default;
+	background-color: #FFE297; /* 노란색 */
+	align-self: flex-end;
+	pointer-events: none; /* 기본적으로 클릭 불가 */
+	cursor: default;
 }
 
 .modal-idea-box.reply-answer .delete-button {
-    pointer-events: auto; /* 삭제 버튼은 클릭 가능 */
-    cursor: pointer;
-    color: red;
-    background-color: transparent; /* 배경색 투명 */
-    border: none; /* 테두리 없애기 */
-    padding: 0; /* 기본 패딩 제거 */
-    font-size: 12px; /* 필요에 따라 글자 크기 조정 */
-    font-weight: bold;
+	pointer-events: auto; /* 삭제 버튼은 클릭 가능 */
+	cursor: pointer;
+	color: red;
+	background-color: transparent; /* 배경색 투명 */
+	border: none; /* 테두리 없애기 */
+	padding: 0; /* 기본 패딩 제거 */
+	font-size: 12px; /* 필요에 따라 글자 크기 조정 */
+	font-weight: bold;
 }
-
 
 .next-step-container {
 	margin-right: 30px;
@@ -295,7 +277,8 @@ body, html {
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
-	margin-top: -50px;
+	margin-top: 20px;
+	/* Adjust the margin to provide space below the descriptionContent */
 }
 
 .stages {
@@ -459,40 +442,98 @@ body, html {
 	font-size: 16pt;
 	font-weight: bold;
 }
-
-#descriptionContent {
-	white-space: pre-wrap;
-	word-wrap: break-word;
+/* 상세설명 - 토글 */
+.title-detail {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
 }
 
-/* Add this new CSS rule */
+.toggle-container {
+	display: flex;
+	align-items: center;
+}
+
+.toggle-switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+	margin-right: 10px;
+}
+
+.toggle-text {
+	font-family: Arial, sans-serif;
+	margin-left: 10px;
+	vertical-align: middle;
+}
+
 #descriptionContent {
+	font-family: Arial, sans-serif;
 	margin-top: 10px;
 	padding: 10px;
-	background-color: #F9F9F9;
+	background-color: #f9f9f9;
 	border: 1px solid #ddd;
 	border-radius: 5px;
-	max-width: 100%;
 	box-sizing: border-box;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
-	hyphens: auto;
-}
-
-/* Adjust the stage-info rule */
-.stage-info {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	margin-top: 20px;
-	/* Adjust the margin to provide space below the descriptionContent */
+	
 }
 
 #descriptionContent pre {
-	white-space: pre-wrap;
-	word-wrap: break-word;
-	max-width: 100%;
-	margin: 0;
+	font-family: Arial, sans-serif;
+	hyphens: auto;
+	white-space: pre-wrap; /* 자동 줄바꿈을 허용 */
+	word-wrap: break-word; /* 단어 단위로 줄바꿈 */
+}
+
+
+.toggle-input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+	font-family: Arial, sans-serif;
+}
+
+.toggle-label {
+	font-family: Arial, sans-serif;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	transition: .4s;
+	border-radius: 34px;
+}
+
+.toggle-label:before {
+	font-family: Arial, sans-serif;
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	transition: .4s;
+	border-radius: 50%;
+}
+
+.toggle-input:checked+.toggle-label {
+	background-color: #FFCC00;
+}
+
+.toggle-input:checked+.toggle-label:before {
+	transform: translateX(26px);
+}
+
+.toggle-text {
+	font-family: Arial, sans-serif;
+	margin-left: 10px;
+	vertical-align: middle;
 }
 </style>
 </head>
@@ -532,7 +573,7 @@ body, html {
 				<c:choose>
 					<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
 						<a
-							href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}"
+							href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
 							class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
 							${status.index + 1}. ${stage} </a>
 					</c:when>
@@ -549,11 +590,21 @@ body, html {
 				[${meetingRoom.roomTitle}] <input type="hidden" name="roomId"
 					value="${meetingRoom.roomId}">
 			</div>
-			<button id="toggleDescriptionButton" class="grey-button">설명
-				보기/숨기기</button>
-			<div id="descriptionContent" style="display: none;">
-				<pre>${meetingRoom.description}</pre>
+			<div class="title-detail">
+				<div class="toggle-container">
+					<div class="toggle-switch">
+						<input type="checkbox" id="toggleDescription" class="toggle-input">
+						<label for="toggleDescription" class="toggle-label"> <span
+							class="toggle-inner"></span> <span class="toggle-switch"></span>
+						</label>
+					</div>
+					<span class="toggle-text">설명 보기</span>
+				</div>
+				<div id="descriptionContent" style="display: none;">
+					<pre>${meetingRoom.getDescription()}</pre>
+				</div>
 			</div>
+
 			<hr class="line">
 			<div class="ideaMeeting-description">
 				다음 중 가장 좋은 아이디어에 투표해주세요. <br> 궁금한 점이 있다면 '질문하기'를 눌러서 작성자에게 질문할
@@ -943,16 +994,21 @@ document.getElementById('nextStageForm').submit();
 
 //상세내역 토글
 document.addEventListener('DOMContentLoaded', function() {
-	const toggleButton = document.getElementById('toggleDescriptionButton');
-	const descriptionContent = document.getElementById('descriptionContent');
+	const toggleSwitch = document.getElementById('toggleDescription');
+    const toggleText = document.querySelector('.toggle-text');
+    const descriptionContent = document.getElementById('descriptionContent');
 
-	toggleButton.addEventListener('click', function() {
-		if (descriptionContent.style.display === 'none') {
-			descriptionContent.style.display = 'block';
-		} else {
-			descriptionContent.style.display = 'none';
-		}
-	});
+    if (toggleSwitch) {  // 요소가 존재하는지 확인
+        toggleSwitch.addEventListener('change', function() {
+            if (this.checked) {
+                descriptionContent.style.display = 'block';
+                toggleText.textContent = '설명 숨기기';
+            } else {
+                descriptionContent.style.display = 'none';
+                toggleText.textContent = '설명 보기';
+            }
+        });
+    }
 });
 </script>
 </body>

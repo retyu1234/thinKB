@@ -482,18 +482,42 @@ if (savedContent && savedContent.trim() !== '') {
         savedContent = savedContent.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
         var content = JSON.parse(savedContent);
         quill.setContents(content);
-        // 초기 내용을 hidden input에 설정
-        document.getElementById('hidden-report-content').value = savedContent;
     } catch (e) {
         console.log("JSON parsing failed, treating as HTML");
         console.log("Parsing error:", e);
-        // JSON 파싱 실패 시, 원본 문자열을 그대로 사용
-        quill.root.innerHTML = `${reports.reportContent != null ? reports.reportContent : ''}`;
-        // HTML 내용을 hidden input에 설정
-        document.getElementById('hidden-report-content').value = quill.root.innerHTML;
+        quill.root.innerHTML = savedContent;
     }
+} else {
+    // 저장된 내용이 없을 경우 기본 템플릿 제공
+    quill.root.innerHTML = `
+        <h2>1. 목적</h2>
+        <p>이 보고서의 목적을 간략히 서술해주세요.</p>
+
+        <h2>2. 배경</h2>
+        <p>이 아이디어가 나오게 된 배경이나 문제 상황을 설명해주세요.</p>
+
+        <h2>3. 주요 내용</h2>
+        <p>아이디어의 핵심 내용을 상세히 기술해주세요.</p>
+
+        <h2>4. 기대 효과</h2>
+        <p>이 아이디어를 실행했을 때 예상되는 긍정적인 효과를 나열해주세요.</p>
+
+        <h2>5. 실행 계획</h2>
+        <p>아이디어를 실현하기 위한 구체적인 단계나 계획을 제시해주세요.</p>
+
+        <h2>6. 필요 자원</h2>
+        <p>아이디어 실행에 필요한 인적, 물적 자원을 명시해주세요.</p>
+
+        <h2>7. 위험 요소 및 대책</h2>
+        <p>예상되는 문제점과 그에 대한 대응 방안을 기술해주세요.</p>
+
+        <h2>8. 결론</h2>
+        <p>보고서의 주요 내용을 요약하고 결론을 내려주세요.</p>
+    `;
 }
 
+// 초기 내용을 hidden input에 설정
+document.getElementById('hidden-report-content').value = JSON.stringify(quill.getContents());
 // 실시간으로 내용 변경 감지 및 로깅
 quill.on('text-change', function() {
     updateHiddenInput();

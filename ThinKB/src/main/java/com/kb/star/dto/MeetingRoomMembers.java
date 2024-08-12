@@ -9,7 +9,18 @@ public class MeetingRoomMembers {
     private String departmentName;
     private String teamName;
     private int roomId;
+    private String birth;
     
+    
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	public String getBirth() {
+		return birth;
+	}
+	public void setBirth(String birth) {
+		this.birth = birth;
+	}
 	public int getRoomId() {
 		return roomId;
 	}
