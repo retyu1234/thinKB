@@ -580,8 +580,10 @@ body.modal-open {
 
 				<div class="calendar-popup" id="calendarPopup">
 					<div class="calendar-nav">
-						<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
-						<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
+						<span onclick="prevMonth()">&lt;</span> 
+						<span id="calendarYear"></span> 
+						<span id="calendarMonth"></span>
+						<span onclick="nextMonth()">&gt;</span>
 					</div>
 					<table id="calendarTable">
 						<thead>

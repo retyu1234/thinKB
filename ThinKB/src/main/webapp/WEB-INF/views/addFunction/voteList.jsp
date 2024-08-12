@@ -89,7 +89,6 @@ html, body {
 	justify-content: left;
 	width: 80%;
 	margin: 0 auto;
-	margin-bottom: 20px;
 }
 
 .progress-header {
@@ -101,7 +100,7 @@ html, body {
 .votes {
     display: flex;
     flex-wrap: wrap;
-    margin: 70px 20px;
+    margin: 30px 20px;
 }
 
 .vote {

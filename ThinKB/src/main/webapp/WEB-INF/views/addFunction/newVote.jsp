@@ -8,47 +8,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>투표 하기</title>
 <style>
-.newRoom-body {
-	margin: 0;
-	padding: 0;
-	background-image:
-		url('${pageContext.request.contextPath}/resources/23029.jpg');
-	background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
-	background-position: center; /* 이미지를 가운데 정렬 */
-	background-repeat: no-repeat;
-	height: 400px; /* 요소의 높이를 400px로 고정 */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.vote-body {
+	font-family: Arial, sans-serif;
 }
 
-.content {
-	padding: 20px; /* content 영역의 여백 설정 */
-	margin-left: 25%;
-	margin-right: 25%;
+.vote-content {
+	padding: 20px;
+	margin-left: 20%;
+	margin-right: 20%;
 }
-
 .title {
-	font-size: 30px;
+	font-size: 18pt;
 	font-weight: bold;
 	color: black;
 	margin-top: 30px;
 	margin-bottom: 20px;
 }
 
-.custom-input {
-	width: 100%; /* 화면 가로에 꽉 차도록 설정 (여백 20px 고려) */
-	padding: 12px; /* 내부 여백 설정 */
-	border: 3px solid #666; /* 테두리 두께와 색상 설정 */
-	border-radius: 8px; /* 테두리 둥글기 설정 */
-	transition: border-color 0.3s ease; /* 테두리 색 변화에 대한 transition 설정 */
-	/* 기본 테두리 색상 */
-	border-color: #666;
-	font-size: 16px; /* 글자 크기 설정 */
-	margin-bottom: 20px;
+.titleAndDetail {
+	display: flex; 
+	justify-content: space-between; 
+	align-items: center; 
+	margin-bottom: 10px;
+}
+.titleAndDetail-title {
+	margin: 0;
+	font-size: 18pt;
+	color: black;
+	font-weight: bold;
+}
+.titleAndDetail-detail {
+	font-size: 13pt;
 }
 
-/* 입력 중에는 노란색 테두리로 변경 */
-.custom-input:focus {
-	border-color: #ffcc00;
-	outline: none; /* 포커스 효과 제거 */
+.new-subject {
+	font-size: 15pt; /* 제목의 글자 크기 */
+	color: black;
+	border: 3px solid #FFD700; /* 진한 노란색 테두리 */
+	border-radius: 20px; /* 라운드 처리 */
+	padding: 20px; /* 내부 여백 */
+	background-color: white; /* 배경색 */
+}
+
+input.new-subject {
+	font-size: 13pt;
+	color: black;
+	border: 3px solid lightgrey;
+	border-radius: 10px;
+	padding: 20px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+input.new-subject:focus {
+	border-color: #FFD700; /* 포커스 시 테두리 색상 */
+	outline: none; /* 기본 포커스 스타일 제거 */
 }
 
 .date-input-container {
@@ -69,10 +87,15 @@
 .date-input {
 	width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
 	padding: 12px;
-	border: 3px solid #666;
-	border-radius: 8px;
-	font-size: 16px;
+	border: 3px solid lightgrey;
+	border-radius: 20px;
+	font-size: 15pt;
 	box-sizing: border-box;
+}
+
+.date-input:focus {
+	border-color: #FFD700; /* 포커스 시 테두리 색상 */
+	outline: none; /* 기본 포커스 스타일 제거 */
 }
 
 .calendar-icon {
@@ -140,31 +163,6 @@
 	cursor: not-allowed; /* 커서 모양 변경 */
 }
 
-.timer-container {
-	margin-top: 30px;
-	display: flex;
-	align-items: center;
-}
-
-.timer-label {
-	margin-right: 10px;
-	font-size: 20px;
-	font-weight: bold;
-}
-
-.timer-input {
-	width: 60px;
-	padding: 8px;
-	border: 2px solid #666;
-	border-radius: 5px;
-	font-size: 16px;
-	text-align: center;
-}
-
-.timer-input:hover {
-	border-color: #ffcc00;
-}
-
 .yellow-button1 {
 	background-color: #e6b800; /* 진한 노란색 배경색 */
 	color: black; /* 텍스트 색상 */
@@ -176,71 +174,109 @@
 	font-weight: bold;
 }
 
-.container {
-	margin: 20px;
-}
-
-.btn {
-	display: inline-block;
-	padding: 10px 20px;
-	font-size: 16px;
-	color: black;
-	background-color: #e6b800;
-	border: none;
-	border-radius: 10px;
-	cursor: pointer;
-}
-
-.btn:hover {
-	background-color: #696969;
-	color: white;
+body.modal-open {
+    overflow: hidden;
 }
 
 .modal {
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
-	background-color: #fefefe;
-	margin: 15% auto;
-	padding: 20px;
-	border: 1px solid #888;
-	width: 80%;
-	max-width: 600px;
-	border-radius: 10px;
-}
-
-.modal-header, .modal-footer {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .modal-header {
-	border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 
+
 .modal-footer {
-	border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.modal-body {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.table-container {
+    max-height: 350px;
+    overflow-y: auto;
 }
 
 .close {
-	color: red;
-	font-size: 28px;
-	font-weight: bold;
-	cursor: pointer;
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    z-index: 1;
 }
 
-.close:hover, .close:focus {
-	color: darkred;
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+.modal-header h5 {
+    font-size: 18pt;
+    font-weight: bold;
+    margin: 0;
+}
+
+.search-container {
+    display: flex;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+}
+
+.search-button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #f0f0f0;
 }
 
 .table {
@@ -263,70 +299,170 @@
 	font-size: 16px;
 }
 
-.btn-secondary {
-	background-color: gray;
-	color: white;
-}
-
-.btn-primary {
-	background-color: blue;
-	color: white;
-}
-
-.btn-secondary:hover {
-	background-color: darkgray;
-}
-
-.btn-primary:hover {
-	background-color: darkblue;
-}
-
 .error-message {
 	color: red;
 	margin-left: 10px;
 	font-size: 0.9em;
 }
 
+/* 노란색 버튼 */
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
+}
+
+/* 회색버튼 */
+.grey-button {
+	background-color: #978A8F;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.grey-button:hover {
+	background-color: #60584C;
+}
+
+.userList {
+    display: flex; 
+    align-items: center; 
+    margin-bottom: 10px;
+    justify-content: space-between; /* 추가 */
+}
+
+.userList-left {
+    display: flex;
+    align-items: center;
+}
+
+.userList-title {
+    margin: 0;
+    font-size: 18pt;
+    color: black;
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.userList-detail {
+    font-size: 13pt;
+}
+
+.add-option-btn {
+    text-decoration: none;
+    font-size: 13pt;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.add-option-btn:hover {
+    color: black;
+}
+
+.vote-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.vote-option-bullet {
+    margin-right: 10px;
+    font-size: 18px;
+}
+
+.vote-option-input {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 3px solid #ccc;
+    font-size: 13pt;
+    padding: 5px 0;
+    background-color: transparent;
+    transition: border-color 0.3s ease;
+}
+
+.vote-option-input:focus {
+    outline: none;
+    border-bottom-color: #FFD700;
+}
+
+.vote-option-input::placeholder {
+    color: #999;
+}
+
+/* 새로 추가된 스타일 */
+.date-input-and-error {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>
+<body class="vote-body">
 
-	<div class="newRoom-body">
-		<%@ include file="../header.jsp"%>
-	</div>
+	<!-- 헤더 영역 -->
+	<%@ include file="../header.jsp"%>
 
-	<div class="content">
-		<form action="./makeVote" method="post"
-			onsubmit="return validateForm()">
+	<!-- 콘텐츠 시작 -->
+	<div class="vote-content">
+		<form action="./makeVote" method="post" onsubmit="return validateForm()">
 			<input type="hidden" name="id" value="${userId}" /> <input
 				type="hidden" name="departmentId" value="${departmentId}" />
 
-			<div class="title">투표 주제</div>
-			<input type="text" class="custom-input" name="title"
+			<!-- 투표 주제 -->
+			<div class="titleAndDetail" style="margin-top: 50px;">
+				<div class="titleAndDetail-title">투표 주제</div>
+				<div class="titleAndDetail-detail">투표 하고싶은 주제를 입력해주세요.</div>
+			</div>
+			<input type="text" class="new-subject" name="title"
 				placeholder="여기에 입력하세요">
 
-			<div class="title">투표 항목</div>
-			<div id="optionsContainer">
-				<input type="text" class="custom-input" name="optionText"
-					placeholder="여기에 입력하세요">
+			<div class="titleAndDetail" style="margin-top: 50px;">
+				<div class="titleAndDetail-title">투표 항목</div>
+				<div class="titleAndDetail-detail">선택지 추가를 통해 투표할 항목을 추가해주세요.</div>
 			</div>
-			<button type="button" class="btn" onclick="addOption()">+
-				선택지 추가</button>
+			<div id="optionsContainer">
+			    <div class="vote-option">
+			        <span class="vote-option-bullet">◾</span>
+			        <input type="text" class="vote-option-input" name="optionText" placeholder="투표 항목을 입력해주세요">
+			    </div>
+			</div>
+			<div style="text-align: center; margin-top: 20px;">
+				<a href="#" class="add-option-btn"
+					onclick="addOption(); return false;">➕ 선택지 추가</a>
+			</div>
 
+			<!-- 투표종료일 -->
 			<div class="title" style="margin-top: 70px;">투표 종료일</div>
 			<div class="date-input-container">
-				<div class="date-input-wrapper">
-					<input type="text" class="date-input" name="endDate"
-						id="datepicker" placeholder="YYYYMMDD"> <span
-						class="calendar-icon" onclick="toggleCalendar()">📅</span>
-				</div>
-				<div class="error-message-container">
-					<span class="error-message" id="endDateError"></span>
-				</div>
+				<div class="date-input-and-error">
+        <div class="date-input-wrapper">
+            <input type="text" class="date-input" name="endDate" id="datepicker" placeholder="YYYYMMDD">
+            <span class="calendar-icon" onclick="toggleCalendar()">📅</span>
+        </div>
+        <div class="error-message-container">
+            <span class="error-message" id="endDateError"></span>
+        </div>
+    </div>
+				
 				<div class="calendar-popup" id="calendarPopup">
 					<div class="calendar-nav">
-						<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
-						<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
+						<span onclick="prevMonth()">&lt;</span> <span id="calendarYear"></span>
+						<span id="calendarMonth"></span> <span onclick="nextMonth()">&gt;</span>
 					</div>
 					<table id="calendarTable">
 						<thead>
@@ -344,62 +480,91 @@
 					</table>
 				</div>
 			</div>
+			
+			<!-- 투표 참여자 선택 -->
+			<div style="padding: 30px;"></div>
+			<div class="userList">
+				<div class="userList-left">
+					<div class="userList-title">참여자 선택</div>
+					<div class="grey-button" id="openModalBtn">직원 목록 조회</div>
+				</div>
+				<div class="userList-detail">함께 투표를 진행할 직원을 목록에서 선택해주세요.</div>
+			</div>
 
-			<div class="title" style="margin-top: 70px;">참여자 선택</div>
-			<div class="btn" id="openModalBtn">직원 조회</div>
 			<div id="selectedEmployees"></div>
 			<input type="hidden" id="selectedEmployeeIds" name="users">
-
 			<div style="margin: 70px; text-align: center;">
-				<button class="btn" type="submit">만들기</button>
+				<button class="yellow-button" type="submit">만들기</button>
 			</div>
+
+
 		</form>
 
-	</div>
-	<!-- 모달창 -->
-	<!-- 직원 목록 모달 -->
-	<div id="employeeModal" class="modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5>직원 목록</h5>
+
+		<!-- 모달창 -->
+		<!-- 직원 목록 모달 -->
+		<div id="employeeModal" class="modal">
+			<div class="modal-content">
 				<span class="close" id="closeModalBtn">&times;</span>
-			</div>
-			<div class="modal-body">
-				<!-- 직원 목록 테이블 -->
-				<table class="table">
-					<thead>
-						<tr>
-							<th>선택</th>
-							<th>이름(직원번호)</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="employee" items="${list}">
-							<tr>
-								<td><input type="checkbox" name="employees"
-									value="${employee.getUserId()}"></td>
-								<td>${employee.getUserName()}(${employee.getUserId()})</td>
-							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-			</div>
-			<div class="modal-footer">
-				<button class="btn-primary" id="submitBtn">선택 완료</button>
+				<div class="modal-header">
+					<h5>참여자 선택</h5>
+				</div>
+				<div class="modal-body">
+					<div class="search-container">
+						<input type="text" id="employeeSearch"
+							placeholder="직원이름, 직원번호로 검색" class="search-input">
+						<button id="searchBtn" class="search-button">
+							<i class="fas fa-search"></i>
+						</button>
+					</div>
+					<div class="table-container">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>선택</th>
+									<th>이름(직원번호)</th>
+								</tr>
+							</thead>
+							<tbody id="employeeTableBody">
+								<c:forEach var="employee" items="${list}">
+									<tr>
+										<td><input type="checkbox" name="employees"
+											value="${employee.getUserId()}"></td>
+										<td>${employee.getUserName()}(${employee.getUserId()})</td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="yellow-button" id="submitBtn"
+						style="font-size: 13pt;">선택 완료</button>
+				</div>
 			</div>
 		</div>
+		
 	</div>
-
 	<script>
 		// 투표 항목 추가하기
 		function addOption() {
-			var optionsContainer = document.getElementById('optionsContainer');
-			var newOptionInput = document.createElement('input');
-			newOptionInput.type = 'text';
-			newOptionInput.className = 'custom-input';
-			newOptionInput.name = 'optionText';
-			newOptionInput.placeholder = '여기에 입력하세요';
-			optionsContainer.appendChild(newOptionInput);
+		    var optionsContainer = document.getElementById('optionsContainer');
+		    var newOptionDiv = document.createElement('div');
+		    newOptionDiv.className = 'vote-option';
+		    
+		    var bulletSpan = document.createElement('span');
+		    bulletSpan.className = 'vote-option-bullet';
+		    bulletSpan.textContent = '◾';
+		    
+		    var newOptionInput = document.createElement('input');
+		    newOptionInput.type = 'text';
+		    newOptionInput.className = 'vote-option-input';
+		    newOptionInput.name = 'optionText';
+		    newOptionInput.placeholder = '추가 투표 항목을 입력해주세요';
+		    
+		    newOptionDiv.appendChild(bulletSpan);
+		    newOptionDiv.appendChild(newOptionInput);
+		    optionsContainer.appendChild(newOptionDiv);
 		}
 
 		// 달력 팝업 열고 닫기 함수
@@ -522,17 +687,17 @@
 		};
 
 		// 모달창 시작
-		// 모달 창 열기 함수
 		function openModal() {
-			var modal = document.getElementById('employeeModal');
-			modal.style.display = 'block';
-			addEmployeeCheckboxListeners(); // 체크박스 리스너 추가
+		    var modal = document.getElementById('employeeModal');
+		    modal.style.display = 'block';
+		    document.body.style.overflow = 'hidden'; // 배경 스크롤 막기
+		    addEmployeeCheckboxListeners();
 		}
-
-		//모달 창 닫기 함수
+		
 		function closeModal() {
-			var modal = document.getElementById('employeeModal');
-			modal.style.display = 'none';
+		    var modal = document.getElementById('employeeModal');
+		    modal.style.display = 'none';
+		    document.body.style.overflow = ''; // 배경 스크롤 다시 활성화
 		}
 
 		//모달 닫기 버튼 클릭 이벤트 핸들러
@@ -582,19 +747,18 @@
 
 		//선택된 직원 목록을 화면에 업데이트하는 함수
 		function updateSelectedEmployeesDisplay() {
-			var selectedEmployeesDiv = document
-					.getElementById('selectedEmployees');
-			selectedEmployeesDiv.innerHTML = '';
-
-			if (selectedEmployees.length > 0) {
-				var ul = document.createElement('ul');
-				selectedEmployees.forEach(function(emp) {
-					var li = document.createElement('li');
-					li.textContent = emp.name + ' (' + emp.id + ')';
-					ul.appendChild(li);
-				});
-				selectedEmployeesDiv.appendChild(ul);
-			}
+		    var selectedEmployeesDiv = document.getElementById('selectedEmployees');
+		    selectedEmployeesDiv.innerHTML = '';
+		
+		    if (selectedEmployees.length > 0) {
+		        var ul = document.createElement('ul');
+		        selectedEmployees.forEach(function(emp) {
+		            var li = document.createElement('li');
+		            li.textContent = emp.name + ' (' + emp.id + ')';
+		            ul.appendChild(li);
+		        });
+		        selectedEmployeesDiv.appendChild(ul);
+		    }
 		}
 
 		//hidden input 업데이트 함수
@@ -667,95 +831,91 @@
 			hiddenInput.value = selectedEmployeeIds.join(',');
 		}
 
-		// 유효성 검사 함수 (수정됨)
 		function validateForm() {
-			let isValid = true;
+		    let isValid = true;
 
-			const titleInput = document.querySelector('input[name="title"]');
-			const endDateInput = document
-					.querySelector('input[name="endDate"]');
-			const selectedEmployeeIdsInput = document
-					.getElementById('selectedEmployeeIds');
+		    // 투표 주제 검증
+		    const titleInput = document.querySelector('input[name="title"]');
+		    if (!titleInput.value.trim()) {
+		        showError(titleInput, '(필수) 투표 주제를 입력해주세요');
+		        isValid = false;
+		    } else {
+		        clearError(titleInput);
+		    }
 
-			const timerHours = document
-					.querySelector('input[name="timer_hours"]');
-			const timerMinutes = document
-					.querySelector('input[name="timer_minutes"]');
-			const timerSeconds = document
-					.querySelector('input[name="timer_seconds"]');
-			const timerError = document.getElementById('timerError');
+		    // 투표 항목 검증
+		    const optionInputs = document.querySelectorAll('input[name="optionText"]');
+		    if (optionInputs.length < 2) {
+		        showError(document.getElementById('optionsContainer'), '(필수) 최소 2개의 투표 항목이 필요합니다');
+		        isValid = false;
+		    } else {
+		        let filledOptions = 0;
+		        optionInputs.forEach(input => {
+		            if (input.value.trim()) {
+		                filledOptions++;
+		            }
+		        });
+		        if (filledOptions < 2) {
+		            showError(document.getElementById('optionsContainer'), '(필수) 최소 2개의 투표 항목을 입력해주세요');
+		            isValid = false;
+		        } else {
+		            clearError(document.getElementById('optionsContainer'));
+		        }
+		    }
 
-			// Validate title
-			if (!titleInput.value.trim()) {
-				showError(titleInput, '(필수)주제를 입력해주세요');
-				isValid = false;
-			} else {
-				clearError(titleInput);
-			}
+		    // 투표 종료일 검증
+		    const endDateInput = document.querySelector('input[name="endDate"]');
+		    if (!endDateInput.value.trim()) {
+		        showError(endDateInput, '(필수) 투표 종료일을 선택해주세요');
+		        isValid = false;
+		    } else {
+		        clearError(endDateInput);
+		    }
 
-			// Validate end date
-			if (!endDateInput.value.trim()) {
-				document.getElementById('endDateError').textContent = '(필수)투표 종료일을 선택해주세요';
-				isValid = false;
-			} else {
-				document.getElementById('endDateError').textContent = '';
-			}
+		    // 참여자 선택 검증
+		    const selectedEmployeeIdsInput = document.getElementById('selectedEmployeeIds');
+		    if (!selectedEmployeeIdsInput.value.trim()) {
+		        showError(selectedEmployeeIdsInput, '(필수) 참여할 직원을 선택해주세요');
+		        isValid = false;
+		    } else {
+		        clearError(selectedEmployeeIdsInput);
+		    }
 
-			// Validate selected employees
-			if (!selectedEmployeeIdsInput.value.trim()) {
-				showError(selectedEmployeeIdsInput, '(필수)참여할 직원을 선택해주세요');
-				isValid = false;
-			} else {
-				clearError(selectedEmployeeIdsInput);
-			}
-
-			//타이머검증
-			if (timerHours.value.trim() === ''
-					&& timerMinutes.value.trim() === ''
-					&& timerSeconds.value.trim() === '') {
-				timerError.textContent = '(필수)타이머를 설정해주세요';
-				valid = false;
-			} else {
-				timerError.textContent = '';
-			}
-
-			return isValid;
+		    return isValid;
 		}
 
-		// 오류 표시 함수 (새로 추가)
 		function showError(input, message) {
-			let errorElement = input.nextElementSibling;
-			if (!errorElement
-					|| !errorElement.classList.contains('error-message')) {
-				errorElement = document.createElement('span');
-				errorElement.classList.add('error-message');
-				input.parentNode.insertBefore(errorElement, input.nextSibling);
-			}
-			errorElement.textContent = message;
+		    let errorElement;
+		    if (input.id === 'datepicker') {
+		        errorElement = document.getElementById('endDateError');
+		    } else {
+		        errorElement = input.nextElementSibling;
+		        if (!errorElement || !errorElement.classList.contains('error-message')) {
+		            errorElement = document.createElement('span');
+		            errorElement.classList.add('error-message');
+		            input.parentNode.insertBefore(errorElement, input.nextSibling);
+		        }
+		    }
+		    errorElement.textContent = message;
+		    errorElement.style.color = 'red';
 		}
 
 		// 오류 제거 함수 (수정됨)
-		function clearError(input) {
-			let errorElement;
-			if (input.id === 'datepicker') {
-				errorElement = document.getElementById('endDateError');
-			} else if (input.id === 'selectedEmployeeIds') {
-				errorElement = input.nextElementSibling;
-			} else {
-				errorElement = input.nextElementSibling;
-			}
+function clearError(input) {
+    let errorElement;
+    if (input.id === 'datepicker') {
+        errorElement = document.getElementById('endDateError');
+    } else {
+        errorElement = input.nextElementSibling;
+    }
 
-			if (errorElement
-					&& errorElement.classList.contains('error-message')) {
-				errorElement.textContent = '';
-			}
-		}
+    if (errorElement && errorElement.classList.contains('error-message')) {
+        errorElement.textContent = '';
+    }
+}
 
 		// 이벤트 리스너 설정 (새로 추가)
-		document
-				.addEventListener(
-						'DOMContentLoaded',
-						function() {
+		document.addEventListener('DOMContentLoaded', function() {
 
 							// 입력 필드에 대한 이벤트 리스너 추가
 							document
@@ -820,6 +980,43 @@
 
 							// 페이지 로드 시 초기 달력 생성
 							createCalendar();
+							
+							// 새로운 검색 기능 추가
+						    const searchInput = document.getElementById('employeeSearch');
+						    const searchBtn = document.getElementById('searchBtn');
+						    const employeeTableBody = document.getElementById('employeeTableBody');
+						    const allRows = Array.from(employeeTableBody.getElementsByTagName('tr'));
+
+						    function performSearch() {
+						        const searchTerm = searchInput.value.trim().toLowerCase();
+
+						        allRows.forEach(row => {
+						            const employeeInfo = row.cells[1].textContent.toLowerCase();
+						            if (searchTerm === '' || employeeInfo.includes(searchTerm)) {
+						                row.style.display = '';
+						            } else {
+						                row.style.display = 'none';
+						            }
+						        });
+						    }
+
+						    // 검색 버튼 클릭 이벤트
+						    searchBtn.addEventListener('click', performSearch);
+
+						    // 검색 입력 필드에서 키 입력 이벤트
+						    searchInput.addEventListener('input', performSearch);
+
+						    // 모달이 열릴 때마다 검색 입력 필드를 초기화하고 모든 행을 표시
+						    document.getElementById('openModalBtn').addEventListener('click', function() {
+						        searchInput.value = '';
+						        allRows.forEach(row => row.style.display = '');
+						    });
+
+						    // 모달 닫기 버튼 이벤트 (변경 없음)
+						    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+
+						    // 선택 완료 버튼 이벤트 (변경 없음)
+						    document.getElementById('submitBtn').addEventListener('click', closeModal);
 						});
 
 		// 모달 외부 영역 클릭 시 모달 닫기 (변경 없음)
