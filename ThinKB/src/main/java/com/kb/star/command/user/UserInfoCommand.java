@@ -53,13 +53,22 @@ public class UserInfoCommand implements LoginCommand {
 			if (!notification.isRead()) {
 				unreadCount++;
 			}
-			Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
-			notification.setIdea(idea);
+			if (notification.getIdeaID() != 0) {
+				Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
+				notification.setIdea(idea);
 
-			// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
-			MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
-			if (meetingRoom != null) {
-				notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+				// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
+				MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
+				if (meetingRoom != null) {
+					notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+				}
+
+			} else { // ideaID가 0인 경우
+				// Ideas 테이블의 RoomID로 MeetingRooms 테이블의 RoomTitle을 가져오기
+				MeetingRooms meetingRoom = notiDao.getRoomTitleById(notification.getRoomId());
+				if (meetingRoom != null) {
+					notification.setRoomTitle(meetingRoom.getRoomTitle()); // 아이디어에 RoomTitle 설정
+				}
 			}
 		}
 

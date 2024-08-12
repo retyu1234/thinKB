@@ -142,15 +142,22 @@ public class NotiController {
 
 		// 각 알림에 대해 아이디어 정보와 회의방 제목 설정
 		for (NotiDto notification : notifications) {
-			Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
-			notification.setIdea(idea);
-
-			if (idea != null) {
-				MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
-				if (meetingRoom != null) {
-					notification.setRoomTitle(meetingRoom.getRoomTitle());
-				}
-			}
+		    if (notification.getIdeaID() != 0) {
+		        Ideas idea = notiDao.getIdeaById(notification.getIdeaID());
+		        notification.setIdea(idea);
+		        if (idea != null) {
+		            MeetingRooms meetingRoom = notiDao.getRoomTitleById(idea.getRoomID());
+		            if (meetingRoom != null) {
+		                notification.setRoomTitle(meetingRoom.getRoomTitle());
+		            }
+		        }
+		    } else {
+		        // ideaID가 0인 경우, notification의 roomId를 사용하여 roomTitle을 설정
+		        MeetingRooms meetingRoom = notiDao.getRoomTitleById(notification.getRoomId());
+		        if (meetingRoom != null) {
+		            notification.setRoomTitle(meetingRoom.getRoomTitle());
+		        }
+		    }
 		}
 
 		ObjectMapper mapper = new ObjectMapper();
