@@ -158,10 +158,10 @@
 .opinion-entry {
     padding: 10px;
     border-radius: 10px;
-    margin-bottom: 20px;
     position: relative;
     width: 90%;
-    margin: 0 auto;
+    margin: 10px auto;
+    background-color: #ffeeee;
 }
 .opinion-header {
     display: flex;
@@ -293,6 +293,11 @@ function toggleSection(sectionId) {
 function navigateToTab(currentTab) {
     var roomId = '${roomId}';
     var ideaId = '${ideaId}';
+/*     if (!ideaId) {
+        // ideaId가 없는 경우, 페이지에서 다른 방법으로 ideaId를 가져옵니다.
+        // 예를 들어, 숨겨진 input 필드나 데이터 속성을 사용할 수 있습니다.
+        ideaId = document.getElementById('hiddenIdeaId').value;
+    } */
     var url = '<c:url value="/ideaOpinions"/>' + '?roomId=' + roomId
             + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
     window.location.href = url;
@@ -388,6 +393,7 @@ request.setAttribute("stages", stages);
 	<div class="ideaOpinionList-title2">
         [${ideaTitle}]
     </div>
+    <input type="hidden" id="hiddenIdeaId" value="${ideaId}">
     
     <!-- 상세설명 -->
 	<!-- <button class="grey-button">설명 보기/숨기기</button> -->
@@ -477,7 +483,7 @@ request.setAttribute("stages", stages);
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="opinion" items="${positiveOpinions}">
-                            <li class="opinion-entry" style="background-color: #fffde7;">
+                            <li class="opinion-entry" style="background-color: #FFFFE7;">
                                 <div class="opinion-header">
                                     <span class="name">${opinion.userName}</span>
                                     <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
@@ -511,7 +517,7 @@ request.setAttribute("stages", stages);
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="opinion" items="${worryOpinions}">
-                            <li class="opinion-entry" style="background-color: #fffde7;">
+                            <li class="opinion-entry">
                                 <div class="opinion-header">
                                     <span class="name">${opinion.userName}</span>
                                     <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>
@@ -545,7 +551,7 @@ request.setAttribute("stages", stages);
                     </c:when>
                     <c:otherwise>
                         <c:forEach var="opinion" items="${strictOpinions}">
-                            <li class="opinion-entry" style="background-color: #fffde7;">
+                            <li class="opinion-entry" style="background-color: #EDFFE7;">
                                 <div class="opinion-header">
                                     <span class="name">${opinion.userName}</span>
                                     <span class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></span>

@@ -31,10 +31,10 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
         Map<String, Object> map = model.asMap();
         HttpServletRequest request = (HttpServletRequest) map.get("request");
         int roomId = Integer.parseInt(map.get("roomId").toString());
-        int ideaId = Integer.parseInt(map.get("ideaId").toString());
+        // int ideaId = Integer.parseInt(map.get("ideaId").toString());
         // int stage = Integer.parseInt((String) request.getParameter("stage"));
         model.addAttribute("roomId", roomId);
-        model.addAttribute("ideaId", ideaId);
+        // model.addAttribute("ideaId", ideaId);
         // model.addAttribute("stage", stage);
        
         HttpSession session = request.getSession();
@@ -43,25 +43,13 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
         
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
-        // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
-        ideaOpinionsDao.updateContribution2(ideaId, userId, roomId); // status의 t/f 검증은 xml파일에서 함
-        
-        
 		// MeetingRooms에서 stage 5로 변경
 		ideaOpinionsDao.updateStage5(roomId); 
 		
-		// Ideas에서 아이디어 StageID 5로 변경
-		ideaOpinionsDao.updateIdeaStage5(roomId); // ideaId -> roomId 로 변경 : 방 전체의 아이디어 2개 모두 update
-		
-		// StageParticipation에서 참여자별 StageID 5로 새로 생성해서 Status 0으로 일괄 넣기
-		List<Integer> users = ideaOpinionsDao.RoomForUserList5(roomId);
-		for(Integer list : users) {
-			ideaOpinionsDao.insertStageParticipation5(roomId, ideaId, list);
-		}
 
 		// roomId, stage값 다시 model에 넣기
 		model.addAttribute("roomId", roomId);
-	    model.addAttribute("ideaId", ideaId);
+	    // model.addAttribute("ideaId", ideaId);
 	    model.addAttribute("stage", 5);
 	    
 	    // 오른쪽 사이드바
