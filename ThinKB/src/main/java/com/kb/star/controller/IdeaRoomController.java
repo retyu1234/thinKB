@@ -378,8 +378,10 @@ public class IdeaRoomController {
 	@RequestMapping("/userManagement")
 	public String userManagement(HttpSession session, HttpServletRequest request, Model model) {
 		Integer departmentId = (Integer) session.getAttribute("departmentId");
+		Integer userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("request", request);
 		model.addAttribute("departmentId", departmentId);
+		model.addAttribute("userId", userId);
 		command = new UserManagement(sqlSession);
 		command.execute(model);
 		return "ideaRoom/userManagement";
@@ -407,8 +409,10 @@ public class IdeaRoomController {
 	@RequestMapping("/sendNotifications")
 	public String sendNotifications(HttpSession session, HttpServletRequest request, Model model) {
 		Integer departmentId = (Integer) session.getAttribute("departmentId");
+		Integer userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("request", request);
 		model.addAttribute("departmentId", departmentId);
+		model.addAttribute("userId", userId);
 		command = new UserManagement(sqlSession);
 		command.execute(model);
 		return "ideaRoom/notiSendRoom";
@@ -468,8 +472,10 @@ public class IdeaRoomController {
 
 	// 방관리화면
 	@RequestMapping("/roomManagement")
-	public String roomManagement(HttpServletRequest request, Model model) {
+	public String roomManagement(HttpServletRequest request, Model model,HttpSession session) {
 		model.addAttribute("request", request);
+		Integer userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("userId",userId);
 		command = new RoomManagement(sqlSession);
 		command.execute(model);
 		return "ideaRoom/roomManagement";

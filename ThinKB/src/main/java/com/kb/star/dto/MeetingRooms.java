@@ -12,9 +12,29 @@ public class MeetingRooms {
 	private boolean isDelete;
 	private String endDate;
 	private String createdAt;
+	private int participationStatus;
+	private String roomManagerName;
+
 
 	// getter setter
+	
+	
+	public int getParticipationStatus() {
+		return participationStatus;
+	}
 
+	public String getRoomManagerName() {
+		return roomManagerName;
+	}
+
+	public void setRoomManagerName(String roomManagerName) {
+		this.roomManagerName = roomManagerName;
+	}
+
+	public void setParticipationStatus(int participationStatus) {
+		this.participationStatus = participationStatus;
+	}
+	
 	public int getRoomId() {
 		return roomId;
 	}
