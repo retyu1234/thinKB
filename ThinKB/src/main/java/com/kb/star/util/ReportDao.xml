@@ -107,26 +107,29 @@
 	</resultMap>
 	<select id="getMyReportList" resultType="com.kb.star.dto.ReportsDto">
 	    SELECT 
-        r.ReportID,
-        r.RoomID,
-        r.UserID,
-        r.ReportTitle,
-        r.ReportContent,
-        r.IsFinal,
-        r.CreatedAt,
-        r.UpdatedAt,
-        mr.RoomTitle,
-        mr.StageID,
+        r.ReportID AS reportId,
+        r.RoomID AS roomId,
+        r.UserID AS userId,
+        r.ReportTitle AS reportTitle,
+        r.ReportContent AS reportContent,
+        r.IsFinal AS isFinal,
+        r.CreatedAt AS createAt,
+        r.UpdatedAt AS updateAt,
+        mr.RoomTitle AS roomTitle,
+        mr.StageID AS stageId,
         CASE 
             WHEN mr.StageID = 6 THEN '완료'
-            ELSE '작성중'
+            WHEN mr.StageID = 5 then '작성중'
         END AS Status
     FROM 
         Reports r
     JOIN 
         MeetingRooms mr ON r.RoomID = mr.RoomID
     WHERE 
-        r.UserID = #{userId};
+        r.UserID = #{userId}
+        and mr.StageID>=5
+    ORDER BY
+    	r.UpdatedAt DESC
 	</select>
 <select id="getIdeaSummaries" resultMap="ideaSummaryResultMap">
     SELECT 
@@ -159,4 +162,35 @@
     <result property="likeNum" column="LikeNum" />
     <result property="opinionUserName" column="OpinionUserName" />
 </resultMap>
+<!-- 관리자 보고서 목록 -->
+    <select id="getDepartmentReportList" resultType="com.kb.star.dto.DepartmentReportDto">
+        SELECT 
+            r.ReportID, 
+            r.RoomID, 
+            r.ReportTitle, 
+            r.CreatedAt, 
+            r.UpdatedAt, 
+            r.IsChoice,
+            u.UserName as AuthorName,
+            t.TeamName,
+            mr.RoomTitle
+        FROM 
+            Reports r
+        JOIN 
+            Users u ON r.UserID = u.UserID
+        JOIN 
+            Teams t ON u.TeamID = t.TeamID
+        JOIN 
+            MeetingRooms mr ON r.RoomID = mr.RoomID
+        WHERE 
+            u.DepartmentID = (SELECT DepartmentID FROM Users WHERE UserID = #{managerId})
+        ORDER BY 
+            r.UpdatedAt DESC
+    </select>
+<!-- 관리자 채택 -->
+    <update id="approveReport">
+        UPDATE Reports
+        SET IsChoice = true
+        WHERE ReportID = #{reportId}
+    </update>
 </mapper>
