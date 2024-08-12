@@ -388,7 +388,7 @@ input.manage-subject:focus {
 	display: none;
 }
 #employeeSearch{
-	width:100%;
+	width:90%;
 	font-size:11pt;
 	padding: 10px;
     border-radius: 20px;
@@ -455,7 +455,7 @@ input.manage-subject:focus {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     width: 90%;
-    height: 180px;
+    height: 260px;
     
     display: flex;
     flex-direction: column;
@@ -501,9 +501,23 @@ input.manage-subject:focus {
     text-align: left;
 }
 
-#selectedUserContainer {
-    margin-bottom: 15px;
-}
+        #selectedUserContainer {
+            margin-bottom: 15px;
+            max-height: 260px; /* 최대 높이 설정 */
+            overflow-y: auto; /* 세로 스크롤 활성화 */
+        }
+
+        #selectedUserList {
+            max-height: 230px; /* tbody의 최대 높이 설정 */
+            overflow-y: auto; /* tbody에 스크롤 적용 */
+            display: block; /* tbody를 블록 레벨 요소로 변경 */
+        }
+
+        #selectedUserList tr {
+            display: table; /* tr을 테이블로 표시하여 width: 100% 적용 */
+            width: 100%;
+            table-layout: fixed; /* 고정 테이블 레이아웃 사용 */
+        }
 </style>
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
@@ -662,14 +676,14 @@ document.addEventListener('DOMContentLoaded', function() {
 						<div class="noPickUser">
 						    <div id="warningMessage" style="display: none;">
     <img alt="" src="./resources/nopick.png">
-    <p>선택한 유저가 없습니다.</p>
+    <p>선택된 직원이 없습니다.</p>
 </div>
    </div> 
        <div id="selectedUserContainer" style="display: none;">
         <table class="selected-user-table">
             <thead>
                 <tr>
-                    <th>선택된 유저 리스트</th>
+                    <th>선택된 직원 리스트</th>
                 </tr>
             </thead>
             <tbody id="selectedUserList">

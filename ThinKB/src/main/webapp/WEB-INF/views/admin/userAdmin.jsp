@@ -14,18 +14,13 @@
 .userAdmin-body {
 	margin: 0;
 	padding: 0;
-	background-image:
-		url('${pageContext.request.contextPath}/resources/aguu.jpg');
-	background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
-	background-position: center; /* 이미지를 가운데 정렬 */
-	background-repeat: no-repeat;
-	height: 400px; /* 요소의 높이를 400px로 고정 */
 }
 
 .employee-content {
 	padding: 20px;
-	max-width: 1200px;
-	margin: 0 auto;
+	width: 65%;
+	margin-top: 10%;
+	margin: 8% auto;
 }
 
 .employee-title {
@@ -91,8 +86,9 @@
 }
 
 .employee-list-header {
-	background-color: #f0f0f0;
-	font-weight: bold;
+	background-color: #AB9A80;
+	color:white;
+	border-radius : 5px;
 	border-bottom: 2px solid #ddd;
 	margin-bottom: 20px;
 }
@@ -150,6 +146,28 @@
 .add-btn {
 	display: flex;
 	justify-content: flex-end;
+}
+.pagination a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: none;
+    color: #333;
+    border-radius: 3px;
+    transition: background-color 0.3s;
+    margin:1px;
+}
+
+.pagination a:hover {
+    background-color: #f0f0f0;
+    border:none;
+    border-radius: 30px;
+}
+
+.pagination .active a {
+    background-color: #ffcc00;
+    color: white;
+    border:none;
+    border-radius: 30px;
 }
 </style>
 <script>
@@ -217,18 +235,18 @@
 					</c:choose>
 				</c:forEach>
 			</div>
-            <nav>
-                <ul class="pagination justify-content-center">
-                    <c:forEach var="i" begin="1" end="${totalPages}">
-                        <li class="page-item ${i == currentPage ? 'active' : ''}">
-                            <a class="page-link" href="./userAdminView?searchTerm=${param.searchTerm}&page=${i}">${i}</a>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </nav>
+			<div style="margin-top:2%;justify-content:center; display:flex;">
+<nav>
+    <ul class="pagination">
+        <c:forEach var="i" begin="1" end="${totalPages}">
+            <li class="${i == currentPage ? 'active' : ''}">
+                <a href="./userAdminView?searchTerm=${param.searchTerm}&page=${i}">${i}</a>
+            </li>
+        </c:forEach>
+    </ul>
+</nav></div>
 			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-			<script
-				src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 		</div>
 	</div>
 </body>

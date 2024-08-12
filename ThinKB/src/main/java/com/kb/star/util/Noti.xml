@@ -27,6 +27,7 @@
 		SELECT RoomTitle FROM MeetingRooms WHERE RoomID = #{RoomID}
 	</select>
 
+
 	<!-- 알림 읽음 상태 업데이트 -->
 	<update id="updateReadStatus">
 		UPDATE Notifications SET IsRead = true WHERE
