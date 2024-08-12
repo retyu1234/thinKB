@@ -113,7 +113,7 @@ th {
 			    </c:if>
 			</c:forEach>
 
-            <div class="ideaList">아이디어 목록 - 완료여부</div>
+            <div class="ideaList">아이디어 목록(완료여부)</div>
             <table>
                 <tr>
                     <th>아이디어 제목</th>

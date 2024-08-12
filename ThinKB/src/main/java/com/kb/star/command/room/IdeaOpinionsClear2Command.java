@@ -51,7 +51,7 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
 		ideaOpinionsDao.updateStage5(roomId); 
 		
 		// Ideas에서 아이디어 StageID 5로 변경
-		ideaOpinionsDao.updateIdeaStage5(ideaId);
+		ideaOpinionsDao.updateIdeaStage5(roomId); // ideaId -> roomId 로 변경 : 방 전체의 아이디어 2개 모두 update
 		
 		// StageParticipation에서 참여자별 StageID 5로 새로 생성해서 Status 0으로 일괄 넣기
 		List<Integer> users = ideaOpinionsDao.RoomForUserList5(roomId);

@@ -88,7 +88,7 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		int doneUserCount = ideaOpinionsDao.getDoneUserCount(roomId, ideaId);
 		model.addAttribute("doneUserCount", doneUserCount);
 
-		// 방장 사이드탭
+		// 상세설명 - 토글
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
 		model.addAttribute("meetingRoom", info);

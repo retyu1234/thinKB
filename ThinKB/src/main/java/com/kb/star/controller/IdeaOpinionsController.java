@@ -232,7 +232,7 @@ public class IdeaOpinionsController {
 		
 		// Ideas에서 아이디어 StageID 4로 변경
 		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
-        ideaOpinionsDao.updateIdeaStage(ideaId);
+        ideaOpinionsDao.updateIdeaStage(roomId); // ideaId -> roomId 로 변경 : 방 전체의 아이디어 2개 모두 update
 		
 		// Ideas 테이블에서 Title과 StageID 가져오기
 	    List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
