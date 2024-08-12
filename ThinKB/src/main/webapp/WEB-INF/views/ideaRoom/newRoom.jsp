@@ -486,7 +486,40 @@ body.modal-open {
   100% { opacity: 0.2; }
 }
 /*로딩끝*/
+
+.search-container {
+    display: flex;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+}
+
+.search-button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #f0f0f0;
+}
+
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 <!-- 헤더영역 -->
@@ -531,7 +564,8 @@ body.modal-open {
 				<div class="titleAndDetail-title">아이디어 회의 상세설명</div><button type="button" id="autoCompleteBtn" class="yellow-button">자동완성</button>
 				<div class="titleAndDetail-detail">상세 설명을 직접 입력하거나, 자동완성(KB AI) 버튼을 통해 채울 수 있어요.</div>
 			</div>
-<textarea id="content" class="new-subject" style="height: 400px; width: 100%; resize: vertical;" name="content" placeholder="여기에 작성해주세요"></textarea>
+			<textarea id="content" class="new-subject" style="height: 400px; width: 100%; resize: vertical;" name="content" placeholder="여기에 작성해주세요"></textarea>
+	
 	<!-- 회의종료일 -->
 			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
@@ -603,8 +637,7 @@ body.modal-open {
 		</form>
 	</div>
 	
-	<!-- 모달창 -->
-	<!-- 직원 목록 모달 -->
+<!-- 직원 목록 모달 -->
 <div id="employeeModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeModalBtn">&times;</span>
@@ -612,6 +645,12 @@ body.modal-open {
             <h5>참여자 선택</h5>
         </div>
         <div class="modal-body">
+            <div class="search-container">
+                <input type="text" id="employeeSearch" placeholder="직원이름, 직원번호로 검색" class="search-input">
+				    <button id="searchBtn" class="search-button">
+				        <i class="fas fa-search"></i>
+				    </button>
+            </div>
             <div class="table-container">
                 <table class="table">
                     <thead>
@@ -620,7 +659,7 @@ body.modal-open {
                             <th>이름(직원번호)</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="employeeTableBody">
                         <c:forEach var="employee" items="${list}">
                             <tr>
                                 <td><input type="checkbox" name="employees"
@@ -637,6 +676,7 @@ body.modal-open {
         </div>
     </div>
 </div>
+
 
 	<script>
 		// 달력 팝업 열고 닫기 함수
@@ -911,8 +951,7 @@ body.modal-open {
 			let isValid = true;
 
 			const titleInput = document.querySelector('input[name="title"]');
-			const contentInput = document
-					.querySelector('input[name="content"]');
+			const contentInput = document.getElementById('content');
 			const endDateInput = document
 					.querySelector('input[name="endDate"]');
 			const selectedEmployeeIdsInput = document
@@ -963,7 +1002,7 @@ body.modal-open {
 					&& timerMinutes.value.trim() === ''
 					&& timerSeconds.value.trim() === '') {
 				timerError.textContent = '(필수)타이머를 설정해주세요';
-				valid = false;
+				isValid = false;
 			} else {
 				timerError.textContent = '';
 			}
@@ -1018,96 +1057,98 @@ body.modal-open {
 			}
 		}
 
-		// 이벤트 리스너 설정 (새로 추가)
-		document
-				.addEventListener(
-						'DOMContentLoaded',
-						function() {
+		document.addEventListener('DOMContentLoaded', function() {
+		    // 기존 코드 유지
+		    document.querySelectorAll('input[name="title"], input[name="content"], input[name="endDate"]')
+		        .forEach(function(input) {
+		            input.addEventListener('input', function() {
+		                clearError(this);
+		            });
+		        });
 
-							// 입력 필드에 대한 이벤트 리스너 추가
-							document
-									.querySelectorAll(
-											'input[name="title"], input[name="content"], input[name="endDate"]')
-									.forEach(
-											function(input) {
-												input.addEventListener('input',
-														function() {
-															clearError(this);
-														});
-											});
+		    document.querySelectorAll('input[name="timer_hours"], input[name="timer_minutes"], input[name="timer_seconds"]')
+		        .forEach(function(input) {
+		            input.addEventListener('input', function() {
+		                clearTimerError();
+		            });
+		        });
 
-							// 타이머 입력 필드에 대한 이벤트 리스너 추가
-							document
-									.querySelectorAll(
-											'input[name="timer_hours"], input[name="timer_minutes"], input[name="timer_seconds"]')
-									.forEach(
-											function(input) {
-												input.addEventListener('input',
-														function() {
-															clearTimerError(); // 타이머 입력 필드에 입력이 있을 때마다 호출
-														});
-											});
+		    document.getElementById('openModalBtn').addEventListener('click', function() {
+		        clearError(document.getElementById('selectedEmployeeIds'));
+		    });
 
-							// 직원 선택 버튼에 대한 이벤트 리스너
-							document
-									.getElementById('openModalBtn')
-									.addEventListener(
-											'click',
-											function() {
-												clearError(document
-														.getElementById('selectedEmployeeIds'));
-											});
+		    document.getElementById('closeModalBtn').addEventListener('click', function() {
+		        closeModal();
+		    });
 
-							// 기존의 이벤트 리스너들
-							document.getElementById('closeModalBtn')
-									.addEventListener('click', function() {
-										closeModal();
-									});
+		    document.getElementById('openModalBtn').addEventListener('click', function() {
+		        openModal();
+		    });
 
-							document.getElementById('openModalBtn')
-									.addEventListener('click', function() {
-										openModal();
-									});
+		    document.getElementById('submitBtn').addEventListener('click', function() {
+		        closeModal();
+		    });
 
-							document.getElementById('submitBtn')
-									.addEventListener('click', function() {
-										closeModal();
-									});
+		    document.getElementById('datepicker').addEventListener('input', function() {
+		        clearError(this);
+		    });
 
-							// datepicker에 대한 이벤트 리스너 추가
-							document.getElementById('datepicker')
-									.addEventListener('input', function() {
-										clearError(this);
-									});
+		    document.querySelectorAll('input[name="employees"]').forEach(function(checkbox) {
+		        checkbox.addEventListener('change', function() {
+		            var employeeId = this.value;
+		            var employeeName = this.parentElement.nextElementSibling.textContent.trim();
+		            toggleEmployeeSelection(employeeId, employeeName);
+		        });
+		    });
 
-							document
-									.querySelectorAll('input[name="employees"]')
-									.forEach(
-											function(checkbox) {
-												checkbox
-														.addEventListener(
-																'change',
-																function() {
-																	var employeeId = this.value;
-																	var employeeName = this.parentElement.nextElementSibling.textContent
-																			.trim();
-																	toggleEmployeeSelection(
-																			employeeId,
-																			employeeName);
-																});
-											});
+		    createCalendar();
 
-							// 페이지 로드 시 초기 달력 생성
-							createCalendar();
-						});
+		    // 새로운 검색 기능 추가
+		    const searchInput = document.getElementById('employeeSearch');
+		    const searchBtn = document.getElementById('searchBtn');
+		    const employeeTableBody = document.getElementById('employeeTableBody');
+		    const allRows = Array.from(employeeTableBody.getElementsByTagName('tr'));
 
-		// 모달 외부 영역 클릭 시 모달 닫기 (변경 없음)
-		window.onclick = function(event) {
-			var modal = document.getElementById('employeeModal');
-			if (event.target == modal) {
-				closeModal();
-			}
-		};
+		    function performSearch() {
+		        const searchTerm = searchInput.value.trim().toLowerCase();
+
+		        allRows.forEach(row => {
+		            const employeeInfo = row.cells[1].textContent.toLowerCase();
+		            if (searchTerm === '' || employeeInfo.includes(searchTerm)) {
+		                row.style.display = '';
+		            } else {
+		                row.style.display = 'none';
+		            }
+		        });
+		    }
+
+		    // 검색 버튼 클릭 이벤트
+		    searchBtn.addEventListener('click', performSearch);
+
+		    // 검색 입력 필드에서 키 입력 이벤트
+		    searchInput.addEventListener('input', performSearch);
+
+		    // 모달이 열릴 때마다 검색 입력 필드를 초기화하고 모든 행을 표시
+		    document.getElementById('openModalBtn').addEventListener('click', function() {
+		        searchInput.value = '';
+		        allRows.forEach(row => row.style.display = '');
+		    });
+
+		    // 모달 닫기 버튼 이벤트 (변경 없음)
+		    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+
+		    // 선택 완료 버튼 이벤트 (변경 없음)
+		    document.getElementById('submitBtn').addEventListener('click', closeModal);
+		});
+
+
+	// 모달 외부 영역 클릭 시 모달 닫기 (변경 없음)
+	window.onclick = function(event) {
+		var modal = document.getElementById('employeeModal');
+		if (event.target == modal) {
+			closeModal();
+		}
+	};
 	</script>
 <script type="text/javascript">
 //로딩 화면 요소
