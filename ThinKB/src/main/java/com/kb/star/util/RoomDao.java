@@ -56,7 +56,7 @@ public interface RoomDao {
 	
 	void updateRoomInfo(String title,String Description, String endDate,int roomId);
 	
-	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId);
+//	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId);
 	
 	List<UserListDto>selectAvailableEmployees(@Param("roomId") int roomId,@Param("departmentId") int departmentId);
 
@@ -129,5 +129,9 @@ public interface RoomDao {
 	List<IdeaOpinionsDto> ideaIdForOpinion(int firstNum);
 
 	List<MeetingRoomMember> memberForRoomId(int roomId);
+	
+	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId,@Param("searchKeyword") String searchKeyword);
+
+	List<RejectLog> rejectList(int roomId, int id);
 
 }

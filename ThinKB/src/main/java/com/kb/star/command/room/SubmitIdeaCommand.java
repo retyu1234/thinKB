@@ -25,7 +25,7 @@ public class SubmitIdeaCommand implements RoomCommand {
 		String title = (String) map.get("myIdea");
 		String contents = (String) map.get("ideaDetail");
 		int stage = (Integer) map.get("stage");
-		System.out.println("아이디어 정보 오는지 " + title + " / " + contents);
+//		System.out.println("아이디어 정보 오는지 " + title + " / " + contents);
 		
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		dao.submitIdea(id,roomId,title,contents);

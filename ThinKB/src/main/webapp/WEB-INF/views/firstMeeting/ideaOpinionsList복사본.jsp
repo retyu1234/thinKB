@@ -9,27 +9,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>아이디어 의견 요약</title>
 <style>
-/* 5단계 표시 */
-.stages {
-	display: flex;
-	justify-content: space-between;
-	padding: 30px 0;
-	font-size: 13pt;
-}
-.stage {
-    flex: 1;
-    text-align: center;
-    padding: 3px; /* 5px에서 3px로 줄임 */
-    margin: 0 2px; /* 좌우 여백 추가 */
-    cursor: pointer;
-    text-decoration: none;
-    color: #000;
-    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
-    overflow: hidden; /* 넘치는 텍스트 숨김 */
-    text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
-}
-
-
 .ideaOpinionsList-body {
     margin: 0;
     font-family: 'Arial', sans-serif;
@@ -138,39 +117,16 @@
     function navigateToTab(currentTab) {
         var roomId = '${roomId}';
         var ideaId = '${ideaId}';
-        var url = '<c:url value="/ideaOpinions2"/>' + '?roomId=' + roomId
+        var url = '<c:url value="/ideaOpinions"/>' + '?roomId=' + roomId
                 + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
         window.location.href = url;
     }
-    
-<%
-String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
-request.setAttribute("stages", stages);
-%>
 </script>
 </head>
 <body class="ideaOpinionsList-body">
 <%@ include file="../header.jsp"%>
 <%@ include file="../leftSideBar.jsp"%>
 <%@ include file="../rightSideBar.jsp"%>
-
-<!-- 5개 단계 표시 -->
-<div class="stages">
-    <c:forEach var="stage" items="${stages}" varStatus="status">
-        <c:choose>
-            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-                <a href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}" class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-                    ${status.index + 1}. ${stage}
-                </a>
-            </c:when>
-            <c:otherwise>
-                <div class="stage inactive">
-                    ${status.index + 1}. ${stage}
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
-</div>
 
     <!-- 제목 -->
 	<div class="title">[${ideaTitle}]</div>

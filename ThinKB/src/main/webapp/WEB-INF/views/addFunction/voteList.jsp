@@ -8,44 +8,52 @@
 <title>ThinkKB</title>
 <style>
 /* 스타일 정의 */
-body {
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.vote-body {
 	font-family: Arial, sans-serif;
-	background-color: #f5f5f5;
 }
 
-.content {
-	padding: 20px;
+.vote-banner {
+	margin-top: 45px;
 	margin-left: 15%;
 	margin-right: 15%;
 }
 
-.container {
-	width: 80%;
-	margin: 0 auto;
-	background-color: white;
+.vote-content {
 	padding: 20px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	margin-left: 17%;
+	margin-right: 17%;
+	margin-top: 1%;
 }
 
-.header1 {
-	text-align: center;
+/* 투표만들기 버튼 */
+.vote-button-container {
+	display: flex;
+	justify-content: end;
+	margin-left: 15%;
+	margin-right: 15%;
 }
 
-.header1 img {
-	width: 100%;
-	height: auto;
-	max-height: 500px;
-	/* border-radius: 10px; */
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
 }
 
 .user-info p {
 	margin: 0;
-}
-
-.button-container {
-	display: flex;
-	justify-content: flex-end;
-	margin-bottom: 10px;
 }
 
 .progress-container {
@@ -144,22 +152,6 @@ body {
 	flex-direction: column;
 }
 
-.yellow-button {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
-	padding: 10px 20px; /* 버튼의 여백 */
-	border: none; /* 테두리 없음 */
-	border-radius: 20px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
-	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
-	font-weight: bold;
-}
-
-.yellow-button:hover {
-	background-color: #696969;
-	color: white;
-}
-
 .no-room {
 	display: flex;
 	flex-direction: column;
@@ -202,24 +194,29 @@ body {
 </style>
 </head>
 
-<body>
-
-<!--헤더 영역 -->
+<body class="vote-body">
+	<!-- 헤더 영역 -->
 	<%@ include file="../header.jsp"%>
-	<div class="header1">
-		<img src="./resources/header2.jpg" alt="Header Image">
+	
+	<!-- 상단 배너영역 -->
+	<div class="vote-banner">
+		<img src="<c:url value='./resources/addVoteBanner.png'/>" alt="abtestBanner" 
+		style="max-width: 100%; height: auto;">
 	</div>
-	<div class="content">
-		<div class="button-container">
-			<button class="yellow-button" onclick="location.href='./newVote'">+
-				투표 만들기</button>
-		</div>
-		<div class="progress-header-container">
-			<h2 class="progress-header">진행중인 단계</h2>
-		</div>
+	
+	<!-- 투표 만들기 버튼 -->
+	<div class="vote-button-container">
+		<button class="yellow-button" onclick="location.href='./newVote'">+ 투표 만들기</button>
+	</div>
+	
+	<!-- 콘텐츠 시작 -->	
+	<div class="vote-content">
+	
+	<!-- 상단 단계별 조회 -->
+	<div class="progress-header-container">
+		<h2 class="progress-header">진행중인 단계</h2>
+	</div>
 
-		
-		
 		<div class="progress-container">
 			<div class="progress">
 				<label><input type="checkbox" data-stage="false"
@@ -240,42 +237,40 @@ body {
 					</div>
 				</c:when>
 
-				<c:otherwise>
-					<c:forEach var="li" items="${voteList}">
-						<div class="idea" data-stage="${li.isCompleted}"
-							onclick="window.location.href='./addVote?addVoteId=${li.addVoteId}'">
-							<h2>${li.title}</h2>
-							<div class="idea-details">
-								<p>종료일: ${li.endDate}</p>
-								<p>투표 생성자: ${li.createUserID}</p>
-								<p>
-									단계:
-									<c:choose>
-										<c:when test="${li.isCompleted == false}">투표 진행 중 </c:when>
-										<c:when test="${li.isCompleted == true}">투표 종료 </c:when>
-									</c:choose>
-								</p>
-								<p>
-									<c:choose>
-										<c:when test="${li.votedOptionId != 0}">
-											<span style="color: green;">투표 완료</span>
-										</c:when>
-										<c:otherwise>
-											<span style="color: red;">미투표</span>
-										</c:otherwise>
-									</c:choose>
-								</p>
-							</div>
+			<c:otherwise>
+				<c:forEach var="li" items="${voteList}">
+					<div class="idea" data-stage="${li.isCompleted}"
+						onclick="window.location.href='./addVote?addVoteId=${li.addVoteId}'">
+						<h2>${li.title}</h2>
+						<div class="idea-details">
+							<p>종료일: ${li.endDate}</p>
+							<p>투표 생성자: ${li.createUserID}</p>
+							<p>
+								단계:
+								<c:choose>
+									<c:when test="${li.isCompleted == false}">투표 진행 중 </c:when>
+									<c:when test="${li.isCompleted == true}">투표 종료 </c:when>
+								</c:choose>
+							</p>
+							<p>
+								<c:choose>
+									<c:when test="${li.votedOptionId != 0}">
+										<span style="color: green;">투표 완료</span>
+									</c:when>
+									<c:otherwise>
+										<span style="color: red;">미투표</span>
+									</c:otherwise>
+								</c:choose>
+							</p>
 						</div>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
-		</div>
+					</div>
+				</c:forEach>
+			</c:otherwise>
+		</c:choose>
+	</div>
 		
 		
-			<c:forEach var="maker" items="${voteMaker}">
-		${maker.getUserName()}
-		</c:forEach>
+	
 	</div>
 	<script>
 		function filterIdeas() {

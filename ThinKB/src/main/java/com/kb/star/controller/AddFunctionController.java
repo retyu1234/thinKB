@@ -88,7 +88,7 @@ public class AddFunctionController {
 		model.addAttribute("userId", userId);
 		command = new ABTestVote(sqlSession);
 		command.execute(model);
-		return "redirect:/AorBList";
+		return "redirect:/completedTestDetail";
 	}
 
 	// ab테스트 투표 결과

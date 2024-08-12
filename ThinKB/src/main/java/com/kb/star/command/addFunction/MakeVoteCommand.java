@@ -1,6 +1,7 @@
 package com.kb.star.command.addFunction;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +10,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
-import com.kb.star.dto.UsersDto;
 import com.kb.star.util.AddVoteDao;
+import com.kb.star.util.UserDao;
 
 public class MakeVoteCommand implements AddCommand {
 
@@ -64,9 +65,6 @@ public class MakeVoteCommand implements AddCommand {
 
         model.addAttribute("id", id);
         
-        // 투표만든사람 누군지 찾기위해 Users 목록
-        List<UsersDto> voteMaker = dao.whosVoteMaker();
-        model.addAttribute("voteMaker", voteMaker);
-        System.out.println("voteMaker " + voteMaker.get(0).getUserName());
+        
     }
 }

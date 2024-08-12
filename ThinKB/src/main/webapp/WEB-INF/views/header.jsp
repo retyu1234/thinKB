@@ -7,6 +7,7 @@
 <html lang="ko">
 
 <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <meta charset="UTF-8">
     <title>Home</title>
 <style>
@@ -21,7 +22,7 @@
 
 .header {
 	width: 100%;
-	padding: 10px 30px;
+	 padding: 10px 5%;
 	top: 0;
 	display: flex;
 	background: #ffcc00;
@@ -37,7 +38,6 @@
 	display: flex;
 	align-items: center;
 	padding: 10px 30px;
-	width:100%;
 	height:auto;
 	background-color:#ffffff;
 	z-index: 1000;
@@ -150,8 +150,8 @@
     border-radius: 50%;
     padding: 2px 6px;
     font-size: 12px;
-    min-width: 7px;
-    height: 18px;
+    min-width: 8px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -172,44 +172,45 @@
     border-radius: 10px;
     padding: 10px;
 }
-
-#notificationDropdown ul {
-    list-style: none;
+#notificationList {
+    list-style-type: none;
     padding: 0;
-    margin: 0;
+    margin: 10px 0 0 0;
+    max-height: 300px;
+    overflow-y: auto;
 }
 
-#notificationDropdown li {
-    padding: 12px 16px;
-    border-bottom: 1px solid #e0e0e0;
-    list-style-type: none;
+#notificationList li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-#notificationDropdown li:last-child {
+#notificationList li:last-child {
     border-bottom: none;
 }
 
-#notificationDropdown li:hover {
-    background-color: #f1f1f1;
+#notificationList li:hover {
+    background-color: #f5f5f5;
 }
 
 /* 전체 읽음 버튼 스타일 */
 #readAllNotifications {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
+    width: 35%;
+    padding: 3px 10px 3px;
+    background-color: #FFCC00;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 15px;
     cursor: pointer;
-    margin-bottom: 10px;
+    margin-right: 10px;
     transition: background-color 0.3s ease;
+
 }
 
 #readAllNotifications:hover {
-    background-color: #45a049;
+    background-color: #D4AA00;
 }
 
 /* 모달 스타일 */
@@ -293,7 +294,7 @@
                 .attr("data-room", notification.roomTitle)
                 .attr("data-message", notification.message)
                 .attr("data-time", createdAt)  // 시간 데이터 추가
-                .html("Room: " + notification.roomTitle + "<br>Time: " + createdAt);
+                .html("🏠 : " + notification.roomTitle + "<br>⏰ : " + createdAt);
                 notificationList.append(listItem);
             });
 
@@ -357,7 +358,7 @@
     });
 </script>
 </head>
-<body>
+<body style="margin:0;">
     <header>
     <div class="header-container">
                     <div class="logo">
@@ -391,11 +392,14 @@
                     <span id="notificationCount">0</span>
                 </div>
                 <div id="notificationDropdown">
-                 <button id="readAllNotifications">전체 읽음</button>
-                    <ul id="notificationList">
-                        <!-- 알림 내용이 여기에 동적으로 추가됩니다 -->
-                    </ul>
-                   
+                <div style="display:flex; justify-content:space-between;">
+                <h3 style="margin:5px;">알림함</h3>
+<button id="readAllNotifications">
+            <i class="fas fa-check-double"></i> 전체 읽음
+        </button></div><hr>
+        <ul id="notificationList">
+            <!-- 알림 내용이 여기에 동적으로 추가됩니다 -->
+        </ul>
                 </div>
             </div>
             <a href="<c:url value='/logout'/>"> <img src="<c:url value='/resources/logout.png'/>" alt="Logout Icon" class="logout-icon"> </a>

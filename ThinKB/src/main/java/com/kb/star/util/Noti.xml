@@ -27,6 +27,7 @@
 		SELECT RoomTitle FROM MeetingRooms WHERE RoomID = #{RoomID}
 	</select>
 
+
 	<!-- 알림 읽음 상태 업데이트 -->
 	<update id="updateReadStatus">
 		UPDATE Notifications SET IsRead = true WHERE
@@ -78,6 +79,17 @@
 		AND IsRead = 0
 		AND IsDelete = 0
 		AND IdeaID = #{ideaId}
+		ORDER BY CreatedAt DESC;
+	</select>
+	<select id="getMessagesByRoomId"
+		resultType="com.kb.star.dto.NotiDto">
+		SELECT *
+		FROM Notifications
+		WHERE UserID = #{userId}
+		AND
+		RoomID = #{roomId}
+		AND IsRead = 0
+		AND IsDelete = 0
 		ORDER BY CreatedAt DESC;
 	</select>
 

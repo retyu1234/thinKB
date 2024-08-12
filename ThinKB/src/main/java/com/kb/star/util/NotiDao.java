@@ -39,4 +39,5 @@ public interface NotiDao {
 
 	//조건에 맞는 메세지 가져오기
 	public List<NotiDto> getMessagesByIdeaId(@Param("userId")int userId, @Param("roomId") int roomId, @Param("ideaId") int ideaId);
+	
 }
