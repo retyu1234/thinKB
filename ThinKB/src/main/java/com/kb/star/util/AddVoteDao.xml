@@ -25,12 +25,31 @@
 	</insert>
 
 	<select id="myAllVote" resultType="com.kb.star.dto.AddVoteDto">
-		SELECT ad.* from AddVote ad
-		inner join
-		VoteParticipations vp on ad.AddVoteID = vp.AddVoteID
-		where
-		ad.IsDelete = 0
-		and vp.UserID = #{param1} order by ad.AddVoteID desc;
+		SELECT 
+    ad.*,
+    COALESCE(participation_counts.totalNum, 0) as totalNum,
+    COALESCE(participation_counts.voteNum, 0) as voteNum
+FROM 
+    AddVote ad
+LEFT JOIN (
+    SELECT 
+        AddVoteID,
+        COUNT(DISTINCT UserID) as totalNum,
+        COUNT(DISTINCT CASE WHEN OptionID != 0 THEN UserID END) as voteNum
+    FROM 
+        VoteParticipations
+    GROUP BY 
+        AddVoteID
+) participation_counts ON ad.AddVoteID = participation_counts.AddVoteID
+WHERE
+    ad.IsDelete = 0
+    AND EXISTS (
+        SELECT 1 
+        FROM VoteParticipations vp 
+        WHERE vp.AddVoteID = ad.AddVoteID AND vp.UserID = #{param1}
+    )
+ORDER BY 
+    ad.AddVoteID DESC;
 	</select>
 
 
