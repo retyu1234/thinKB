@@ -191,6 +191,13 @@ html, body {
 	height: 230px; /* 이미지 높이 고정 */
 	object-fit: cover; /* 이미지 비율 유지 */
 }
+
+.pin-button-container {
+	display: flex;
+	justify-content: end;
+	margin-left: 15%;
+	margin-right: 15%;
+}
 </style>
 </head>
 
@@ -198,10 +205,15 @@ html, body {
 	<%@ include file="../header.jsp"%>
 	<!-- 상단 배너영역 -->
 	<div class="ab-feedback-banner">
-		<img src="<c:url value='./resources/abFeedbackBanner.png'/>"
-			alt="abFeedbackBanner" style="max-width: 100%; height: 100%;">
+		<img src="<c:url value='./resources/pinMemoBanner.png'/>"
+			alt="pinMemoBanner" style="max-width: 100%; height: 100%;">
 	</div>
 
+	<!-- 결과피드백, 테스트만들기 버튼 -->
+	<div class="pin-button-container">
+		<a href="./makePinTest"><button class="yellow-button">+ 새로운
+				핀메모</button></a>
+	</div>
 	<!-- 콘텐츠 시작 -->
 	<div class="ab-feedback-content">
 		<!-- 상단 단계별 조회 -->
@@ -213,8 +225,8 @@ html, body {
 			<div class="progress">
 				<label><input type="checkbox" id="selectAll"
 					onchange="toggleSelectAll(this)">전체 선택</label> <label><input
-					type="checkbox" data-stage="incomplete" onchange="filterTests()">진행 중</label>
-				<label><input type="checkbox" data-stage="complete"
+					type="checkbox" data-stage="incomplete" onchange="filterTests()">진행
+					중</label> <label><input type="checkbox" data-stage="complete"
 					onchange="filterTests()">종료</label>
 			</div>
 		</div>
