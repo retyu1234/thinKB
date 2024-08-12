@@ -114,7 +114,6 @@
 
 .employee-delete-button {
 	padding: 5px 10px;
-	background-color: #ff4d4d;
 	color: white;
 	border: none;
 	border-radius: 4px;
@@ -225,7 +224,7 @@
 								<div class="employee-info">${employee.email}</div>
 								<div class="employee-info">
 									<button class="employee-delete-button"
-										onclick="deleteEmployee(${employee.userId})">삭제</button>
+										onclick="deleteEmployee(${employee.userId})">❌</button>
 								</div>
 							</div>
 						</c:when>

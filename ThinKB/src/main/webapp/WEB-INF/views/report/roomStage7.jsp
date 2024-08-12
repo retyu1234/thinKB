@@ -457,6 +457,7 @@ Size.whitelist = ['8px', '9px', '10px', '11px', '12px', '14px', '16px', '18px', 
 Quill.register(Size, true);
 
 var toolbarOptions = [
+	[{ 'header': [1, 2, 3, 4, 5, 6, false] }],
     [{ 'size': Size.whitelist }],
     ['bold', 'italic', 'underline', 'strike'],
     [{ 'color': [] }, { 'background': [] }],
@@ -465,6 +466,7 @@ var toolbarOptions = [
     ['clean']
 ];
 
+//Quill initialization and content setting
 var quill = new Quill('#report-content', {
     modules: {
         toolbar: toolbarOptions
@@ -472,13 +474,12 @@ var quill = new Quill('#report-content', {
     theme: 'snow'
 });
 
-//저장된 내용 불러오기
+// Load saved content or use default template
 var savedContent = `${reports.reportContent != null ? reports.reportContent : ''}`;
 console.log("savedContent:", savedContent);
 
 if (savedContent && savedContent.trim() !== '') {
     try {
-        // 줄바꿈 문자를 이스케이프 처리
         savedContent = savedContent.replace(/\n/g, "\\n").replace(/\r/g, "\\r");
         var content = JSON.parse(savedContent);
         quill.setContents(content);
@@ -488,42 +489,29 @@ if (savedContent && savedContent.trim() !== '') {
         quill.root.innerHTML = savedContent;
     }
 } else {
-    // 저장된 내용이 없을 경우 기본 템플릿 제공
-    quill.root.innerHTML = `
-        <h2>1. 목적</h2>
-        <p>이 보고서의 목적을 간략히 서술해주세요.</p>
-
-        <h2>2. 배경</h2>
-        <p>이 아이디어가 나오게 된 배경이나 문제 상황을 설명해주세요.</p>
-
-        <h2>3. 주요 내용</h2>
-        <p>아이디어의 핵심 내용을 상세히 기술해주세요.</p>
-
-        <h2>4. 기대 효과</h2>
-        <p>이 아이디어를 실행했을 때 예상되는 긍정적인 효과를 나열해주세요.</p>
-
-        <h2>5. 실행 계획</h2>
-        <p>아이디어를 실현하기 위한 구체적인 단계나 계획을 제시해주세요.</p>
-
-        <h2>6. 필요 자원</h2>
-        <p>아이디어 실행에 필요한 인적, 물적 자원을 명시해주세요.</p>
-
-        <h2>7. 위험 요소 및 대책</h2>
-        <p>예상되는 문제점과 그에 대한 대응 방안을 기술해주세요.</p>
-
-        <h2>8. 결론</h2>
-        <p>보고서의 주요 내용을 요약하고 결론을 내려주세요.</p>
-    `;
+    // Default template with styled headings and paragraphs using Delta format
+    var delta = [
+        { insert: "1. 목적\n", attributes: { header: 3, bold: true, size: '14px' } },
+        { insert: "이 보고서의 목적을 간략히 서술해주세요.\n", attributes: { size: '12px' } },
+        { insert: "\n2. 배경\n", attributes: { header: 3, bold: true, size: '14px' } },
+        { insert: "이 아이디어가 나오게 된 배경이나 문제 상황을 설명해주세요.\n", attributes: { size: '12px' } },
+        { insert: "\n3. 주요 내용\n", attributes: { header: 3, bold: true, size: '14px' } },
+        { insert: "아이디어의 핵심 내용을 상세히 기술해주세요.\n", attributes: { size: '12px' } },
+        { insert: "\n4. 기대효과\n", attributes: { header: 3, bold: true, size: '14px' } },
+        { insert: "아이디어의 기대효과를 상세히 기술해주세요.\n", attributes: { size: '12px' } },
+    ];
+    quill.setContents(delta);
 }
 
-// 초기 내용을 hidden input에 설정
+// Set initial content to hidden input
 document.getElementById('hidden-report-content').value = JSON.stringify(quill.getContents());
-// 실시간으로 내용 변경 감지 및 로깅
+
+// Update hidden input on content change
 quill.on('text-change', function() {
     updateHiddenInput();
 });
 
-//hidden input 업데이트 함수
+// Function to update hidden input
 function updateHiddenInput() {
     try {
         var delta = quill.getContents();
@@ -534,6 +522,15 @@ function updateHiddenInput() {
         console.error("Error updating content:", error);
     }
 }
+
+// Set Quill content to hidden input on form submit
+document.querySelector('form').onsubmit = function() {
+    updateHiddenInput();
+    var content = document.getElementById('hidden-report-content').value;
+    console.log("Submitting content:", content);
+    return true; // Allow form submission
+};
+
 
 // 폼 제출 시 Quill 내용을 hidden input에 설정
 document.querySelector('form').onsubmit = function() {
