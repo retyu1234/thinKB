@@ -41,7 +41,7 @@ html, body {
     font-size: 18pt;
     font-weight: bold;
     margin-left: 20pt;
-    margin-bottom: 10px; /* 텍스트와 내용 사이의 간격 */
+    margin-bottom: 10px;
 }
 .topic-content {
     font-size: 13pt;
@@ -67,20 +67,22 @@ html, body {
 
 .choice-title {
 	font-size: 15pt;
-	cursor: pointer;
 	font-weight: bold;
 	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 10px;
+}
+
+.choice-title input[type="checkbox"] {
+	margin-right: 10px;
 }
 
 .choice img {
 	width: 400px;
 	height: auto;
-	border: 5px solid transparent;
-	transition: border-color 0.3s ease-in-out;
-}
-
-.choice.selected img {
-	border-color: #ffc107; /* 선택된 항목의 테두리 색상 */
+	cursor: pointer;
 }
 
 .yellow-button {
@@ -98,7 +100,6 @@ html, body {
 	background-color: #D4AA00;
 }
 
-/* 회색버튼 */
 .grey-button {
 	background-color: #978A8F;
 	color: white;
@@ -114,6 +115,45 @@ html, body {
 	background-color: #60584C;
 }
 
+.ab-modal {
+	display: none;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	background-color: rgba(0,0,0,0.4);
+}
+
+.ab-modal-content {
+	background-color: #fefefe;
+	margin: 15% auto;
+	padding: 20px;
+	border: 1px solid #888;
+	width: 80%;
+	max-width: 800px;
+}
+
+.ab-close {
+	color: #aaa;
+	float: right;
+	font-size: 28px;
+	font-weight: bold;
+}
+
+.ab-close:hover,
+.ab-close:focus {
+	color: black;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.ab-modal-image {
+	width: 100%;
+	height: auto;
+}
 </style>
 </head>
 
@@ -130,18 +170,21 @@ html, body {
 		    <img src="<c:url value='./resources/abTitle.png'/>" alt="abTitleImg" class="topic-image">
 		</div>
 
-
 		<form action="./abTestVote" method="post" id="voteForm">
 			<div class="choices">
-				<div class="choice" id="choiceA" onclick="selectChoice('A')">
-					<div class="choice-title">A 시안</div>
-					<img src="./upload/${abtest.variantA}" alt="Image A">
-					<input type="radio" name="pick" value="1" style="display: none;">
+				<div class="choice" id="choiceA">
+					<div class="choice-title">
+						<input type="checkbox" name="pick" value="1">
+						A 시안
+					</div>
+					<img src="./upload/${abtest.variantA}" alt="Image A" onclick="showModal(this.src, 'A 시안')">
 				</div>
-				<div class="choice" id="choiceB" onclick="selectChoice('B')">
-					<div class="choice-title">B 시안</div>
-					<img src="./upload/${abtest.variantB}" alt="Image B">
-					<input type="radio" name="pick" value="0" style="display: none;">
+				<div class="choice" id="choiceB">
+					<div class="choice-title">
+						<input type="checkbox" name="pick" value="0">
+						B 시안
+					</div>
+					<img src="./upload/${abtest.variantB}" alt="Image B" onclick="showModal(this.src, 'B 시안')">
 				</div>
 			</div>
 			<input type="hidden" name="abTestId" value="${abtest.ABTestID}">
@@ -152,25 +195,46 @@ html, body {
 		</form>
 	</div>
 
+	<div id="abTestModal" class="ab-modal">
+	    <div class="ab-modal-content">
+	        <span class="ab-close">&times;</span>
+	        <h2 id="modalTitle">이미지 상세보기</h2>
+	        <img id="modalImage" class="ab-modal-image" src="" alt="확대된 이미지">
+	    </div>
+	</div>
+
 	<script>
-        var selectedChoice = null;
+    function showModal(imgSrc, title) {
+        var modal = document.getElementById("abTestModal");
+        var modalImg = document.getElementById("modalImage");
+        var modalTitle = document.getElementById("modalTitle");
+        
+        modal.style.display = "block";
+        modalImg.src = imgSrc;
+        modalTitle.innerHTML = "이미지 상세보기 - " + title;
+    }
 
-        function selectChoice(choice) {
-            if (selectedChoice === choice) return; // 이미 선택된 경우 무시
-            
-            if (selectedChoice) {
-                var selectedElement = document.getElementById('choice' + selectedChoice);
-                selectedElement.classList.remove('selected');
-            }
+    var span = document.getElementsByClassName("ab-close")[0];
+    span.onclick = function() {
+        var modal = document.getElementById("abTestModal");
+        modal.style.display = "none";
+    }
 
-            selectedChoice = choice;
-            var selectedElement = document.getElementById('choice' + selectedChoice);
-            selectedElement.classList.add('selected');
-            
-            // 선택된 값을 숨겨진 라디오 버튼에 설정
-            var radio = selectedElement.querySelector('input[type="radio"]');
-            radio.checked = true;
+    window.onclick = function(event) {
+        var modal = document.getElementById("abTestModal");
+        if (event.target == modal) {
+            modal.style.display = "none";
         }
-    </script>
+    }
+
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            checkboxes.forEach(function(cb) {
+                if (cb !== checkbox) cb.checked = false;
+            });
+        });
+    });
+</script>
 </body>
 </html>

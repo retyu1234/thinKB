@@ -21,7 +21,7 @@
 
 .header {
 	width: 100%;
-	padding: 10px 30px;
+	 padding: 10px 5%;
 	top: 0;
 	display: flex;
 	background: #ffcc00;
@@ -37,7 +37,6 @@
 	display: flex;
 	align-items: center;
 	padding: 10px 30px;
-	width:100%;
 	height:auto;
 	background-color:#ffffff;
 	z-index: 1000;
@@ -357,7 +356,7 @@
     });
 </script>
 </head>
-<body>
+<body style="margin:0;">
     <header>
     <div class="header-container">
                     <div class="logo">

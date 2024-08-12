@@ -37,9 +37,9 @@ public class UserInfoCommand implements LoginCommand {
 
 		// 진행중인 회의방 영역
 		UserDao dao = sqlSession.getMapper(UserDao.class);
-		List<MeetingRooms> dto = dao.myMeetingRoom(id); // 종료안된것중에 젤 최근꺼 세개
+		List<MeetingRooms> dto = dao.myMeetingRoom(id); // 종료안된것중에 완료전
 		model.addAttribute("roomList", dto);
-
+		
 		NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
 		List<NotiDto> notifications = notiDao.getAllNoti(id); // 알림 목록 데이터 가져오기
 

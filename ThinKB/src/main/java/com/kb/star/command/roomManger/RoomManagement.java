@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.TimersDto;
 import com.kb.star.dto.UsersDto;
 import com.kb.star.util.RoomDao;
@@ -30,6 +31,7 @@ public class RoomManagement implements RoomCommand {
 		// TODO Auto-generated method stub
 		Map<String,Object> map=model.asMap();
 		HttpServletRequest request=(HttpServletRequest)map.get("request");
+		int userId = (Integer)map.get("userId");
 		int roomId=Integer.parseInt(request.getParameter("roomId"));
 		RoomDao dao=sqlSession.getMapper(RoomDao.class);
 		MeetingRooms meetingRoom = dao.selectRoomId(roomId);
@@ -50,7 +52,14 @@ public class RoomManagement implements RoomCommand {
 		model.addAttribute("userList", userList);
 		String timer = dao.roomTimerInfo(roomId);
 		model.addAttribute("timer", timer);
-		
+		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
+		List<Ideas> dto3 = dao.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", dto3);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("roomId", roomId);
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByRoomId", params);
+		model.addAttribute("roomMessage", roomMessage);
 	}
 
 }

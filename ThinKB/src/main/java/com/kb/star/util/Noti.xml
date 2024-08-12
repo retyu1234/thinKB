@@ -80,5 +80,16 @@
 		AND IdeaID = #{ideaId}
 		ORDER BY CreatedAt DESC;
 	</select>
+	<select id="getMessagesByRoomId"
+		resultType="com.kb.star.dto.NotiDto">
+		SELECT *
+		FROM Notifications
+		WHERE UserID = #{userId}
+		AND
+		RoomID = #{roomId}
+		AND IsRead = 0
+		AND IsDelete = 0
+		ORDER BY CreatedAt DESC;
+	</select>
 
 </mapper>
