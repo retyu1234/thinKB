@@ -116,7 +116,7 @@ th {
             <div class="ideaList">아이디어 목록(완료여부)</div>
             <table>
                 <tr>
-                    <th>아이디어 제목</th>
+                    <th>아이디어 제목</th> 
                     <th>1차의견 완료 여부</th>
                 </tr>
                 <c:forEach items="${ideasInfo}" var="idea">

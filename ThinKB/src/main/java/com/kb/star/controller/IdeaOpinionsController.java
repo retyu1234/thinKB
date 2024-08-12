@@ -238,9 +238,6 @@ public class IdeaOpinionsController {
 	    List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
         model.addAttribute("ideasInfo", ideasInfo);
         
-    	
-        
-    	
         return "/firstMeeting/ideaOpinionsClear";
     }
     
