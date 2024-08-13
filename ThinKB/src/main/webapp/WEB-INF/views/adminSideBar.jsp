@@ -81,14 +81,64 @@
     font-size: 0.8em;
     float: right;
 }
-.admin-sidebar a {
+.admin-sidebar > ul > li > span {
+    display: block;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 링크 스타일 (서브 메뉴 항목 및 직접 이동 메뉴) */
+.admin-sidebar li ul li a,
+.admin-sidebar > ul > li > a {
+    padding: 10px 15px;
+    display: block;
+    text-decoration: none;
     color: white;
+}
+
+/* 서브 메뉴 들여쓰기 */
+.admin-sidebar li ul li a {
+    padding-left: 45px;
+}
+
+/* 호버 효과 */
+.admin-sidebar > ul > li > span:hover,
+.admin-sidebar li ul li a:hover,
+.admin-sidebar > ul > li > a:hover {
+    background-color: #3a3a3a;
+}
+
+/* 아이콘 스타일 */
+.admin-icon {
+    margin-right: 10px;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+}
+.admin-sidebar-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 15px;
+    background-color: #222;
+    font-size: 0.8em;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.admin-sidebar-footer p {
+    margin: 5px 0;
+    color: #888;
+}
+
+.admin-sidebar-footer a {
+    color: #aaa;
     text-decoration: none;
 }
-.admin-sidebar li ul li a {
-    display: block;
-    width: 100%;
-    height: 100%;
+
+.admin-sidebar-footer a:hover {
+    text-decoration: underline;
 }
 </style>
 </head>
@@ -102,8 +152,8 @@
     <ul>
         <li><span class="admin-icon">PJ</span>프로젝트 관리
         	<ul>
-                <li><a href="./departmentReportList">프로젝트 결재 목록</a></li>
-                <li>프로젝트 조회</li>
+                <li><a href="./departmentReportList">프로젝트 결재</a></li>
+                <li><a href="./departmentReportList">프로젝트 조회</a></li>
             </ul>
         </li>
         <li>
@@ -113,9 +163,17 @@
                 <li><a href="./addUserView">직원 추가</a></li> 
             </ul>
         </li>
-        <li><span class="admin-icon">📊</span>사용량 관리</li>
-		<a href="<c:url value='./adminMypage'/>"><li><span class="admin-icon">⚙️</span>설정</li></a>
+<!--        <li><span class="admin-icon">📊</span>사용량 관리</li> -->
+		        <li>
+            <a href="<c:url value='./adminMypage'/>"><span class="admin-icon">⚙️</span>부서 현황</a>
+        </li>
     </ul>
+    
+        <div class="admin-sidebar-footer">
+        <p>© 2024 ThinKB Admin</p>
+        <p>버전 1.0.0</p>
+        <p><a href="#">도움말</a> | <a href="#">문의하기</a></p>
+    </div>
 </div>
 </body>
 </html>
