@@ -36,9 +36,11 @@ public class AdminMainCommand implements Admin{
         List<AdminDto> userList = adminDao.getUserList();
         model.addAttribute("userList", userList);
      		
- 		// 베스트 직원
- 		List<AdminDto> bestEmployees = adminDao.getBestEmployees();
+ 		// 팀별 베스트 직원
+ 		List<AdminDto> bestEmployees = adminDao.getBestEmployees(null);
  	    model.addAttribute("bestEmployees", bestEmployees);
+// 	    for(AdminDto employee : bestEmployees)
+// 	    System.out.println("베스트직원 : " + employee.getUserName());
  	    
  	    // 베스트 사용량 팀
  	    List<AdminDto> bestUsage = adminDao.getBestUsage();

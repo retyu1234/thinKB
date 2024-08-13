@@ -96,12 +96,12 @@ document.addEventListener('DOMContentLoaded', function() {
     <ul>
         <li>📋 프로젝트 관리
             <ul>
-                <li>프로젝트 결재 목록</li>
+                <li><a href="./departmentReportList">프로젝트 결재 목록</a></li>
             </ul>
         </li>
         <li>👥 사용자 관리
             <ul>
-                <li>직원 목록</li>
+            	<li><a href="./userAdminView">직원 목록</a></li>
                 <li>직원 추가</li>
             </ul>
         </li>

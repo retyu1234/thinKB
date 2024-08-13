@@ -299,7 +299,7 @@
         	<div class="section-wrapper">
         	<div class="section-header">
         		<div class="section-title">📋 프로젝트 관리</div>
-        		<button class="more-button" onclick="location.href='./meetingList'">+ 더보기</button>
+        		<button class="more-button" onclick="location.href='./departmentReportList'">+ 더보기</button>
         	</div>
         	<div class="section-half">
         	<div class="section-Intitle">프로젝트 결재 현황</div>
@@ -365,7 +365,7 @@
 	                        <th>직원번호</th>
 	                        <th>이메일</th>
 	                        <th>생일</th>
-	                        <th>재직여부</th>
+	                        <!-- <th>재직여부</th> -->
 	                    </tr>
 	                </thead>
 	                <tbody>
@@ -378,10 +378,10 @@
 					                <td>${user.userId}</td>
 					                <td>${user.email}</td>
 					                <td>${user.birth}</td>
-					                <td><c:choose>
+					                <%-- <td><c:choose>
 					                    <c:when test="${user.delete == false}">Y</c:when>
 					                    <c:otherwise>N</c:otherwise>
-					                </c:choose></td>
+					                </c:choose></td> --%>
 					            </tr>
 				            </c:if>
 				        </c:forEach>
@@ -414,34 +414,51 @@
 	         <div class="usage-half">
 	            <div class="usage-table">
 	            	<div class="section-Intitle">팀별 분석</div>
-	                <table>
+	                <table id="teamAnalysisTable">
 	                    <thead>
 	                        <tr>
-	                            <th>부서이름</th>
+	                            <th>팀</th>
 	                            <th>사용횟수</th>
 	                            <th>채택률</th>
 	                        </tr>
 	                    </thead>
 	                     <tbody>
 				            <c:forEach var="usage" items="${bestUsage}" varStatus="status">
-				                <tr>
-				                    <td>${usage.departmentName}</td>
-				                    <td>${usage.departmentCount}회</td>
-				                    <td>-</td> <!-- 채택률 공란 -->
-				                </tr>
-				            </c:forEach>
+				                <tr class="team-row" data-team-name="${usage.teamName}">
+		                            <td>${usage.teamName}</td>
+		                            <td>${usage.teamCount}회</td>
+		                            <td>-</td> <!-- 채택률 공란 -->
+		                        </tr>
+		                    </c:forEach>
+		                </tbody>
+		            </table>
+	                
+	                <div class="section-Intitle" style="margin-top: 20px;">팀원 정보</div>
+				    <table id="teamMembersTable">
+				        <thead>
+				            <tr>
+				                <th>직원명</th>
+				                <th>직원번호</th>
+				                <th>기여도</th>
+				            </tr>
+				        </thead>
+				        <tbody>
+				            <!-- <tr class="team-A" style="display: none;">
+				                <td>홍길동</td>
+				                <td>001</td>
+				                <td>50%</td>
+				            </tr> -->
 				        </tbody>
-	                </table>
+				    </table>
 	             </div>
 	    	</div>
         </div>
     </div>
 </div>
-</body>
-</html>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+	// 차트
     // 테이블에서 데이터 추출
     const table = document.querySelector('.usage-table table');
     const departments = [];
@@ -478,12 +495,64 @@ document.addEventListener('DOMContentLoaded', function() {
                 x: {
                     title: {
                         display: true,
-                        text: '부서'
+                        text: '팀'
                     }
                 }
             }
         }
     });
+    
+ 	// 팀 행 클릭 이벤트 처리
+    const teamRows = document.querySelectorAll('#teamAnalysisTable tbody tr');
+    console.log("Number of team rows:", teamRows.length);
+    teamRows.forEach(row => {
+        row.addEventListener('click', function() {
+            const teamName = this.cells[0].textContent;
+            console.log("Row clicked:", teamName);
+            fetchTeamMembers(teamName);
+        });
+    });
 });
 
+function fetchTeamMembers(teamName) {
+    console.log("Fetching team members for:", teamName);
+    fetch('./getBestEmployees?teamName=' + encodeURIComponent(teamName), {
+    	headers: {
+            'Accept': 'application/json;charset=UTF-8'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(text => { throw new Error(text) });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("Received data:", data);
+        updateTeamMembersTable(data);
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function updateTeamMembersTable(employees) {
+    const tableBody = document.querySelector('#teamMembersTable tbody');
+    tableBody.innerHTML = '';
+    employees.forEach(employee => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = employee.userName;
+        row.insertCell(1).textContent = employee.userId;
+        row.insertCell(2).textContent = employee.totalContribution;
+    });
+}
+
+//팀 행 클릭 이벤트 처리
+document.querySelectorAll('.usage-table tbody tr').forEach(row => {
+    row.addEventListener('click', function() {
+        const teamName = this.cells[0].textContent;
+        fetchTeamMembers(teamName);
+    });
+});
 </script>
+</body>
+</html>
+

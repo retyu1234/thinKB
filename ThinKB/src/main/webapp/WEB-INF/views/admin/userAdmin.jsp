@@ -11,16 +11,15 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <title>직원관리</title>
 <style>
-.userAdmin-body {
-	margin: 0;
-	padding: 0;
+.container {
+    display: flex;
 }
-
 .employee-content {
 	padding: 20px;
 	width: 65%;
 	margin-top: 10%;
 	margin: 8% auto;
+	flex: 1;
 }
 
 .employee-title {
@@ -180,9 +179,10 @@
 </script>
 </head>
 <body>
-	<div class="userAdmin-body">
-		<%@ include file="../headerAdmin.jsp"%>
-	</div>
+<div class="container">
+	
+	<%@ include file="../adminSideBar.jsp"%>
+	
 	<div class="employee-content">
 		<div class="employee-title">직원조회</div>
 		<div class="add-btn">
@@ -247,6 +247,7 @@
 			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 		</div>
+	</div>
 	</div>
 </body>
 </html>
