@@ -1,32 +1,118 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="../header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>투표하기</title>
+<title>thinKB - 투표하기</title>
 <style>
-body {
-	font-family: 'Inter', sans-serif;
-	margin: 0;
-	padding: 0;
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.vote-body {
+	font-family: Arial, sans-serif;
 }
 
-.option_header {
-	position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 1000;
+.vote-content {
+	padding: 20px;
+	margin-left: 17%;
+	margin-right: 17%;
+	margin-top: 1%;
 }
 
-.content {
-	margin-top: 120px; /* 헤더 높이만큼 여백 추가 */
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+.vote-number {
+    display: inline-block;
+    font-size: 14pt;
+    color: white;
+    background-color: #4a4a4a;
+    padding: 5px 15px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    font-weight: bold;
 }
+
+.vote-title {
+	font-size: 22pt;
+	color: black;
+	font-weight: bold;
+	margin-top: 30px;
+	margin-bottom: 20px;
+}
+
+.vote-title-detail {
+	font-size: 15pt;
+}
+
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
+
+.vote-options {
+    list-style-type: none;
+    padding: 10px;
+}
+
+.vote-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    text-align: center;
+}
+
+.vote-radio {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.vote-radio:checked {
+    background-color: #ffc000;
+    border-color: #ffc000;
+}
+
+.vote-radio:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.vote-option-text {
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
+}
+/* 여기까지  */
 
 .topic-box {
 	width: 100%;
@@ -107,103 +193,68 @@ body {
 	cursor: pointer;
 	margin-top: 20px;
 }
+
 </style>
 </head>
-<body>
-	<input type="hidden" id="session-user-id"
-		value="${sessionScope.userId}">
-
-	<div class="option_header">
-		<jsp:include page="../header.jsp" />
-	</div>
-	<div class="content">
-		<div class="div">
-			<div class="selected-option">
-				<div class="topic-box">
-					<div class="topic-title">${voteInfo.title}</div>
-
-				</div>
-			</div>
-			<div class="topic-container">
-				<c:forEach var="option" items="${optionList}">
-					<div class="option-item">
-						<div class="option-box"
-							onclick="toggleSelect(this, ${option.optionId}, '${option.optionText.replaceAll('\'', '\\\'')}', false)">${option.optionText}</div>
-					</div>
-				</c:forEach>
-			</div>
-		</div>
-
-		<button class="vote-button" onclick="submitVote()">투표하기</button>
-	</div>
-
+<body class="vote-body">
 	<script>
-    let selectedOption = null;
-    let selectedOptionId = null;
+		// 투표 여부 확인 및 리다이렉트
+		<c:if test="${not empty votedOptionId and votedOptionId != 0}">
+			alert("이미 제출한 투표입니다. 투표 목록 화면으로 이동합니다.");
+			window.location.href = "./voteList";
+		</c:if>
+	</script>
 
-    function toggleSelect(element, optionId, optionText, isCircle) {
-        if (selectedOption) {
-            selectedOption.classList.remove('selected');
-        }
-        if (selectedOption !== element) {
-            element.classList.add('selected');
-            selectedOption = element;
-            selectedOptionId = optionId;
-        } else {
-            selectedOption = null;
-            selectedOptionId = null;
-        }
-    }
+	<!-- 헤더 영역 -->
+	<%@ include file="../header.jsp"%>
+	
+	<!-- 콘텐츠 시작 -->	
+	<div class="vote-content">
+	
+	<div class="vote-number">${voteInfo.addVoteId}번 투표</div>
+	<div class="vote-title">[${voteInfo.title}] 투표 하기</div>
+	<div class="vote-title-detail">투표하고 싶은 항목을 선택하고 투표하기 버튼을 눌러주세요.</div>
+	<hr class="line">
+	
+	<form id="voteForm" action="./submitAddVote" method="post" onsubmit="return validateForm()">
+	<input type="hidden" name="userId" value="${userId}">
+	<input type="hidden" name="addVoteId" value="${voteInfo.addVoteId}">
+		<ul class="vote-options">
+			<c:forEach var="vote" items="${optionList}">
+				<li class="vote-option">
+					<input type="radio" id="option_${vote.addVoteId}" name="optionId" value="${vote.optionId}" class="vote-radio">
+					<label for="option_${vote.addVoteId}" class="vote-option-text">${vote.optionText}</label>
+				</li>
+			</c:forEach>
+		</ul>
+		<input type="hidden" id="selectedAddVoteId" name="addVoteId" value="">
+		<div style="text-align: center; margin-top: 50px;">
+			<button type="submit" class="yellow-button">투표하기</button>
+		</div>
+	</form>
+				
+</div>
 
-    function submitVote() {
-        if (selectedOption) {
-            // 폼 생성 및 제출
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = '${pageContext.request.contextPath}/submitAddVote';
+<script>
+function validateForm() {
+    var options = document.getElementsByName('optionId');
+    var selected = false;
 
-            const optionIdInput = document.createElement('input');
-            optionIdInput.type = 'hidden';
-            optionIdInput.name = 'optionId';
-            optionIdInput.value = selectedOptionId;
-
-            const addVoteIdInput = document.createElement('input');
-            addVoteIdInput.type = 'hidden';
-            addVoteIdInput.name = 'addVoteId';
-            addVoteIdInput.value = '${voteInfo.addVoteId}';
-
-            const userIdInput = document.createElement('input');
-            userIdInput.type = 'hidden';
-            userIdInput.name = 'userId';
-            userIdInput.value = '${sessionScope.userId}';
-
-            form.appendChild(optionIdInput);
-            form.appendChild(addVoteIdInput);
-            form.appendChild(userIdInput);
-            document.body.appendChild(form);
-            form.submit();
-        } else {
-            alert('투표할 항목을 선택하세요.');
-        }
-    }
-
-    window.onload = function() {
-        const isCompleted = '${voteInfo.isCompleted}';
-        if (isCompleted == 'true' ) {
-            alert('이미 종료된 투표입니다.');
-            window.location.href = '${pageContext.request.contextPath}/addVoteAfter?addVoteId=${voteInfo.addVoteId}';
-        }
-        
-        const isVoted = '${votedOptionId}';
-        if (isVoted != 0){
-        	window.location.href = '${pageContext.request.contextPath}/addVoteAfter?addVoteId=${voteInfo.addVoteId}';
-        }
-
-        const message = '${errorMessage}';
-        if (message) {
-            alert(message);
+    for (var i = 0; i < options.length; i++) {
+        if (options[i].checked) {
+            selected = true;
+            break;
         }
     }
+
+    if (!selected) {
+        alert('투표 옵션을 선택해주세요.');
+        return false;
+    }
+
+    return true;
+}   
+
 </script>
 
 </body>
