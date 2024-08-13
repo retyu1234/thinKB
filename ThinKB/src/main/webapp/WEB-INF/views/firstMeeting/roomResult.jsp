@@ -412,21 +412,21 @@ body, html {
 	    request.setAttribute("stages", stages);
 	%>
 	<div class="stages">
-        <c:forEach var="stage" items="${stages}" varStatus="status">
-            <c:choose>
-                <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-                    <a href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}" class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-                        ${status.index + 1}. ${stage}
-                    </a>
-                </c:when>
-                <c:otherwise>
-                    <div class="stage inactive">
-                        ${status.index + 1}. ${stage}
-                    </div>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-    </div>
+	    <c:forEach var="stage" items="${stages}" varStatus="status">
+	        <c:choose>
+	            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+	                <a
+	                    href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+	                    class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+	                    ${status.index + 1}. ${stage}
+	                </a>
+	            </c:when>
+	            <c:otherwise>
+	                <div class="stage inactive">${status.index + 1}. ${stage}</div>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	</div>
     
 <!-- 아이디어 주제 ${meetingRoom} -->
 	<div class="meeting-summary fade-in-section">

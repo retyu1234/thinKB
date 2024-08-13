@@ -134,4 +134,8 @@ public interface RoomDao {
 
 	List<RejectLog> rejectList(int roomId, int id);
 
+	int totalContributionNum(int roomId);
+
+	int myContributionNum(int roomId, int id);
+
 }

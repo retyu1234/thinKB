@@ -381,4 +381,12 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 	WHERE i.RoomID = #{param1} and i.UserID = #{param2} and i.isReject = 1
 </select>
 
+<!-- 오른쪽 사이드바용 기여도 -->
+<select id="totalContributionNum" resultType="int">
+	SELECT sum(ContributionCnt) total from MeetingRoomMembers WHERE RoomID = #{param1} and IsDelete=0
+</select>
+
+<select id="myContributionNum" resultType="int">
+	SELECT ContributionCnt from MeetingRoomMembers WHERE RoomID = #{param1} and UserID = #{param2} and IsDelete=0
+</select>
 </mapper>
