@@ -82,5 +82,7 @@ public interface UserDao {
 	MeetingRoomStats getMeetingRoomStats(int userId);
     
 	List<ContributionDetail> getUserContributions(int userId);
+	
+	MeetingRoomStats getMeetingRoomStatsAdmin(int userId);
 
 }
