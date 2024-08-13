@@ -1,19 +1,27 @@
 package com.kb.star.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.MediaType;
 
+import com.google.gson.Gson;
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.admin.AdminMainCommand;
-import com.kb.star.command.user.DeleteEmployee;
-import com.kb.star.command.user.DepartmentTeam;
-import com.kb.star.command.user.InsertUser;
+import com.kb.star.dto.AdminDto;
+import com.kb.star.util.AdminDao;
 
 @Controller
 public class AdminController {
@@ -34,6 +42,19 @@ public class AdminController {
 		
 		return "adminMain";
 	}
+	
+	// 베스트 직원 정보 가져오기 (AJAX 요청 처리)
+	@RequestMapping(value = "/getBestEmployees", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String getBestEmployees(@RequestParam(value = "teamName", required = false) String teamName) {
+        // System.out.println("Received request for teamName: " + teamName);
+        AdminDao adminDao = sqlSession.getMapper(AdminDao.class);
+        List<AdminDto> result = adminDao.getBestEmployees(teamName);
+        // System.out.println("직원수 " + result.size() + " employees");
+        
+        Gson gson = new Gson();
+        return gson.toJson(result);
+    }
 	
 	// 회원 관리 
 	// 사용자 목록
