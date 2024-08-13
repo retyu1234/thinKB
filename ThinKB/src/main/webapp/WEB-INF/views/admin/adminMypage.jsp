@@ -21,11 +21,9 @@
 
 .adminMypageContainer {
 	background-color: #ffffff;
-	padding: 30px;
+	padding-top: 30px;
 	width: 100%;
-	margin-top: 0;
-	margin-left: 25%;
-	margin-right: 15%;
+	margin : 0% 10% 6% 20%;
 	flex: 1;
 }
 
@@ -33,6 +31,7 @@
 	color: #333;
 	text-align: left;
 	margin-bottom: 30px;
+	font-size: 30px;
 }
 
 .profile-section {
@@ -56,7 +55,7 @@
 }
 
 .profile-span {
-	font-size: 20pt;
+	font-size: 18pt;
 	font-weight: bold;
 	margin-left: 3%;
 }
@@ -209,17 +208,6 @@
 	border-radius: 10px;
 }
 
-.mypageModal {
-	display: none;
-	position: fixed;
-	z-index: 1;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	overflow: auto;
-	background-color: rgba(0, 0, 0, 0.4);
-}
 
 #profileUploadModal {
 	display: none;
@@ -625,23 +613,9 @@ window.onclick = function(event) {
 			<h1 class="myPageh1">우리 부서 현황</h1>
 			<hr style="margin-bottom: 4%;">
 			<div class="profile-section">
-				<div class="profile-pic-container">
-					<c:choose>
-						<c:when test="${not empty user.profileImg}">
-							<img src="./upload/${user.profileImg}" alt="Profile Picture"
-								class="profile-pic">
-						</c:when>
-						<c:otherwise>
-							<img src="./resources/profile1.png" alt="Profile Picture"
-								class="profile-pic">
-						</c:otherwise>
-					</c:choose>
-					<button class="change-pic-btn"
-						onclick="openModal('profileUploadModal')">✏️</button>
-				</div>
 				<span class="profile-span">${user.userName}님, 안녕하세요!</span>
 			</div>
-			<p class="mypage-title-p">우리 부서 현황</p>
+			<p class="mypage-title-p">부서 회의방 현황</p>
 			<div class="card-container">
 
 				<div class="card">
@@ -815,85 +789,7 @@ window.onclick = function(event) {
 			</div>
 
 		</div>
-		<!-- 프로필업로드 모달 -->
-		<div id="profileUploadModal" class="mypageModal">
-			<div class="mypageModal-content" style="width: 400px;">
-				<span class="close" onclick="closeModal('profileUploadModal')">&times;</span>
-				<h2 class="modal-title">프로필 사진 업로드</h2>
-				<form action="./updateProfileImg" method="post"
-					enctype="multipart/form-data" id="profileUploadForm">
-					<div class="file-upload-container">
-						<div style="display: flex; justify-content: flex-end;">
-							<label for="profileImgInput" class="file-upload-label"> <i
-								class="fas fa-cloud-upload-alt"></i> 파일 선택
-							</label> <input type="file" name="profileImg" id="profileImgInput"
-								accept="image/*">
-						</div>
-					</div>
-					<div class="image-preview" id="imagePreview">
-						<img src="./upload/${user.profileImg}" alt="프로필 이미지"
-							id="previewImg">
-					</div>
-					<input type="hidden" name="userId" value="${user.userId}">
-					<input type="hidden" name="profileImgName" id="profileImgName"
-						value="${user.profileImg}">
-					<div class="button-container">
-						<button type="submit" class="upload-btn">업로드</button>
-						<button type="button" class="reset-btn" id="resetBtn">초기화</button>
-					</div>
-				</form>
-			</div>
-		</div>
 	</div>
-
-	<script>
-//프로필 모달
-let originalImageSrc = "./upload/${user.profileImg}";
-const defaultImageSrc = "./upload/noprofile.png";
-
-function openModal(modalId) {
-    document.getElementById(modalId).style.display = 'block';
-    document.getElementById('previewImg').src = originalImageSrc;
-    document.getElementById('profileImgName').value = "${user.profileImg}";
-    resetForm();
-}
-
-function resetForm() {
-    document.getElementById('profileImgInput').value = '';
-}
-
-document.getElementById('profileImgInput').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('previewImg').src = e.target.result;
-        }
-        reader.readAsDataURL(file);
-        document.getElementById('profileImgName').value = file.name;
-    }
-});
-
-document.getElementById('resetBtn').addEventListener('click', function() {
-    document.getElementById('previewImg').src = defaultImageSrc;
-    document.getElementById('profileImgInput').value = '';
-    document.getElementById('profileImgName').value = 'noprofile.png';
-});
-
-document.getElementById('profileUploadForm').addEventListener('submit', function(event) {
-    const fileInput = document.getElementById('profileImgInput');
-    const profileImgName = document.getElementById('profileImgName').value;
-    
-    if (fileInput.files.length === 0 && profileImgName === "${user.profileImg}" && profileImgName !== 'noprofile.png') {
-        event.preventDefault();
-        alert('변경사항이 없습니다.');
-    } else {
-        // 파일이 선택되지 않았지만 profileImgName이 'noprofile.png'인 경우
-        // 또는 파일이 선택된 경우 폼 제출을 허용
-        console.log('Submitting form with profileImgName:', profileImgName);
-    }
-});
-</script>
 
 </body>
 </html>
