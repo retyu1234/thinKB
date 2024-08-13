@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.kb.star.dto.DepartmentReportDto;
 import com.kb.star.dto.IdeaSummaryDto;
 import com.kb.star.dto.ReportDetailsDto;
 import com.kb.star.dto.ReportsDto;
@@ -17,4 +18,6 @@ public interface ReportDao {
 	ReportDetailsDto getReportDetailsFirst(@Param("roomId") int roomId);
 	List<ReportsDto> getMyReportList(@Param("userId") int userId);
 	List<IdeaSummaryDto> getIdeaSummaries(@Param("roomId") int roomId);
+	List<DepartmentReportDto>getDepartmentReportList(@Param("managerId") int userId);
+	void approveReport(@Param("reportId") int reportId);
 }

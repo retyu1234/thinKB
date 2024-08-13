@@ -15,13 +15,6 @@ html, body {
 .opinion2-body {
 	font-family: Arial, sans-serif;
 }
-
-.opinion2-content {
-	padding: 20px;
-	margin-left: 17%;
-	margin-right: 17%;
-	margin-top: 1%;
-}
 /* .content-container {
 	padding: 20px;
 	margin-left: 15%;
@@ -31,6 +24,62 @@ html, body {
 	width: 70%;
 	text-align: center; 
 } */
+
+/* 가운데 내용 부분 */
+.columns {
+    width: 60%;
+    margin: 0 auto;
+}
+
+/* 5개 단계 표시 */
+.stages {
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 0;
+	font-size: 13pt;
+}
+.stage {
+    flex: 1;
+    text-align: center;
+    padding: 3px; /* 5px에서 3px로 줄임 */
+    margin: 0 2px; /* 좌우 여백 추가 */
+    cursor: pointer;
+    text-decoration: none;
+    color: #000;
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
+    overflow: hidden; /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+}
+.active {
+	color: #FFD700;
+	font-weight: bold;
+}
+.inactive {
+	color: #999;
+	pointer-events: none;
+}
+
+/* 아이디어 제목 */
+.ideaOpinionList-title2 {
+	font-size: 18pt;
+	color: black;
+	font-weight: bold;
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+.ideaOpinionClear-title-detail {
+	font-size: 13pt;
+	position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+/* 구분선 */
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
 
 /* 아이디어 목록 */
 table {
@@ -70,7 +119,7 @@ th {
     cursor: pointer;
     transition: background-color 0.3s ease;
     display: block;
-    margin: 50px auto 0;
+    margin: 80px auto 0;
 	/* text-align: center;
 	text-decoration: none;
 	display: inline-block; */
@@ -86,15 +135,43 @@ th {
 	
 	<%@ include file="../leftSideBar.jsp"%>
 	<%@ include file="../rightSideBar.jsp"%>
+	
+	<div class="columns">
+    
+    <!-- 5개 단계 표시 -->
+    <%
+	String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
+	request.setAttribute("stages", stages);
+	%>
+	<div class="stages">
+	    <c:forEach var="stage" items="${stages}" varStatus="status">
+	        <c:choose>
+	            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+	                <a
+	                    href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+	                    class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+	                    ${status.index + 1}. ${stage}
+	                </a>
+	            </c:when>
+	            <c:otherwise>
+	                <div class="stage inactive">${status.index + 1}. ${stage}</div>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	</div>
+	
+	<!-- 제목 & 상세설명 -->
+	<div class="ideaOpinionList-title2">[clear page] 보고서 작성 설정</div>
+	<div class="ideaOpinionClear-title-detail">이전 단계에서 수집된 아이디어 목록&완료 여부 확인 후 '보고서 작성하러가기' 버튼을 클릭해주세요!</div>
+	<hr class="line">
 
-	<div class="opinion2-content">
 			<form action="./goStage5" id="goStage5" method="get">
 				<input type="hidden" name="roomId" value="${roomId}">
 				<input type="hidden" name="ideaId" value="${ideaId}"> 
 				<input type="hidden" name="stage" value=5>
 				
 	            <table>
-	           	 	<div class="ideaList">아이디어 목록 - 완료여부</div>
+	           	 	<div class="ideaList">아이디어 목록(완료여부)</div>
 	                <tr>
 	                    <th>아이디어 제목</th>
 	                    <th>2차의견 완료 여부</th>
@@ -149,6 +226,7 @@ document.getElementById('goStage5').addEventListener('submit', function(e) {
         alert("아직 진행이 완료되지 않은 아이디어가 있습니다.");
     }
 });
+
 </script>
 	
 </body>

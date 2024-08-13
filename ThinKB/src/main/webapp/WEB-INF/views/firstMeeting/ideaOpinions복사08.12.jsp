@@ -548,7 +548,6 @@ h1 {
                 alert('의견을 입력해주세요!');
             } else {
                 document.querySelector('#' + tabName + ' form').submit();
-                form.submit(); 
             }
         }; 
         
