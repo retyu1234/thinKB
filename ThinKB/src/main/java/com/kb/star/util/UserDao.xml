@@ -324,6 +324,7 @@ ORDER BY
           AND mrm.IsDelete = 0
         ORDER BY mrm.ContributionCnt DESC
     </select>
+    <!-- 개인별 회의방상태 -->
     <select id="getMeetingRoomStats" resultMap="MeetingRoomStatsMap">
     <![CDATA[
     SELECT 
@@ -338,6 +339,28 @@ ORDER BY
       AND mrm.IsDelete = 0
     ]]>
 </select>
+<!-- 부서 전체 회의방 상태 -->
+<select id="getMeetingRoomStatsAdmin" resultMap="MeetingRoomStatsMapAdmin">
+    <![CDATA[
+    SELECT
+        SUM(CASE WHEN mr.StageID < 6 THEN 1 ELSE 0 END) as ongoing_meetings,
+        SUM(CASE WHEN mr.StageID >= 6 THEN 1 ELSE 0 END) as completed_meetings,
+        COUNT(*) as total_meetings
+    FROM MeetingRooms mr
+    JOIN Users u ON mr.RoomManagerID = u.UserID
+    WHERE u.DepartmentID = (
+        SELECT DepartmentID 
+        FROM Users 
+        WHERE UserID = #{userId}
+    )
+    AND mr.IsDelete = 0;
+    ]]>
+</select>
+        <resultMap id="MeetingRoomStatsMapAdmin" type="com.kb.star.dto.MeetingRoomStats">
+        <result property="ongoingMeetings" column="ongoing_meetings"/>
+        <result property="completedMeetings" column="completed_meetings"/>
+        <result property="totalMeetings" column="total_meetings"/>
+    </resultMap>
         <resultMap id="MeetingRoomStatsMap" type="com.kb.star.dto.MeetingRoomStats">
         <result property="ongoingMeetings" column="ongoing_meetings"/>
         <result property="completedMeetings" column="completed_meetings"/>

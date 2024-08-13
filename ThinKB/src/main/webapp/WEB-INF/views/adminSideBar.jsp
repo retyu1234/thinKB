@@ -19,53 +19,66 @@
 
 
 /* 사이드바 */
-.sidebar {
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 230px;
-    height: auto;
+    height: 100vh; /* 뷰포트 높이의 100% */
     background-color: #333;
     color: white;
     padding-top: 50px;
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤바 추가 */
 }
-.sidebar ul {
+.admin-sidebar ul {
     list-style-type: none;
     padding: 0;
 }
-.sidebar li {
+.admin-sidebar li {
     padding: 10px 20px;
     cursor: pointer;
     position: relative;
 }
 /* 메인 탭 hover 효과 제거 */
-.sidebar > ul > li:hover {
+.admin-sidebar > ul > li:hover {
     background-color: #333;
 }
 /* 메인 탭 클릭 시 스타일 */
-.sidebar > ul > li.active {
+.admin-sidebar > ul > li.active {
     background-color: #444;
 }
 /* 세부탭 */
-.sidebar li ul {
+.admin-sidebar li ul {
     display: none;
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
-.sidebar li ul li {
+.admin-sidebar li ul li {
     padding: 10px 20px;
 }
 /* 세부탭 hover 효과 */
-.sidebar li ul li:hover {
+.admin-sidebar li ul li:hover {
     background-color: #555;
 }
 .sidebar .active > ul {
     display: block;
+}
+.admin-sidebar a {
+    color: white;
+    text-decoration: none;
+}
+.admin-sidebar li ul li a {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 </style>
 <script>
 function toggleSubmenu(event) {
     const parentLi = event.currentTarget;
     // 모든 메인 탭의 active 클래스 제거
-    document.querySelectorAll('.sidebar > ul > li').forEach(item => {
+    document.querySelectorAll('.admin-sidebar > ul > li').forEach(item => {
         item.classList.remove('active');
     });
     // 클릭된 메인 탭에 active 클래스 추가
@@ -80,7 +93,7 @@ function toggleSubmenu(event) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const menuItems = document.querySelectorAll('.sidebar > ul > li');
+    const menuItems = document.querySelectorAll('.admin-sidebar > ul > li');
     menuItems.forEach(function(item) {
         item.addEventListener('click', toggleSubmenu);
     });
@@ -88,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </head>
 <body>
-<div class="sidebar">
+<div class="admin-sidebar">
 	<div class="logo">
         <a href="<c:url value='./adminMain'/>"> <img src="<c:url value='./resources/logo.png'/>" alt="Logo"></a>
     </div>
@@ -106,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </ul>
         </li>
         <li>📈 사용량 관리</li>
-        <li>⚙️ 설정</li>
+      	<a href="<c:url value='./adminMypage'/>"><li>⚙️ 부서 현황</li></a>
     </ul>
 </div>
 </body>

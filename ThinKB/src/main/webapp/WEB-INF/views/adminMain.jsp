@@ -16,14 +16,16 @@
         /* background-color: #f0f8ff; */
         background-color: #f4f4f4;
     }
-    .container {
-        display: flex;
-    }
-    .content {
-        flex: 1;
-        padding: 20px;
-        font-size: 11pt;
-    }
+.admin-container {
+    display: flex;
+    width: 100%;
+}
+.admin-content {
+    flex: 1;
+    padding: 20px;
+    font-size: 11pt;
+    margin-left: 230px; /* 사이드바의 너비만큼 여백 추가 */
+}
     
     /* 배너 */
     .banner {
@@ -264,11 +266,11 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="admin-container">
 
     <%@ include file="./adminSideBar.jsp"%>
     
-    <div class="content">
+    <div class="admin-content">
         <div class="header">
             <h1>관리자 대시보드</h1>
             <!-- 프로필 -->

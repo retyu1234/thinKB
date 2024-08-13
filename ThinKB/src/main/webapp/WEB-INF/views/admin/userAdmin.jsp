@@ -253,7 +253,7 @@
 </head>
 <body>
 	<div class="userAdmin-body">
-		<%@ include file="../headerAdmin.jsp"%>
+		<%@ include file="../adminSideBar.jsp"%>
 	</div>
 	<div class="employee-content">
 		<div class="employee-title">직원조회</div>

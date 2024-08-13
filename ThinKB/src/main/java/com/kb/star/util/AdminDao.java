@@ -1,8 +1,13 @@
 package com.kb.star.util;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.kb.star.dto.AdminDto;
+import com.kb.star.dto.ReportLow;
+import com.kb.star.dto.TeamDto;
 
 public interface AdminDao {
 	
@@ -14,5 +19,11 @@ public interface AdminDao {
 	
 	// 베스트 사용횟수 팀 정보(팀ID, 팀이름, 사용횟수) 가져오기
 	List<AdminDto> getBestUsage();
-
+	
+	// 오늘 결재대기 보고서 리스트
+	List<ReportLow> getTodayReports(@Param("today") LocalDate today);
+	// 연간 채택된 보고서 리스트
+	List<ReportLow> getYearlyAdoptedReports(@Param("year") int year);
+	// 베스트 팀
+	List<TeamDto> getBestTeams();
 } 

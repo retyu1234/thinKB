@@ -42,7 +42,92 @@
         ON d.DepartmentID = TopDepartments.DepartmentID
         ORDER BY TopDepartments.DepartmentCount DESC
     </select>
+    <!-- 오늘의 결재 대기 보고서 가져오기 (작성자와 부서명 포함) -->
+    <select id="getTodayReports" resultType="com.kb.star.dto.ReportLow">
+        SELECT 
+            r.ReportID, 
+            r.ReportTitle, 
+            r.IsChoice, 
+            r.UpdatedAt,
+            u.UserName AS authorName,
+            d.DepartmentName
+        FROM 
+            Reports r
+            JOIN Users u ON r.UserID = u.UserID
+            JOIN Departments d ON u.DepartmentID = d.DepartmentID
+        WHERE 
+            DATE(r.UpdatedAt) = #{today}
+        ORDER BY 
+            r.UpdatedAt DESC
+    </select>
 
-	
+    <!-- 연간 채택된 보고서 가져오기 (작성자와 부서명 포함) -->
+    <select id="getYearlyAdoptedReports" resultType="com.kb.star.dto.ReportLow">
+        SELECT 
+            r.ReportID, 
+            r.ReportTitle, 
+            r.UpdatedAt,
+            u.UserName AS authorName,
+            d.DepartmentName,
+            r.UserID AS authorId
+        FROM 
+            Reports r
+            JOIN Users u ON r.UserID = u.UserID
+            JOIN Departments d ON u.DepartmentID = d.DepartmentID
+        WHERE 
+            YEAR(r.UpdatedAt) = #{year} 
+            AND r.IsChoice = 1
+        ORDER BY 
+            r.UpdatedAt DESC
+    </select>
+	<!-- 베스트 팀 -->
+	    <select id="getBestTeams" resultType="com.kb.star.dto.TeamDto">
+WITH departmentTotals AS (
+    SELECT 
+        d.DepartmentID,
+        COUNT(CASE WHEN r.IsChoice = 1 THEN 1 END) as deptAdoptedReports,
+        COUNT(CASE WHEN r.IsChoice IS NOT NULL THEN 1 END) as deptTotalReports
+    FROM 
+        Departments d
+        JOIN Users u ON d.DepartmentID = u.DepartmentID
+        LEFT JOIN Reports r ON u.UserID = r.UserID
+    WHERE 
+        r.IsChoice IS NOT NULL
+    GROUP BY 
+        d.DepartmentID
+),
+teamStats AS (
+    SELECT 
+        t.TeamID,
+        t.TeamName,
+        d.DepartmentName,
+        COUNT(CASE WHEN r.IsChoice = 1 THEN 1 END) as teamAdoptedReports,
+        COUNT(CASE WHEN r.IsChoice IS NOT NULL THEN 1 END) as teamTotalReports,
+        dt.deptAdoptedReports,
+        dt.deptTotalReports,
+        CAST(COUNT(CASE WHEN r.IsChoice = 1 THEN 1 END) AS FLOAT) / 
+            NULLIF(dt.deptAdoptedReports, 0) * 100 as teamAdoptionPercentage
+    FROM 
+        Teams t
+        JOIN Users u ON t.TeamID = u.TeamID
+        JOIN Departments d ON t.DepartmentID = d.DepartmentID
+        LEFT JOIN Reports r ON u.UserID = r.UserID
+        JOIN departmentTotals dt ON d.DepartmentID = dt.DepartmentID
+    WHERE 
+        r.IsChoice IS NOT NULL
+    GROUP BY 
+        t.TeamID, t.TeamName, d.DepartmentName, dt.deptAdoptedReports, dt.deptTotalReports
+    HAVING 
+        COUNT(CASE WHEN r.IsChoice IS NOT NULL THEN 1 END) > 0
+)
+SELECT 
+    ts.*,
+    DENSE_RANK() OVER (ORDER BY ts.teamAdoptionPercentage DESC) as teamRank
+FROM 
+    teamStats ts
+ORDER BY 
+    teamRank
+LIMIT 3;
+    </select>
 
 </mapper>
