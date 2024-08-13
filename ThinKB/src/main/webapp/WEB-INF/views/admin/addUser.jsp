@@ -14,20 +14,21 @@
 .userAdmin-body {
 	margin: 0;
 	padding: 0;
-	height: 100px; /* 요소의 높이를 400px로 고정 */
+	caret-color: transparent;
+	background-color: #f4f4f4;
 }
 
 /* 컨텐츠 컨테이너 설정 */
 .employee-content {
-	max-width: 800px;
-	margin: 20px auto;
-	background-color: rgba(255, 204, 0, 0.1);
+	width:100%;
+	max-width: 900px;
+	margin: 3% 10% 6% 30%;
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+.adduser-h2 {
 	font-size: 28px;
 	font-weight: bold;
 	margin-bottom: 20px;
@@ -105,10 +106,10 @@ function confirmSubmit() {
 </head>
 <body>
 	<div class="userAdmin-body">
-		<%@ include file="../headerAdmin.jsp"%>
+		<%@ include file="../adminSideBar.jsp"%>
 	</div>
 	<div class="employee-content">
-		<h2>회원 등록</h2>
+		<h2 class="adduser-h2">회원 등록</h2>
 		<form action="./insertUser" method="post">
 			 <input type="hidden" name="departmentId" value="${departmentId}" />
 			<div class="form-group">
