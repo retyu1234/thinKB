@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>투표 하기</title>
+<title>thinKb - 투표 만들기</title>
 <style>
 html, body {
     max-width: 100%;

@@ -190,7 +190,7 @@ html, body {
 	
 	<!-- 상단 배너영역 -->
 	<div class="vote-banner">
-		<img src="<c:url value='./resources/addVoteBanner.png'/>" alt="abtestBanner" 
+		<img src="<c:url value='./resources/addVoteBanner.png'/>" alt="addVoteBanner" 
 		style="max-width: 100%; height: auto;">
 	</div>
 	
@@ -246,7 +246,7 @@ html, body {
                                         </c:if>
                                     </c:forEach>
                                 </span>                            </div>
-                            <div class="vote-title">✅ ${li.title}</div>
+                            <div class="vote-title">✅${li.getAddVoteId()}번 ${li.title}</div>
                             <div class="vote-date">~ ${li.endDate} 까지</div>
                             <div class="vote-date">${li.voteNum} / ${li.totalNum} 명 참여</div>
                         </div>

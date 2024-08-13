@@ -128,5 +128,15 @@ ORDER BY
 		SELECT u.UserID, u.UserName from Users u
 	</select>
 
+<!-- command분리후 새로 만든 내 투표결과 -->
+<select id="myVoteResult" resultType="com.kb.star.dto.VoteParticipationsDto">
+	SELECT * FROM VoteParticipations WHERE AddVoteID = #{param1} and UserID = #{param2}
+</select>
+
+<!-- 투표하면 업데이트 -->
+<update id="voteUpdate">
+	UPDATE VoteParticipations SET OptionID = #{param1}, VotedAt = NOW() 
+	WHERE AddVoteID = #{param2} and UserID = #{param3}
+</update>
 
 </mapper>
