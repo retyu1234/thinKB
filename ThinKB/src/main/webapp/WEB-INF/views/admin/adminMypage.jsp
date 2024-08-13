@@ -612,9 +612,6 @@ window.onclick = function(event) {
 		<div class="adminMypageContainer">
 			<h1 class="myPageh1">우리 부서 현황</h1>
 			<hr style="margin-bottom: 4%;">
-			<div class="profile-section">
-				<span class="profile-span">${user.userName}님, 안녕하세요!</span>
-			</div>
 			<p class="mypage-title-p">부서 회의방 현황</p>
 			<div class="card-container">
 
