@@ -13,6 +13,7 @@ html, body {
 }
 .report-body {
 	font-family: Arial, sans-serif;
+	caret-color: transparent;
 }
 
 .report-banner {
@@ -281,9 +282,10 @@ html, body {
 	        <c:otherwise>
 	            <c:forEach var="report" items="${reportList}" varStatus="status">
 	                <div class="report ${report.getStatus() == '완료' ? 'complete' : 'draft'}"
-	                     onclick="handleIdeaClick('${report.stageId}', '${report.reportId}', '${report.roomId}')">
+	                     onclick="handleIdeaClick('${report.stageId}', '${report.roomId}')">
 	                    <div class="status-tag">${report.getStatus() == '완료' ? '제출 완료' : '작성중'}</div>
 	                    <h3 class="report-title">${report.getReportTitle()}</h3>
+	                    <div style="display:flex; justify-content:flex-end;"><p>작성일자 : ${report.getUpdateAt()}</p></div>
 	                    <p class="related-room">연결된 아이디어 회의방</p>
 	                    <div class="room-title-container">
 	                        <p class="room-title">${report.getRoomTitle()}</p>
@@ -369,9 +371,9 @@ html, body {
 			filterIdeas();
 		});
 		
-		function handleIdeaClick(stageId, reportId, roomId) {
+		function handleIdeaClick(stageId, roomId) {
 		    if (stageId != 6) {
-		        window.location.href = '/editReport?reportId=' + reportId;
+		        window.location.href = './roomDetail?roomId=' + roomId+'&stage='+stageId;
 		    } else if (stageId == 6) {
 		        // 다운로드 확인을 위한 alert
 		        var userConfirmed = window.confirm('보고서를 다운받으시겠습니까?');

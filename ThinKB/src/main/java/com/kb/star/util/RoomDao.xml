@@ -324,7 +324,7 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 
 <!-- 방에 총 몇명인지 -->
 <select id="totalRoomUsers" resultType="int">
-	SELECT count(UserID) from MeetingRoomMembers WHERE RoomID = #{param1}
+	SELECT count(UserID) from MeetingRoomMembers WHERE RoomID = #{param1} and IsDelete = 0
 </select>
 
 <!-- 아이디어 제출건수 몇갠지 -->
@@ -339,7 +339,7 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 
 <!-- 오른쪽 사이드바용 -->
 <select id="roomIdFormember" resultType="int">
-	SELECT UserID from MeetingRoomMembers WHERE RoomID = #{param1}
+	SELECT UserID from MeetingRoomMembers WHERE RoomID = #{param1} and IsDelete = 0
 </select>
 
 <select id="whosMember" resultType="com.kb.star.dto.UsersDto">

@@ -64,7 +64,7 @@ public class IdeaOpinionsController {
     @RequestMapping("/ideaOpinions")
     public String getIdeaOpinions(HttpServletRequest request, Model model, ServletRequest session,
     		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,
-    		@RequestParam(value = "currentTab", required = false, defaultValue = "tab-smart") String currentTab) {
+    		@RequestParam(value = "currentTab", required = false) String currentTab) {
     	
     	model.addAttribute("request", request);
         model.addAttribute("roomId", roomId);
@@ -110,7 +110,7 @@ public class IdeaOpinionsController {
                              @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId, Model model) {
     	Integer userId = (Integer) session.getAttribute("userId");
         opinionForm.setUserID(userId);
-        opinionForm.setIdeaID(ideaId);  
+        opinionForm.setIdeaID(ideaId);
         opinionForm.setCreatedAt(new Timestamp(new Date().getTime())); 
 
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
@@ -388,22 +388,71 @@ public class IdeaOpinionsController {
 	
     // ideaOpinionsClear2.jsp
     @RequestMapping("/ideaOpinionsClear2")
-    public String ideaOpinionsClear2(HttpServletRequest request, Model model,
+    public String ideaOpinionsClear2(HttpServletRequest request, Model model, HttpSession session,
 						    		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId) {
     	model.addAttribute("request", request);
     	model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
         
-        IdeaOpinionsClear2Command ideaOpinionsClear2Command = new IdeaOpinionsClear2Command(sqlSession);
-		ideaOpinionsClear2Command.execute(model);
+//        IdeaOpinionsClear2Command ideaOpinionsClear2Command = new IdeaOpinionsClear2Command(sqlSession);
+//		ideaOpinionsClear2Command.execute(model);
         
         // 방장 사이드탭
         RoomDao dao=sqlSession.getMapper(RoomDao.class);
         MeetingRooms info = dao.roomDetailInfo(roomId);
         model.addAttribute("meetingRoom", info);
+        
+        // leftSideBar.jsp 출력용
+    	// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
+    	List<Ideas> yesPickList = dao.yesPickIdeaList(roomId);
+    	model.addAttribute("yesPickList", yesPickList);
+    	
+    	Integer userId = (Integer) session.getAttribute("userId");
+    	Map<String, Object> params = new HashMap<String, Object>();
+    	params.put("userId", userId);
+    	params.put("roomId", roomId);
+    	params.put("ideaId", ideaId);
+    	
+
+    	List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+    	model.addAttribute("roomMessage", roomMessage);
+    	// 여기까지 leftSideBar 출력용
+    	
+    	//오른쪽 사이드바
+    	List<Integer> userIdList = dao.roomIdFormember(roomId);
+    	List<UsersDto> userList = new ArrayList<UsersDto>();
+    	for(int ids : userIdList) {
+    		UsersDto user = dao.whosMember(ids);
+    		if(user != null) {
+    			userList.add(user);
+    		}
+    	}
+    	model.addAttribute("userList", userList); 
+    	
+    	// 타이머
+		String timer = dao.roomTimerInfo(roomId);
+		model.addAttribute("timer", timer);
+		
+		// Ideas에서 아이디어 StageID 5로 변경
+		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
+		ideaOpinionsDao.updateIdeaStage5(roomId); // ideaId -> roomId 로 변경 : 방 전체의 아이디어 2개 모두 update
+    	
+		// 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
+        ideaOpinionsDao.updateContribution2(ideaId, userId, roomId); // status의 t/f 검증은 xml파일에서 함
+        
+        // StageParticipation에서 참여자별 StageID 5로 새로 생성해서 Status 0으로 일괄 넣기
+		List<Integer> users = ideaOpinionsDao.RoomForUserList5(roomId);
+		for(Integer list : users) {
+			ideaOpinionsDao.insertStageParticipation5(roomId, ideaId, list);
+		}
+        
+    	// Ideas 테이블에서 Title과 StageID 가져오기
+        List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
+        model.addAttribute("ideasInfo", ideasInfo);
     	
 		return "firstMeeting/ideaOpinionsClear2";
     }
+    
 
 	// stage 5로 이동 = IdeaRoomController의 case 5 = (방장)보고서 작성화면/(사용자)요약보고서
 	@RequestMapping("/goStage5")
@@ -414,6 +463,10 @@ public class IdeaOpinionsController {
 		model.addAttribute("request", request);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);
+		
+		IdeaOpinionsClear2Command ideaOpinionsClear2Command = new IdeaOpinionsClear2Command(sqlSession);
+		ideaOpinionsClear2Command.execute(model);
+		
 		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
 		 // 모든 참가자의 기여도를 한 번에 업데이트
 	    ideaOpinionsDao.updateContributionLikeNum(roomId);
@@ -423,7 +476,7 @@ public class IdeaOpinionsController {
 	    List<Integer> participantList = ideaOpinionsDao.RoomForUserList5(roomId);
 	    for (Integer participantId : participantList) {
 	        int likeNum = ideaOpinionsDao.getLikeNum(participantId, roomId);
-	        System.out.println("userId : " + participantId + " roomId : " + roomId + " likeNum : " + likeNum);
+	        
 	    }
 	    
 //		// 방에 참가한 모든 참여자 목록 가져오기

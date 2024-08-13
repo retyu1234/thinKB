@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>아이디어 의견 요약</title>
 <style>
-/* 5단계 표시 */
+/* 5개 단계 표시 */
 .stages {
 	display: flex;
 	justify-content: space-between;
@@ -28,6 +28,14 @@
     overflow: hidden; /* 넘치는 텍스트 숨김 */
     text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
 }
+.active {
+	color: #FFD700;
+	font-weight: bold;
+}
+.inactive {
+	color: #999;
+	pointer-events: none;
+}
 
 
 .ideaOpinionsList-body {
@@ -39,24 +47,158 @@
 }
 
 /* 아이디어 제목 */
-.title {
-    font-weight: bold;
-    font-size: 22pt;
-    text-align: center;
-    margin-top: 40px; 
-    margin-bottom: 40px; 
+.ideaOpinionList-title1 {
+	font-size: 20pt;
+	color: #909090;
+	font-weight: bold;
+	margin-top: 40px;
+	/* font-style: italic; */
+}
+.ideaOpinionList-title2 {
+	font-size: 17pt;
+	color: black;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.ideaOpinionList-title-detail {
+	font-size: 13pt;
+	position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+/* 상세설명 - 토글 */
+.title-detail {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+   	width: 100%;
+    box-sizing: border-box;
+}
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-right: 10px;
+}
+.toggle-text {
+	font-family: Arial, sans-serif;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+#descriptionContent {
+    font-family: Arial, sans-serif;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow-x: auto; /* 가로 스크롤을 추가합니다 */
+    max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
+}
+#descriptionContent pre {
+    font-family: Arial, sans-serif;
+    white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
+    word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
+    max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
+}
+.toggle-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    font-family: Arial, sans-serif;
+}
+.toggle-label {
+	font-family: Arial, sans-serif;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+.toggle-label:before {
+	font-family: Arial, sans-serif;
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+.toggle-input:checked + .toggle-label {
+    background-color: #FFCC00;
+}
+.toggle-input:checked + .toggle-label:before {
+    transform: translateX(26px);
+}
+.toggle-text {
+	font-family: Arial, sans-serif;
+    margin-left: 10px;
+    vertical-align: middle;
 }
 
+/* 다음 단계로 section */
+.rightAligned {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+/* 현재 단계 완료 참여자 수 */
+.countDone {
+	font-size: 13pt;
+	margin-right: 10px;
+}
+/* 다음단계로 버튼 */
+.nextStepButton {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	font-weight: bold;
+	cursor: pointer;
+	margin-right: 10px;
+}
+.nextStepButton:hover {
+	background-color: #D4AA00;
+}
+/* 구분선 */
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
+
+/* 4가지 관점 틀 */
 .columns {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
     width: 60%;
     margin: 0 auto;
 }
+/* 가운데 내용 부분 */
+.container {
+    display: flex;
+    flex-wrap: wrap; /* 필요 시 줄바꿈을 허용 */
+    justify-content: space-between; /* 박스 사이에 공간을 균등하게 배치 */
+}
 .column {
-    width: 48%;
+   width: 48%; 
     margin-bottom: 20px;
+    /* display: flex;
+    justify-content: space-between; */
+    /* flex-wrap: wrap; */
 }
 
 /* 객관적관점, 기대효과, 문제점, 실현가능성 박스 */
@@ -143,6 +285,34 @@
         window.location.href = url;
     }
     
+  	//방장이 다음 단계로 버튼 클릭 시 확인 창을 띄우고, 확인 시 이동
+    function confirmNextStep() {
+        if (confirm("정말로 다음 페이지로 넘어가시겠습니까? \n아이디어 2개가 모두 제출됩니다.")) {
+        	const roomId = "${roomId}";
+            const ideaId = "${ideaId}";
+            window.location.href = "./ideaOpinionsClear2?roomId=" + roomId + "&ideaId=" + ideaId;
+        }
+    }
+
+    //상세내역 토글
+    document.addEventListener('DOMContentLoaded', function() {
+    	const toggleSwitch = document.getElementById('toggleDescription');
+        const toggleText = document.querySelector('.toggle-text');
+        const descriptionContent = document.getElementById('descriptionContent');
+
+        if (toggleSwitch) {  // 요소가 존재하는지 확인
+            toggleSwitch.addEventListener('change', function() {
+                if (this.checked) {
+                    descriptionContent.style.display = 'block';
+                    toggleText.textContent = '설명 숨기기';
+                } else {
+                    descriptionContent.style.display = 'none';
+                    toggleText.textContent = '설명 보기';
+                }
+            });
+        }
+    });
+
 <%
 String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
 request.setAttribute("stages", stages);
@@ -154,29 +324,78 @@ request.setAttribute("stages", stages);
 <%@ include file="../leftSideBar.jsp"%>
 <%@ include file="../rightSideBar.jsp"%>
 
-<!-- 5개 단계 표시 -->
-<div class="stages">
-    <c:forEach var="stage" items="${stages}" varStatus="status">
-        <c:choose>
-            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-                <a href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}" class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-                    ${status.index + 1}. ${stage}
-                </a>
-            </c:when>
-            <c:otherwise>
-                <div class="stage inactive">
-                    ${status.index + 1}. ${stage}
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </c:forEach>
-</div>
+	<div class="columns">
+	
+	<!-- 5개 단계 표시 -->
+	<div class="stages">
+	    <c:forEach var="stage" items="${stages}" varStatus="status">
+	        <c:choose>
+	            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+	                <a
+	                    href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+	                    class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+	                    ${status.index + 1}. ${stage}
+	                </a>
+	            </c:when>
+	            <c:otherwise>
+	                <div class="stage inactive">${status.index + 1}. ${stage}</div>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	</div>
 
-    <!-- 제목 -->
-	<div class="title">[${ideaTitle}]</div>
-
-    <div class="columns">
+	<!-- 제목 -->
+	<div class="ideaOpinionList-title1">
+		<c:choose>
+			<c:when test="${ideaId == yesPickList[0].ideaID}">
+	           아이디어 A
+	       	</c:when>
+			<c:otherwise>
+	           아이디어 B
+       		</c:otherwise>
+		</c:choose>
+	</div>
+	<div class="ideaOpinionList-title2">
+        [${ideaTitle}]
+    </div>
     
+    <!-- 상세설명 -->
+	<!-- <button class="grey-button">설명 보기/숨기기</button> -->
+	<div class="title-detail">
+	    <div class="toggle-container">
+	        <div class="toggle-switch">
+	            <input type="checkbox" id="toggleDescription" class="toggle-input">
+	            <label for="toggleDescription" class="toggle-label">
+	                <span class="toggle-inner"></span>
+	                <span class="toggle-switch"></span>
+	            </label>
+	        </div>
+	        <span class="toggle-text">설명 보기</span>
+	    </div>
+	    <div id="descriptionContent" style="display:none;">
+	        <pre>${meetingRoom.getDescription()}</pre>
+	    </div>
+	</div>
+	
+	<!-- 방장이면 표시 -->
+	<div class="rightAligned">
+		<c:if test="${userId == roomManagerId}">
+			<!-- 현재 단계 완료 참여자 수 -->
+			<span class="countDone"> 현재 단계 완료 참여자 수:
+				${doneUserCount}/${userCount}</span>
+				<c:if test="${meetingRoom.stageId==4}">
+			<!-- 다음 단계로 버튼 -->
+			<button id="nextStepButton" class="nextStepButton"
+				onclick="confirmNextStep()">다음 단계로</button>
+				</c:if>
+		</c:if>
+	</div>
+	
+	<hr class="line">
+	
+	<div class="ideaOpinionList-title-detail">4가지 관점중 1가지 관점을 골라 창의적인 의견을 작성해주세요! <br> 다른 관점에 추가 의견 작성도 가능합니다.</div>
+
+    <div class="container">
     	<!-- 객관적관점 -->
         <div class="column">
             <div class="box">
@@ -321,5 +540,6 @@ request.setAttribute("stages", stages);
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

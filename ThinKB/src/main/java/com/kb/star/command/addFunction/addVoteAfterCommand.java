@@ -8,34 +8,34 @@ import org.springframework.ui.Model;
 
 import com.kb.star.dto.AddVoteDto;
 import com.kb.star.dto.AddVoteOptionsDto;
+import com.kb.star.dto.VoteParticipationsDto;
 import com.kb.star.util.AddVoteDao;
 
-public class AddVoteOptionsCommand implements AddCommand {
-
+public class addVoteAfterCommand implements AddCommand {
 	SqlSession sqlSession;
 
-	public AddVoteOptionsCommand(SqlSession sqlSession) {
+	public addVoteAfterCommand(SqlSession sqlSession) {
 		this.sqlSession = sqlSession;
 	}
 
 	@Override
 	public void execute(Model model) {
+
 		Map<String, Object> map = model.asMap();
 		int addVoteId = (Integer) map.get("addVoteId");
 		int userId = (Integer) map.get("id");
 
-		// 투표 정보
 		AddVoteDao dao = sqlSession.getMapper(AddVoteDao.class);
 		List<AddVoteOptionsDto> dto = dao.voteOptions(addVoteId);
 		model.addAttribute("optionList", dto);
-		
+
+//		List<VoteParticipationsDto> myVote = dao.myVoteResult(addVoteId, userId);
+		VoteParticipationsDto myVote = dao.myVoteResult(addVoteId, userId);
+		model.addAttribute("myVote", myVote);
+
 		// 투표 항목 정보
 		AddVoteDto voteInfo = dao.selectVoteByAddVoteId(addVoteId);
 		model.addAttribute("voteInfo", voteInfo);
-		
-//		// 투표 참여여부 확인 및 OptionID 가져오기
-		Integer optionId = dao.checkVoteParticipation(addVoteId, userId);
-		model.addAttribute("votedOptionId", optionId);
-
 	}
+
 }
