@@ -39,7 +39,7 @@
         <table id="reportTable">
             <thead>
                 <tr>
-                    <th>보고서 제목</th>
+                    <th>보고서 제목2</th>
                     <th>작성자</th>
                     <th>팀</th>
                     <th>회의방</th>
@@ -51,6 +51,11 @@
             <tbody>
                 <c:forEach items="${reports}" var="report">
                     <tr>
+                        <td>${report.reportTitle}</td>
+                        <td>${report.authorName}</td>
+                        <td>${report.teamName}</td>
+                        <td>${report.roomTitle}</td>
+                        <td>${report.updatedAt}</td>
                         <td>
                             <c:choose>
                                 <c:when test="${report.isChoice == null}">
