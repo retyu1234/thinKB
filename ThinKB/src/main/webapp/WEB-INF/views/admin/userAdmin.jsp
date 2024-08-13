@@ -19,7 +19,7 @@
 	padding: 20px;
 	width: 65%;
 	margin-top: 10%;
-	margin: 8% auto;
+	margin : 0% 10% 6% 20%;
 }
 
 .employee-title {
@@ -260,7 +260,7 @@
 		<div class="add-btn">
 			<a href="./addUserView?departmentId=${departmentId}"><button
 					class="add-employee-button">직원 추가</button></a>
-		</div>
+		</div><hr/ style="margin-bottom:2%;">
 		<form action="./userAdminView" method="get"
 			class="employee-search-form">
 			<div class="input-group">
