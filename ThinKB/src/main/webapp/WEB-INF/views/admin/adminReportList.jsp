@@ -4,22 +4,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>부서 보고서 리스트</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .container { width: 80%; margin: 0 auto; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        .search-container { margin-bottom: 20px; }
-        .search-container input, .search-container select { margin-right: 10px; padding: 5px; }
-        .approve-btn { background-color: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; }
-        .approve-btn:hover { background-color: #45a049; }
-        .download-btn { background-color: #008CBA; color: white; border: none; padding: 5px 10px; cursor: pointer; }
-        .download-btn:hover { background-color: #007B9A; }
-    </style>
+<meta charset="UTF-8">
+<title>부서 보고서 리스트</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+    body { font-family: Arial, sans-serif; }
+    .container { width: 80%; margin: 0 auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    .search-container { margin-bottom: 20px; }
+    .search-container input, .search-container select { margin-right: 10px; padding: 5px; }
+    .approve-btn { background-color: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    .approve-btn:hover { background-color: #45a049; }
+    .download-btn { background-color: #008CBA; color: white; border: none; padding: 5px 10px; cursor: pointer; }
+    .download-btn:hover { background-color: #007B9A; }
+</style>
 </head>
 <body>
     <div class="container">
@@ -39,12 +39,11 @@
         <table id="reportTable">
             <thead>
                 <tr>
-                    <th>보고서 제목</th>
+                    <th>보고서 제목3</th>
                     <th>작성자</th>
                     <th>팀</th>
-                    <th>회의실</th>
+                    <th>회의방</th>
                     <th>작성일</th>
-                    <th>수정일</th>
                     <th>상태</th>
                     <th>액션</th>
                 </tr>
@@ -56,15 +55,27 @@
                         <td>${report.authorName}</td>
                         <td>${report.teamName}</td>
                         <td>${report.roomTitle}</td>
-                        <td>${report.createdAt}</td>
                         <td>${report.updatedAt}</td>
-                        <td>${report.isChoice ? '승인됨' : '대기중'}</td>
                         <td>
-                            <button class="download-btn" onclick="downloadReport(${report.roomId})"><i class="fas fa-download"></i> 다운로드</button>
-                            <c:if test="${!report.isChoice}">
-                                <button class="approve-btn" onclick="approveReport(${report.reportId})"><i class="fas fa-check"></i> 승인</button>
-                            </c:if>
-                        </td>
+		                    <c:choose>
+ 		                        <c:when test="${report.isChoice == null}">
+		                            결재대기
+		                        </c:when>
+		                        <c:when test="${report.isChoice == 1}">
+		                            채택
+		                        </c:when>
+		                        <c:when test="${report.isChoice == 0}">
+							        불채택
+							    </c:when>
+		                    </c:choose>
+		                </td>
+                        <td>
+		                    <button class="download-btn" onclick="downloadReport(${report.roomId})"><i class="fas fa-download"></i> 다운로드</button>
+		                    <c:if test="${report.isChoice == null}">
+		                        <button class="approve-btn" onclick="handleChoice(${report.reportId}, 1)"><i class="fas fa-check"></i> 채택</button>
+		                        <button class="reject-btn" onclick="handleChoice(${report.reportId}, 0)"><i class="fas fa-times"></i> 불채택</button>
+		                    </c:if>
+		                </td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -79,9 +90,15 @@
             }
         }
 
-        function approveReport(reportId) {
+        /* function approveReport(reportId) {
             if (confirm('이 보고서를 승인하시겠습니까?')) {
                 window.location.href = './approveReport?reportId=' + reportId;
+            }
+        } */
+        function handleChoice(reportId, choice) {
+            var confirmationMessage = choice === 1 ? '아이디어를 채택하시겠습니까?' : '아이디어를 불채택하시겠습니까?';
+            if (confirm(confirmationMessage)) {
+                window.location.href = './updateChoice?reportId=' + reportId + '&isChoice=' + choice;
             }
         }
 
