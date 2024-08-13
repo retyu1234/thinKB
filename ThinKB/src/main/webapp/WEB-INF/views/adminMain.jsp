@@ -172,6 +172,7 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 20px;
+        text-align: center;
     }
     .approval-box {
         flex: 1;
@@ -180,6 +181,8 @@
         background-color: #f8f9fa;
         border-radius: 5px;
         margin: 0 10px;
+        height: 150px;
+        width: auto;
     }
     .approval-box h3 {
         color: #28a745;
@@ -309,11 +312,11 @@
 		                <div class="count">1건</div>
 		            </div>
 		            <div class="approval-box">
-		                <h3>결재중</h3>
+		                <h3>채택</h3>
 		                <div class="count">2건</div>
 		            </div>
 		            <div class="approval-box">
-		                <h3>결재완료</h3>
+		                <h3>미채택</h3>
 		                <div class="count">4건</div>
 		            </div>
 		        </div>
