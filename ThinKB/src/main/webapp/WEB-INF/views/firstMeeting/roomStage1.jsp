@@ -1119,7 +1119,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	        <div class="submit-info">
 	            현재 아이디어 제출인원 : ${submit}명 / ${total}명
 	        </div>
-	            <button id="nextStageButton" class="yellow-button" onclick="nextStage()">다음 단계</button>
+	        <c:if test="${meetingRoom.stageId==1}">
+	            <button id="nextStageButton" class="yellow-button" onclick="nextStage()">다음 단계</button></c:if>
 	        </c:if>
 	    </div>
 	</form>

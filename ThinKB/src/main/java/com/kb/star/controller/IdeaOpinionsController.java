@@ -64,12 +64,11 @@ public class IdeaOpinionsController {
     @RequestMapping("/ideaOpinions")
     public String getIdeaOpinions(HttpServletRequest request, Model model, ServletRequest session,
     		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,
-    		@RequestParam(value = "currentTab", required = false, defaultValue = "tab-smart") String currentTab) {
+    		@RequestParam(value = "currentTab", required = false) String currentTab) {
     	
     	model.addAttribute("request", request);
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
-        System.out.println("ideaId :" + ideaId);
         String activeHatColor = getHatColor(currentTab);
         model.addAttribute("currentTab", activeHatColor);
         
@@ -477,7 +476,7 @@ public class IdeaOpinionsController {
 	    List<Integer> participantList = ideaOpinionsDao.RoomForUserList5(roomId);
 	    for (Integer participantId : participantList) {
 	        int likeNum = ideaOpinionsDao.getLikeNum(participantId, roomId);
-	        System.out.println("userId : " + participantId + " roomId : " + roomId + " likeNum : " + likeNum);
+	        
 	    }
 	    
 //		// 방에 참가한 모든 참여자 목록 가져오기

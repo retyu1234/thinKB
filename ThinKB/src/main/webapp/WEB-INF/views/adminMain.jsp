@@ -9,20 +9,31 @@
 <title>관리자 페이지</title>
 <style>
 	/* 전체 */
-    body {
+    .admin-body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
-        /* background-color: #f0f8ff; */
         background-color: #f4f4f4;
-    }
-    .container {
         display: flex;
     }
-    .content {
+        .userAdmin-body {
+        width: 250px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+    .admin-container {
+        display: flex;
+        width: 100%;
+    }
+    .admin-content {
         flex: 1;
         padding: 20px;
         font-size: 11pt;
+        margin-left: 250px; /* 사이드바의 너비만큼 여백 추가 */
     }
     
     /* 배너 */
@@ -262,16 +273,25 @@
         border: none;
         cursor: pointer;
     } */
-    
+        @media (max-width: 768px) {
+        .admin-content {
+            margin-left: 0;
+        }
+        .userAdmin-body {
+            width: 100%;
+            position: static;
+            height: auto;
+        }
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-<div class="container">
-
-    <%@ include file="./adminSideBar.jsp"%>
-    
-    <div class="content">
+<body class="admin-body">
+<div class="admin-container">
+    <div class="userAdmin-body">
+        <%@ include file="./adminSideBar.jsp"%>
+    </div>
+    <div class="admin-content">
         <div class="header">
             <h1>관리자 대시보드</h1>
             <!-- 프로필 -->

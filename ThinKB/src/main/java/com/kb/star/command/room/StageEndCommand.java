@@ -60,12 +60,22 @@ public class StageEndCommand implements RoomCommand {
 		model.addAttribute("yesPickList", yesPickList);
 
 		// 선택된 두개 아이디어에 대한 의견 담기
-		int firstNum = yesPickList.get(0).getIdeaID();
-		int secondNum = yesPickList.get(1).getIdeaID();
-		List<IdeaOpinionsDto> firstOpinion = dao.ideaIdForOpinion(firstNum);
-		model.addAttribute("firstOpinion", firstOpinion);
-		List<IdeaOpinionsDto> secondOpinion = dao.ideaIdForOpinion(secondNum);
-		model.addAttribute("secondOpinion", secondOpinion);
+		 if (!yesPickList.isEmpty()) {
+	            int firstNum = yesPickList.get(0).getIdeaID();
+	            List<IdeaOpinionsDto> firstOpinion = dao.ideaIdForOpinion(firstNum);
+	            model.addAttribute("firstOpinion", firstOpinion);
+
+	            if (yesPickList.size() > 1) {
+	                int secondNum = yesPickList.get(1).getIdeaID();
+	                List<IdeaOpinionsDto> secondOpinion = dao.ideaIdForOpinion(secondNum);
+	                model.addAttribute("secondOpinion", secondOpinion);
+	            } else {
+	                model.addAttribute("secondOpinion", new ArrayList<IdeaOpinionsDto>());
+	            }
+	        } else {
+	            model.addAttribute("firstOpinion", new ArrayList<IdeaOpinionsDto>());
+	            model.addAttribute("secondOpinion", new ArrayList<IdeaOpinionsDto>());
+	        }
 		
 		// 기여도 조회 담기
 		List<MeetingRoomMember> member = dao.memberForRoomId(roomId);

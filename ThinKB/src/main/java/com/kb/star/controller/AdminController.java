@@ -19,7 +19,9 @@ import org.springframework.http.MediaType;
 
 import com.google.gson.Gson;
 import com.kb.star.command.addFunction.AddCommand;
+import com.kb.star.command.admin.Admin;
 import com.kb.star.command.admin.AdminMainCommand;
+import com.kb.star.command.admin.AdminMypage;
 import com.kb.star.dto.AdminDto;
 import com.kb.star.util.AdminDao;
 
@@ -27,7 +29,7 @@ import com.kb.star.util.AdminDao;
 public class AdminController {
 
 	AddCommand command = null;
-
+	Admin adminCommand = null;
 	@Autowired
 	private SqlSession sqlSession;
 
@@ -102,5 +104,16 @@ public class AdminController {
 //		command.execute(model);
 //		return "redirect:/userList";
 //	}
+	//관리자 마이페이지
+	//마이페이지
+	@RequestMapping("/adminMypage")
+	public String mypage(HttpSession session,HttpServletRequest request,Model model) {
+		int userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("request", request);
+		model.addAttribute("userId",userId);
+		adminCommand=new AdminMypage(sqlSession);
+		adminCommand.execute(model);
+		return "admin/adminMypage";
+	}
 
 }
