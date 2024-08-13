@@ -204,22 +204,24 @@ ORDER BY
 		WHERE UserID = #{param1}
 	</update>
 	<!-- 직원 목록 조회 (검색 및 페이지네이션) -->
-	<select id="searchEmployees" parameterType="map"
-		resultType="com.kb.star.dto.UserListDto">
-		SELECT u.*, d.DepartmentName, t.TeamName
-		FROM Users u
-		LEFT
-		JOIN Departments d ON u.DepartmentID = d.DepartmentID
-		LEFT JOIN Teams t
-		ON u.TeamID = t.TeamID
-		WHERE u.IsDelete = 0
-		AND u.UserID != 1
-		AND
-		(u.UserName LIKE CONCAT('%', #{searchTerm}, '%')
-		OR t.TeamName LIKE
-		CONCAT('%', #{searchTerm}, '%'))
-		LIMIT #{offset}, #{limit}
-	</select>
+<select id="searchEmployees" parameterType="map" resultType="com.kb.star.dto.UserListDto">
+    SELECT u.*, d.DepartmentName, t.TeamName, 
+           COALESCE(m.TotalContribution, 0) as TotalContribution
+    FROM Users u
+    LEFT JOIN Departments d ON u.DepartmentID = d.DepartmentID
+    LEFT JOIN Teams t ON u.TeamID = t.TeamID
+    LEFT JOIN (
+        SELECT UserID, SUM(ContributionCnt) as TotalContribution
+        FROM MeetingRoomMembers
+        WHERE IsDelete = 0
+        GROUP BY UserID
+    ) m ON u.UserID = m.UserID
+    WHERE u.IsDelete = 0
+    AND u.UserID != 1
+    AND (u.UserName LIKE CONCAT('%', #{searchTerm}, '%')
+         OR t.TeamName LIKE CONCAT('%', #{searchTerm}, '%'))
+    LIMIT #{offset}, #{limit}
+</select>
 
 	<!-- 직원 목록 수 조회 (검색용) -->
 	<select id="countEmployees" parameterType="map" resultType="int">
@@ -322,6 +324,7 @@ ORDER BY
           AND mrm.IsDelete = 0
         ORDER BY mrm.ContributionCnt DESC
     </select>
+    <!-- 개인별 회의방상태 -->
     <select id="getMeetingRoomStats" resultMap="MeetingRoomStatsMap">
     <![CDATA[
     SELECT 
@@ -336,6 +339,28 @@ ORDER BY
       AND mrm.IsDelete = 0
     ]]>
 </select>
+<!-- 부서 전체 회의방 상태 -->
+<select id="getMeetingRoomStatsAdmin" resultMap="MeetingRoomStatsMapAdmin">
+    <![CDATA[
+    SELECT
+        SUM(CASE WHEN mr.StageID < 6 THEN 1 ELSE 0 END) as ongoing_meetings,
+        SUM(CASE WHEN mr.StageID >= 6 THEN 1 ELSE 0 END) as completed_meetings,
+        COUNT(*) as total_meetings
+    FROM MeetingRooms mr
+    JOIN Users u ON mr.RoomManagerID = u.UserID
+    WHERE u.DepartmentID = (
+        SELECT DepartmentID 
+        FROM Users 
+        WHERE UserID = #{userId}
+    )
+    AND mr.IsDelete = 0;
+    ]]>
+</select>
+        <resultMap id="MeetingRoomStatsMapAdmin" type="com.kb.star.dto.MeetingRoomStats">
+        <result property="ongoingMeetings" column="ongoing_meetings"/>
+        <result property="completedMeetings" column="completed_meetings"/>
+        <result property="totalMeetings" column="total_meetings"/>
+    </resultMap>
         <resultMap id="MeetingRoomStatsMap" type="com.kb.star.dto.MeetingRoomStats">
         <result property="ongoingMeetings" column="ongoing_meetings"/>
         <result property="completedMeetings" column="completed_meetings"/>

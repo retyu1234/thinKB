@@ -12,8 +12,15 @@ public class ReportsDto {
 	private String updateAt;
 	private String roomTitle;
     private int stageId;
+    private int isChoice;
     private String status;
     
+	public int getIsChoice() {
+		return isChoice;
+	}
+	public void setIsChoice(int isChoice) {
+		this.isChoice = isChoice;
+	}
 	public int getStageId() {
 		return stageId;
 	}

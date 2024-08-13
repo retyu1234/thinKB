@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ThinkKB</title>
+<title>thinKB - 투표 목록</title>
 <style>
 /* 스타일 정의 */
 html, body {
@@ -72,7 +72,7 @@ html, body {
 	height: 50px;
 	width: 80%;
 	border: 1px solid #ccc;
-	font-size: 1.3em;
+	font-size: 13pt;
 }
 
 .progress label {
@@ -94,103 +94,93 @@ html, body {
 .progress-header {
 	margin: 0;
 	padding: 10px 0;
+	font-size: 18pt;
 }
 
-.ideas {
-	margin: 70px 20px;
+.votes {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 30px 20px;
 }
 
-.idea {
-	padding: 20px;
-	background-color: #ffffff;
-	border-radius: 20px;
-	margin-top: 30px;
-	margin-left: auto;
-	margin-right: auto;
-	border: 1px solid #ccc;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-start;
-	font-size: 1.2em;
-	width: 80%;
-	cursor: pointer;
-	transition: box-shadow 0.3s ease;
+.vote {
+    width: calc(33.333% - 20px);
+    height: 230px;
+    margin: 30px 10px;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+    box-sizing: border-box;
 }
 
-.idea:hover {
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 커서를 대면 그림자 추가 */
+.vote:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.idea h2 {
-	margin: 0 0 10px 0;
-	padding: 0;
-	font-size: 1.5em;
-	width: 100%;
+.vote-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
-.idea-details {
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
-	text-align: right;
-	width: 100%;
+.vote-tag {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
 }
 
-.idea-details p {
-	margin: 0;
+.vote-creator {
+    font-size: 14px;
 }
 
-.idea-left {
-	text-align: left;
+.vote-title {
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.idea-right {
-	text-align: right;
-	align-self: flex-end;
-	justify-content: flex-end;
-	display: flex;
-	flex-direction: column;
+.vote-date {
+    font-size: 13pt;
+    text-align: right;
 }
 
-.no-room {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	background-color: white;
-	border-radius: 20px;
-	font-weight: bold;
-	align-items: center;
-	height: 300px;
-	margin-bottom: 50px;
+/* 상태별 스타일 */
+.vote-completed {
+    background-color: #E4E4E4;
 }
 
-.no-room .contents {
-	color: grey;
-	font-size: 20px;
-	text-align: center;
-	margin-bottom: 10px;
+.vote-voted {
+    background-color: #C4CDB8;
 }
 
-.no-rooms .img {
-	width: 100px; /* 이미지 너비 조정 */
-	height: auto; /* 높이 자동 조정 */
-	margin-bottom: 10px; /* 이미지와 텍스트 사이 여백 */
+.vote-not-voted {
+    background-color: #EEFCDB;
 }
 
-.add-option-btn {
-	display: block;
-	padding: 5px 10px;
-	margin-top: 10px;
-	background-color: #ffc107;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	float: right;
+.tag-completed {
+    background-color: #575757;
+    color: white;
 }
 
-.add-option-btn:hover {
-	background-color: #e0a800;
+.tag-voted {
+    background-color: #719F60;
+    color: white;
 }
+
+.tag-not-voted {
+    background-color: #85D16A;
+    color: white;
+}
+
 </style>
 </head>
 
@@ -200,7 +190,7 @@ html, body {
 	
 	<!-- 상단 배너영역 -->
 	<div class="vote-banner">
-		<img src="<c:url value='./resources/addVoteBanner.png'/>" alt="abtestBanner" 
+		<img src="<c:url value='./resources/addVoteBanner.png'/>" alt="addVoteBanner" 
 		style="max-width: 100%; height: auto;">
 	</div>
 	
@@ -218,19 +208,18 @@ html, body {
 	</div>
 
 		<div class="progress-container">
-			<div class="progress">
-				<label><input type="checkbox" data-stage="false"
-					onchange="filterIdeas()"> 투표 진행 중 </label> <label><input
-					type="checkbox" data-stage="true" onchange="filterIdeas()">
-					투표 종료 </label>
-			</div>
+		    <div class="progress">
+		        <label><input type="checkbox" data-status="not-voted" onchange="filterVotes()"> 미참여 </label>
+		        <label><input type="checkbox" data-status="voted" onchange="filterVotes()"> 참여 완료 </label>
+		        <label><input type="checkbox" data-status="completed" onchange="filterVotes()"> 투표 종료 </label>
+		    </div>
 		</div>
 
-		<div class="ideas">
+		<div class="votes">
 			<c:choose>
 				<c:when test="${empty voteList}">
 					<div class="no-room">
-						<img src="./resources/noContents.png" alt="no Contents"
+						<img src="./resources/noContent.png" alt="no Contents"
 							style="width: 100px; height: auto; margin-bottom: 10px;">
 						<div class="contents">참여했던 투표가 없어요.</div>
 						<div class="contents">투표를 시작해서 의견을 모아보세요!</div>
@@ -238,34 +227,31 @@ html, body {
 				</c:when>
 
 			<c:otherwise>
-				<c:forEach var="li" items="${voteList}">
-					<div class="idea" data-stage="${li.isCompleted}"
-						onclick="window.location.href='./addVote?addVoteId=${li.addVoteId}'">
-						<h2>${li.title}</h2>
-						<div class="idea-details">
-							<p>종료일: ${li.endDate}</p>
-							<p>투표 생성자: ${li.createUserID}</p>
-							<p>
-								단계:
-								<c:choose>
-									<c:when test="${li.isCompleted == false}">투표 진행 중 </c:when>
-									<c:when test="${li.isCompleted == true}">투표 종료 </c:when>
-								</c:choose>
-							</p>
-							<p>
-								<c:choose>
-									<c:when test="${li.votedOptionId != 0}">
-										<span style="color: green;">투표 완료</span>
-									</c:when>
-									<c:otherwise>
-										<span style="color: red;">미투표</span>
-									</c:otherwise>
-								</c:choose>
-							</p>
-						</div>
-					</div>
-				</c:forEach>
-			</c:otherwise>
+                   <c:forEach var="li" items="${voteList}">
+                        <div class="vote 
+					        ${li.isCompleted ? 'vote-completed' : 
+					          (li.votedOptionId != 0 ? 'vote-voted' : 'vote-not-voted')}"
+					         onclick="goToVotePage(${li.isCompleted}, ${li.votedOptionId}, ${li.addVoteId})">
+                            <div class="vote-header">
+                                <span class="vote-tag 
+                                    ${li.isCompleted ? 'tag-completed' : 
+                                      (li.votedOptionId != 0 ? 'tag-voted' : 'tag-not-voted')}">
+                                    ${li.isCompleted ? '투표 종료' : 
+                                      (li.votedOptionId != 0 ? '참여 완료' : '미참여')}
+                                </span>
+								<span class="vote-creator">
+                                    <c:forEach var="voteMaker" items="${voteMaker}">
+                                        <c:if test="${voteMaker.userId eq li.createUserID}">
+                                            ${voteMaker.userName}님의 투표
+                                        </c:if>
+                                    </c:forEach>
+                                </span>                            </div>
+                            <div class="vote-title">✅${li.getAddVoteId()}번 ${li.title}</div>
+                            <div class="vote-date">~ ${li.endDate} 까지</div>
+                            <div class="vote-date">${li.voteNum} / ${li.totalNum} 명 참여</div>
+                        </div>
+                    </c:forEach>
+                </c:otherwise>
 		</c:choose>
 	</div>
 		
@@ -273,48 +259,54 @@ html, body {
 	
 	</div>
 	<script>
-		function filterIdeas() {
-			var checkboxes = document.querySelectorAll('.progress input');
-			var ideas = document.querySelectorAll('.idea');
-			var anyChecked = false;
+	function goToVotePage(isCompleted, votedOptionId, addVoteId) {
+	    var baseUrl = '${pageContext.request.contextPath}';
+	    var url = isCompleted || (!isCompleted && votedOptionId != 0) 
+	        ? baseUrl + '/addVoteAfter?addVoteId=' + addVoteId
+	        : baseUrl + '/addVote?addVoteId=' + addVoteId;
+	    window.location.href = url;
+	}
+	
+	function filterVotes() {
+	    var checkboxes = document.querySelectorAll('.progress input');
+	    var votes = document.querySelectorAll('.vote');
+	    var anyChecked = false;
 
-			checkboxes.forEach(function(checkbox) {
-				if (checkbox.checked) {
-					anyChecked = true;
-				}
-			});
+	    checkboxes.forEach(function(checkbox) {
+	        if (checkbox.checked) {
+	            anyChecked = true;
+	        }
+	    });
 
-			if (!anyChecked) {
-				ideas.forEach(function(idea) {
-					idea.style.display = 'flex';
-				});
-			} else {
-				ideas.forEach(function(idea) {
-					idea.style.display = 'none';
-				});
+	    if (!anyChecked) {
+	        votes.forEach(function(vote) {
+	            vote.style.display = 'flex';
+	        });
+	    } else {
+	        votes.forEach(function(vote) {
+	            vote.style.display = 'none';
+	        });
 
-				checkboxes.forEach(function(checkbox) {
-					if (checkbox.checked) {
-						var stages = checkbox.getAttribute('data-stage').split(
-								',');
-						ideas.forEach(function(idea) {
-							var ideaStage = idea.getAttribute('data-stage');
-							if (stages.includes(ideaStage)) {
-								idea.style.display = 'flex';
-							}
-						});
-					}
-				});
-			}
-		}
+	        checkboxes.forEach(function(checkbox) {
+	            if (checkbox.checked) {
+	                var status = checkbox.getAttribute('data-status');
+	                votes.forEach(function(vote) {
+	                    if (vote.classList.contains('vote-' + status)) {
+	                        vote.style.display = 'flex';
+	                    }
+	                });
+	            }
+	        });
+	    }
+	}
 
-		document.addEventListener('DOMContentLoaded', function() {
-			var checkboxes = document.querySelectorAll('.progress input');
-			checkboxes.forEach(function(checkbox) {
-				checkbox.addEventListener('change', filterIdeas);
-			});
-			filterIdeas();
-		});
+	document.addEventListener('DOMContentLoaded', function() {
+	    var checkboxes = document.querySelectorAll('.progress input');
+	    checkboxes.forEach(function(checkbox) {
+	        checkbox.addEventListener('change', filterVotes);
+	    });
+	    filterVotes();
+	});
 	</script>
 </body>
 </html>

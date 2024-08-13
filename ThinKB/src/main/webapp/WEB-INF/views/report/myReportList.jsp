@@ -13,6 +13,7 @@ html, body {
 }
 .report-body {
 	font-family: Arial, sans-serif;
+	caret-color: transparent;
 }
 
 .report-banner {
