@@ -8,7 +8,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <title>직원관리</title>
 <style>
 .userAdmin-body {
@@ -114,6 +113,7 @@
 
 .employee-delete-button {
 	padding: 5px 10px;
+	background-color: #ff4d4d;
 	color: white;
 	border: none;
 	border-radius: 4px;
@@ -146,28 +146,61 @@
 	display: flex;
 	justify-content: flex-end;
 }
-.pagination a {
-    text-decoration: none;
-    padding: 5px 10px;
-    border: none;
-    color: #333;
-    border-radius: 3px;
-    transition: background-color 0.3s;
-    margin:1px;
-}
+        .employee-pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2%;
+        }
 
-.pagination a:hover {
-    background-color: #f0f0f0;
-    border:none;
-    border-radius: 30px;
-}
+        .employee-pagination-list {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+        }
 
-.pagination .active a {
-    background-color: #ffcc00;
-    color: white;
-    border:none;
-    border-radius: 30px;
-}
+        .employee-pagination-item {
+            margin: 0 5px;
+        }
+
+        .employee-pagination-link {
+            text-decoration: none;
+            padding: 5px 10px;
+            border: none;
+            color: #333;
+            border-radius: 3px;
+            transition: background-color 0.3s;
+        }
+
+        .employee-pagination-link:hover {
+            background-color: #f0f0f0;
+            border-radius: 30px;
+        }
+
+        .employee-pagination-item.active .employee-pagination-link {
+            background-color: #ffcc00;
+            color: white;
+            border-radius: 30px;
+        }
+        .employee-sort-icon {
+            margin-left: 5px;
+            cursor: pointer;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .employee-sort-icon i {
+            color: #ccc;
+        }
+
+        .employee-sort-icon i.active {
+            color: #ffcc00;
+        }
+
+        .employee-header-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 </style>
 <script>
     function deleteEmployee(userId) {
@@ -178,6 +211,45 @@
         }
     }
 </script>
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.employee-sort-icon').click(function() {
+                var sortBy = $(this).data('sort');
+                var currentOrder = $(this).data('order') || 'none';
+                var newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+
+                // 모든 아이콘 초기화
+                $('.employee-sort-icon i').removeClass('active');
+                
+                // 클릭된 아이콘 활성화
+                $(this).find('i').addClass('active');
+                
+                // 정렬 순서 저장
+                $(this).data('order', newOrder);
+
+                // 직원 목록 정렬
+                var $employees = $('.employee-item').get();
+                $employees.sort(function(a, b) {
+                    var aValue = $(a).find('.employee-info[data-' + sortBy + ']').text().trim();
+                    var bValue = $(b).find('.employee-info[data-' + sortBy + ']').text().trim();
+                    
+                    if (sortBy === 'totalContribution') {
+                        aValue = parseInt(aValue) || 0;
+                        bValue = parseInt(bValue) || 0;
+                        return newOrder === 'asc' ? aValue - bValue : bValue - aValue;
+                    } else if (sortBy === 'userName') {
+                        return newOrder === 'asc' ? 
+                            aValue.localeCompare(bValue, 'ko') : 
+                            bValue.localeCompare(aValue, 'ko');
+                    }
+                });
+
+                // 정렬된 목록을 다시 삽입
+                $('.employee-list').empty().append($employees);
+            });
+        });
+    </script>
 </head>
 <body>
 	<div class="userAdmin-body">
@@ -193,7 +265,7 @@
 			class="employee-search-form">
 			<div class="input-group">
 				<input type="text" class="employee-search-input" name="searchTerm"
-					value="${param.searchTerm}" placeholder="여기에 입력하세요">
+					value="${param.searchTerm}" placeholder="이름/팀명으로 검색하세요..">
 				<div class="input-group-append">
 					<button class="employee-search-button" type="submit">
 						<i class="fa fa-search"></i>
@@ -204,46 +276,51 @@
 
 		<div class="employee-list-container">
 			<div class="employee-list-header">
-                <div class="employee-header-item">부서</div>
 				<div class="employee-header-item">팀</div>
-				<div class="employee-header-item">직원명</div>
+				<div class="employee-header-item">직원명
+				                                <span class="employee-sort-icon" data-sort="userName">
+                    <i class="fas fa-sort"></i>
+                </span></div>
 				<div class="employee-header-item">직원번호</div>
+				<div class="employee-header-item">생일</div>
 				<div class="employee-header-item">이메일</div>
+				<div class="employee-header-item">기여도 점수
+               <span class="employee-sort-icon" data-sort="totalContribution">
+                    <i class="fas fa-sort"></i>
+                </span></div>
 				<div class="employee-header-item">삭제</div>
 			</div>
 			<div class="employee-list">
 				<c:forEach var="employee" items="${userList}">
-					<c:choose>
-						<c:when
-							test="${employee.isDelete == null ? false : !employee.isDelete && employee.userId != 1}">
-							<div class="employee-item">
-								<div class="employee-info">${employee.departmentName}</div>
-								<div class="employee-info">${employee.teamName}</div>
-								<div class="employee-info">${employee.userName}</div>
-								<div class="employee-info">${employee.userId}</div>
-								<div class="employee-info">${employee.email}</div>
-								<div class="employee-info">
-									<button class="employee-delete-button"
-										onclick="deleteEmployee(${employee.userId})">❌</button>
-								</div>
-							</div>
-						</c:when>
-						<c:otherwise>
-							<!-- Do nothing or provide some default behavior -->
-						</c:otherwise>
-					</c:choose>
+                <c:choose>
+                    <c:when test="${employee.isDelete == null ? false : !employee.isDelete && employee.userId != 1}">
+                        <div class="employee-item">
+                            <div class="employee-info" data-teamName="${employee.teamName}">${employee.teamName}</div>
+                            <div class="employee-info" data-userName="${employee.userName}">${employee.userName}</div>
+                            <div class="employee-info" data-userId="${employee.userId}">${employee.userId}</div>
+                            <div class="employee-info" data-birth="${employee.birth}">${employee.birth}</div>
+                            <div class="employee-info" data-email="${employee.email}">${employee.email}</div>
+                            <div class="employee-info" data-totalContribution="${employee.totalContribution}">${employee.totalContribution}</div>
+                            <div class="employee-info">
+                                <button class="employee-delete-button" onclick="deleteEmployee(${employee.userId})">삭제</button>
+                            </div>
+                        </div>
+                    </c:when>
+                </c:choose>
 				</c:forEach>
 			</div>
 			<div style="margin-top:2%;justify-content:center; display:flex;">
-<nav>
-    <ul class="pagination">
-        <c:forEach var="i" begin="1" end="${totalPages}">
-            <li class="${i == currentPage ? 'active' : ''}">
-                <a href="./userAdminView?searchTerm=${param.searchTerm}&page=${i}">${i}</a>
-            </li>
-        </c:forEach>
-    </ul>
-</nav></div>
+<div class="employee-pagination">
+        <nav>
+            <ul class="employee-pagination-list">
+                <c:forEach var="i" begin="1" end="${totalPages}">
+                    <li class="employee-pagination-item ${i == currentPage ? 'active' : ''}">
+                        <a class="employee-pagination-link" href="./userAdminView?searchTerm=${param.searchTerm}&page=${i}">${i}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </nav>
+    </div></div>
 			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 		</div>

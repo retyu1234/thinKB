@@ -51,6 +51,7 @@
 	font-weight: bold;
 	margin-right: 10px;
 	padding-left: 10px;
+	caret-color: transparent;
 }
 .form-group input[type="text"], .form-group input[type="date"],
 	.form-group input[type="password"] {

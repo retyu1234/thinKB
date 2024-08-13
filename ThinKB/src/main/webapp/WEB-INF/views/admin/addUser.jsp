@@ -14,12 +14,7 @@
 .userAdmin-body {
 	margin: 0;
 	padding: 0;
-	background-image:
-		url('${pageContext.request.contextPath}/resources/aguu.jpg');
-	background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
-	background-position: center; /* 이미지를 가운데 정렬 */
-	background-repeat: no-repeat;
-	height: 400px; /* 요소의 높이를 400px로 고정 */
+	height: 100px; /* 요소의 높이를 400px로 고정 */
 }
 
 /* 컨텐츠 컨테이너 설정 */

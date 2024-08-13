@@ -72,6 +72,8 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
+   	width: 100%;
+    box-sizing: border-box;
 }
 .toggle-container {
     display: flex;
@@ -90,16 +92,21 @@
     vertical-align: middle;
 }
 #descriptionContent {
-	font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
+    overflow-x: auto; /* 가로 스크롤을 추가합니다 */
+    max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
 }
 #descriptionContent pre {
     font-family: Arial, sans-serif;
-    }
+    white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
+    word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
+    max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
+}
 .toggle-input {
     opacity: 0;
     width: 0;
@@ -376,9 +383,11 @@ request.setAttribute("stages", stages);
 			<!-- 현재 단계 완료 참여자 수 -->
 			<span class="countDone"> 현재 단계 완료 참여자 수:
 				${doneUserCount}/${userCount}</span>
+				<c:if test="${meetingRoom.stageId==4}">
 			<!-- 다음 단계로 버튼 -->
 			<button id="nextStepButton" class="nextStepButton"
 				onclick="confirmNextStep()">다음 단계로</button>
+				</c:if>
 		</c:if>
 	</div>
 	

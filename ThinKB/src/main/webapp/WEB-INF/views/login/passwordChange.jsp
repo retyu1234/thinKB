@@ -17,6 +17,7 @@
 	background-color: #f8f8f8;
 	margin: 0;
 	padding: 0;
+	caret-color: transparent;
 }
 
 .password-container {
