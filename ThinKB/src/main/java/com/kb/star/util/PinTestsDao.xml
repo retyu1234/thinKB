@@ -87,8 +87,14 @@
 		FROM Users u
 		WHERE u.DepartmentID = #{departmentId}
 		)
-		ORDER BY p.CreatedAt DESC
+		ORDER BY
+		CASE
+		WHEN p.Status = 1 THEN 1
+		ELSE 0
+		END ASC,
+		p.CreatedAt DESC
 	</select>
+
 
 	<!-- 핀테스트 좌표에 메모 남기기 -->
 	<insert id="insertCommentPinId">
