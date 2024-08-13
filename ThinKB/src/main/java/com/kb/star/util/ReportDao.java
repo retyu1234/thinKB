@@ -18,6 +18,11 @@ public interface ReportDao {
 	ReportDetailsDto getReportDetailsFirst(@Param("roomId") int roomId);
 	List<ReportsDto> getMyReportList(@Param("userId") int userId);
 	List<IdeaSummaryDto> getIdeaSummaries(@Param("roomId") int roomId);
+	
+	// 관리자
+	// 보고서 목록
 	List<DepartmentReportDto>getDepartmentReportList(@Param("managerId") int userId);
-	void approveReport(@Param("reportId") int reportId);
+	
+	// 보고서 결재
+	void approveReport(@Param("reportId") int reportId, @Param("isChoice") int isChoice);
 }

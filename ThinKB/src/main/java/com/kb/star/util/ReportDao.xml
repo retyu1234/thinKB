@@ -162,7 +162,9 @@
     <result property="likeNum" column="LikeNum" />
     <result property="opinionUserName" column="OpinionUserName" />
 </resultMap>
-<!-- 관리자 보고서 목록 -->
+
+	<!-- 관리자 -->
+	<!-- 관리자 보고서 목록 -->
     <select id="getDepartmentReportList" resultType="com.kb.star.dto.DepartmentReportDto">
         SELECT 
             r.ReportID, 
@@ -187,10 +189,13 @@
         ORDER BY 
             r.UpdatedAt DESC
     </select>
-<!-- 관리자 채택 -->
+    
+	<!-- 관리자 채택 -->
     <update id="approveReport">
         UPDATE Reports
-        SET IsChoice = true
-        WHERE ReportID = #{reportId}
+        SET IsChoice = #{isChoice}
+    	WHERE ReportID = #{reportId}
     </update>
+    
 </mapper>
+

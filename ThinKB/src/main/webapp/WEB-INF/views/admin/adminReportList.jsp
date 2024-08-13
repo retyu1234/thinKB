@@ -26,7 +26,7 @@
         <h1><i class="fas fa-file-alt"></i> 부서 보고서 리스트</h1>
         
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="검색...">
+            <input type="text" id="searchInput" placeholder="보고서 제목/작성자로 검색하세요">
             <select id="teamFilter">
                 <option value="">모든 팀</option>
                 <c:forEach items="${teams}" var="team">
@@ -39,7 +39,7 @@
         <table id="reportTable">
             <thead>
                 <tr>
-                    <th>보고서 제목3</th>
+                    <th>보고서 제목</th>
                     <th>작성자</th>
                     <th>팀</th>
                     <th>회의방</th>
@@ -51,31 +51,29 @@
             <tbody>
                 <c:forEach items="${reports}" var="report">
                     <tr>
-                        <td>${report.reportTitle}</td>
-                        <td>${report.authorName}</td>
-                        <td>${report.teamName}</td>
-                        <td>${report.roomTitle}</td>
-                        <td>${report.updatedAt}</td>
                         <td>
-		                    <c:choose>
- 		                        <c:when test="${report.isChoice == null}">
-		                            결재대기
-		                        </c:when>
-		                        <c:when test="${report.isChoice == 1}">
-		                            채택
-		                        </c:when>
-		                        <c:when test="${report.isChoice == 0}">
-							        불채택
-							    </c:when>
-		                    </c:choose>
-		                </td>
+                            <c:choose>
+                                <c:when test="${report.isChoice == null}">
+                                    결재대기
+                                </c:when>
+                                <c:when test="${report.isChoice == 1}">
+                                    채택
+                                </c:when>
+                                <c:when test="${report.isChoice == 0}">
+                                    불채택
+                                </c:when>
+                                <c:otherwise>
+                                    알 수 없음
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td>
-		                    <button class="download-btn" onclick="downloadReport(${report.roomId})"><i class="fas fa-download"></i> 다운로드</button>
-		                    <c:if test="${report.isChoice == null}">
-		                        <button class="approve-btn" onclick="handleChoice(${report.reportId}, 1)"><i class="fas fa-check"></i> 채택</button>
-		                        <button class="reject-btn" onclick="handleChoice(${report.reportId}, 0)"><i class="fas fa-times"></i> 불채택</button>
-		                    </c:if>
-		                </td>
+                            <button class="download-btn" onclick="downloadReport(${report.roomId})"><i class="fas fa-download"></i> 다운로드</button>
+                            <c:if test="${report.isChoice == null}">
+                                <button class="approve-btn" onclick="handleChoice(${report.reportId}, 1)"><i class="fas fa-check"></i> 채택</button>
+                                <button class="reject-btn" onclick="handleChoice(${report.reportId}, 0)"><i class="fas fa-times"></i> 불채택</button>
+                            </c:if>
+                        </td>
                     </tr>
                 </c:forEach>
             </tbody>
@@ -90,11 +88,6 @@
             }
         }
 
-        /* function approveReport(reportId) {
-            if (confirm('이 보고서를 승인하시겠습니까?')) {
-                window.location.href = './approveReport?reportId=' + reportId;
-            }
-        } */
         function handleChoice(reportId, choice) {
             var confirmationMessage = choice === 1 ? '아이디어를 채택하시겠습니까?' : '아이디어를 불채택하시겠습니까?';
             if (confirm(confirmationMessage)) {
@@ -129,4 +122,5 @@
             }
         }
     </script>
+</body>
 </html>
