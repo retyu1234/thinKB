@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -211,8 +212,8 @@ html, body {
 
 	<!-- 결과피드백, 테스트만들기 버튼 -->
 	<div class="pin-button-container">
-		<a href="./makePinTest"><button class="yellow-button">+ 새로운
-				핀메모</button></a>
+		<a href="./makePinTest"><button class="yellow-button">+
+				새로운 핀메모</button></a>
 	</div>
 	<!-- 콘텐츠 시작 -->
 	<div class="ab-feedback-content">
@@ -288,14 +289,11 @@ function filterTests() {
 }
 
 function redirectToDetail(pinTestId, status) {
-    // 상태에 따라 다른 URL로 리디렉션
-/*     if (status === 'complete') {
-        // 완료된 경우 다른 URL로 이동
-        window.location.href = './completedPinTestDetail?pinTestId=' + pinTestId;
-    } else { */
-        // 미완료된 경우 기본 URL로 이동
+  
         window.location.href = './pinTestDetail?pinTestId=' + pinTestId;
-/*     } */
+    
 }
+
 </script>
+
 </html>
