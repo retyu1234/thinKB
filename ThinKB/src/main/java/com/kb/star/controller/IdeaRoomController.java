@@ -269,13 +269,14 @@ public class IdeaRoomController {
 	public String roomDetail(HttpServletRequest request, @RequestParam("roomId") int roomId,
 
 	                         @RequestParam("stage") int stage, Model model,
-	                         @RequestParam(value = "ideaId", required = false) Integer ideaId) {
+	                         @RequestParam(value = "ideaId", required = false) Integer ideaId,
+	                         @RequestParam(value = "currentTab", required = false) String currentTab) {
 	    HttpSession session = request.getSession();
 	    int id = (Integer) session.getAttribute("userId");
 	    model.addAttribute("id", id);
 	    model.addAttribute("roomId", roomId);
 	    model.addAttribute("stage", stage);
-
+	    model.addAttribute("currentTab",currentTab);
 	    RoomDao dao = sqlSession.getMapper(RoomDao.class);
 	    MeetingRooms info = dao.roomDetailInfo(roomId);
 	    model.addAttribute("meetingRoom", info);
@@ -305,8 +306,7 @@ public class IdeaRoomController {
 	        case 3:
 	            command = new StageThreeCommand(sqlSession);
 	            command.execute(model);
-	            model.addAttribute("currentTab","smart");
-	            return "redirect:/ideaOpinionsList?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=smart";
+	            return "redirect:/ideaOpinionsList";
 	            
 
 	    	case 4:
@@ -316,10 +316,14 @@ public class IdeaRoomController {
 				return "redirect:/ideaOpinionsList2";
 
 	        case 5:
+	        	if(id==info.getRoomManagerId()) {
 	            command = new ReportView(sqlSession);
 	            command.execute(model);
 	            return "report/roomStage7";
-	            
+	        	}
+	        	command = new StageEndCommand(sqlSession);
+	        	command.execute(model);
+	            return "firstMeeting/roomResult";
 	        case 6:
 	        	command = new StageEndCommand(sqlSession);
 	        	command.execute(model);

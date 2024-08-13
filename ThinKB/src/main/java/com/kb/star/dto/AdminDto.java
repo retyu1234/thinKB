@@ -1,5 +1,8 @@
 package com.kb.star.dto;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
+@JsonAutoDetect
 public class AdminDto {
 	
 	// 모든 사용자 정보 가져오기
@@ -16,10 +19,14 @@ public class AdminDto {
 	// MeetingRoomMembers 테이블에서 total마일리지 계산한 것
 	private int totalContribution;
 	
-	// 베스트 사용량(팀별)
+	// 베스트 사용량(부서별)
 	private int departmentId;
     private String departmentName;
     private int departmentCount;
+    
+    // 베스트 사용량(팀별)
+    private int teamID;
+    private int teamCount;
 	
 	
 	// getter setter
@@ -109,6 +116,22 @@ public class AdminDto {
 
 	public void setDepartmentCount(int departmentCount) {
 		this.departmentCount = departmentCount;
+	}
+
+	public int getTeamID() {
+		return teamID;
+	}
+
+	public void setTeamID(int teamID) {
+		this.teamID = teamID;
+	}
+
+	public int getTeamCount() {
+		return teamCount;
+	}
+
+	public void setTeamCount(int teamCount) {
+		this.teamCount = teamCount;
 	}
 	
 	

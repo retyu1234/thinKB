@@ -14,10 +14,10 @@ public class AddVoteDto {
 	private Integer votedOptionId; // 투표된 옵션 ID
 	
 	private int createUserID;
+	private int totalNum;
+	private int voteNum;
 
 	// Getters and setters
-	
-	
 
 	public Integer getVotedOptionId() {
 		return votedOptionId;
@@ -94,5 +94,23 @@ public class AddVoteDto {
 	public void setIsCompleted(boolean isCompleted) {
 		this.isCompleted = isCompleted;
 	}
+
+	public int getTotalNum() {
+		return totalNum;
+	}
+
+	public void setTotalNum(int totalNum) {
+		this.totalNum = totalNum;
+	}
+
+	public int getVoteNum() {
+		return voteNum;
+	}
+
+	public void setVoteNum(int voteNum) {
+		this.voteNum = voteNum;
+	}
+	
+	
 
 }

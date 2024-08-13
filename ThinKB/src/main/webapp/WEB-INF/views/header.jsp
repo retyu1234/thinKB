@@ -166,7 +166,6 @@
     background-color: white;
     min-width: 300px;
     max-height: 300px;
-    overflow-y: auto;
     box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
     z-index: 1;
     border-radius: 10px;

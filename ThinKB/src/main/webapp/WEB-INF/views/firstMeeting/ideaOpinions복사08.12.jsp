@@ -89,8 +89,6 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-        width: 100%;
-    box-sizing: border-box;
 }
 .toggle-container {
     display: flex;
@@ -109,21 +107,16 @@
     vertical-align: middle;
 }
 #descriptionContent {
-    font-family: Arial, sans-serif;
+   font-family: Arial, sans-serif;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 5px;
-    overflow-x: auto; /* 가로 스크롤을 추가합니다 */
-    max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
 }
 #descriptionContent pre {
     font-family: Arial, sans-serif;
-    white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
-    word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
-    max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
-}
+    }
 .toggle-input {
     opacity: 0;
     width: 0;
@@ -464,12 +457,17 @@ h1 {
         
         window.onload = function() {
             var urlParams = new URLSearchParams(window.location.search);
-            var currentTab = urlParams.get('currentTab') || 'tab-smart'; // 기본값을 'tab-smart'로 설정
+            /* var currentTab = urlParams.get('currentTab') */
             var roomId = urlParams.get('roomId');
             var ideaId = urlParams.get('ideaId');
-
-            if (roomId && ideaId) {
-                showTab(currentTab, roomId, ideaId);
+            
+            /* if (roomId && ideaId) {
+                showTab(currentTab, '#FFE297', roomId, ideaId);
+            } */
+            
+            var currentTab = "${currentTab}";
+            if (currentTab) {
+                showTab(currentTab, '#FFE297', '${roomId}', '${ideaId}');
             }
         };
 
@@ -513,7 +511,7 @@ h1 {
                 history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}`);
             }
         } */
-        window.showTab = function(tabName, roomId, ideaId) {
+        window.showTab = function(tabName, color, roomId, ideaId) {
             // 모든 탭 컨텐츠와 탭을 비활성화
             var tabs = document.getElementsByClassName('tab-content');
             for (var i = 0; i < tabs.length; i++) {
@@ -525,13 +523,8 @@ h1 {
             }
 
             // 선택된 탭 컨텐츠와 탭을 활성화
-            var selectedContent = document.getElementById(tabName);
-            var selectedTab = document.querySelector('.tab.' + tabName);
-            
-            if (selectedContent && selectedTab) {
-                selectedContent.classList.add('active');
-                selectedTab.classList.add('active');
-            }
+            document.getElementById(tabName).classList.add('active');
+            document.querySelector('.tab.' + tabName).classList.add('active');
 
             // 폼의 currentTab 값을 업데이트
             var currentTabInputs = document.querySelectorAll('input[name="currentTab"]');
@@ -541,6 +534,11 @@ h1 {
 
             // URL을 업데이트
             history.replaceState(null, '', '?roomId=' + roomId + '&ideaId=' + ideaId + '&currentTab=' + tabName);
+            
+         	// 폼의 hidden input 업데이트
+            document.querySelectorAll('form input[name="currentTab"]').forEach(function(input) {
+                input.value = tabName;
+            });
         };
 
     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창
@@ -550,7 +548,6 @@ h1 {
                 alert('의견을 입력해주세요!');
             } else {
                 document.querySelector('#' + tabName + ' form').submit();
-                form.submit(); 
             }
         }; 
         

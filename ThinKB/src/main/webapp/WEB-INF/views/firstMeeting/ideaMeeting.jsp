@@ -617,8 +617,9 @@ body, html {
 				<div class="stage-info">
 					<c:if test="${userId == meetingRoom.getRoomManagerId()}">
 						<div class="vote-info">현재 투표 참여인원 : ${voteCnt}명 / ${total}명</div>
+						<c:if test="${meetingRoom.stageId==2}">
 						<button id="nextStepButton" class="yellow-button"
-							onclick="goToNextStep()">다음 단계</button>
+							onclick="goToNextStep()">다음 단계</button></c:if>
 					</c:if>
 				</div>
 			</form>

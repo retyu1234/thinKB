@@ -12,6 +12,17 @@ public class UserListDto {
 	private boolean isDelete;
 	private boolean isAdmin;
 	private String profileImg;
+	private int totalContribution;
+	
+	
+
+	public int getTotalContribution() {
+		return totalContribution;
+	}
+
+	public void setTotalContribution(int totalContribution) {
+		this.totalContribution = totalContribution;
+	}
 
 	public String getProfileImg() {
 		return profileImg;

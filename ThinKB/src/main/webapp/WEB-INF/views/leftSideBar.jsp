@@ -11,12 +11,13 @@
 	position: fixed;
 	top: 180px; /* 나중에 수정 */
 	left: 0;
-	width: 15%;
+	width: 13%;
 	height: 100%;
 	padding: 20px;
 	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
+	margin-left: 10px;
 }
 
 .section {
@@ -33,6 +34,11 @@
 	text-align: left;
 	padding: 5%;
 	box-sizing: border-box;
+	border-radius: 20px;
+	text-align: center;
+	white-space: normal; /* 띄어쓰기를 기준으로 줄바꿈 */
+	word-break: keep-all; /* 단어 중간에서 줄바꿈 방지 */
+	overflow-wrap: normal; /* 단어가 너무 길 경우에도 줄바꿈 방지 */
 }
 
 .section3, .section4 {
@@ -41,37 +47,54 @@
 	font-family: Arial;
 	font-size: 13pt;
 	font-weight: regular;
-	margin-bottom: 25px;
+	margin-bottom: 15px;
 }
 
 .section2 {
 	background-color: #FFFFFF;
-	color: #000000;
+	color: #60584C;
 	font-family: Arial;
-	font-size: 13pt;
+	font-size: 12pt;
 	font-weight: regular;
 	margin-bottom: 15px;
 	text-align: left;
 	padding: 10px;
-	margin-left: -5px;
+	margin-left: 10px;
+	display: flex;
+	align-items: center; /* 이미지와 텍스트를 같은 높이에 배치 */
 }
 
 .section21 {
 	background-color: #FFFFFF;
-	color: #000000;
+	color: #60584C;
 	font-family: Arial;
 	font-size: 13pt;
 	font-weight: regular;
 	text-align: left;
 	padding: 5px;
+	margin-bottom: 5px;
 	margin-left: -5px;
 	cursor: pointer;
+	overflow: hidden; /* 내용이 넘칠 때 숨김 */
+	white-space: nowrap; /* 텍스트를 한 줄로 표시 */
+	text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
+	display: flex; /* 수평 정렬을 위해 flexbox 사용 */
+	align-items: center; /* 아이콘과 텍스트를 같은 높이에 배치 */
 }
+
+.sidebar-icon {
+	size: 18px;
+	margin-right: 10px;
+	align-self: center; /* 아이콘이 텍스트와 수평으로 정렬 */
+	display: flex; /* 수평 정렬을 유지하기 위해 flexbox 사용 */
+	align-items: center; /* 아이콘이 텍스트와 같은 높이에 위치하도록 */
+}
+
 
 .section3 .sub-section1, .section4 .sub-section1 {
 	font-size: 15pt;
 	font-weight: bold;
-	margin-bottom: 10px;
+	margin-bottom: 20px;
 }
 
 .section3 .sub-section2, .section4 .sub-section2 {
@@ -81,16 +104,19 @@
 }
 
 .notification-box {
-	background-color: #FFE297;
-	border-radius: 10px;
+	background-color: #ECF0FF;
+	border-radius: 20px;
 	text-align: center;
-	padding: 10px;
-	color: #000000;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 15px; /* 왼쪽 여백 */
+	padding-right: 15px; /* 오른쪽 여백 */
+	color: #60584C;
 	font-family: Arial;
-	font-size: 13pt;
+	font-size: 12pt;
 	cursor: pointer;
 	margin-top: 10px;
-	height: 22px;
+	height: 25px;
 	overflow: hidden; /* 내용이 넘칠 때 숨김 */
 	white-space: nowrap; /* 텍스트를 한 줄로 표시 */
 	text-overflow: ellipsis; /* 넘치는 텍스트에 "..." 표시 */
@@ -102,11 +128,16 @@
 	color: #000000;
 }
 
-.sidebar-icon {
-	size: 24px;
-	margin-right: 10px;
+.section4 a {
+	font-size: 15px;
+	margin-left: 5px;
 }
 
+.sidebar-icon {
+	size: 18px;
+	margin-right: 10px;
+	align-self: center; /* 아이콘이 텍스트와 수평으로 정렬 */
+}
 /* 모달창 */
 .modal-notification {
 	display: none; /* Hidden by default */
@@ -179,34 +210,46 @@
 .modal-button-notification:hover {
 	background-color: #e0a800;
 }
+
+.sidebar-image {
+	max-width: 100%; /* 이미지의 최대 너비를 부모 요소 너비에 맞춤 */
+	max-height: 100%; /* 이미지의 최대 높이를 부모 요소 높이에 맞춤 */
+	height: 24px; /* 이미지를 원본 비율대로 축소 또는 확대 */
+	width: 24px; /* 이미지를 원본 비율대로 축소 또는 확대 */
+	margin-right: 10px;
+}
 </style>
 </head>
 <body class="LeftSideBar_body">
 	<div class="leftSidebar">
 		<div class="section section1">${meetingRoom.roomTitle}</div>
+		<div class="section section3">
 		<c:choose>
 			<c:when test="${empty yesPickList or empty yesPickList[0].title}">
 				<div class="section section2">
-					<span class="sidebar-icon">📝</span>아이디어 선택 전
+					<img src="<c:url value='/resources/empty.png'/>" alt="emptyImg"
+							class="sidebar-image"> 아이디어 선택 전
 				</div>
 			</c:when>
 			<c:otherwise>
 				<c:forEach var="idea" items="${yesPickList}">
 					<div class="section section21" data-room-id="${idea.roomID}"
 						data-idea-id="${idea.ideaID}" data-stage-id="${idea.stageID}">
-						<span class="sidebar-icon">📌</span>${idea.title} <input
+						<span class="sidebar-icon">📌</span>${idea.title}<input
 							type="hidden" name="ideaId" value="${idea.ideaID}" /> <input
 							type="hidden" name="stageId" value="${idea.stageID}" />
 					</div>
 				</c:forEach>
 			</c:otherwise>
 		</c:choose>
+		</div>
 		<div class="section section3">
 			<div class="sub-section1">회의방 알림</div>
 			<c:choose>
 				<c:when test="${empty roomMessage}">
 					<div class="section section2">
-						<span class="sidebar-icon">✉️</span>받은 알림이 없습니다.
+						<img src="<c:url value='/resources/empty.png'/>" alt="emptyImg"
+							class="sidebar-image"> 알림이 없습니다.
 					</div>
 				</c:when>
 				<c:otherwise>
