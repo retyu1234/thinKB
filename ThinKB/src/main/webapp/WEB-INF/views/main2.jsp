@@ -1490,15 +1490,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			<div class="guide-item">
 				<div class="guide-image-container">
-					<img src="./resources/Component7.png" alt="최종보고서"
-						class="guide-image">
+						<dotlottie-player
+						src="https://lottie.host/262ea11d-9b06-4cc6-b09b-b704bbb28ed0/d54Sn0f2Cv.json"
+						background="transparent" speed="1"
+						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 				</div>
 				<div class="guide-text">
 					<h2>THINKB와 함께 최종보고서 작성까지!</h2>
 					<p>최종보고서 작성도 어렵지 않아요.</p>
 					<p>논의가 완료되면 지금까지 알맞에 정리된 의견들과</p>
 					<p>함께 제공되는 양식에 맞춰 최종보고서를 작성할 수 있어요.</p>
-				</div>
+				</div> 
 			</div>
 		</div>
 	</section>
