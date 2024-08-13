@@ -10,16 +10,14 @@
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <title>직원관리</title>
 <style>
-.userAdmin-body {
-	margin: 0;
-	padding: 0;
+.container {
+    display: flex;
 }
-
 .employee-content {
 	padding: 20px;
 	width: 65%;
-	margin-top: 10%;
 	margin : 0% 10% 6% 20%;
+	flex: 1;
 }
 
 .employee-title {
@@ -252,15 +250,15 @@
     </script>
 </head>
 <body>
-	<div class="userAdmin-body">
-		<%@ include file="../adminSideBar.jsp"%>
-	</div>
+<div class="container">
+	
+	<%@ include file="../adminSideBar.jsp"%>
 	<div class="employee-content">
 		<div class="employee-title">직원조회</div>
 		<div class="add-btn">
 			<a href="./addUserView?departmentId=${departmentId}"><button
 					class="add-employee-button">직원 추가</button></a>
-		</div><hr/ style="margin-bottom:2%;">
+		</div><hr style="margin-bottom:2%;"/>
 		<form action="./userAdminView" method="get"
 			class="employee-search-form">
 			<div class="input-group">
@@ -324,6 +322,7 @@
 			<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 		</div>
+	</div>
 	</div>
 </body>
 </html>

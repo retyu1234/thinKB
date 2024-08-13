@@ -4,65 +4,82 @@
 <head>
 <meta charset="UTF-8">
 <style>
-/* 로고 */
-.logo {
-	display: flex;
-	align-items: center;
-	width:100%;
-	height:auto;
-	margin-left: 20px;
-	margin-bottom: 40px;
-}
-.logo img {
-	height: 40px;
-}
-
-
-/* 사이드바 */
 .admin-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 230px;
-    height: 100vh; /* 뷰포트 높이의 100% */
-    background-color: #333;
+    width: 250px;
+    height: 100vh;
+    background-color: #2c2c2c;
     color: white;
-    padding-top: 50px;
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤바 추가 */
+    padding-top: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+}
+.admin-logo {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #f4f4f4;
+    margin-bottom: 30px;
+}
+.admin-logo img {
+    height: 30px;
+    /* margin-right: 10px; */
 }
 .admin-sidebar ul {
     list-style-type: none;
     padding: 0;
-}
-.admin-sidebar li {
-    padding: 10px 20px;
-    cursor: pointer;
-    position: relative;
-}
-/* 메인 탭 hover 효과 제거 */
-.admin-sidebar > ul > li:hover {
-    background-color: #333;
-}
-/* 메인 탭 클릭 시 스타일 */
-.admin-sidebar > ul > li.active {
-    background-color: #444;
-}
-/* 세부탭 */
-.admin-sidebar li ul {
-    display: none;
-    list-style-type: none;
-    padding: 0;
     margin: 0;
 }
-.admin-sidebar li ul li {
+.admin-sidebar li {
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+/* 대신 다음 스타일을 추가합니다 */
+.admin-sidebar > ul > li > span:hover,
+.admin-sidebar > ul > li > a:hover,
+.admin-sidebar li ul li:hover {
+    background-color: #3a3a3a;
+}
+
+/* 추가로, 메인 메뉴 항목과 서브 메뉴 항목에 패딩을 개별적으로 적용합니다 */
+.admin-sidebar > ul > li > span,
+.admin-sidebar > ul > li > a {
+    display: block;
     padding: 10px 20px;
 }
-/* 세부탭 hover 효과 */
-.admin-sidebar li ul li:hover {
-    background-color: #555;
+
+
+
+.admin-sidebar > ul > li {
+    font-weight: bold;
 }
-.sidebar .active > ul {
+.admin-sidebar li ul {
+    margin-top: 5px;
+}
+.admin-sidebar li ul li {
+    font-weight: normal;
+}
+.admin-sidebar a {
+    color: white;
+    text-decoration: none;
     display: block;
+}
+.admin-sidebar .admin-icon {
+    margin-right: 10px;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+}
+.admin-badge {
+    background-color: #007bff;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.8em;
+    float: right;
 }
 .admin-sidebar a {
     color: white;
@@ -74,52 +91,30 @@
     height: 100%;
 }
 </style>
-<script>
-function toggleSubmenu(event) {
-    const parentLi = event.currentTarget;
-    // 모든 메인 탭의 active 클래스 제거
-    document.querySelectorAll('.admin-sidebar > ul > li').forEach(item => {
-        item.classList.remove('active');
-    });
-    // 클릭된 메인 탭에 active 클래스 추가
-    parentLi.classList.add('active');
-    // 서브메뉴 토글
-    const submenu = parentLi.querySelector('ul');
-    if (submenu) {
-        submenu.style.display = submenu.style.display === 'block' ? 'none' : 'block';
-    }
-    // 이벤트 버블링 방지
-    event.stopPropagation();
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const menuItems = document.querySelectorAll('.admin-sidebar > ul > li');
-    menuItems.forEach(function(item) {
-        item.addEventListener('click', toggleSubmenu);
-    });
-});
-</script>
 </head>
 <body>
 <div class="admin-sidebar">
-	<div class="logo">
-        <a href="<c:url value='./adminMain'/>"> <img src="<c:url value='./resources/logo.png'/>" alt="Logo"></a>
+    <div class="admin-logo">
+    	<a href="<c:url value='./adminMain'/>">
+        	<img src="<c:url value='./resources/logo.png'/>" alt="Linweb">
+        </a>
     </div>
-    
     <ul>
-        <li>📋 프로젝트 관리
-            <ul>
-                <li>프로젝트 결재 목록</li>
+        <li><span class="admin-icon">PJ</span>프로젝트 관리
+        	<ul>
+                <li><a href="./departmentReportList">프로젝트 결재 목록</a></li>
+                <li>프로젝트 조회</li>
             </ul>
         </li>
-        <li>👥 사용자 관리
+        <li>
+            <span class="admin-icon">📁</span>사용자 관리
             <ul>
-                <li>직원 목록</li>
-                <li>직원 추가</li>
+                <li><a href="./userAdminView">직원 목록</a></li>
+                <li><a href="./addUserView">직원 추가</a></li> 
             </ul>
         </li>
-        <li>📈 사용량 관리</li>
-      	<a href="<c:url value='./adminMypage'/>"><li>⚙️ 부서 현황</li></a>
+        <li><span class="admin-icon">📊</span>사용량 관리</li>
+		<a href="<c:url value='./adminMypage'/>"><li><span class="admin-icon">⚙️</span>설정</li></a>
     </ul>
 </div>
 </body>

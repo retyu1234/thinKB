@@ -15,8 +15,8 @@
         ORDER BY u.IsDelete ASC, d.DepartmentName ASC, t.TeamName ASC, u.UserName ASC
     </select>
     
-	<!-- 베스트 직원 목록(ID,이름,이미지)+토탈마일리지 가져오기 -->
-	<select id="getBestEmployees" resultType="com.kb.star.dto.AdminDto">
+	<!-- 팀별로 베스트 직원 목록(ID,이름,이미지)+토탈마일리지 가져오기 -->
+<!-- 	<select id="getBestEmployees" resultType="com.kb.star.dto.AdminDto">
 		SELECT u.UserID, u.UserName, u.ProfileImg, a.TotalContribution
         FROM Users u
         JOIN (
@@ -25,11 +25,29 @@
             GROUP BY UserID
             ORDER BY TotalContribution DESC
         ) a ON u.UserID = a.UserID
+        WHERE u.TeamID = #{teamId}
         ORDER BY a.TotalContribution DESC
+	</select> -->
+	<select id="getBestEmployees" resultType="com.kb.star.dto.AdminDto">
+	    SELECT u.UserID, u.UserName, u.ProfileImg, a.TotalContribution, t.TeamName
+	    FROM Users u
+	    JOIN (
+	        SELECT UserID, SUM(ContributionCnt) AS TotalContribution
+	        FROM MeetingRoomMembers
+	        WHERE IsDelete = false
+	        GROUP BY UserID
+	    ) a ON u.UserID = a.UserID
+	    JOIN Teams t ON u.TeamID = t.TeamID
+	    WHERE u.IsDelete = false
+	    <if test="teamName != null and teamName != ''">
+	        AND t.TeamName = #{teamName}
+	    </if>
+	    ORDER BY a.TotalContribution DESC
+	    LIMIT 5
 	</select>
 	
 	<!-- 베스트 사용횟수 팀 정보(팀ID, 팀이름, 사용횟수) 가져오기 -->
-	<select id="getBestUsage" resultType="com.kb.star.dto.AdminDto">
+<!-- 	<select id="getBestUsage" resultType="com.kb.star.dto.AdminDto">
         SELECT d.DepartmentID, d.DepartmentName, TopDepartments.DepartmentCount
         FROM Departments d
         JOIN (
@@ -41,6 +59,19 @@
         ) AS TopDepartments
         ON d.DepartmentID = TopDepartments.DepartmentID
         ORDER BY TopDepartments.DepartmentCount DESC
+    </select> -->
+    <select id="getBestUsage" resultType="com.kb.star.dto.AdminDto">
+        SELECT t.TeamID, t.TeamName, TopTeams.TeamCount
+        FROM Teams t
+        JOIN (
+	        SELECT TeamID, COUNT(*) AS TeamCount
+	        FROM MeetingRooms
+	        WHERE StageID = 6
+	        GROUP BY TeamID
+	        ORDER BY TeamCount DESC
+	    ) AS TopTeams
+	    ON t.TeamID = TopTeams.TeamID
+	    ORDER BY TopTeams.TeamCount DESC
     </select>
     <!-- 오늘의 결재 대기 보고서 가져오기 (작성자와 부서명 포함) -->
     <select id="getTodayReports" resultType="com.kb.star.dto.ReportLow">

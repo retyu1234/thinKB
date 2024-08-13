@@ -344,7 +344,7 @@ body {
 					<c:if test="${li.getStageId() >= 3}">
 		                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
 		                <c:forEach var="idea" items="${ideasList}">
-		                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${idea.getStageID()}&ideaId=${idea.getIdeaID()}'"
+		                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${idea.getIdeaID()}'"
 		                </c:forEach>
 		            </c:if>
 					<c:if test="${li.getStageId() < 3}">
