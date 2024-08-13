@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.dto.IdeaSummaryDto;
+import com.kb.star.dto.Ideas;
 import com.kb.star.dto.ReportDetailsDto;
 import com.kb.star.dto.UsersDto;
 import com.kb.star.util.ReportDao;
@@ -49,6 +50,19 @@ public class ReportView implements RoomCommand{
 		}
 		model.addAttribute("userList", userList);
 		//왼쪽 사이드바
+		
+		
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao1.totalContributionNum(roomId);
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int id = (Integer) map.get("id");
+		int myContributionNum = dao1.myContributionNum(roomId, id);
+		model.addAttribute("myContributionNum", myContributionNum);
+		
+		//상단 6개 단계를 위한 yesPickList
+		List<Ideas> dto2 = dao1.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", dto2);
 	}
 
 }
