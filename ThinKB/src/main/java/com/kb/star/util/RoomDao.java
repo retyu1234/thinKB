@@ -66,7 +66,7 @@ public interface RoomDao {
 
 	String rejectLogSelect(int ideaID);
 
-	void makeNotification(Integer user, int ideaNum, String notification);
+	void makeNotification(Integer user, int ideaNum, String notification, int roomId);
 
 	void addMeetingRoomMembers(@Param("roomId") int roomId, @Param("userIds") List<Integer> userIds);
 	

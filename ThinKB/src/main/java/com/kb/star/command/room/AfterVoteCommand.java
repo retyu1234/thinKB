@@ -69,9 +69,20 @@ public class AfterVoteCommand implements RoomCommand {
 			}
 		}
 		model.addAttribute("userList", userList);
-		
+
 		String timer = dao.roomTimerInfo(roomId);
 		model.addAttribute("timer", timer);
+
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao.totalContributionNum(roomId);
+		model.addAttribute("totalContributionNum", totalContributionNum);
+
+		int myContributionNum = dao.myContributionNum(roomId, userId);
+		model.addAttribute("myContributionNum", myContributionNum);
+		
+		//상단 6개 단계를 위한 yesPickList
+		List<Ideas> dto1 = dao.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", dto1);
 	}
 
 }

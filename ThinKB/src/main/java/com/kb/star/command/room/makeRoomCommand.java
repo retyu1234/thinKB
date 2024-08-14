@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.kb.star.util.RoomDao;
 import com.kb.star.util.UserDao;
 
 public class makeRoomCommand implements RoomCommand {
@@ -85,7 +86,18 @@ public class makeRoomCommand implements RoomCommand {
 		}
 		
 		model.addAttribute("id", id);
-
+		
+		//방만들고 알림 보내기 추가
+		RoomDao roomDao = sqlSession.getMapper(RoomDao.class);
+		
+		String notification = "[" + title + "] 회의방이 새로 만들어졌어요, 🕒"
+				+ hour + "시간 " + min + "분 "+ sec + "초안에 아이디어를 제출해주세요!";
+		
+		roomDao.makeNotification(Integer.parseInt(id), 0, notification, roomNum);
+		for (String user : list) {
+			int notiId = Integer.parseInt(user);
+			roomDao.makeNotification(notiId, 0, notification, roomNum);
+		}
 	}
 
 }

@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <style type="text/css">
 body, html {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	overflow-x: hidden;
     width: 100%;
 }
@@ -71,6 +71,7 @@ body, html {
     font-size: 22pt;
     font-weight: bold;
     margin: 0 20px;
+    font-family: KB금융 제목체 Light;
 }
 
 .quote-mark {
@@ -145,6 +146,7 @@ body, html {
     font-weight: bold;
     margin: 0;
     display: inline-block;
+    font-family: KB금융 제목체 Light;
 }
 
 .idea-text {
@@ -206,6 +208,7 @@ body, html {
     margin: 10px 0;
     width: 100%; /* 제목 영역을 부모 요소의 전체 너비로 설정 */
     word-wrap: break-word; /* 긴 단어의 경우 줄바꿈 */
+    font-family: KB금융 제목체 Light;
 }
 
 .idea-author {
@@ -247,6 +250,7 @@ body, html {
     font-weight: bold;
     margin-top: 30px;
     margin-bottom: 15px;
+    font-family: KB금융 제목체 Light;
 }
 
 .opinion-list {
@@ -341,6 +345,7 @@ body, html {
 .ending-message {
     font-size: 15pt;
     margin: 10px 0;
+    font-family: KB금융 제목체 Light;
 }
 
 /*  */
