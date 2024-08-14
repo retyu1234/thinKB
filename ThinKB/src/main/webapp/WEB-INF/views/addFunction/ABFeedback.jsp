@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ABTest 투표</title>
+<title>thinKB - A/B테스트 핀메모</title>
 <style>
 /* 기존 스타일 */
 body, html {
@@ -14,7 +14,7 @@ body, html {
 }
 
 .ab-feedback-detail-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	align-items: center;
 }
 
@@ -22,7 +22,7 @@ body, html {
 	display: flex;
 	flex-direction: row;
 	width: 100%;
-	margin-bottom: 5%;
+	margin-bottom: 10%;
 }
 
 .abfd-box {
@@ -55,6 +55,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -70,6 +71,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -101,6 +103,7 @@ body, html {
 	font-size: 1.5em;
 	font-weight: bold;
 	margin-bottom: 20px;
+	font-family: KB금융 제목체 Light;
 }
 
 .choice img {
@@ -118,6 +121,7 @@ body, html {
 	border-radius: 5px;
 	cursor: pointer;
 	margin: 0;
+	font-family: KB금융 본문체 Light;
 }
 
 .submit-button:hover {
@@ -199,13 +203,13 @@ body, html {
 	border: none;
 	outline: none;
 	resize: none;
-	font-family: Arial;
+	font-family: KB금융 본문체 Light;
 }
 
 .coordinate-form textarea::placeholder {
 	color: #999;
 	font-size: 14px;
-	font-family: Arial;
+	font-family: KB금융 본문체 Light;
 }
 
 .coordinate-form button {
@@ -330,6 +334,7 @@ body, html {
 	font-size: 13pt;
 	font-weight: bold;
 	margin-bottom: -4px;
+	font-family: KB금융 제목체 Light;
 }
 
 .how-to-description {
@@ -353,6 +358,7 @@ body, html {
 	margin-bottom: 10px;
 	text-align: center;
 	margin-top: 50px;
+	font-family: KB금융 제목체 Light;
 }
 
 .ab-feedback-date {
@@ -605,6 +611,37 @@ body, html {
         xhr.send(data);
         location.reload();
     }
+    
+    function formatDates() {
+        var dateDivs = document.querySelectorAll('.abfd-comment-date, .ab-feedback-date');
+        dateDivs.forEach(function(div) {
+            var dateStr = div.textContent.trim();
+            div.textContent = formatDateString(dateStr);
+        });
+    }
+	//날짜 나오는거 초 뒤에 .0제거하는 로직 추가
+    function formatDateString(dateStr) {
+        var date = new Date(dateStr);
+        if (!isNaN(date.getTime())) {
+            return date.getFullYear() + '-' + 
+                   padZero(date.getMonth() + 1) + '-' + 
+                   padZero(date.getDate()) + ' ' + 
+                   padZero(date.getHours()) + ':' + 
+                   padZero(date.getMinutes()) + ':' + 
+                   padZero(date.getSeconds());
+        }
+        return dateStr; // 날짜 변환에 실패한 경우 원래 문자열 반환
+    }
+
+    function padZero(num) {
+        return num.toString().padStart(2, '0');
+    }
+
+    // 페이지 로드 시 실행
+    window.onload = function() {
+        displayExistingComments();
+        formatDates();
+    };
 </script>
 </head>
 

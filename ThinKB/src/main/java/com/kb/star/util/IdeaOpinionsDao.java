@@ -151,7 +151,8 @@ public interface IdeaOpinionsDao {
 	// Ideas 테이블에서 제목, stageID 가져오기
 	List<Ideas> getIdeasInfo2(@Param("roomId") int roomId); // Ideas = IdeasDto
 
-
+	//기안자 +기여도
+	void updateContributionCntForYesPick(@Param("roomId") int roomId);
     
 }
 

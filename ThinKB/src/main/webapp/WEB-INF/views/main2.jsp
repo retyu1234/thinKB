@@ -1407,7 +1407,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			<div class="guide-item">
 				<div class="guide-image-container">
 					<dotlottie-player
-						src="https://lottie.host/36a200fa-e060-451c-8e5b-860d53dcaed5/69PvW9UKhG.json"
+						src="https://lottie.host/2fddae35-0cdc-4b5b-857a-585948fbe4c8/GCE5AsQQMK.json"
 						background="transparent" speed="1.5"
 						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 				</div>
@@ -1448,7 +1448,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			<div class="guide-item">
 				<div class="guide-image-container">
 					<dotlottie-player
-						src="https://lottie.host/817bac4e-5340-4358-8d27-b6915f966b8c/QZBzoObp7U.json"
+						src="https://lottie.host/b96a21bf-1736-4695-862f-187dd034d028/bfzY8RWNgc.json"
 						background="transparent" speed="1"
 						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 				</div>
@@ -1491,7 +1491,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			<div class="guide-item">
 				<div class="guide-image-container">
 						<dotlottie-player
-						src="https://lottie.host/262ea11d-9b06-4cc6-b09b-b704bbb28ed0/d54Sn0f2Cv.json"
+						src="https://lottie.host/00f3648f-4ffe-4ecd-b54b-bc490b3562bd/Zloqc32xKU.json"
 						background="transparent" speed="1"
 						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
 				</div>

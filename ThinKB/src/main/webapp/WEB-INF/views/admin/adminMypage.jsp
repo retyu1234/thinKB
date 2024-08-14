@@ -466,12 +466,6 @@
 	color: black;
 }
 
-.profile-container {
-	position: relative;
-	width: 50px;
-	height: 50px;
-	margin: 0 auto 10px;
-}
 
 .profile-image {
 	width: 100%;

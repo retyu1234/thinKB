@@ -470,8 +470,8 @@ public class IdeaOpinionsController {
 		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
 		 // 모든 참가자의 기여도를 한 번에 업데이트
 	    ideaOpinionsDao.updateContributionLikeNum(roomId);
-	    System.out.println("모든 참가자의 기여도 업데이트 완료");
-	    
+	    // 기안자들 +20점
+	    ideaOpinionsDao.updateContributionCntForYesPick(roomId);
 	    // 업데이트 후 각 참가자의 좋아요 수 로그 출력 (선택적)
 	    List<Integer> participantList = ideaOpinionsDao.RoomForUserList5(roomId);
 	    for (Integer participantId : participantList) {
