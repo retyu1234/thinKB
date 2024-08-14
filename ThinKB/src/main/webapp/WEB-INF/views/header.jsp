@@ -414,6 +414,7 @@
             <p id="modalMessage"></p>
         </div>
     </div>
+    <button id="guideBtn"></button>
     <button id="scrollToTopBtn">▲</button>
 </body>
 
