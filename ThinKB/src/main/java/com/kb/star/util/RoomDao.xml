@@ -388,4 +388,9 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 <select id="myContributionNum" resultType="int">
 	SELECT ContributionCnt from MeetingRoomMembers WHERE RoomID = #{param1} and UserID = #{param2} and IsDelete=0
 </select>
+
+<!-- 기여도 +5 -->
+<update id="contributionFivePoint">
+	UPDATE MeetingRoomMembers set ContributionCnt = ContributionCnt+5 where RoomID=#{param1} AND UserID=#{param2}
+</update>
 </mapper>
