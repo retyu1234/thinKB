@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ABTest 투표</title>
+<title>thinKB - A/B테스트 투표하기</title>
 <style>
 html, body {
 	max-width: 100%;
@@ -13,7 +13,7 @@ html, body {
 }
 
 .ab-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .ab-content {
@@ -42,6 +42,7 @@ html, body {
     font-weight: bold;
     margin-left: 20pt;
     margin-bottom: 10px;
+    font-family: KB금융 제목체 Light;
 }
 .topic-content {
     font-size: 13pt;
@@ -73,6 +74,7 @@ html, body {
 	align-items: center;
 	justify-content: center;
 	margin-bottom: 10px;
+	font-family: KB금융 제목체 Light;
 }
 
 .choice-title input[type="checkbox"] {
@@ -94,6 +96,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -109,6 +112,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -125,6 +129,7 @@ html, body {
 	height: 100%;
 	overflow: auto;
 	background-color: rgba(0,0,0,0.4);
+	font-family: KB금융 제목체 Light;
 }
 
 .ab-modal-content {
