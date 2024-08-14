@@ -66,7 +66,7 @@ public interface RoomDao {
 
 	String rejectLogSelect(int ideaID);
 
-	void makeNotification(Integer user, int ideaNum, String notification);
+	void makeNotification(Integer user, int ideaNum, String notification, int roomId);
 
 	void addMeetingRoomMembers(@Param("roomId") int roomId, @Param("userIds") List<Integer> userIds);
 	
@@ -133,5 +133,9 @@ public interface RoomDao {
 	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId,@Param("searchKeyword") String searchKeyword);
 
 	List<RejectLog> rejectList(int roomId, int id);
+
+	int totalContributionNum(int roomId);
+
+	int myContributionNum(int roomId, int id);
 
 }

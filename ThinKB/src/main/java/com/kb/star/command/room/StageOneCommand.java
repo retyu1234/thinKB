@@ -86,6 +86,17 @@ public class StageOneCommand implements RoomCommand {
 		// 반려내용담기
 		List<RejectLog> rejectList = dao.rejectList(roomId, id);
 		model.addAttribute("rejectList", rejectList);
+		
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao.totalContributionNum(roomId);
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, id);
+		model.addAttribute("myContributionNum", myContributionNum);
+		
+		//상단 6개 단계를 위한 yesPickList
+		List<Ideas> dto = dao.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", dto);
 	}
 
 }

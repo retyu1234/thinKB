@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 <style type="text/css">
 body, html {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	overflow-x: hidden;
     width: 100%;
 }
@@ -71,6 +71,7 @@ body, html {
     font-size: 22pt;
     font-weight: bold;
     margin: 0 20px;
+    font-family: KB금융 제목체 Light;
 }
 
 .quote-mark {
@@ -145,6 +146,7 @@ body, html {
     font-weight: bold;
     margin: 0;
     display: inline-block;
+    font-family: KB금융 제목체 Light;
 }
 
 .idea-text {
@@ -206,6 +208,7 @@ body, html {
     margin: 10px 0;
     width: 100%; /* 제목 영역을 부모 요소의 전체 너비로 설정 */
     word-wrap: break-word; /* 긴 단어의 경우 줄바꿈 */
+    font-family: KB금융 제목체 Light;
 }
 
 .idea-author {
@@ -247,6 +250,7 @@ body, html {
     font-weight: bold;
     margin-top: 30px;
     margin-bottom: 15px;
+    font-family: KB금융 제목체 Light;
 }
 
 .opinion-list {
@@ -341,6 +345,7 @@ body, html {
 .ending-message {
     font-size: 15pt;
     margin: 10px 0;
+    font-family: KB금융 제목체 Light;
 }
 
 /*  */
@@ -412,21 +417,21 @@ body, html {
 	    request.setAttribute("stages", stages);
 	%>
 	<div class="stages">
-        <c:forEach var="stage" items="${stages}" varStatus="status">
-            <c:choose>
-                <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-                    <a href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}" class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-                        ${status.index + 1}. ${stage}
-                    </a>
-                </c:when>
-                <c:otherwise>
-                    <div class="stage inactive">
-                        ${status.index + 1}. ${stage}
-                    </div>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-    </div>
+	    <c:forEach var="stage" items="${stages}" varStatus="status">
+	        <c:choose>
+	            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+	                <a
+	                    href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+	                    class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+	                    ${status.index + 1}. ${stage}
+	                </a>
+	            </c:when>
+	            <c:otherwise>
+	                <div class="stage inactive">${status.index + 1}. ${stage}</div>
+	            </c:otherwise>
+	        </c:choose>
+	    </c:forEach>
+	</div>
     
 <!-- 아이디어 주제 ${meetingRoom} -->
 	<div class="meeting-summary fade-in-section">
