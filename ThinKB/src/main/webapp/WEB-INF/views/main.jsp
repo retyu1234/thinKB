@@ -1149,7 +1149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			<img class="makeRoomImg"
 				style="width: 100%; margin-top: 6%; caret-color: transparent;"
 				onclick="location.href='./newIdeaRoom'"
-				src="<c:url value='/resources/mainBanner.png' />" alt="no Img" />
+				src="<c:url value='/resources/mainBBanner.png' />" alt="no Img" />
 		</div>
 		<div class="section-wrapper fade-in">
 			<div class="section-header">
@@ -1442,97 +1442,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			</div>
 		</div>
 	</div>
-	<!-- Guide 섹션 추가 -->
-
-	<section id="guide-section">
-
-		<div id="guide-container">
-			<h1 style="font-size: 30pt;">👣Guide</h1>
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<img src="./resources/Component1.png" alt="의견 보장"
-						class="guide-image">
-				</div>
-				<div class="guide-text">
-					<h2>자유롭게 아이디어를 나눠요!</h2>
-					<p>익명등록으로 편한 분위기로 아이디어를 낼수 있어요.</p>
-					<p>AI질문으로 내 생각을 보다 쉽게 정리해요.</p>
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<img src="./resources/Component2.png" alt="의견 모아"
-						class="guide-image">
-				</div>
-				<div class="guide-text">
-					<h2>모두의 의견을 모아 2개의 아이디어를 골라요!</h2>
-					<p>익명 투표를 진행해 제일 표를 많이 받은</p>
-					<p>2개의 아이디어를 뽑아 회의를 진행할 수 있어요.</p>
-				</div>
-			</div>
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<img src="./resources/Component3.png" alt="가이드" class="guide-image">
-				</div>
-				<div class="guide-text">
-					<h2>다양한 방향에서 아이디어를 확장시켜봐요!</h2>
-					<p>똑똑이, 긍정이, 걱정이, 깐깐이</p>
-					<p>4가지 관점에서 아이디어에 대한 의견을 작성해요.</p>
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<img src="./resources/Component4.png" alt="의견 모아"
-						class="guide-image">
-				</div>
-				<div class="guide-text">
-					<h2>관점별 의견들을 모아 피드백을 진행해요!</h2>
-					<p>관점별로 모인 의견들을</p>
-					<p>피드백을 통해 아이디어를 구체화해요.</p>
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<img src="./resources/Component5.png" alt="최고의 의견"
-						class="guide-image">
-				</div>
-				<div class="guide-text">
-					<h2>'❤️좋아요'가 보여주는 최고의 의견을 확인해봐요!</h2>
-					<p>가장 좋은 의견에 한표!</p>
-					<p>팀원들이 생각하는 가장 좋은 의견을 확인할 수 있어요.</p>
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<img src="./resources/Component6.png" alt="의견 나눔"
-						class="guide-image">
-				</div>
-				<div class="guide-text">
-					<h2>다양한 추가기능!</h2>
-					<p>A/B테스트, 추가 투표, 핀메모를 이용해</p>
-					<p>회의뿐 아니라 간단한 의견 종합부터 피드백까지</p>
-					<p>추가논의를 진행할 수 있어요.</p>
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<img src="./resources/Component7.png" alt="최종보고서"
-						class="guide-image">
-				</div>
-				<div class="guide-text">
-					<h2>THINKB와 함께 최종보고서 작성까지!</h2>
-					<p>최종보고서 작성도 어렵지 않아요.</p>
-					<p>논의가 완료되면 지금까지 알맞에 정리된 의견들과</p>
-					<p>함께 제공되는 양식에 맞춰 최종보고서를 작성할 수 있어요.</p>
-				</div>
-			</div>
-		</div>
-	</section>
 	<div style="height: 200px;"></div>
 
 	<footer class="footer">

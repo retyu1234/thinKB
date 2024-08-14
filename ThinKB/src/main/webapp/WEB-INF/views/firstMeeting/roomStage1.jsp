@@ -13,7 +13,6 @@ body, html {
 	font-family: Arial, sans-serif;
 	overflow-x: hidden;
     width: 100%;
-    caret-color: transparent;
 }
 
 .room1-header {

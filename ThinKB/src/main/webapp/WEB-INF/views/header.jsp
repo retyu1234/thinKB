@@ -348,7 +348,7 @@
             $("#notificationModal").hide();
         });
         // 주기적 업데이트 (3초마다)
-        setInterval(updateNotifications, 3000);
+        setInterval(updateNotifications, 5000);
         // 스크롤 이벤트 리스너 추가
         $(window).scroll(function() {
             if ($(this).scrollTop() > 100) {

@@ -12,12 +12,12 @@
 html {
 	margin: 0;
 	padding: 0;
+	font-family: KB금융 본문체 Light;
 }
 
 .report-body {
 	margin: 0;
 	padding: 0;
-	font-family: Arial, sans-serif;
 	background-color: #ffffff;
 	margin-top: 8%;
 	caret-color: transparent;
@@ -45,11 +45,15 @@ html {
 }
 
 #report-content {
+	width: 83%;
 	height: 500px;
 	border-radius: 10px;
 	border: 1px solid #ccc;
 	padding: 10px;
-	caret-color: auto; /* 커서 색상을 기본값으로 설정 */
+	caret-color: auto;
+	transform: scale(1.2); /* 전체 컨텐츠를 1.5배로 확대 */
+	transform-origin: top left;
+	font-family: KB금융 본문체 Light;
 }
 
 .ql-container.ql-snow {
@@ -83,6 +87,7 @@ html {
 	border-radius: 4px;
 	box-sizing: border-box;
 	font-size: 15pt;
+	font-family: KB금융 본문체 Light;
 }
 
 .report-form-container textarea {
@@ -126,7 +131,7 @@ html {
 }
 
 .summary-report {
-	margin-top: 30px;
+	margin-top: 5%;
 	margin-left: 10%;
 	margin-right: 10%;
 	margin-bottom: 5%;
@@ -344,8 +349,173 @@ html {
 	color: #999;
 	pointer-events: none;
 }
+
 #timer-section, #timer, #timer-message {
-    display: none;
+	display: none;
+}
+
+.title-detail {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 20px;
+}
+
+.toggle-container {
+	display: flex;
+	align-items: center;
+}
+
+.toggle-switch {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
+	margin-right: 10px;
+}
+
+.toggle-text {
+	font-family: Arial, sans-serif;
+	margin-left: 10px;
+	vertical-align: middle;
+}
+
+#descriptionContent {
+    font-family: KB금융 본문체 Light;
+    margin-top: 10px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 500px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 세로 스크롤 추가 */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+#descriptionContent .idea-container {
+    background-color: #ffffff;
+    padding: 17px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#descriptionContent h4 {
+    font-size: 20px;
+    color: #333;
+    border-bottom: 2px solid #FFCC00;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+#descriptionContent .hat-section {
+    margin-bottom: 15px;
+}
+
+#descriptionContent h5 {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+
+#descriptionContent .idea-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#descriptionContent .idea-item p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+#descriptionContent .idea-item p:first-child {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+#descriptionContent .idea-item p:last-child {
+    font-size: 14px;
+    color: #777;
+}
+
+/* 반응형 디자인을 위한 미디어 쿼리 */
+@media (max-width: 768px) {
+    #descriptionContent {
+        padding: 12px;
+    }
+    
+    #descriptionContent .idea-container {
+        padding: 12px;
+    }
+    
+    #descriptionContent h4 {
+        font-size: 18px;
+    }
+    
+    #descriptionContent h5 {
+        font-size: 16px;
+    }
+    
+    #descriptionContent .idea-item p:first-child {
+        font-size: 15px;
+    }
+    
+    #descriptionContent .idea-item p:last-child {
+        font-size: 13px;
+    }
+}
+
+.toggle-input {
+	opacity: 0;
+	width: 0;
+	height: 0;
+	font-family: Arial, sans-serif;
+}
+
+.toggle-label {
+	font-family: Arial, sans-serif;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #ccc;
+	transition: .4s;
+	border-radius: 34px;
+}
+
+.toggle-label:before {
+	font-family: Arial, sans-serif;
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	transition: .4s;
+	border-radius: 50%;
+}
+
+.toggle-input:checked+.toggle-label {
+	background-color: #FFCC00;
+}
+
+.toggle-input:checked+.toggle-label:before {
+	transform: translateX(26px);
+}
+
+.toggle-text {
+	font-family: Arial, sans-serif;
+	margin-left: 10px;
+	vertical-align: middle;
 }
 </style>
 <script>
@@ -364,6 +534,24 @@ html {
     String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
     request.setAttribute("stages", stages);
 %>
+//상세내역 토글
+document.addEventListener('DOMContentLoaded', function() {
+	const toggleSwitch = document.getElementById('toggleDescription');
+    const toggleText = document.querySelector('.toggle-text');
+    const descriptionContent = document.getElementById('descriptionContent');
+
+    if (toggleSwitch) {  // 요소가 존재하는지 확인
+        toggleSwitch.addEventListener('change', function() {
+            if (this.checked) {
+                descriptionContent.style.display = 'block';
+                toggleText.textContent = '설명 숨기기';
+            } else {
+                descriptionContent.style.display = 'none';
+                toggleText.textContent = '설명 보기';
+            }
+        });
+    }
+});
 </script>
 
 </head>
@@ -378,20 +566,19 @@ html {
 				<div class="report-form-container">
 					<!-- 6개 단계 표시 -->
 					<div class="stages">
-					    <c:forEach var="stage" items="${stages}" varStatus="status">
-					        <c:choose>
-					            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-					                <a
-					                    href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
-					                    class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-					                    ${status.index + 1}. ${stage}
-					                </a>
-					            </c:when>
-					            <c:otherwise>
-					                <div class="stage inactive">${status.index + 1}. ${stage}</div>
-					            </c:otherwise>
-					        </c:choose>
-					    </c:forEach>
+						<c:forEach var="stage" items="${stages}" varStatus="status">
+							<c:choose>
+								<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+									<a
+										href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+										class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+										${status.index + 1}. ${stage} </a>
+								</c:when>
+								<c:otherwise>
+									<div class="stage inactive">${status.index + 1}.${stage}</div>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
 					</div>
 					<h2>🗒️아이디어 보고서 작성</h2>
 					<form action="./submitForm" method="post"
@@ -494,14 +681,14 @@ if (savedContent && savedContent.trim() !== '') {
 } else {
     // Default template with styled headings and paragraphs using Delta format
     var delta = [
-        { insert: "1. 목적\n", attributes: { header: 3, bold: true, size: '14px' } },
-        { insert: "이 보고서의 목적을 간략히 서술해주세요.\n", attributes: { size: '12px' } },
-        { insert: "\n2. 배경\n", attributes: { header: 3, bold: true, size: '14px' } },
-        { insert: "이 아이디어가 나오게 된 배경이나 문제 상황을 설명해주세요.\n", attributes: { size: '12px' } },
-        { insert: "\n3. 주요 내용\n", attributes: { header: 3, bold: true, size: '14px' } },
-        { insert: "아이디어의 핵심 내용을 상세히 기술해주세요.\n", attributes: { size: '12px' } },
-        { insert: "\n4. 기대효과\n", attributes: { header: 3, bold: true, size: '14px' } },
-        { insert: "아이디어의 기대효과를 상세히 기술해주세요.\n", attributes: { size: '12px' } },
+        { insert: "1. 목적\n\n", attributes: { header: 3, bold: true, size: '14px' } },
+        { insert: "- 이 보고서의 목적을 간략히 서술해주세요.\n\n", attributes: { size: '12px' } },
+        { insert: "\n2. 배경\n\n", attributes: { header: 3, bold: true, size: '14px' } },
+        { insert: "- 이 아이디어가 나오게 된 배경이나 문제 상황을 설명해주세요.\n\n", attributes: { size: '12px' } },
+        { insert: "\n3. 주요 내용\n\n", attributes: { header: 3, bold: true, size: '14px' } },
+        { insert: "- 아이디어의 핵심 내용을 상세히 기술해주세요.\n\n", attributes: { size: '12px' } },
+        { insert: "\n4. 기대효과\n\n", attributes: { header: 3, bold: true, size: '14px' } },
+        { insert: "- 아이디어의 기대효과를 상세히 기술해주세요.\n\n", attributes: { size: '12px' } },
     ];
     quill.setContents(delta);
 }
@@ -545,68 +732,56 @@ document.querySelector('form').onsubmit = function() {
 </script>
 				</div>
 				<div class="summary-report">
-					<h3>
-						📌요약 보고서
-						<button class="reportToggleBtn" onclick="toggleSummary()">🔽</button>
-					</h3>
-					<div id="summaryContent">
-						<c:forEach var="idea"
-							items="${ideaSummaries.stream().map(s->s.ideaId).distinct().toList()}"
-							varStatus="ideaStatus">
-							<div class="idea-container">
-								<h4>아이디어&nbsp;${ideaStatus.index + 1}.
-									${ideaSummaries.stream().filter(s->s.ideaId == idea).findFirst().get().ideaTitle}</h4>
-								<c:forEach var="hatColor" items="Worry,Positive,Smart,Strict">
-									<div class="hat-section">
-										<h5>
-											<c:choose>
-												<c:when test="${hatColor == 'Worry'}">문제점/보완</c:when>
-												<c:when test="${hatColor == 'Positive'}">기대효과</c:when>
-												<c:when test="${hatColor == 'Smart'}">객관적 관점</c:when>
-												<c:when test="${hatColor == 'Strict'}">실현가능성</c:when>
-											</c:choose>
-										</h5>
-										<c:forEach var="opinion" items="${ideaSummaries}">
-											<c:if
-												test="${opinion.ideaId == idea && opinion.hatColor eq hatColor}">
-												<div class="idea-item">
-													<p style="font-size: 13pt; margin-bottom: 1%;">${opinion.opinionText}</p>
-													<p>(작성자: ${opinion.opinionUserName}, 좋아요:
-														${opinion.likeNum})</p>
-												</div>
-											</c:if>
-										</c:forEach>
-									</div>
-								</c:forEach>
-							</div>
-						</c:forEach>
+					<div class="title-detail">
+						<div class="toggle-container">
+							<h3>
+								📌요약 보고서
+								<div class="toggle-switch">
+									<input type="checkbox" id="toggleDescription"
+										class="toggle-input"> <label for="toggleDescription"
+										class="toggle-label"> <span class="toggle-inner"></span>
+										<span class="toggle-switch"></span>
+									</label>
+								</div>
+							</h3>
+						</div>
+						<div id="descriptionContent" style="display: none;">
+							<c:forEach var="idea"
+								items="${ideaSummaries.stream().map(s->s.ideaId).distinct().toList()}"
+								varStatus="ideaStatus">
+								<div class="idea-container">
+									<h4>아이디어&nbsp;${ideaStatus.index + 1}.
+										${ideaSummaries.stream().filter(s->s.ideaId == idea).findFirst().get().ideaTitle}</h4>
+									<c:forEach var="hatColor" items="Worry,Positive,Smart,Strict">
+										<div class="hat-section">
+											<h5>
+												<c:choose>
+													<c:when test="${hatColor == 'Worry'}">문제점/보완</c:when>
+													<c:when test="${hatColor == 'Positive'}">기대효과</c:when>
+													<c:when test="${hatColor == 'Smart'}">객관적 관점</c:when>
+													<c:when test="${hatColor == 'Strict'}">실현가능성</c:when>
+												</c:choose>
+											</h5>
+											<c:forEach var="opinion" items="${ideaSummaries}">
+												<c:if
+													test="${opinion.ideaId == idea && opinion.hatColor eq hatColor}">
+													<div class="idea-item">
+														<p style="font-size: 13pt; margin-bottom: 1%;">${opinion.opinionText}</p>
+														<p>(작성자: ${opinion.opinionUserName}, 좋아요:
+															${opinion.likeNum})</p>
+													</div>
+												</c:if>
+											</c:forEach>
+										</div>
+									</c:forEach>
+								</div>
+							</c:forEach>
+						</div>
 					</div>
 				</div>
+				<%@ include file="../rightSideBar.jsp"%>
 			</div>
-			<%@ include file="../rightSideBar.jsp"%>
 		</div>
 	</div>
-	</div>
-	<script>
-	function toggleSummary() {
-	    var content = document.getElementById("summaryContent");
-	    if (content.style.display === "none") {
-	        content.style.display = "block";
-	    } else {
-	        content.style.display = "none";
-	    }
-	}
-
-	function toggleIdea(ideaId) {
-	    var ideaContainers = document.getElementsByClassName("idea-container");
-	    for (var i = 0; i < ideaContainers.length; i++) {
-	        ideaContainers[i].style.display = "none";
-	    }
-	    var selectedIdea = document.getElementById("idea-" + ideaId);
-	    if (selectedIdea) {
-	        selectedIdea.style.display = "block";
-	    }
-	}
-	</script>
 </body>
 </html>

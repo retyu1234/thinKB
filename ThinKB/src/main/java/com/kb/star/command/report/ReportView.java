@@ -1,6 +1,7 @@
 package com.kb.star.command.report;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.dto.IdeaSummaryDto;
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.ReportDetailsDto;
 import com.kb.star.dto.UsersDto;
 import com.kb.star.util.ReportDao;
@@ -31,6 +33,7 @@ public class ReportView implements RoomCommand{
 		Map<String,Object>map=model.asMap();
 		HttpServletRequest request=(HttpServletRequest)map.get("request");
 		int roomId=(Integer)map.get("roomId");
+		int id = (Integer) map.get("id");
 		ReportDao dao=sqlSession.getMapper(ReportDao.class);
 		RoomDao dao1=sqlSession.getMapper(RoomDao.class);
 		ReportDetailsDto dto=dao.getReportDetails(roomId);
@@ -50,12 +53,17 @@ public class ReportView implements RoomCommand{
 		}
 		model.addAttribute("userList", userList);
 		//왼쪽 사이드바		
-		
+		List<Ideas> dto3 = dao1.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", dto3);
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", id);
+		params.put("roomId", roomId);
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByRoomId", params);
+		model.addAttribute("roomMessage", roomMessage);
 		// 오른쪽 사이드바 기여도
 		int totalContributionNum = dao1.totalContributionNum(roomId);
 		model.addAttribute("totalContributionNum", totalContributionNum);
 		
-		int id = (Integer) map.get("id");
 		int myContributionNum = dao1.myContributionNum(roomId, id);
 		model.addAttribute("myContributionNum", myContributionNum);
 		
