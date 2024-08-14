@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.RoomDao;
 
 public class UpdateStageThreeCommand implements RoomCommand {
@@ -68,6 +69,7 @@ public class UpdateStageThreeCommand implements RoomCommand {
         }
 		
 		// MeetingRoomMembers에서 선택된 두개 아이디어 제공자의 ContributionCnt +1 하고 Role은 yesPick으로 변경
+        // yesPick 만 두고, ContributionCnt +1 로직은 제거
         int userId1 = dao.pickedIdeaUser(firstIdeaId, roomId);
         dao.updateYesPickNContribution(roomId, userId1);
 
@@ -95,6 +97,14 @@ public class UpdateStageThreeCommand implements RoomCommand {
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", 3);	
 		model.addAttribute("ideaId", firstIdeaId);
+		
+		// 알림발송 추가
+		MeetingRooms roomInfo = dao.roomDetailInfo(roomId);
+		String notification = "[" + roomInfo.getRoomTitle() + "] 회의방의 아이디어 투표가 완료되었어요👍 아이디어를 확장시킬 수 있도록 다양한 관점의 의견을 자유롭게 달아주세요.";
+
+		for (int user : users) {
+			dao.makeNotification(user, 0, notification, roomId);
+		}
 	}
 
 }

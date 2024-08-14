@@ -7,11 +7,11 @@
 <title>thinKB - 회의방 목록</title>
 <style>
 body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .content-banner {
-	margin-top: 50px; /* content 영역의 여백 설정 */
+	margin-top: 50px;
 	margin-left: 15%;
 	margin-right: 15%;
 	margin-bottom: 15px;
@@ -31,7 +31,7 @@ body {
 	padding: 20px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+/* 상단 회의방 만들기 버튼 */
 .button-container {
 	display: flex;
 	justify-content: flex-end;
@@ -42,7 +42,6 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* 	margin: 10px 0; */
 }
 
 .progress {
@@ -55,6 +54,7 @@ body {
 	width: 80%;
 	border: 1px solid #ccc;
 	font-size: 11pt;
+	font-family: KB금융 본문체 Light;
 }
 
 .progress label {
@@ -65,7 +65,7 @@ body {
 .progress input {
 	margin-right: 5px;
 }
-/* 진행중인 단계 */
+
 .progress-header-container {
 	display: flex;
 	justify-content: left;
@@ -78,10 +78,9 @@ body {
 	margin: 0;
 	padding: 10px 0;
 	font-size: 18pt;
-	/* margin-bottom: 20px; */
+	font-family: KB금융 제목체 Light;
 }
 
-/* <style> 태그 안에 다음 CSS를 추가하세요 */
 .progress input[type="checkbox"] {
 	appearance: none;
 	-webkit-appearance: none;
@@ -97,17 +96,17 @@ body {
 }
 
 .progress input[type="checkbox"]:checked {
-	background-color: #FFCC00; /* 체크된 상태의 배경색 */
-	border-color: #FFCC00; /* 체크된 상태의 테두리 색 */
+	background-color: #FFCC00;
+	border-color: #FFCC00;
 }
 
 .progress input[type="checkbox"]:checked::before {
-	content: '\2714'; /* 체크 표시 */
+	content: '\2714';
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	color: white; /* 체크 표시 색상 */
+	color: white;
 	font-size: 14px;
 }
 
@@ -117,6 +116,7 @@ body {
 	cursor: pointer;
 }
 
+/* 아이디어 회의방 목록 */
 .ideas {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
@@ -177,8 +177,9 @@ body {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	font-size: 15pt;
-	height: 3.6em; /* 2줄 높이에 맞춰 고정 (1.8em * 2) */
-	line-height: 1.8em; /* 줄 간격 설정 */
+	height: 3.6em;
+	line-height: 1.8em;
+	font-family: KB금융 제목체 Light;
 }
 
 .stage, .end-date {
@@ -201,13 +202,13 @@ body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
 	background-color: #D4AA00;
 }
 
-/* 회색버튼 */
 .grey-button {
 	background-color: #978A8F;
 	color: white;
@@ -217,6 +218,7 @@ body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -243,18 +245,18 @@ body {
 	font-size: 20px;
 	text-align: center;
 	margin-bottom: 10px;
-	width: 100%; /* 추가: 너비를 100%로 설정 */
+	width: 100%;
 }
 
 .no-room-img {
-	width: 100px;
+	width: 150px;
 	height: auto;
 	margin-bottom: 10px;
-	display: block; /* 추가: 이미지를 블록 요소로 변경 */
-	margin-left: auto; /* 추가: 좌우 마진을 자동으로 설정 */
-	margin-right: auto; /* 추가: 좌우 마진을 자동으로 설정 */
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
-
+/* 페이지네이션 */
 .pagination {
 	display: flex;
 	justify-content: center;
@@ -427,53 +429,53 @@ body {
 	</div>
 
 
-	<script>
-		function filterIdeas() {
-			var checkboxes = document
-					.querySelectorAll('.progress input:checked');
-			var ideas = document.querySelectorAll('.idea');
-			var anyVisible = false;
+<script>
+function filterIdeas() {
+	var checkboxes = document
+			.querySelectorAll('.progress input:checked');
+	var ideas = document.querySelectorAll('.idea');
+	var anyVisible = false;
 
-			if (checkboxes.length === 0) {
-				// 체크된 박스가 없으면 모든 아이디어를 표시
-				ideas.forEach(function(idea) {
-					idea.style.display = 'flex';
-				});
-				anyVisible = true;
-			} else {
-				ideas
-						.forEach(function(idea) {
-							var ideaStage = idea.getAttribute('data-stage');
-							var shouldShow = Array
-									.from(checkboxes)
-									.some(
-											function(checkbox) {
-												return checkbox
-														.getAttribute('data-stage') === ideaStage;
-											});
-							idea.style.display = shouldShow ? 'flex' : 'none';
-							if (shouldShow)
-								anyVisible = true;
-						});
-			}
-
-			// 표시할 아이디어가 없는 경우 메시지 표시
-			var noRoomMessage = document.querySelector('.no-room');
-			if (noRoomMessage) {
-				noRoomMessage.style.display = anyVisible ? 'none' : 'flex';
-			}
-		}
-
-		document.addEventListener('DOMContentLoaded', function() {
-			var checkboxes = document
-					.querySelectorAll('.progress input[type="checkbox"]');
-			checkboxes.forEach(function(checkbox) {
-				checkbox.addEventListener('change', filterIdeas);
-			});
-			// 페이지 로드 시 초기 필터링 적용
-			filterIdeas();
+	if (checkboxes.length === 0) {
+		// 체크된 박스가 없으면 전체 표시
+		ideas.forEach(function(idea) {
+			idea.style.display = 'flex';
 		});
-	</script>
+		anyVisible = true;
+	} else {
+		ideas
+				.forEach(function(idea) {
+					var ideaStage = idea.getAttribute('data-stage');
+					var shouldShow = Array
+							.from(checkboxes)
+							.some(
+									function(checkbox) {
+										return checkbox
+												.getAttribute('data-stage') === ideaStage;
+									});
+					idea.style.display = shouldShow ? 'flex' : 'none';
+					if (shouldShow)
+						anyVisible = true;
+				});
+	}
+
+	// 표시할 아이디어가 없는 경우 메시지 표시
+	var noRoomMessage = document.querySelector('.no-room');
+	if (noRoomMessage) {
+		noRoomMessage.style.display = anyVisible ? 'none' : 'flex';
+	}
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+	var checkboxes = document
+			.querySelectorAll('.progress input[type="checkbox"]');
+	checkboxes.forEach(function(checkbox) {
+		checkbox.addEventListener('change', filterIdeas);
+	});
+	// 페이지 로드 시 초기(아무것도 안선택된, 전체 나오는) 필터링 적용
+	filterIdeas();
+});
+</script>
 
 </body>
 </html>

@@ -10,7 +10,7 @@
 body, html {
 	margin: 0;
 	padding: 0;
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	overflow-x: hidden;
 	width: 100%;
 	caret-color: transparent;
@@ -49,6 +49,7 @@ body, html {
 	color: black;
 	font-weight: bold;
 	margin-bottom: 20px;
+	font-family: KB금융 제목체 Light;
 }
 
 .line {
@@ -113,6 +114,7 @@ body, html {
 	background-size: 100%;
 	background-position: center;
 	background-repeat: no-repeat;
+	font-family: KB금융 제목체 Light;
 }
 
 .idea-box {
@@ -244,6 +246,7 @@ body, html {
 	padding: 0; /* 기본 패딩 제거 */
 	font-size: 12px; /* 필요에 따라 글자 크기 조정 */
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .next-step-container {
@@ -261,6 +264,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -285,7 +289,7 @@ body, html {
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
-	font-size: 13pt;
+	font-size: 12pt;
 }
 
 .stage {
@@ -389,6 +393,7 @@ body, html {
 	margin-right: 2.5%;
 	color: #353535;
 	outline: none; /* 검은색 테두리 제거 */
+	font-family: KB금융 본문체 Light;
 }
 
 #replyAnswerContent {
@@ -401,6 +406,7 @@ body, html {
 	margin-right: 2.5%;
 	color: #353535;
 	outline: none; /* 검은색 테두리 제거 */
+	font-family: KB금융 본문체 Light;
 }
 
 #input-button {
@@ -412,6 +418,7 @@ body, html {
 	font-size: 10pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 #reply-button {
@@ -424,6 +431,7 @@ body, html {
 	cursor: pointer;
 	font-weight: bold;
 	margin-left: 11px; /* 버튼과 입력 필드 사이의 간격 추가 */
+	font-family: KB금융 본문체 Light;
 }
 
 #input-button:hover {
@@ -463,13 +471,13 @@ body, html {
 }
 
 .toggle-text {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	margin-left: 10px;
 	vertical-align: middle;
 }
 
 #descriptionContent {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	margin-top: 10px;
 	padding: 10px;
 	background-color: #f9f9f9;
@@ -482,7 +490,7 @@ body, html {
 }
 
 #descriptionContent pre {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	hyphens: auto;
 	white-space: pre-wrap; /* 자동 줄바꿈을 허용 */
 	word-wrap: break-word; /* 단어 단위로 줄바꿈 */
@@ -493,11 +501,11 @@ body, html {
 	opacity: 0;
 	width: 0;
 	height: 0;
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .toggle-label {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -510,7 +518,7 @@ body, html {
 }
 
 .toggle-label:before {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	position: absolute;
 	content: "";
 	height: 26px;
@@ -531,7 +539,7 @@ body, html {
 }
 
 .toggle-text {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	margin-left: 10px;
 	vertical-align: middle;
 }

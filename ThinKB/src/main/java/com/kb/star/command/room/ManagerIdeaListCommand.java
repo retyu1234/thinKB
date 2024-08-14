@@ -65,6 +65,13 @@ public class ManagerIdeaListCommand implements RoomCommand {
 		List<Ideas> dto1 = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto1);
 		
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao.totalContributionNum(roomId);
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, id);
+		model.addAttribute("myContributionNum", myContributionNum);
+		
 	}
 
 }

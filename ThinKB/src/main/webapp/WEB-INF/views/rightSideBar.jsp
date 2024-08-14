@@ -3,8 +3,9 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
 .right-sidebar {
+	font-family: KB금융 본문체 Light;
     position: fixed;
-    top: 170px; /* 나중에 수정 */
+    top: 170px;
     right: 0;
     width: 15%;
     height: 100%;
@@ -27,6 +28,7 @@
 .sidebar-title {
     font-size: 15pt;
     font-weight: bold;
+    font-family: KB금융 제목체 Light;
 }
 .timer-countdown-container {
     background-color: #978A8F;
@@ -43,6 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: KB금융 제목체 Light;
 }
 .timer-message {
     font-size: 12pt;
@@ -60,7 +63,6 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-/*     margin-left: 30px; */
 }
 .user-profile-img {
     width: 40px;

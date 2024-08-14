@@ -10,7 +10,7 @@
 body, html {
 	margin: 0;
 	padding: 0;
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	overflow-x: hidden;
     width: 100%;
 }
@@ -31,7 +31,7 @@ body, html {
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
-	font-size: 13pt;
+	font-size: 12pt;
 }
 
 .stage {
@@ -66,6 +66,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -81,6 +82,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -93,6 +95,7 @@ body, html {
 	font-weight: bold;
 	margin-top: 10px;
 	margin-bottom: 20px;
+	font-family: KB금융 제목체 Light;
 }
 
 .room1-title-detail {
@@ -120,6 +123,7 @@ th, td {
 th {
 	background-color: #f2f2f2;
 	font-weight: bold;
+	font-family: KB금융 제목체 Light;
 }
 
 tr:nth-child(even) {
@@ -255,7 +259,8 @@ tr:hover {
 				<input type="hidden" name="secondIdeaId"
 					value="${list[1].getIdeaID()}">
 
-				<h2 style="text-align: left; margin-top: 50px;">의견 받기 타이머 설정</h2>
+				<h2 style="text-align: left; margin-top: 50px; font-family: KB금융 제목체 Light;">
+					의견 받기 타이머 설정</h2>
 
 				<div>
 					<input type="number" class="timer-input" name="timer_hours" min="0"

@@ -137,5 +137,6 @@ public interface RoomDao {
 	int totalContributionNum(int roomId);
 
 	int myContributionNum(int roomId, int id);
-
+	
+	void contributionFivePoint(int roomId, int id);
 }
