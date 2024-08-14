@@ -49,6 +49,7 @@ public class ReportView implements RoomCommand{
 		}
 		model.addAttribute("userList", userList);
 		//왼쪽 사이드바
+		
 	}
 
 }

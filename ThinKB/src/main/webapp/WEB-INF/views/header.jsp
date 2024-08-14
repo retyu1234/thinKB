@@ -175,7 +175,7 @@
     list-style-type: none;
     padding: 0;
     margin: 10px 0 0 0;
-    max-height: 300px;
+    max-height: 200px;
     overflow-y: auto;
 }
 
@@ -184,6 +184,15 @@
     border-bottom: 1px solid #eee;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    overflow: hidden;  /* 내용이 넘치지 않도록 */
+}
+
+#notificationList li .room-titleNoti {
+    white-space: nowrap;  /* 줄바꿈 방지 */
+    overflow: hidden;     /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis;  /* 말줄임표 추가 */
+    max-width: 300px;     /* 최대 너비 설정 (필요에 따라 조정) */
+    display: inline-block;  /* 인라인 블록으로 설정 */
 }
 
 #notificationList li:last-child {
@@ -287,13 +296,13 @@
             var notificationList = $("#notificationList");
             notificationList.empty();
             notifications.forEach(function(notification) {
-                var createdAt = new Date(notification.createdAt).toLocaleString(); // 날짜를 로컬 형식의 문자열로 변환
+            	var createdAt = new Date(notification.createdAt).toLocaleString();
                 var listItem = $("<li>")
-                .attr("data-id", notification.notificationID)
-                .attr("data-room", notification.roomTitle)
-                .attr("data-message", notification.message)
-                .attr("data-time", createdAt)  // 시간 데이터 추가
-                .html("🏠 : " + notification.roomTitle + "<br>⏰ : " + createdAt);
+                    .attr("data-id", notification.notificationID)
+                    .attr("data-room", notification.roomTitle)
+                    .attr("data-message", notification.message)
+                    .attr("data-time", createdAt)
+                    .html("🏠 : <span class='room-titleNoti'>" + notification.roomTitle + "</span><br>⏰ : " + createdAt);
                 notificationList.append(listItem);
             });
 

@@ -876,6 +876,49 @@
 .pagination-indicator.active {
 	background-color: #333;
 }
+.team-icon {
+	font-size: 30px;
+}
+
+.profile-container {
+	position: relative;
+	width: 60px;
+	height: 60px;
+	margin: 0 auto 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #f8f9fa;
+	border-radius: 50%;
+}
+
+.rank-number {
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	width: 25px;
+	height: 25px;
+	background-color: #007bff;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	font-size: 14px;
+	color: #ffffff;
+}
+
+.gold {
+	color: #FFD700;
+}
+
+.silver {
+	color: #C0C0C0;
+}
+
+.bronze {
+	color: #CD7F32;
+}
 </style>
 <!-- FullCalendar CSS -->
 <link
@@ -1338,28 +1381,50 @@ document.addEventListener('DOMContentLoaded', function() {
 					</c:forEach>
 				</div>
 			</div>
-			<div class="best-section">
-				<div class="section-header">
-					<div class="section-title">👥 베스트 팀</div>
+				<div class="best-section">
+					<div class="section-header">
+						<div class="section-title" style="font-size: 15pt;">👥 베스트 팀</div>
+					</div>
+					<div class="best-content">
+						<c:set var="prevRank" value="0" />
+						<c:set var="displayRank" value="0" />
+						<c:forEach var="team" items="${bestTeams}" varStatus="status">
+							<c:choose>
+								<c:when test="${team.teamRank > prevRank}">
+									<c:set var="displayRank" value="${team.teamRank}" />
+								</c:when>
+								<c:otherwise>
+									<c:set var="displayRank" value="${prevRank}" />
+								</c:otherwise>
+							</c:choose>
+							<div class="best-item">
+								<div class="profile-container">
+									<span class="rank-number">${displayRank}</span>
+									<c:choose>
+										<c:when test="${displayRank == 1}">
+											<i class="fas fa-trophy team-icon gold"></i>
+										</c:when>
+										<c:when test="${displayRank == 2}">
+											<i class="fas fa-award team-icon silver"></i>
+										</c:when>
+										<c:otherwise>
+											<i class="fas fa-medal team-icon bronze"></i>
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<p class="best-name">${team.teamName}</p>
+								<p class="best-description">${team.departmentName}</p>
+								<p class="best-description">
+									채택률:
+									<fmt:formatNumber value="${team.teamAdoptionPercentage}"
+										pattern="#,##0.0" />
+									%
+								</p>
+							</div>
+							<c:set var="prevRank" value="${team.teamRank}" />
+						</c:forEach>
+					</div>
 				</div>
-				<%-- <div class="best-content">
-		            <div class="best-item">
-		                <img src="<c:url value='/resources/team1.png' />" alt="1등 팀" class="profile-image">
-		                <p class="best-name">혁신팀</p>
-		                <p class="best-description">최고 성과</p>
-		            </div>
-		            <div class="best-item">
-		                <img src="<c:url value='/resources/team2.png' />" alt="2등 팀" class="profile-image">
-		                <p class="best-name">기획팀</p>
-		                <p class="best-description">창의적 기획</p>
-		            </div>
-		            <div class="best-item">
-		                <img src="<c:url value='/resources/team3.png' />" alt="3등 팀" class="profile-image">
-		                <p class="best-name">개발팀</p>
-		                <p class="best-description">빠른 실행력</p>
-		            </div>
-		        </div> --%>
-			</div>
 		</div>
 
 
@@ -1554,8 +1619,8 @@ $(document).ready(function() {
         $('.popup-overlay').hide();
     });
     
- 	// "오늘 하루 보지 않기" 버튼 클릭 시
-    $('.popup-dont-show').click(function() {
+    // "오늘 하루 보지 않기" 버튼 클릭 시
+    $('.grey-button').click(function() {
         setCookie("dontShowPopupToday", "true", 1); // 1일 동안 쿠키 설정
         $('.popup-overlay').hide();
     });
