@@ -13,7 +13,7 @@ html, body {
     overflow-x: hidden;
 }
 .vote-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .vote-banner {
@@ -46,6 +46,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -95,6 +96,7 @@ html, body {
 	margin: 0;
 	padding: 10px 0;
 	font-size: 18pt;
+	font-family: KB금융 제목체 Light;
 }
 
 .votes {
@@ -146,6 +148,7 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: KB금융 제목체 Light;
 }
 
 .vote-date {
