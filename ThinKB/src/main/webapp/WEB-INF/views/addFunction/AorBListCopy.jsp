@@ -5,18 +5,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ThinkKB</title>
+<title>thinKB - A/B테스트 목록</title>
 <style>
 html, body {
     max-width: 100%;
     overflow-x: hidden;
 }
 .ab-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .ab-banner {
-	margin-top: 50px; /* content 영역의 여백 설정 */
+	margin-top: 50px;
 	margin-left: 15%;
 	margin-right: 15%;
 	margin-top: 1%;
@@ -43,6 +43,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -59,6 +60,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -93,7 +95,6 @@ html, body {
     margin-right: 5px;
 }
 
-/* 진행중인 단계 스타일은 그대로 유지 */
 .progress-header-container {
     display: flex;
     justify-content: left;
@@ -105,6 +106,7 @@ html, body {
 .progress-header {
     margin: 0;
     padding: 10px 0;
+    font-family: KB금융 제목체 Light;
 }
 
 .abtests {
@@ -115,15 +117,15 @@ html, body {
 }
 
 .abtest {
- 	width: 550px;  /* 고정 너비 설정 */
-    height: 400px; /* 고정 높이 설정 */
+ 	width: 550px;
+    height: 400px;
     margin-bottom: 50px;
     padding: 20px;
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
-    box-sizing: border-box;  /* 패딩을 너비에 포함 */
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
 }
@@ -143,11 +145,10 @@ html, body {
 
 .abtest-status {
     display: block;
-    width: fit-content; /* 내용에 맞게 너비 조정 */
+    width: fit-content;
     padding: 5px 10px;
     border-radius: 15px;
     font-size: 0.9em;
-    font-weight: bold;
     margin-bottom: 10px;
 }
 
@@ -168,13 +169,13 @@ html, body {
     margin-top: 20px;
     margin-bottom: 10px;
     position: relative;
-    height: 250px; /* 이미지 컨테이너의 높이 고정 */
+    height: 250px;
 }
 
 .abtest-images img {
-    width: 230px; /* 이미지 너비 고정 */
-    height: 230px; /* 이미지 높이 고정 */
-    object-fit: cover; /* 이미지 비율 유지 */
+    width: 230px;
+    height: 230px;
+    object-fit: cover;
 }
 
 .abtest-vs {
@@ -186,16 +187,15 @@ html, body {
     font-size: 20px;
     padding: 5px 15px;
     border-radius: 50%;
+    font-family: KB금융 제목체 Light;
 }
 
 .abtest-name {
     font-size: 1.2em;
     font-weight: bold;
     margin: 10px 20px;
+    font-family: KB금융 제목체 Light;
 }
-
-
-
 </style>
 </head>
 

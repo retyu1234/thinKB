@@ -62,7 +62,6 @@ public class WordSubmit implements ReportCommand {
         String roomManagerName = request.getParameter("roomManagerName");
         String yesPickUserName = request.getParameter("yesPickUserNames");
         reportContent = processAndSaveImages(reportContent, roomId);
-        logger.info("Report Content: " + reportContent);
         
         System.out.println(departmentName + "/" + teamName);
         String realPath = servletContext.getRealPath("/upload");
@@ -190,7 +189,6 @@ public class WordSubmit implements ReportCommand {
                 // reportContent의 JSON을 파싱하여 스타일링 적용
                 applyHtmlStyling(paragraph, reportContent);
             } catch (Exception e) {
-                logger.error("Error applying HTML styling: ", e);
                 // 에러 발생 시 일반 텍스트로 대체
                 XWPFRun run = paragraph.createRun();
                 run.setText(reportContent);
@@ -237,7 +235,6 @@ public class WordSubmit implements ReportCommand {
     }
 
     private void applyHtmlStyling(XWPFParagraph paragraph, String jsonContent) {
-        logger.info("Received JSON content: " + jsonContent);
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(jsonContent);
@@ -279,7 +276,6 @@ public class WordSubmit implements ReportCommand {
                     } else if (insertNode.isObject() && insertNode.has("image")) {
                         // 이미지 처리
                         String imagePath = insertNode.get("image").asText();
-                        logger.info("Processing image: " + imagePath);
                         currentParagraph = doc.createParagraph();
                         XWPFRun run = currentParagraph.createRun();
                         addImageToRunFromFile(run, imagePath);

@@ -10,10 +10,9 @@
 body, html {
 	margin: 0;
 	padding: 0;
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	overflow-x: hidden;
     width: 100%;
-    caret-color: transparent;
 }
 
 .room1-header {
@@ -23,27 +22,19 @@ body, html {
 
 .room1-content {
     padding: 20px;
-    margin-left: 20%; /* 또는 더 작은 값 */
+    margin-left: 20%;
     margin-right: 20%;
     z-index: 2;
-    /* margin-top: 10px; */
 }
 
 .room1-title {
 	font-size: 20pt;
 	color: black;
 	font-weight: bold;
-	/* margin-top: 50px; */
 	margin-bottom: 20px;
+	font-family: KB금융 제목체 Light;
 }
 
-/* .room1-title-detail {
-	font-size: 13pt;
-	position: relative;
-    width: 100%;
-    overflow: hidden;
-}
- */
 .room1-title-detail {
     display: flex;
     flex-direction: column;
@@ -60,6 +51,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -76,6 +68,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -94,12 +87,13 @@ body, html {
 }
 
 .room1-subject {
-	font-size: 15pt; /* 제목의 글자 크기 */
+	font-size: 15pt;
 	color: black;
-	border: 3px solid #FFD700; /* 진한 노란색 테두리 */
-	border-radius: 20px; /* 라운드 처리 */
-	padding: 20px; /* 내부 여백 */
-	background-color: white; /* 배경색 */
+	border: 3px solid #FFD700;
+	border-radius: 20px;
+	padding: 20px;
+	background-color: white;
+	font-family: KB금융 본문체 Light;
 }
 
 input.room1-subject {
@@ -113,8 +107,8 @@ input.room1-subject {
 }
 
 input.room1-subject:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
+	border-color: #FFD700;
+	outline: none;
 }
 
 .kb-ai-response {
@@ -136,8 +130,8 @@ input.room1-subject:focus {
     flex-grow: 1;
     overflow-y: auto;
     display: flex;
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center;
+    justify-content: center;
 }
 #ai-response-text {
     white-space: pre-wrap;
@@ -161,23 +155,22 @@ input.room1-subject:focus {
 }
 .search-button {
     position: absolute;
-    right: 15px; /* 오른쪽 여백 조정 */
+    right: 15px;
     top: 50%;
     transform: translateY(-50%);
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 20px; /* 이모티콘 크기 조정 */
+    font-size: 20px;
     padding: 0;
     line-height: 1;
 }
 .search-button span {
     position: relative;
-    top: -2px; /* 미세 조정 */
+    top: -2px;
     font-size:22pt;
 }
 
-/* input 필드의 테두리 스타일을 유지하면서 버튼을 안쪽에 배치 */
 #query-input:focus {
     outline: none;
 }
@@ -189,9 +182,9 @@ input.room1-subject:focus {
     padding: 20px;
 }
 .ai-image {
-	width: 115px; /* 이미지 크기 조절 */
+	width: 115px;
 	height: auto;
-	margin-right: 30px; /* 이미지와 텍스트 사이 간격 */
+	margin-right: 30px;
 	margin-left: 30px; 
 	
 }
@@ -213,20 +206,20 @@ input.room1-subject:focus {
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
-	font-size: 13pt;
+	font-size: 12pt;
 }
 
 .stage {
     flex: 1;
     text-align: center;
-    padding: 3px; /* 5px에서 3px로 줄임 */
-    margin: 0 2px; /* 좌우 여백 추가 */
+    padding: 3px;
+    margin: 0 2px;
     cursor: pointer;
     text-decoration: none;
     color: #000;
-    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 함 */
-    overflow: hidden; /* 넘치는 텍스트 숨김 */
-    text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .active {
@@ -250,6 +243,7 @@ input.room1-subject:focus {
 	font-size: 18pt;
 	color: black;
 	font-weight: bold;
+	font-family: KB금융 제목체 Light;
 }
 
 .ai-opinion-section {
@@ -282,7 +276,7 @@ input.room1-subject:focus {
 }
 
 .button-container button {
-    margin: 0 10px; /* 버튼 사이에 20px 간격을 만듭니다 (좌우 각각 10px) */
+    margin: 0 10px; /* 좌우 각각 10px */
 }
 
 .line {
@@ -326,7 +320,7 @@ input.room1-subject:focus {
     text-decoration: none;
     cursor: pointer;
 }
-/* 채팅 스타일 */
+
 #aiLogChat {
     height: 700px;
     overflow-y: auto;
@@ -405,13 +399,13 @@ textarea.room1-subject {
 	width: 100%;
 	box-sizing: border-box;
 	white-space: pre-wrap;
-	font-family: Arial, sans-serif; /* 원하는 폰트로 변경 */
+	font-family: KB금융 본문체 Light;
     font-size: 13pt;
 }
 
 textarea.room1-subject:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
+	border-color: #FFD700;
+	outline: none;
 }
 .loading-hidden {
   display: none;
@@ -525,8 +519,29 @@ display: none;
     align-self: center;
     margin-top: auto;
 }
+/* 반려이력 없는 경우 css */
+.no-reject-history {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    text-align: center;
+}
 
-/* 토글 */
+.no-reject-history p {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.no-history-image {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* 상단 회의방 설명보기 토글 */
 .toggle-container {
     display: flex;
     align-items: center;
@@ -541,13 +556,13 @@ display: none;
 }
 
 .toggle-text {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
     margin-left: 10px;
     vertical-align: middle;
 }
 
 #descriptionContent {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -556,18 +571,18 @@ display: none;
 }
 
 #descriptionContent pre {
-    font-family: Arial, sans-serif;
+    font-family: KB금융 본문체 Light;
     }
 
 .toggle-input {
     opacity: 0;
     width: 0;
     height: 0;
-    font-family: Arial, sans-serif;
+    font-family: KB금융 본문체 Light;
 }
 
 .toggle-label {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -580,7 +595,7 @@ display: none;
 }
 
 .toggle-label:before {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
     position: absolute;
     content: "";
     height: 26px;
@@ -601,7 +616,7 @@ display: none;
 }
 
 .toggle-text {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
     margin-left: 10px;
     vertical-align: middle;
 }
@@ -1050,21 +1065,47 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 });
+
+// 2~6단계에서 넘어왔을때, 타이머 동작하지 않도록 수정함
+document.addEventListener("DOMContentLoaded", function() {
+    const stageId = ${meetingRoom.getStageId()};
+    const timerElement = document.getElementById("timer");
+    const timerMessageElement = document.getElementById("timer-message");
+
+    if (stageId >= 2) {
+        if (timerElement) {
+            timerElement.innerHTML = "Time Out";
+        }
+        if (timerMessageElement) {
+            timerMessageElement.innerHTML = "지금은 작성할 수 없어요";
+            timerMessageElement.classList.remove("active");
+            timerMessageElement.classList.add("expired");
+        }
+        // stageId가 2 이상일 때 updateTimer 함수 오버라이드
+        window.updateTimer = function() {
+            // 아무 동작도 하지 않음
+        };
+    }
+    // stageId가 2 미만일 때는 아무 처리도 하지 않음 (기존 updateTimer 함수가 동작)
+});
 </script>
 <body style="margin: 0;">
+
 <!-- 헤더영역 -->
-	<header class="room1-header">
-		<%@ include file="../header.jsp"%>
-	</header>	
- 	<%@ include file="../leftSideBar.jsp"%>
+<header class="room1-header">
+	<%@ include file="../header.jsp"%>
+</header>
+
+<!-- 왼쪽 사이드바 -->
+<%@ include file="../leftSideBar.jsp"%>
  	
-	<!-- 컨텐츠 영역 시작 -->	
-	<div class="room1-content">
+<!-- 컨텐츠 영역 시작 -->	
+<div class="room1-content">
 	
-	<!-- 사이드바 import -->
+	<!-- 오른쪽 사이드바 import -->
 	<%@ include file="../rightSideBar.jsp"%>
 	
-<!-- 6개 단계 표시 -->
+	<!-- 6개 단계 표시 -->
 	<div class="stages">
 	    <c:forEach var="stage" items="${stages}" varStatus="status">
 	        <c:choose>
@@ -1085,12 +1126,6 @@ document.addEventListener("DOMContentLoaded", function() {
     <!-- 제목, 상세설명 -->
     <div class="room1-title">[${info.getRoomTitle()}]</div>
     
-	<%-- <div class="room1-title-detail">
-	    <button id="toggleDescriptionButton" class="grey-button">설명 보기/숨기기</button>
-	    <div id="descriptionContent" style="display:none;">
-	        <pre>${info.getDescription()}</pre>
-	    </div>
-	</div> --%>
 	<div class="room1-title-detail">
 	    <div class="toggle-container">
 	        <div class="toggle-switch">
@@ -1119,7 +1154,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	        <div class="submit-info">
 	            현재 아이디어 제출인원 : ${submit}명 / ${total}명
 	        </div>
-	        <c:if test="${meetingRoom.stageId==1}">
+	        <c:if test="${meetingRoom.stageId==1}"> <!-- 스테이지 id가 1일때만 다음단계 버튼이 보이도록 수정 -->
 	            <button id="nextStageButton" class="yellow-button" onclick="nextStage()">다음 단계</button></c:if>
 	        </c:if>
 	    </div>
@@ -1238,18 +1273,33 @@ document.addEventListener("DOMContentLoaded", function() {
 	        <h2>반려 이력보기</h2>
 	        <p>이전에 이 회의방에 제출했지만 반려된 아이디어 목록이에요.<br>선택해서 다시 입력하기 버튼을 누르면 자동으로 세팅됩니다.</p>
 	        <div id="rejectList">
-	            <c:forEach var="reject" items="${rejectList}" varStatus="status">
-	                <div class="reject-item">
-	                    <input type="radio" name="rejectSelect" id="reject${status.index}" value="${status.index}">
-	                    <label for="reject${status.index}">
-	                        <div><span style="font-weight: bold;">아이디어</span>: <span id="againTitle${status.index}">${reject.getRejectIdeaTitle()}</span></div>
-	                        <div><span style="font-weight: bold;">상세설명</span>: <span id="againContent${status.index}">${reject.getDescription()}</span></div>
-	                        <div><span style="font-weight: bold;">반려사유</span>: <span>${reject.getRejectContents()}</span></div>
-	                    </label>
-	                </div>
-	            </c:forEach>
+	            <c:choose>
+	                <c:when test="${empty rejectList}">
+	                    <div class="no-reject-history">
+	                        <img src="<c:url value='./resources/noContent.png'/>" alt="No History" class="no-history-image">
+	                        <p>반려 내역이 없어요!</p>
+	                    </div>
+	                </c:when>
+	                <c:otherwise>
+	                    <c:forEach var="reject" items="${rejectList}" varStatus="status">
+	                        <div class="reject-item">
+	                            <input type="radio" name="rejectSelect" id="reject${status.index}" value="${status.index}">
+	                            <label for="reject${status.index}">
+	                                <div><span style="font-weight: bold;">아이디어</span>&nbsp;&nbsp;
+	                                	<span id="againTitle${status.index}">${reject.getRejectIdeaTitle()}</span></div>
+	                                <div><span style="font-weight: bold;">상세설명</span>&nbsp;&nbsp;
+	                                	<span id="againContent${status.index}">${reject.getDescription()}</span></div>
+	                                <div><span style="font-weight: bold;">반려사유</span>&nbsp;&nbsp;
+	                                	<span>${reject.getRejectContents()}</span></div>
+	                            </label>
+	                        </div>
+	                    </c:forEach>
+	                </c:otherwise>
+	            </c:choose>
 	        </div>
-	        <button id="reapplyButton" class="yellow-button">다시 입력하기</button>
+	        <c:if test="${not empty rejectList}">
+	            <button id="reapplyButton" class="yellow-button">다시 입력하기</button>
+	        </c:if>
 	    </div>
 	</div>
 	

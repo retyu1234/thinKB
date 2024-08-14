@@ -102,6 +102,24 @@
         #scrollToTopBtn:hover {
             background-color: #D4AA00;
         }
+        
+        #guideBtn {
+            bottom: 4%;
+            right: 4%;
+            background-color: #ffcc00;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        #guideBtn:hover {
+            background-color: #D4AA00;
+        }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
@@ -175,7 +193,7 @@
     list-style-type: none;
     padding: 0;
     margin: 10px 0 0 0;
-    max-height: 300px;
+    max-height: 200px;
     overflow-y: auto;
 }
 
@@ -184,6 +202,15 @@
     border-bottom: 1px solid #eee;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    overflow: hidden;  /* 내용이 넘치지 않도록 */
+}
+
+#notificationList li .room-titleNoti {
+    white-space: nowrap;  /* 줄바꿈 방지 */
+    overflow: hidden;     /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis;  /* 말줄임표 추가 */
+    max-width: 300px;     /* 최대 너비 설정 (필요에 따라 조정) */
+    display: inline-block;  /* 인라인 블록으로 설정 */
 }
 
 #notificationList li:last-child {
@@ -235,6 +262,14 @@
     border-radius: 10px;
 }
 
+#guide-modal-content{
+    margin: 5% auto;
+    width: 100%;
+    padding: 10px;
+    max-width: 1000px;
+    height: auto;
+}
+
 .close {
     color: #aaa;
     float: right;
@@ -242,8 +277,25 @@
     font-weight: bold;
 }
 
+.guide-modal-header {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    align-items: center;
+    padding: 10px;
+}
+
+.guideClose {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 20px; /* 여기에서만 오른쪽 마진을 추가 */
+    margin-top: 20px;
+}
+
 .close:hover,
-.close:focus {
+.close:focus,
+.guideClose:hover,
+.guideClose:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
@@ -287,13 +339,13 @@
             var notificationList = $("#notificationList");
             notificationList.empty();
             notifications.forEach(function(notification) {
-                var createdAt = new Date(notification.createdAt).toLocaleString(); // 날짜를 로컬 형식의 문자열로 변환
+            	var createdAt = new Date(notification.createdAt).toLocaleString();
                 var listItem = $("<li>")
-                .attr("data-id", notification.notificationID)
-                .attr("data-room", notification.roomTitle)
-                .attr("data-message", notification.message)
-                .attr("data-time", createdAt)  // 시간 데이터 추가
-                .html("🏠 : " + notification.roomTitle + "<br>⏰ : " + createdAt);
+                    .attr("data-id", notification.notificationID)
+                    .attr("data-room", notification.roomTitle)
+                    .attr("data-message", notification.message)
+                    .attr("data-time", createdAt)
+                    .html("🏠 : <span class='room-titleNoti'>" + notification.roomTitle + "</span><br>⏰ : " + createdAt);
                 notificationList.append(listItem);
             });
 
@@ -339,7 +391,7 @@
             $("#notificationModal").hide();
         });
         // 주기적 업데이트 (3초마다)
-        setInterval(updateNotifications, 3000);
+        setInterval(updateNotifications, 5000);
         // 스크롤 이벤트 리스너 추가
         $(window).scroll(function() {
             if ($(this).scrollTop() > 100) {
@@ -353,6 +405,30 @@
         $("#scrollToTopBtn").click(function() {
             $("html, body").animate({ scrollTop: 0 }, "slow");
             return false;
+        });
+        
+        // 가이드 버튼 클릭 시 가이드 모달 표시
+        $("#guideBtn").click(function() {
+            $.ajax({
+                url: "${pageContext.request.contextPath}/guide", // guide.jsp 파일의 경로
+                method: "GET",
+                dataType: "html",
+                success: function(data) {
+                    // 가이드 모달의 내용에 guide.jsp의 내용을 삽입
+                    $("#guideContent").html(data);
+                    // 모달을 표시
+                    $("#guideModal").show();
+                },
+                error: function() {
+                    // 에러 발생 시 메시지 표시
+                    $("#guideContent").html("<p>Failed to load guide content.</p>");
+                    $("#guideModal").show();
+                }
+            });
+        });
+        
+        $(".guideClose").click(function() {
+            $("#guideModal").hide();
         });
     });
 </script>
@@ -415,6 +491,46 @@
         </div>
     </div>
     <button id="scrollToTopBtn">▲</button>
+    
+  <!-- 가이드 모달 -->
+    <div id="guideModal" class="modal" style="flex-direction:column;">
+        <div class="modal-content" id="guide-modal-content">
+        <div class="guide-modal-header">
+            <span class="guideClose">&times;</span></div>
+            <p id="guideContent"></p>
+        </div>
+    </div>
+    <button id="guideBtn">?</button>
+    
+    <script>
+    $(document).ready(function() {
+        // 모달의 스크롤 이벤트 감지
+        $("#guideModal").on('scroll', function() {
+            checkScroll(); // 스크롤할 때마다 체크
+        });
+
+        // 모달이 열릴 때 초기 체크
+        $("#guideModal").on('show.bs.modal', function() {
+            checkScroll(); // 모달이 열릴 때 초기 체크
+        });
+
+        function checkScroll() {
+            const guideItems = document.querySelectorAll('.guide-item');
+            
+            guideItems.forEach((item, index) => {
+                const rect = item.getBoundingClientRect();
+                const viewHeight = window.innerHeight || document.documentElement.clientHeight;
+
+                if (rect.top <= viewHeight && rect.bottom >= 0) {
+                    setTimeout(() => {
+                        item.classList.add('visible');
+                    }, index * 100); // 각 항목마다 지연 추가
+                }
+            });
+        }
+    });
+    </script>
+    
 </body>
 
 </html>

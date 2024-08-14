@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ABTest 투표</title>
+<title>thinKB - A/B테스트 결과 확인</title>
 <style>
 html, body {
 	max-width: 100%;
@@ -12,7 +12,7 @@ html, body {
 }
 
 .ab-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .ab-content {
@@ -42,7 +42,8 @@ html, body {
 	font-size: 18pt;
 	font-weight: bold;
 	margin-left: 20pt;
-	margin-bottom: 10px; /* 텍스트와 내용 사이의 간격 */
+	margin-bottom: 10px;
+	font-family: KB금융 제목체 Light;
 }
 
 .topic-content {
@@ -70,6 +71,7 @@ html, body {
 	cursor: pointer;
 	font-weight: bold;
 	text-align: center;
+	font-family: KB금융 제목체 Light;
 }
 
 .choice img {
@@ -80,7 +82,7 @@ html, body {
 }
 
 .choice.selected img {
-	border-color: #ffc107; /* 선택된 항목의 테두리 색상 */
+	border-color: #ffc107;
 }
 
 .submit-button {
@@ -100,7 +102,7 @@ html, body {
 
 .vote-results {
     display: flex;
-    justify-content: flex-start; /* center에서 flex-start로 변경 */
+    justify-content: flex-start;
     margin-top: 20px;
     height: 40px;
     width: 80%;
@@ -110,6 +112,7 @@ html, body {
     background-color: #e0e0e0;
     border-radius: 20px;
     overflow: hidden;
+    font-family: KB금융 본문체 Light;
 }
 
 .vote-bar-a, .vote-bar-b {
@@ -121,7 +124,8 @@ html, body {
     transition: width 0.5s ease-in-out;
     font-size: 13pt;
     font-weight: bold;
-    min-width: 100px; /* 최소 너비 설정 */
+    min-width: 100px;
+    font-family: KB금융 제목체 Light;
 }
 .vote-bar-a {
     background-color: #FFCC00;
@@ -132,7 +136,7 @@ html, body {
 }
 
 .choice.winning img {
-	border-color: #ffd700; /* 골드 색상으로 변경 */
+	border-color: #ffd700;
 }
 </style>
 </head>

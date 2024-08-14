@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <style>
 .right-sidebar {
+	font-family: KB금융 본문체 Light;
     position: fixed;
-    top: 180px; /* 나중에 수정 */
+    top: 170px;
     right: 0;
     width: 15%;
     height: 100%;
@@ -26,6 +28,7 @@
 .sidebar-title {
     font-size: 15pt;
     font-weight: bold;
+    font-family: KB금융 제목체 Light;
 }
 .timer-countdown-container {
     background-color: #978A8F;
@@ -42,6 +45,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: KB금융 제목체 Light;
 }
 .timer-message {
     font-size: 12pt;
@@ -59,7 +63,6 @@
     display: flex;
     align-items: center;
     margin-bottom: 10px;
-/*     margin-left: 30px; */
 }
 .user-profile-img {
     width: 40px;
@@ -92,6 +95,12 @@
 #userList::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.contribution-score {
+	font-size: 13pt; 
+	margin-left: 35px; 
+	margin-top: 10px;
+}
 </style>
 <div class="right-sidebar">
 	<!-- 타이머 영역 -->
@@ -120,7 +129,25 @@
             </span>
         </div>
     </c:forEach>
-</div>
+    </div>
+    
+    <!-- 기여도 영역 -->
+    <div class="sidebar-header">
+        <span class="sidebar-icon">🎖️</span>
+        <span class="sidebar-title">내 기여도</span>
+    </div>
+    
+    <div class="contribution-score" >
+	    총 ${myContributionNum} 점
+	    <c:if test="${totalContributionNum != 0}">
+	        <span>(
+	            <fmt:formatNumber value="${(myContributionNum / totalContributionNum) * 100}" 
+	                              maxFractionDigits="1" 
+	                              minFractionDigits="1"/>%
+	        )</span>
+	    </c:if>
+	</div>
+
 </div>
 <script>
 function updateTimer() {
