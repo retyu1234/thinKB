@@ -20,16 +20,18 @@ public class ApproveReport implements ReportCommand {
 	}
 	@Override
 	public void execute(Model model) {
-		// TODO Auto-generated method stub
         Map<String, Object> map = model.asMap();
         HttpServletRequest request = (HttpServletRequest) map.get("request");
         
         String reportIdStr = request.getParameter("reportId");
-        if (reportIdStr != null && !reportIdStr.isEmpty()) {
+        String isChoiceStr = request.getParameter("isChoice");
+        
+        if (reportIdStr != null && !reportIdStr.isEmpty() && isChoiceStr != null && !isChoiceStr.isEmpty()) {
             int reportId = Integer.parseInt(reportIdStr);
+            int isChoice = Integer.parseInt(isChoiceStr);
             
             ReportDao dao = sqlSession.getMapper(ReportDao.class);
-            dao.approveReport(reportId);
+            dao.approveReport(reportId, isChoice);
         }
 	}
 

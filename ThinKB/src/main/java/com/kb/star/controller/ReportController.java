@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kb.star.command.admin.ApproveReport;
 import com.kb.star.command.admin.DepartmentReportList;
+import com.kb.star.command.admin.ReportDetailCommand;
 import com.kb.star.command.report.FakeReport;
 import com.kb.star.command.report.MyReportList;
 import com.kb.star.command.report.ReportCommand;
@@ -67,7 +68,17 @@ public class ReportController {
         command.execute(model);
         return "/admin/adminReportList";
     }
-    //관리자 보고서 결재
+	//부서관리자 특정 보고서 조회(클릭시)
+    @RequestMapping("/reportDetail")
+    public String reportDetail(HttpServletRequest request, Model model, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        model.addAttribute("request", request);
+        model.addAttribute("userId", userId);
+        command = new ReportDetailCommand(sqlSession);
+        command.execute(model);
+        return "/admin/reportDetail";
+    }
+    //부서관리자 보고서 결재
     @RequestMapping("/approveReport")
     public String approveReport(HttpServletRequest request, Model model) {
         model.addAttribute("request", request);

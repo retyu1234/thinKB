@@ -27,7 +27,7 @@ public class AdminDto {
     // 베스트 사용량(팀별)
     private int teamID;
     private int teamCount;
-	
+    private double adoptionRate; // 채택률
 	
 	// getter setter
 	public int getUserId() {
@@ -133,6 +133,15 @@ public class AdminDto {
 	public void setTeamCount(int teamCount) {
 		this.teamCount = teamCount;
 	}
+
+	public double getAdoptionRate() {
+		return adoptionRate;
+	}
+
+	public void setAdoptionRate(double adoptionRate) {
+		this.adoptionRate = adoptionRate;
+	}
+	
 	
 	
 	

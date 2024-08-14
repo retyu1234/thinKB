@@ -6,7 +6,7 @@ public class DepartmentReportDto {
     private String reportTitle;    // r.ReportTitle
     private String createdAt;      // r.CreatedAt
     private String updatedAt;      // r.UpdatedAt
-    private boolean isChoice;      // r.IsChoice
+    private Integer isChoice;      // r.IsChoice
     private String authorName;     // u.UserName as AuthorName
     private String teamName;       // t.TeamName
     private String roomTitle;      // mr.RoomTitle
@@ -40,10 +40,10 @@ public class DepartmentReportDto {
 	public void setUpdatedAt(String updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-	public boolean getIsChoice() {
+	public Integer getIsChoice() {
 		return isChoice;
 	}
-	public void setIsChoice(boolean isChoice) {
+	public void setIsChoice(Integer isChoice) {
 		this.isChoice = isChoice;
 	}
 	public String getAuthorName() {

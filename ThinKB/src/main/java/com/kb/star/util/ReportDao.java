@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.kb.star.dto.DepartmentReportDto;
 import com.kb.star.dto.IdeaSummaryDto;
 import com.kb.star.dto.ReportDetailsDto;
+import com.kb.star.dto.ReportMemberDto;
 import com.kb.star.dto.ReportsDto;
 
 public interface ReportDao {
@@ -18,6 +19,19 @@ public interface ReportDao {
 	ReportDetailsDto getReportDetailsFirst(@Param("roomId") int roomId);
 	List<ReportsDto> getMyReportList(@Param("userId") int userId);
 	List<IdeaSummaryDto> getIdeaSummaries(@Param("roomId") int roomId);
+	
+	// 관리자
+	// 보고서 목록
 	List<DepartmentReportDto>getDepartmentReportList(@Param("managerId") int userId);
-	void approveReport(@Param("reportId") int reportId);
+	
+	// 특정보고서 상세보기
+    ReportDetailsDto getReportDetail(int reportId);
+    // 특정보고서 참여자
+    List<ReportMemberDto> getReportMember(int roomId);
+    // 특정보고서 기안팀명 + 기안자 이름
+    ReportMemberDto getReportAuthor(int reportId);
+	
+	// 보고서 결재
+	void approveReport(@Param("reportId") int reportId, @Param("isChoice") int isChoice);
+	
 }
