@@ -5,78 +5,106 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>부서 보고서 리스트</title>
+<title>보고서 리스트</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <style>
-    body { font-family: Arial, sans-serif; }
-    .container { width: 80%; margin: 0 auto; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-    .search-container { margin-bottom: 20px; }
-    .search-container input, .search-container select { margin-right: 10px; padding: 5px; }
-    .approve-btn { background-color: #4CAF50; color: white; border: none; padding: 5px 10px; cursor: pointer; }
-    .approve-btn:hover { background-color: #45a049; }
-    .download-btn { background-color: #008CBA; color: white; border: none; padding: 5px 10px; cursor: pointer; }
-    .download-btn:hover { background-color: #007B9A; }
+    .reportList-body { font-family: KB금융 본문체 Light; background-color: #f4f4f4; margin: 0; padding: 20px; }
+    .reportList-container { width: 70%; margin: 0 0 0 350px; padding: 20px; border-radius: 8px;}
+    .reportList-title { font-family: KB금융 제목체 Light; font-size: 18pt;  font-weight: bold; color: #333; margin-bottom: 30px; display: flex; align-items: center;}
+    .back2 {width: 30px; height: auto;  margin-right: 20px; margin-top: 10px;}
+    .tab-container { display: flex; margin-bottom: 20px; border-bottom: 1px solid #ddd; }
+    .tab { font-family: KB금융 제목체 Light; font-size: 13pt; padding: 10px 20px; cursor: pointer; color: #007bff; background: none; border: none; }
+    .tab.active { font-family: KB금융 제목체 Light; border-bottom: 2px solid #007bff; }
+    .search-container { font-family: KB금융 본문체 Light; display: flex; justify-content: flex-end; align-items: center; margin-bottom: 20px; }
+    .search-container input, .search-container select { font-family: KB금융 본문체 Light; margin-left: 10px; padding: 9pt; border: 1px solid #ddd; border-radius: 4px; }
+    .search-icon, .calendar-icon { cursor: pointer; font-size: 18px; margin-left: 10px; color: #007bff; }
+    table { font-family: KB금융 본문체 Light; width: 100%; border-collapse: collapse; background-color: #ffffff;}
+    th, td { padding: 9pt; text-align: center; border-bottom: 1px solid #ddd; }
+    td a { color: inherit; text-decoration: none; }
+    th { background-color: #AB9A80; font-weight: bold; color: #fff; }
+    .approve-btn, .reject-btn { border: none; cursor: pointer; border-radius: 4px; color: 007BFF; background-color: transparent; display: inline-block;}
+    .approve-btn{color: #007bff; }
+    .reject-btn {color: red; }
+    .approve-btn:hover, .reject-btn:hover { color: #666; }
+    .download-btn {color: black; border: none; padding: 6px 12px; cursor: pointer; background-color: transparent;}
+    .download-btn:hover {color: #333;}
+    th:nth-child(1), td:nth-child(1) { width: 8%; } /* 팀 */
+    th:nth-child(2), td:nth-child(2) { width: 28%; } /* 보고서 제목 */
+    th:nth-child(3), td:nth-child(3) { width: 20%; } /* 회의방 */
+    th:nth-child(4), td:nth-child(4) { width: 8%; } /* 작성자 */
+    th:nth-child(5), td:nth-child(5) { width: 10%; } /* 작성일 */
+    th:nth-child(6), td:nth-child(6) { width: 8%; } /* 상태 */
+    th:nth-child(7), td:nth-child(7) { width: 8%; } /* 다운 */
+    th:nth-child(8), td:nth-child(8) { width: 10%; } /* 채택 */
 </style>
 </head>
-<body>
-    <div class="container">
-        <h1><i class="fas fa-file-alt"></i> 부서 보고서 리스트</h1>
+<body class="reportList-body">
+    <div class="reportList-container">
+    
+    	<%@ include file="../adminSideBar.jsp"%>
+    	
+    	<div class="reportList-title">
+			<a href="./adminMain"><img src="./resources/back2.png" alt="back2" class="back2"></a>
+			<span>보고서 리스트</span>
+		</div>
         
+        <div class="tab-container">
+            <button class="tab active" onclick="filterByStatus('all')">전체</button>
+            <button class="tab" onclick="filterByStatus('pending')">결재대기</button>
+            <button class="tab" onclick="filterByStatus('approved')">채택</button>
+            <button class="tab" onclick="filterByStatus('rejected')">미채택</button>
+        </div>
+
         <div class="search-container">
-            <input type="text" id="searchInput" placeholder="보고서 제목/작성자로 검색하세요">
             <select id="teamFilter">
                 <option value="">모든 팀</option>
                 <c:forEach items="${teams}" var="team">
                     <option value="${team.teamName}">${team.teamName}</option>
                 </c:forEach>
             </select>
-            <button onclick="filterReports()"><i class="fas fa-search"></i> 검색</button>
+            <input type="text" id="searchInput" placeholder="보고서 제목 / 작성자로 검색">
+            <i class="fas fa-search search-icon" onclick="filterReports()"></i>
+            <i class="far fa-calendar-alt calendar-icon" id="dateRange"></i>
         </div>
 
         <table id="reportTable">
             <thead>
                 <tr>
-                    <th>보고서 제목2</th>
-                    <th>작성자</th>
-                    <th>팀</th>
+                	<th>팀</th>
+                    <th>보고서 제목</th>
                     <th>회의방</th>
+                    <th>작성자</th>
                     <th>작성일</th>
                     <th>상태</th>
-                    <th>액션</th>
+                    <th>다운</th>
+                    <th>채택</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach items="${reports}" var="report">
-                    <tr>
-                        <td>${report.reportTitle}</td>
-                        <td>${report.authorName}</td>
+                    <tr data-status="${report.isChoice == null ? 'pending' : (report.isChoice == 1 ? 'approved' : 'rejected')}">
                         <td>${report.teamName}</td>
+                        <td style="color: #007bff;"><a href="./reportDetail?reportId=${report.reportId}">${report.reportTitle}</a></td>
                         <td>${report.roomTitle}</td>
+                        <td>${report.authorName}</td>
                         <td>${report.updatedAt}</td>
                         <td>
                             <c:choose>
-                                <c:when test="${report.isChoice == null}">
-                                    결재대기
-                                </c:when>
-                                <c:when test="${report.isChoice == 1}">
-                                    채택
-                                </c:when>
-                                <c:when test="${report.isChoice == 0}">
-                                    불채택
-                                </c:when>
-                                <c:otherwise>
-                                    알 수 없음
-                                </c:otherwise>
+                                <c:when test="${report.isChoice == null}">결재대기</c:when>
+                                <c:when test="${report.isChoice == 1}">채택</c:when>
+                                <c:when test="${report.isChoice == 0}">미채택</c:when>
+                                <c:otherwise>알 수 없음</c:otherwise>
                             </c:choose>
                         </td>
                         <td>
-                            <button class="download-btn" onclick="downloadReport(${report.roomId})"><i class="fas fa-download"></i> 다운로드</button>
+                            <button class="download-btn" onclick="downloadReport(${report.roomId})"><i class="fas fa-download"></i></button>
+                        </td>
+                        <td>    
                             <c:if test="${report.isChoice == null}">
-                                <button class="approve-btn" onclick="handleChoice(${report.reportId}, 1)"><i class="fas fa-check"></i> 채택</button>
-                                <button class="reject-btn" onclick="handleChoice(${report.reportId}, 0)"><i class="fas fa-times"></i> 불채택</button>
+                                <button class="approve-btn" onclick="handleChoice(${report.reportId}, 1)">채택</button>
+                                <button class="reject-btn" onclick="handleChoice(${report.reportId}, 0)">미채택</button>
                             </c:if>
                         </td>
                     </tr>
@@ -86,6 +114,20 @@
     </div>
 
     <script>
+        let startDate, endDate;
+
+        flatpickr("#dateRange", {
+            mode: "range",
+            dateFormat: "Y-m-d",
+            onChange: function(selectedDates) {
+                if (selectedDates.length === 2) {
+                    startDate = selectedDates[0];
+                    endDate = selectedDates[1];
+                    filterReports();
+                }
+            }
+        });
+
         function downloadReport(roomId) {
             var userConfirmed = window.confirm('보고서를 다운받으시겠습니까?');
             if (userConfirmed) {
@@ -94,9 +136,26 @@
         }
 
         function handleChoice(reportId, choice) {
-            var confirmationMessage = choice === 1 ? '아이디어를 채택하시겠습니까?' : '아이디어를 불채택하시겠습니까?';
+            var confirmationMessage = choice === 1 ? '아이디어를 채택하시겠습니까?' : '아이디어를 미채택하시겠습니까?';
             if (confirm(confirmationMessage)) {
-                window.location.href = './updateChoice?reportId=' + reportId + '&isChoice=' + choice;
+                window.location.href = './approveReport?reportId=' + reportId + '&isChoice=' + choice;
+            }
+        }
+
+        function filterByStatus(status) {
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            var table = document.getElementById("reportTable");
+            var tr = table.getElementsByTagName("tr");
+
+            for (var i = 1; i < tr.length; i++) {
+                var rowStatus = tr[i].getAttribute('data-status');
+                if (status === 'all' || status === rowStatus) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
             }
         }
 
@@ -107,18 +166,32 @@
             table = document.getElementById("reportTable");
             tr = table.getElementsByTagName("tr");
             var teamFilter = document.getElementById("teamFilter").value;
+            var activeTab = document.querySelector('.tab.active').textContent.toLowerCase();
 
-            for (i = 0; i < tr.length; i++) {
+            for (i = 1; i < tr.length; i++) {
                 var tdTitle = tr[i].getElementsByTagName("td")[0];
                 var tdAuthor = tr[i].getElementsByTagName("td")[1];
                 var tdTeam = tr[i].getElementsByTagName("td")[2];
-                if (tdTitle && tdAuthor && tdTeam) {
+                var tdDate = tr[i].getElementsByTagName("td")[4];
+                var rowStatus = tr[i].getAttribute('data-status');
+                
+                if (tdTitle && tdAuthor && tdTeam && tdDate) {
                     var titleValue = tdTitle.textContent || tdTitle.innerText;
                     var authorValue = tdAuthor.textContent || tdAuthor.innerText;
                     var teamValue = tdTeam.textContent || tdTeam.innerText;
+                    var dateValue = new Date(tdDate.textContent || tdDate.innerText);
+
+                    var dateInRange = true;
+                    if (startDate && endDate) {
+                        dateInRange = dateValue >= startDate && dateValue <= endDate;
+                    }
+
+                    var statusMatch = activeTab === '전체' || activeTab === rowStatus;
+
                     if ((titleValue.toUpperCase().indexOf(filter) > -1 || 
                          authorValue.toUpperCase().indexOf(filter) > -1) && 
-                        (teamFilter === "" || teamValue === teamFilter)) {
+                        (teamFilter === "" || teamValue === teamFilter) &&
+                        dateInRange && statusMatch) {
                         tr[i].style.display = "";
                     } else {
                         tr[i].style.display = "none";

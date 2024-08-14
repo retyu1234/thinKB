@@ -8,11 +8,11 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <meta charset="UTF-8">
-<title>My Page</title>
+<title>부서 현황</title>
 <style>
 .adminMypage-body {
-	font-family: 'Arial', sans-serif;
-	background-color: #ffffff;
+	font-family: KB금융 본문체 Light;
+	background-color: #f4f4f4;
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -20,19 +20,15 @@
 }
 
 .adminMypageContainer {
-	background-color: #ffffff;
 	padding-top: 30px;
 	width: 100%;
 	margin : 0% 10% 6% 20%;
 	flex: 1;
 }
 
-.myPageh1 {
-	color: #333;
-	text-align: left;
-	margin-bottom: 30px;
-	font-size: 30px;
-}
+.userAdmin-title { font-size: 18pt;  font-weight: bold; color: #333; margin-bottom: 20px; display: flex; align-items: center;}
+.back2 {width: 30px; height: auto;  margin-right: 20px; margin-top: 10px;}
+.userAdmin-line {margin-bottom: 50px; border-bottom: 1px solid #ddd;}
 
 .profile-section {
 	text-align: left;
@@ -170,6 +166,7 @@
 }
 
 .mypage-title-p {
+	font-family: KB금융 제목체 Light;
 	font-size: 15pt;
 	font-weight: bold;
 }
@@ -463,6 +460,7 @@
 }
 
 .section-title {
+	font-family: KB금융 제목체 Light;
 	font-size: 20pt;
 	font-weight: bold;
 	color: black;
@@ -610,8 +608,12 @@ window.onclick = function(event) {
 	<div class="adminMypage-body">
 		<%@ include file="../adminSideBar.jsp"%>
 		<div class="adminMypageContainer">
-			<h1 class="myPageh1">우리 부서 현황</h1>
-			<hr style="margin-bottom: 4%;">
+			<div class="userAdmin-title">
+				<a href="./adminMain"><img src="./resources/back2.png" alt="back2" class="back2"></a>
+				<span>부서 현황</span>
+			</div>
+			<hr class="userAdmin-line">
+			
 			<p class="mypage-title-p">부서 회의방 현황</p>
 			<div class="card-container">
 
@@ -635,6 +637,7 @@ window.onclick = function(event) {
 					<div class="section-header">
 						<div class="section-title" style="font-size: 15pt;">🏆 베스트
 							직원</div>
+						
 					</div>
 					<div class="best-content">
 						<c:forEach var="employee" items="${bestEmployees}"

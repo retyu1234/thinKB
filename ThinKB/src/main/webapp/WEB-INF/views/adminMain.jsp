@@ -10,13 +10,13 @@
 <style>
 	/* 전체 */
     .admin-body {
-        font-family: Arial, sans-serif;
+       font-family: KB금융 본문체 Light;
         margin: 0;
         padding: 0;
         background-color: #f4f4f4;
         display: flex;
     }
-        .userAdmin-body {
+    .userAdmin-body {
         width: 250px;
         position: fixed;
         top: 0;
@@ -28,6 +28,7 @@
     .admin-container {
         display: flex;
         width: 100%;
+        margin-left: 100px;
     }
     .admin-content {
         flex: 1;
@@ -38,6 +39,7 @@
     
     /* 배너 */
     .banner {
+    	width: 92.5%;
 		background-color: #fff;
 		height: 100px;
 	    margin-bottom: 20px;
@@ -57,18 +59,25 @@
 	.banner img {
 	    width: 250px; 
 	    height: auto;
-	    margin-right: 150px;
+	    margin-right: 50px;
 	}
     
     
     /* 관리자 대시보드 */
     .header {
+    	width: 89.5%;
         padding: 10px 20px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         background-color: #fff;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .header-title {
+    	font-family: KB금융 제목체 Light;
+    	font-size: 20pt;
+    	font-weight: bold;
+    	padding: 15px;
     }
     .profile {
         display: flex;
@@ -82,8 +91,8 @@
         margin-right: 15px;
     }
     .img-logout {
-		width: 30px;
-		height: 30px;
+		width: 25px; 
+		height: 25px;
 		cursor: pointer;
 		margin-left: 50px;
 		align-items: center;
@@ -91,6 +100,7 @@
     
     /* 섹션 박스 */
     .section {
+    	width: 88.5%;
         background-color: #fff;
         margin-bottom: 20px;
         padding: 20px;
@@ -105,7 +115,7 @@
 	    margin-bottom: 20px;
 	}
 	.section-wrapper {
-	    width: 47%; /* 전체 너비의 48%를 차지하도록 설정 */
+	    width: 44.5%; /* 전체 너비의 48%를 차지하도록 설정 */
 	    display: flex;
     	flex-direction: column;
 	}
@@ -127,10 +137,12 @@
 		margin-bottom: 15px;
 	}
     .section-title {
+    	font-family: KB금융 제목체 Light;
         font-size: 16pt;
         font-weight: bold;
     }
     .section-Intitle {
+    	font-family: KB금융 제목체 Light;
     	font-size: 12pt;
     	margin-bottom: 15px;
     	color: #007AFF;
@@ -197,7 +209,7 @@
         width: auto;
     }
     .approval-box h3 {
-        color: #28a745;
+        color: #A8D2A0;
         margin-bottom: 10px;
     }
     .approval-box .count {
@@ -232,13 +244,14 @@
     .usage-management {
 	    display: flex;
 	    justify-content: space-between;
+	    padding: 30px;
 	}
 	.usage-half {
 	    width: 48%; /* 각 half가 섹션의 절반을 차지하도록 설정 */
 	}
 	.usage-table {
 	    flex: 1;
-	    margin-left: 10px; /* 그래프와 테이블 사이의 간격 조정 */
+	    margin-left: 50px; /* 그래프와 테이블 사이의 간격 조정 */
 	    text-align: center; /* 모든 글자를 가운데 정렬 */
 	}
 	.usage-table table {
@@ -294,7 +307,7 @@
     </div>
     <div class="admin-content">
         <div class="header">
-            <h1>관리자 대시보드</h1>
+            <div class="header-title">관리자 대시보드</div>
             <!-- 프로필 -->
             <div class="profile">
 	            <a href="<c:url value='./mypage'/>">
@@ -330,15 +343,15 @@
         		<div class="approval-status">
 		            <div class="approval-box">
 		                <h3>결재대기</h3>
-		                <div class="count">1건</div>
+		                <div class="count">${pendingCount}건</div>
 		            </div>
 		            <div class="approval-box">
 		                <h3>채택</h3>
-		                <div class="count">2건</div>
+		                <div class="count">${approvedCount}건</div>
 		            </div>
 		            <div class="approval-box">
 		                <h3>미채택</h3>
-		                <div class="count">4건</div>
+		                <div class="count">${rejectedCount}건</div>
 		            </div>
 		        </div>
 	            <!-- <div class="table">
@@ -418,7 +431,7 @@
 	    
         <div class="section-header">
        		<div class="section-title">📈 사용량 관리</div>
-       		<button class="more-button" onclick="location.href='./meetingList'">+ 더보기</button>
+       		<!-- <button class="more-button" onclick="location.href='./meetingList'">+ 더보기</button> -->
        	</div>
         <!-- 배너 -->
         <div class="banner">
@@ -451,7 +464,7 @@
 				                <tr class="team-row" data-team-name="${usage.teamName}">
 		                            <td>${usage.teamName}</td>
 		                            <td>${usage.teamCount}회</td>
-		                            <td>-</td> <!-- 채택률 공란 -->
+		                            <td>${usage.adoptionRate}%</td>
 		                        </tr>
 		                    </c:forEach>
 		                </tbody>
@@ -487,13 +500,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const table = document.querySelector('.usage-table table');
     const departments = [];
     const usageCounts = [];
+    const adoptionRates = [];
 
     table.querySelectorAll('tbody tr').forEach(row => {
         departments.push(row.cells[0].textContent);
         usageCounts.push(parseInt(row.cells[1].textContent));
+        adoptionRates.push(parseFloat(row.cells[2].textContent));
     });
 
-    // 차트 생성
     const ctx = document.getElementById('usageChart').getContext('2d');
     new Chart(ctx, {
         type: 'line',
@@ -502,18 +516,52 @@ document.addEventListener('DOMContentLoaded', function() {
             datasets: [{
                 label: '사용횟수',
                 data: usageCounts,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
+                borderColor: '#88BFFF',  // 이 부분을 수정
+                // backgroundColor: '#007BFF',  // 이 부분을 추가
+                tension: 0.1,
+                yAxisID: 'y-axis-1'
+            }, {
+                label: '채택률',
+                data: adoptionRates,
+                borderColor: '#A8D2A0',  // 이 부분을 수정
+                // backgroundColor: '#EDE1C9',  // 이 부분을 추가
+                tension: 0.1,
+                yAxisID: 'y-axis-2'
             }]
         },
         options: {
             responsive: true,
             scales: {
-                y: {
+                'y-axis-1': {
+                    type: 'linear',
+                    position: 'left',
                     beginAtZero: true,
+                    suggestedMax: function(context) {
+                        const max = Math.max(...context.chart.data.datasets[0].data);
+                        return Math.ceil(max * 1.2); // 최대값의 120%로 설정
+                    },
+                    ticks: {
+                        stepSize: function(context) {
+                            const max = context.max;
+                            return Math.ceil(max / 5); // 5개의 주요 눈금으로 나누기
+                        }
+                    },
                     title: {
                         display: true,
                         text: '사용횟수'
+                    }
+                },
+                'y-axis-2': {
+                    type: 'linear',
+                    position: 'right',
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        stepSize: 20 // 20% 간격으로 눈금 설정
+                    },
+                    title: {
+                        display: true,
+                        text: '채택률 (%)'
                     }
                 },
                 x: {

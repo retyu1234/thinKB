@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <style>
 .admin-sidebar {
+	font-family: KB금융 제목체 Light;
     width: 250px;
     height: 100vh;
     background-color: #2c2c2c;
@@ -24,7 +25,7 @@
     margin-bottom: 30px;
 }
 .admin-logo img {
-    height: 30px;
+    height: 50px;
     /* margin-right: 10px; */
 }
 .admin-sidebar ul {
@@ -117,6 +118,7 @@
     text-align: center;
 }
 .admin-sidebar-footer {
+	font-family: KB금융 본문체 Light;
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -146,21 +148,21 @@
 <div class="admin-sidebar">
     <div class="admin-logo">
     	<a href="<c:url value='./adminMain'/>">
-        	<img src="<c:url value='./resources/logo.png'/>" alt="Linweb">
+        	<img src="<c:url value='./resources/logo-white.png'/>" alt="Linweb">
         </a>
     </div>
     <ul>
         <li><span class="admin-icon">PJ</span>프로젝트 관리
         	<ul>
+        		<li><a href="./departmentReportList">프로젝트 조회</a></li>
                 <li><a href="./departmentReportList">프로젝트 결재</a></li>
-                <li><a href="./departmentReportList">프로젝트 조회</a></li>
             </ul>
         </li>
         <li>
             <span class="admin-icon">📁</span>사용자 관리
             <ul>
-                <li><a href="./userAdminView">직원 목록</a></li>
-                <li><a href="./addUserView">직원 추가</a></li> 
+                <li><a href="./userAdminView">직원 조회</a></li>
+                <li><a href="./addUserView?departmentId=${departmentId}">직원 추가</a></li> 
             </ul>
         </li>
 <!--        <li><span class="admin-icon">📊</span>사용량 관리</li> -->
@@ -172,7 +174,8 @@
         <div class="admin-sidebar-footer">
         <p>© 2024 ThinKB Admin</p>
         <p>버전 1.0.0</p>
-        <p><a href="#">도움말</a> | <a href="#">문의하기</a></p>
+        <p><a href="#">도움말</a></p>
+        <p><a href="#">문의하기</a></p>
     </div>
 </div>
 </body>

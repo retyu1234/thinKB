@@ -534,6 +534,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+//타이머 종료시 Time Out 표시
+document.addEventListener("DOMContentLoaded", function() {
+    const stageId = ${meetingRoom.getStageId()};
+    const timerElement = document.getElementById("timer");
+    const timerMessageElement = document.getElementById("timer-message");
+    if (stageId >= 2) {
+        if (timerElement) {
+            timerElement.innerHTML = "Time Out";
+        }
+        if (timerMessageElement) {
+            timerMessageElement.innerHTML = "지금은 작성할 수 없어요";
+            timerMessageElement.classList.remove("active");
+            timerMessageElement.classList.add("expired");
+        }
+        window.updateTimer = function() {
+        };
+    }
+});
+
 <%
 String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
 request.setAttribute("stages", stages);
