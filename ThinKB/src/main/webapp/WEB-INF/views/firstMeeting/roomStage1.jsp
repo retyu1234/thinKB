@@ -1085,12 +1085,6 @@ document.addEventListener("DOMContentLoaded", function() {
     <!-- 제목, 상세설명 -->
     <div class="room1-title">[${info.getRoomTitle()}]</div>
     
-	<%-- <div class="room1-title-detail">
-	    <button id="toggleDescriptionButton" class="grey-button">설명 보기/숨기기</button>
-	    <div id="descriptionContent" style="display:none;">
-	        <pre>${info.getDescription()}</pre>
-	    </div>
-	</div> --%>
 	<div class="room1-title-detail">
 	    <div class="toggle-container">
 	        <div class="toggle-switch">

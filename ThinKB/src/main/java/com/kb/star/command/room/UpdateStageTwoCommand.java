@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.RoomDao;
 
 public class UpdateStageTwoCommand implements RoomCommand {
@@ -30,7 +31,7 @@ public class UpdateStageTwoCommand implements RoomCommand {
 		String timer_hours = request.getParameter("timer_hours");
 		String timer_minutes = request.getParameter("timer_minutes");
 		String timer_seconds = request.getParameter("timer_seconds");
-		
+
 		// 현재 시간 구하고, 타이머 시간 구하기
 		int hour = 0;
 		int min = 0;
@@ -52,20 +53,28 @@ public class UpdateStageTwoCommand implements RoomCommand {
 
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 
-		//회의방의 Stage를 2로 변경하기
+		// 회의방의 Stage를 2로 변경하기
 		dao.updateParticipantStage2(roomId);
-		
-		//방번호의 참여자 목록을 구해서 Stage2의 참여여부 전부 0으로 새로 생성
+
+		// 방번호의 참여자 목록을 구해서 Stage2의 참여여부 전부 0으로 새로 생성
 		List<Integer> users = dao.RoomForUserList(roomId);
-		for(Integer list : users) {
+		for (Integer list : users) {
 			dao.insertForwardStage2(list, roomId);
 		}
-		
-		//타이머 업데이트
-		dao.stageTwoTimerUpdate(roomId,formattedTime);		
-		
+
+		// 타이머 업데이트
+		dao.stageTwoTimerUpdate(roomId, formattedTime);
+
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", 2);
+
+		// 알림 보내기 추가
+		MeetingRooms roomInfo = dao.roomDetailInfo(roomId);
+		String notification = "[" + roomInfo.getRoomTitle() + "] 회의방의 아이디어 초안에 대한 ✅투표가 시작됐어요. 제출된 아이디어를 확인해보고 좋은 아이디어라고 생각되는 곳에 투표해주세요.";
+
+		for (int user : users) {
+			dao.makeNotification(user, 0, notification, roomId);
+		}
 	}
 
 }

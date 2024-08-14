@@ -344,6 +344,9 @@ html {
 	color: #999;
 	pointer-events: none;
 }
+#timer-section, #timer, #timer-message {
+    display: none;
+}
 </style>
 <script>
 	function handleFormSubmit(event) {
@@ -373,22 +376,22 @@ html {
 			<div class="center-content">
 
 				<div class="report-form-container">
-					<!-- 5개 단계 표시 -->
+					<!-- 6개 단계 표시 -->
 					<div class="stages">
-						<c:forEach var="stage" items="${stages}" varStatus="status">
-							<c:choose>
-								<c:when test="${meetingRoom.getStageId() >= status.index + 1}">
-									<a
-										href="roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}"
-										class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
-										${status.index + 1}. ${stage} </a>
-								</c:when>
-								<c:otherwise>
-									<div class="stage inactive">${status.index + 1}. ${stage}
-									</div>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
+					    <c:forEach var="stage" items="${stages}" varStatus="status">
+					        <c:choose>
+					            <c:when test="${meetingRoom.getStageId() >= status.index + 1}">
+					                <a
+					                    href="./roomDetail?roomId=${meetingRoom.getRoomId()}&stage=${status.index + 1}&ideaId=${yesPickList[0].getIdeaID()}"
+					                    class="stage ${meetingRoom.getStageId() == status.index + 1 ? 'active' : ''}">
+					                    ${status.index + 1}. ${stage}
+					                </a>
+					            </c:when>
+					            <c:otherwise>
+					                <div class="stage inactive">${status.index + 1}. ${stage}</div>
+					            </c:otherwise>
+					        </c:choose>
+					    </c:forEach>
 					</div>
 					<h2>🗒️아이디어 보고서 작성</h2>
 					<form action="./submitForm" method="post"

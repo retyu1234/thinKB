@@ -15,6 +15,12 @@ html, body {
 	font-family: Arial, sans-serif;
 }
 
+.vote-banner {
+	margin-top: 45px;
+	margin-left: 15%;
+	margin-right: 15%;
+}
+
 .vote-content {
 	padding: 20px;
 	margin-left: 17%;
@@ -207,6 +213,12 @@ html, body {
 
 	<!-- 헤더 영역 -->
 	<%@ include file="../header.jsp"%>
+	
+	<!-- 상단 배너영역 -->
+	<div class="vote-banner">
+		<img src="<c:url value='./resources/voteResultBanner.png'/>" alt="voteResultBanner" 
+		style="max-width: 100%; height: auto;">
+	</div>
 	
 	<!-- 콘텐츠 시작 -->	
 	<div class="vote-content">

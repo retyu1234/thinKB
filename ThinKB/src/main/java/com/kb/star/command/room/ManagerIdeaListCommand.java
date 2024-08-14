@@ -61,6 +61,10 @@ public class ManagerIdeaListCommand implements RoomCommand {
 		List<NotiDto> roomMessage = notiDao.getMessagesByIdeaId(id, roomId, 0);
 		model.addAttribute("roomMessage", roomMessage);
 		
+		//상단 6개 단계를 위한 yesPickList
+		List<Ideas> dto1 = dao.yesPickIdeaList(roomId);
+		model.addAttribute("yesPickList", dto1);
+		
 	}
 
 }
