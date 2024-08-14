@@ -49,7 +49,6 @@ public class UpdateStageTwoCommand implements RoomCommand {
 		LocalDateTime endTime = currentTime.plusHours(hour).plusMinutes(min).plusSeconds(sec);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		String formattedTime = endTime.format(formatter); // 이 시간으로 업데이트 하면 됨
-		System.out.println("타이머 저장될 시간? " + formattedTime);
 
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 
