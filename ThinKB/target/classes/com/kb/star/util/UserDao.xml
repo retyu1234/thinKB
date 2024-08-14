@@ -247,8 +247,7 @@ ORDER BY
 	    INNER JOIN MeetingRoomMembers mrm ON mr.RoomID = mrm.RoomID
 	    WHERE mr.IsDelete = 0
 	      AND mrm.UserID = #{userId}
-	    ORDER BY CASE WHEN mr.StageID = 6 THEN 1 ELSE 0 END,
-    	mr.RoomID DESC
+	    ORDER BY mr.RoomID DESC
 	    LIMIT #{start}, #{pageSize}
 	</select>
 

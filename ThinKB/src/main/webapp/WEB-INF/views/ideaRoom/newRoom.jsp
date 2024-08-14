@@ -8,15 +8,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>thinKB - 회의방 만들기</title>
 <style>
+body, html {
+	margin: 0;
+	padding: 0;
+	font-family: KB금융 본문체 Light;
+	overflow-x: hidden;
+    width: 100%;
+}
+
 .content-banner {
-	margin-top: 50px; /* content 영역의 여백 설정 */
+	margin-top: 50px;
 	margin-left: 15%;
 	margin-right: 15%;
 	margin-bottom: 30px;
 }
 
 .content {
-	padding: 20px; /* content 영역의 여백 설정 */
+	padding: 20px;
 	margin-left: 20%;
 	margin-right: 20%;
 }
@@ -27,6 +35,7 @@
 	color: black;
 	margin-top: 30px;
 	margin-bottom: 20px;
+	font-family: KB금융 제목체 Light;
 }
 
 
@@ -34,19 +43,19 @@
 	display: flex;
 	align-items: center;
 	width: 100%;
-	max-width: 600px; /* 전체 컨테이너의 최대 너비를 늘림 */
+	max-width: 600px;
 	position: relative;
 }
 
 .date-input-wrapper {
 	display: flex;
 	align-items: center;
-	width: 200px; /* 날짜 입력칸의 너비를 고정 */
-	margin-right: 10px; /* 오른쪽 여백 추가 */
+	width: 200px;
+	margin-right: 10px;
 }
 
 .date-input {
-	width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
+	width: 100%;
 	padding: 12px;
 	border: 3px solid lightgrey;
 	border-radius: 20px;
@@ -55,17 +64,19 @@
 }
 
 .date-input:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
+	border-color: #FFD700;
+	outline: none;
+	font-family: KB금융 본문체 Light;
 }
 
 .new-subject {
-	font-size: 15pt; /* 제목의 글자 크기 */
+	font-size: 15pt;
 	color: black;
-	border: 3px solid #FFD700; /* 진한 노란색 테두리 */
-	border-radius: 20px; /* 라운드 처리 */
-	padding: 20px; /* 내부 여백 */
-	background-color: white; /* 배경색 */
+	border: 3px solid #FFD700;
+	border-radius: 20px;
+	padding: 20px;
+	background-color: white;
+	font-family: KB금융 본문체 Light;
 }
 
 input.new-subject {
@@ -79,8 +90,8 @@ input.new-subject {
 }
 
 input.new-subject:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
+	border-color: #FFD700;
+	outline: none;
 }
 textarea.new-subject {
 	font-size: 13pt;
@@ -93,8 +104,8 @@ textarea.new-subject {
 }
 
 textarea.new-subject:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
+	border-color: #FFD700;
+	outline: none;
 }
 
 .calendar-icon {
@@ -104,10 +115,10 @@ textarea.new-subject:focus {
 }
 
 .error-message-container {
-	flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
-	white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
-	overflow: hidden; /* 내용이 넘칠 경우 숨김 */
-	text-overflow: ellipsis; /* 내용이 넘칠 경우 ... 표시 */
+	flex: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .error-message {
@@ -126,7 +137,6 @@ textarea.new-subject:focus {
 	display: none;
 }
 
-/* 기존의 calendar-popup 관련 스타일들... */
 .calendar-popup table {
 	width: 100%;
 	border-collapse: collapse;
@@ -158,9 +168,9 @@ textarea.new-subject:focus {
 }
 
 .calendar-popup .disabled {
-	background-color: #f2f2f2; /* 회색 배경색 */
-	color: #ccc; /* 텍스트 색상 */
-	cursor: not-allowed; /* 커서 모양 변경 */
+	background-color: #f2f2f2;
+	color: #ccc;
+	cursor: not-allowed;
 }
 
 .timer-container {
@@ -182,6 +192,7 @@ textarea.new-subject:focus {
 	border-radius: 10px;
 	font-size: 16px;
 	text-align: center;
+	font-family: KB금융 본문체 Light;
 }
 
 .timer-input:hover {
@@ -189,13 +200,13 @@ textarea.new-subject:focus {
 }
 
 .yellow-button1 {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
-	padding: 10px 40px; /* 버튼의 여백 */
-	border: none; /* 테두리 없음 */
-	border-radius: 20px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
-	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+	background-color: #e6b800;
+	color: black;
+	padding: 10px 40px;
+	border: none;
+	border-radius: 20px;
+	font-size: 20px;
+	cursor: pointer;
 	font-weight: bold;
 }
 
@@ -218,7 +229,7 @@ textarea.new-subject:focus {
 	background-color: #696969;
 	color: white;
 }
-
+/* 직원 목록 조회 모달창 */
 body.modal-open {
     overflow: hidden;
 }
@@ -251,6 +262,7 @@ body.modal-open {
 .modal-header {
     padding-bottom: 10px;
     margin-bottom: 20px;
+    font-family: KB금융 제목체 Light;
 }
 
 .modal-body {
@@ -259,7 +271,7 @@ body.modal-open {
 }
 
 .table-container {
-    max-height: 350px; /* 약 7명의 직원이 표시될 수 있는 높이 */
+    max-height: 350px; /* 최대 한번에 7명정도 */
     overflow-y: auto;
 }
 
@@ -287,7 +299,6 @@ body.modal-open {
     text-align: center;
 }
 
-/* 기존 스타일 유지 */
 .close {
     color: #aaa;
     font-size: 28px;
@@ -296,7 +307,7 @@ body.modal-open {
     position: absolute;
     top: 10px;
     right: 20px;
-    z-index: 1;  /* 추가: 다른 요소 위에 표시되도록 함 */
+    z-index: 1;  /*  다른 요소 위에 표시됨 */
 }
 
 .close:hover,
@@ -366,6 +377,7 @@ body.modal-open {
 	font-size: 18pt;
 	color: black;
 	font-weight: bold;
+	font-family: KB금융 제목체 Light;
 }
 .titleAndDetail-detail {
 	font-size: 13pt;
@@ -375,7 +387,7 @@ body.modal-open {
     display: flex; 
     align-items: center; 
     margin-bottom: 10px;
-    justify-content: space-between; /* 추가 */
+    justify-content: space-between;
 }
 
 .userList-left {
@@ -405,6 +417,7 @@ body.modal-open {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -421,6 +434,7 @@ body.modal-open {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -485,8 +499,8 @@ body.modal-open {
   20% { opacity: 1; }
   100% { opacity: 0.2; }
 }
-/*로딩끝*/
 
+/* 모달창 안에서 직원검색 */
 .search-container {
     display: flex;
     margin-bottom: 20px;
@@ -501,6 +515,7 @@ body.modal-open {
     font-size: 16px;
     border: none;
     outline: none;
+    font-family: KB금융 본문체 Light;
 }
 
 .search-button {
@@ -630,7 +645,7 @@ body.modal-open {
 			</div>
 
 			<div id="selectedEmployees">
-				<!-- 선택된 직원들이 여기에 표시됩니다 -->
+				<!-- 선택된 직원들이 여기표시됨 -->
 			</div>
 			<input type="hidden" id="selectedEmployeeIds" name="users">
 			<div style="margin: 70px; text-align: center;">
@@ -887,66 +902,63 @@ body.modal-open {
 		}
 
 		//직원 선택 체크박스에 대한 이벤트 리스너
-		function addEmployeeCheckboxListeners() {
-			document
-					.querySelectorAll('input[name="employees"]')
-					.forEach(
-							function(checkbox) {
-								checkbox
-										.addEventListener(
-												'change',
-												function() {
-													var employeeId = this.value;
-													var employeeName = this.parentElement.nextElementSibling.textContent
-															.trim();
-													toggleEmployeeSelection(
-															employeeId,
-															employeeName);
-												});
-							});
-		}
+function addEmployeeCheckboxListeners() {
+    document.querySelectorAll('input[name="employees"]').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            var employeeId = this.value;
+            var employeeName = this.parentElement.nextElementSibling.textContent.trim().split('(')[0].trim();
+            toggleEmployeeSelection(employeeId, employeeName);
+        });
+    });
+}
 
 		//선택된 직원들의 ID를 담을 배열
-		var selectedEmployeeIds = [];
+		var selectedEmployees = [];
 
 		// 직원 선택 처리 함수 (employeeId 추가)
 		function toggleEmployeeSelection(employeeId, employeeName) {
-			var index = selectedEmployeeIds.indexOf(employeeId);
-
-			if (index === -1) {
-				// 선택되지 않은 경우 배열에 추가
-				selectedEmployeeIds.push(employeeId);
-			} else {
-				// 이미 선택된 경우 배열에서 제거
-				selectedEmployeeIds.splice(index, 1);
-			}
-
-			updateSelectedEmployeesDisplay();
-			updateHiddenInput();
+		    var index = selectedEmployees.findIndex(function(emp) {
+		        return emp.id === employeeId;
+		    });
+		
+		    if (index === -1) {
+		        // 직원이 선택되지 않았으면 배열에 추가
+		        selectedEmployees.push({
+		            id: employeeId,
+		            name: employeeName
+		        });
+		    } else {
+		        // 이미 선택된 직원이면 배열에서 제거
+		        selectedEmployees.splice(index, 1);
+		    }
+		
+		    updateSelectedEmployeesDisplay();
+		    updateHiddenInput();
 		}
 
 		// 선택된 직원 목록을 화면에 업데이트하는 함수
-		function updateSelectedEmployeesDisplay() {
-			var selectedEmployeesDiv = document
-					.getElementById('selectedEmployees');
-			selectedEmployeesDiv.innerHTML = '';
+function updateSelectedEmployeesDisplay() {
+    var selectedEmployeesDiv = document.getElementById('selectedEmployees');
+    selectedEmployeesDiv.innerHTML = '';
 
-			if (selectedEmployeeIds.length > 0) {
-				var ul = document.createElement('ul');
-				selectedEmployeeIds.forEach(function(employeeId) {
-					var li = document.createElement('li');
-					li.textContent = employeeId;
-					ul.appendChild(li);
-				});
-				selectedEmployeesDiv.appendChild(ul);
-			}
-		}
+    if (selectedEmployees.length > 0) {
+        var ul = document.createElement('ul');
+        selectedEmployees.forEach(function(emp) {
+            var li = document.createElement('li');
+            li.textContent = emp.name + ' (' + emp.id + ')';
+            ul.appendChild(li);
+        });
+        selectedEmployeesDiv.appendChild(ul);
+    }
+}
 
 		// hidden input 업데이트 함수
-		function updateHiddenInput() {
-			var hiddenInput = document.getElementById('selectedEmployeeIds');
-			hiddenInput.value = selectedEmployeeIds.join(',');
-		}
+function updateHiddenInput() {
+    var hiddenInput = document.getElementById('selectedEmployeeIds');
+    hiddenInput.value = selectedEmployees.map(function(emp) {
+        return emp.id;
+    }).join(',');
+}
 
 		// 유효성 검사 함수 (수정됨)
 		function validateForm() {

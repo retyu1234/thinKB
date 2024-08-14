@@ -110,7 +110,7 @@ public class ResetCommand implements RoomCommand {
 			if(idea != null && !idea.isEmpty()) {
 				ideaNum = idea.get(0).getIdeaID(); 
 			}
-			dao.makeNotification(user,ideaNum, notification);
+			dao.makeNotification(user, ideaNum, notification, roomId);
 		}
 		
 

@@ -6,9 +6,6 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<script
-	src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
-	type="module"></script>
 <title>Home</title>
 <style>
 .main-body {
@@ -879,6 +876,49 @@
 .pagination-indicator.active {
 	background-color: #333;
 }
+.team-icon {
+	font-size: 30px;
+}
+
+.profile-container {
+	position: relative;
+	width: 60px;
+	height: 60px;
+	margin: 0 auto 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #f8f9fa;
+	border-radius: 50%;
+}
+
+.rank-number {
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	width: 25px;
+	height: 25px;
+	background-color: #007bff;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: bold;
+	font-size: 14px;
+	color: #ffffff;
+}
+
+.gold {
+	color: #FFD700;
+}
+
+.silver {
+	color: #C0C0C0;
+}
+
+.bronze {
+	color: #CD7F32;
+}
 </style>
 <!-- FullCalendar CSS -->
 <link
@@ -1109,7 +1149,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			<img class="makeRoomImg"
 				style="width: 100%; margin-top: 6%; caret-color: transparent;"
 				onclick="location.href='./newIdeaRoom'"
-				src="<c:url value='/resources/mainBanner.png' />" alt="no Img" />
+				src="<c:url value='/resources/mainBBanner.png' />" alt="no Img" />
 		</div>
 		<div class="section-wrapper fade-in">
 			<div class="section-header">
@@ -1155,27 +1195,18 @@ document.addEventListener('DOMContentLoaded', function() {
 														<div class="room" style="">
 															<c:choose>
 																<c:when test="${li.getParticipationStatus() == 0}">
-																	<div
-																		style="background-color: ${bgColor}; width:30%; border-radius: 30px;">
-																		<p
-																			style="padding: 3px; font-weight: bold; text-align: center; color: white; font-size: 13px;">참여필요</p>
-																	</div>
-																	<h2>${li.getRoomTitle()}</h2>
+																	<div style="background-color: ${bgColor}; width:30%; border-radius: 30px;"><p style=" padding:3px;font-weight:bold; text-align:center;color:white; font-size:13px;">참여필요</p></div>
+																	<h2>${li.getRoomTitle()}</h2>																	
 																	<!-- 미참여 상태 배경색 -->
 																</c:when>
 																<c:when test="${li.getParticipationStatus() == 1}">
-																	<div
-																		style="background-color: ${bgColor}; width:30%; border-radius: 30px;">
-																		<p
-																			style="padding: 3px; font-weight: bold; text-align: center; color: white; font-size: 13px;">참여완료</p>
-																	</div>
-																	<h2>${li.getRoomTitle()}</h2>
+																	<div style="background-color: ${bgColor}; width:30%; border-radius: 30px;"><p style="padding:3px; font-weight:bold; text-align:center;color:white; font-size:13px;">참여완료</p></div>
+																	<h2>${li.getRoomTitle()}</h2>												
 																	<!-- 참여 상태 배경색 -->
 																</c:when>
 															</c:choose>
 															<div class="room-content">
-																<p>방장
-																	:${li.getRoomManagerName()}(${li.getRoomManagerId()})</p>
+																<p>방장 :${li.getRoomManagerName()}(${li.getRoomManagerId()})</p>
 																<p>종료일 : ${li.getEndDate()}</p>
 																<p>
 																	단계 :
@@ -1200,29 +1231,20 @@ document.addEventListener('DOMContentLoaded', function() {
 													<div class="room">
 														<c:choose>
 															<c:when test="${li.getParticipationStatus() == 0}">
-																<div
-																	style="background-color: ${bgColor}; width:30%; border-radius: 30px;">
-																	<p
-																		style="padding: 3px; text-align: center; color: white; font-size: 13px;">참여필요</p>
-																</div>
+															<div style="background-color: ${bgColor}; width:30%; border-radius: 30px;"><p style="padding:3px; text-align:center;color:white; font-size:13px;">참여필요</p></div>
 																<h2>${li.getRoomTitle()}</h2>
-
+																
 																<!-- 미참여 상태 배경색 -->
 															</c:when>
 															<c:when test="${li.getParticipationStatus() == 1}">
-																<div
-																	style="background-color: ${bgColor}; width:30%; border-radius: 30px;">
-																	<p
-																		style="padding: 3px; text-align: center; color: white; font-size: 13px;">참여완료</p>
-																</div>
+															<div style="background-color: ${bgColor}; width:30%; border-radius: 30px;"><p style="padding:3px; text-align:center;color:white; font-size:13px;">참여완료</p></div>
 																<h2>${li.getRoomTitle()}</h2>
-
+																
 																<!-- 참여 상태 배경색 -->
 															</c:when>
 														</c:choose>
 														<div class="room-content">
-															<p>방장 :
-																${li.getRoomManagerName()}(${li.getRoomManagerId()})</p>
+															<p>방장 : ${li.getRoomManagerName()}(${li.getRoomManagerId()})</p>
 															<p>종료일 : ${li.getEndDate()}</p>
 															<p>
 																단계 :
@@ -1359,28 +1381,50 @@ document.addEventListener('DOMContentLoaded', function() {
 					</c:forEach>
 				</div>
 			</div>
-			<div class="best-section">
-				<div class="section-header">
-					<div class="section-title">👥 베스트 팀</div>
+				<div class="best-section">
+					<div class="section-header">
+						<div class="section-title" style="font-size: 15pt;">👥 베스트 팀</div>
+					</div>
+					<div class="best-content">
+						<c:set var="prevRank" value="0" />
+						<c:set var="displayRank" value="0" />
+						<c:forEach var="team" items="${bestTeams}" varStatus="status">
+							<c:choose>
+								<c:when test="${team.teamRank > prevRank}">
+									<c:set var="displayRank" value="${team.teamRank}" />
+								</c:when>
+								<c:otherwise>
+									<c:set var="displayRank" value="${prevRank}" />
+								</c:otherwise>
+							</c:choose>
+							<div class="best-item">
+								<div class="profile-container">
+									<span class="rank-number">${displayRank}</span>
+									<c:choose>
+										<c:when test="${displayRank == 1}">
+											<i class="fas fa-trophy team-icon gold"></i>
+										</c:when>
+										<c:when test="${displayRank == 2}">
+											<i class="fas fa-award team-icon silver"></i>
+										</c:when>
+										<c:otherwise>
+											<i class="fas fa-medal team-icon bronze"></i>
+										</c:otherwise>
+									</c:choose>
+								</div>
+								<p class="best-name">${team.teamName}</p>
+								<p class="best-description">${team.departmentName}</p>
+								<p class="best-description">
+									채택률:
+									<fmt:formatNumber value="${team.teamAdoptionPercentage}"
+										pattern="#,##0.0" />
+									%
+								</p>
+							</div>
+							<c:set var="prevRank" value="${team.teamRank}" />
+						</c:forEach>
+					</div>
 				</div>
-				<%-- <div class="best-content">
-		            <div class="best-item">
-		                <img src="<c:url value='/resources/team1.png' />" alt="1등 팀" class="profile-image">
-		                <p class="best-name">혁신팀</p>
-		                <p class="best-description">최고 성과</p>
-		            </div>
-		            <div class="best-item">
-		                <img src="<c:url value='/resources/team2.png' />" alt="2등 팀" class="profile-image">
-		                <p class="best-name">기획팀</p>
-		                <p class="best-description">창의적 기획</p>
-		            </div>
-		            <div class="best-item">
-		                <img src="<c:url value='/resources/team3.png' />" alt="3등 팀" class="profile-image">
-		                <p class="best-name">개발팀</p>
-		                <p class="best-description">빠른 실행력</p>
-		            </div>
-		        </div> --%>
-			</div>
 		</div>
 
 
@@ -1398,112 +1442,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			</div>
 		</div>
 	</div>
-	<!-- <!-- Guide 섹션 추가 -->
-
-	<section id="guide-section">
-
-		<div id="guide-container">
-			<h1 style="font-size: 30pt;">👣Guide</h1>
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<dotlottie-player
-						src="https://lottie.host/2fddae35-0cdc-4b5b-857a-585948fbe4c8/GCE5AsQQMK.json"
-						background="transparent" speed="1.5"
-						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
-				</div>
-				<div class="guide-text">
-					<h2>자유롭게 아이디어를 나눠요!</h2>
-					<p>익명등록으로 편한 분위기로 아이디어를 낼수 있어요.</p>
-					<p>AI질문으로 내 생각을 보다 쉽게 정리해요.</p>
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-				<dotlottie-player
-						src="https://lottie.host/57ac9edb-1df4-4273-943f-bf6c1df8817b/1B3u1zcSOX.json"
-						background="transparent" speed="1.5"
-						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
-				</div>
-				<div class="guide-text">
-					<h2>모두의 의견을 모아 2개의 아이디어를 골라요!</h2>
-					<p>익명 투표를 진행해 제일 표를 많이 받은</p>
-					<p>2개의 아이디어를 뽑아 회의를 진행할 수 있어요.</p>
-				</div>
-			</div>
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<dotlottie-player
-						src="https://lottie.host/e06980d3-898d-4de8-8923-34c387721833/AVAkaMqyRp.json"
-						background="transparent" speed="1.5"
-						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
-				</div>
-				<div class="guide-text">
-					<h2>다양한 방향에서 아이디어를 확장시켜봐요!</h2>
-					<p>똑똑이, 긍정이, 걱정이, 깐깐이</p>
-					<p>4가지 관점에서 아이디어에 대한 의견을 작성해요.</p>
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<dotlottie-player
-						src="https://lottie.host/b96a21bf-1736-4695-862f-187dd034d028/bfzY8RWNgc.json"
-						background="transparent" speed="1"
-						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
-				</div>
-				<div class="guide-text">
-					<h2>관점별 의견들을 모아 피드백을 진행해요!</h2>
-					<p>관점별로 모인 의견들을</p>
-					<p>피드백을 통해 아이디어를 구체화해요.</p>
-				</div> 
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<dotlottie-player
-						src="https://lottie.host/cce0b5d3-0469-48e7-9525-cc37b5ea3034/Ak98tgJK31.json"
-						background="transparent" speed="1"
-						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
-				</div>
-				<div class="guide-text">
-					<h2>'❤️좋아요'가 보여주는 최고의 의견을 확인해봐요!</h2>
-					<p>가장 좋은 의견에 한표!</p>
-					<p>팀원들이 생각하는 가장 좋은 의견을 확인할 수 있어요.</p>
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-					<dotlottie-player
-						src="https://lottie.host/87c31457-2ad6-4db2-875a-89ba7b91973a/LNSDQjbBnw.json"
-						background="transparent" speed="1"
-						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
-				</div>
-				<div class="guide-text">
-					<h2>다양한 추가기능!</h2>
-					<p>A/B테스트, 추가 투표, 핀메모를 이용해</p>
-					<p>회의뿐 아니라 간단한 의견 종합부터 피드백까지</p>
-					<p>추가논의를 진행할 수 있어요.</p> 
-				</div>
-			</div>
-
-			<div class="guide-item">
-				<div class="guide-image-container">
-						<dotlottie-player
-						src="https://lottie.host/00f3648f-4ffe-4ecd-b54b-bc490b3562bd/Zloqc32xKU.json"
-						background="transparent" speed="1"
-						style="width: 300px; height: 300px;" loop autoplay></dotlottie-player>
-				</div>
-				<div class="guide-text">
-					<h2>THINKB와 함께 최종보고서 작성까지!</h2>
-					<p>최종보고서 작성도 어렵지 않아요.</p>
-					<p>논의가 완료되면 지금까지 알맞에 정리된 의견들과</p>
-					<p>함께 제공되는 양식에 맞춰 최종보고서를 작성할 수 있어요.</p>
-				</div> 
-			</div>
-		</div>
-	</section> -->
 	<div style="height: 200px;"></div>
 
 	<footer class="footer">
@@ -1590,8 +1528,8 @@ $(document).ready(function() {
         $('.popup-overlay').hide();
     });
     
- 	// "오늘 하루 보지 않기" 버튼 클릭 시
-    $('.popup-dont-show').click(function() {
+    // "오늘 하루 보지 않기" 버튼 클릭 시
+    $('.grey-button').click(function() {
         setCookie("dontShowPopupToday", "true", 1); // 1일 동안 쿠키 설정
         $('.popup-overlay').hide();
     });

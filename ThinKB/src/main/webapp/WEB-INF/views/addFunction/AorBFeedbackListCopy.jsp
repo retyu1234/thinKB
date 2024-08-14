@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ThinkKB</title>
+<title>thinKB - A/B테스트 결과 피드백</title>
 <style>
 html, body {
 	max-width: 100%;
@@ -12,11 +12,11 @@ html, body {
 }
 
 .ab-feedback-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .ab-feedback-banner {
-	margin-top: 50px; /* content 영역의 여백 설정 */
+	margin-top: 50px;
 	margin-left: 15%;
 	margin-right: 15%;
 	margin-top: 1%;
@@ -45,6 +45,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -61,6 +62,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -108,6 +110,7 @@ html, body {
 .progress-header {
 	margin: 0;
 	padding: 10px 0;
+	font-family: KB금융 제목체 Light;
 }
 
 .ab-feedback-tests {
@@ -162,7 +165,6 @@ html, body {
 	padding: 5px 10px;
 	border-radius: 15px;
 	font-size: 0.9em;
-	font-weight: bold;
 	margin-bottom: 10px;
 }
 
@@ -226,7 +228,7 @@ html, body {
 					<div
 						class="ab-feedback-test-status ${test.participated ? 'status-complete' : 'status-incomplete'}">
 						${test.participated ? '참여 완료' : '미참여'}</div>
-					<div class="ab-feedback-test-name">
+					<div class="ab-feedback-test-name" style="font-family: KB금융 제목체 Light;">
 						<h3>${test.testName}</h3>
 					</div>
 					<div class="ab-feedback-test-images">

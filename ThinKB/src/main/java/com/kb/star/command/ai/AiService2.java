@@ -49,7 +49,7 @@ public class AiService2 {
 		messages.add(message);
 
 		requestBody.put("messages", messages);
-		requestBody.put("max_tokens", 1000);
+		requestBody.put("max_tokens", 600);
 
 		Gson gson = new Gson();
 		String jsonBody = gson.toJson(requestBody);

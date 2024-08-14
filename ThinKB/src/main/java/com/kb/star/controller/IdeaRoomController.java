@@ -466,8 +466,10 @@ public class IdeaRoomController {
 
 	// 초안에 대한 투표진행화면으로 이동
 	@RequestMapping("/goStage2")
-	public String goStage2(HttpServletRequest request, Model model) {
+	public String goStage2(HttpServletRequest request, Model model, HttpSession session) {
 		model.addAttribute("request", request);
+		Integer userId = (Integer) session.getAttribute("userId");
+		model.addAttribute("userId",userId);
 		command = new UpdateStageTwoCommand(sqlSession);
 		command.execute(model);
 
@@ -476,7 +478,7 @@ public class IdeaRoomController {
 
 	// 방관리화면
 	@RequestMapping("/roomManagement")
-	public String roomManagement(HttpServletRequest request, Model model,HttpSession session) {
+	public String roomManagement(HttpServletRequest request, Model model, HttpSession session) {
 		model.addAttribute("request", request);
 		Integer userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("userId",userId);
