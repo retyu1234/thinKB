@@ -16,7 +16,9 @@ import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.ReportsDto;
+import com.kb.star.dto.TeamDto;
 import com.kb.star.dto.TodoDto;
+import com.kb.star.util.AdminDao;
 import com.kb.star.util.BestDao;
 import com.kb.star.util.NotiDao;
 import com.kb.star.util.ReportDao;
@@ -115,7 +117,15 @@ public class UserInfoCommand implements LoginCommand {
 	    // 베스트 사용량 팀
 	    List<BestDto> bestUsage = bestDao.getBestUsage();
 	    model.addAttribute("bestUsage", bestUsage);
+	    
+        // 베스트 팀 데이터 가져오기
+        List<TeamDto> bestTeams = getBestTeams();
+        model.addAttribute("bestTeams", bestTeams);
 		
 	}
+    private List<TeamDto> getBestTeams() {
+        AdminDao dao = sqlSession.getMapper(AdminDao.class);
+        return dao.getBestTeams();
+    }
 
 }

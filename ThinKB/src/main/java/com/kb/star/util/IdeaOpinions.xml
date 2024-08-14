@@ -393,7 +393,14 @@
         FROM Ideas
         WHERE RoomID = #{roomId} and StageID >=4
     </select> 
-    
+    <!-- 5단계 넘어 갈 때 기안자에게 +20점  -->
+    <update id="updateContributionCntForYesPick">
+  UPDATE MeetingRoomMembers
+  SET ContributionCnt = ContributionCnt + 20
+  WHERE RoomID = #{roomId}
+    AND Role = 'yesPick'
+    AND IsDelete = 0
+</update>
     
     
 </mapper>
