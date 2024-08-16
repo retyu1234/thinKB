@@ -34,6 +34,7 @@ public class AdminMypage implements Admin {
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		int userId = (Integer) map.get("userId");
+		int departmentId = (Integer) map.get("departmentId");
 		UserDao dao=sqlSession.getMapper(UserDao.class);
 		UserListDto dto=dao.userListUser(userId);
 		MeetingRoomStats dto1=dao.getMeetingRoomStatsAdmin(userId);    
@@ -48,7 +49,7 @@ public class AdminMypage implements Admin {
 	    model.addAttribute("bestEmployees", bestEmployees);
 	    
 	    // 베스트 사용량 팀
-	    List<BestDto> bestUsage = bestDao.getBestUsage();
+	    List<BestDto> bestUsage = bestDao.getBestUsage(departmentId);
 	    model.addAttribute("bestUsage", bestUsage);
 	    
         // 오늘의 결재 대기 보고서 가져오기
