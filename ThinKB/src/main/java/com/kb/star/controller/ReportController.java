@@ -23,14 +23,15 @@ public class ReportController {
 
 	@Autowired
 	private SqlSession sqlSession;
-	@Autowired
 	private ServletContext servletContext;
 	private ReportCommand command;
+	
 
 	@RequestMapping("/reportView")
 	public String reportView() {
 		return "report/roomStage7";
 	}
+	
 	//보고서제출,저장
 	@RequestMapping("/submitForm")
 	public String submitForm(HttpServletRequest request, Model model) {
@@ -58,7 +59,9 @@ public class ReportController {
 		command.execute(model);
 		return "/report/myReportList";
 	}
-	//부서관리자 보고서 목록
+	
+	
+	//부서관리자 보고서 목록 전체 조회
     @RequestMapping("/departmentReportList")
     public String departmentReportList(HttpServletRequest request, Model model, HttpSession session) {
         Integer userId = (Integer) session.getAttribute("userId");
@@ -66,6 +69,17 @@ public class ReportController {
         model.addAttribute("userId", userId);
         command = new DepartmentReportList(sqlSession);
         command.execute(model);
+        return "/admin/adminReportList";
+    }
+    //부서관리자 보고서 결재 목록
+    @RequestMapping("/departmentReportList2")
+    public String departmentReportList2(HttpServletRequest request, Model model, HttpSession session) {
+        Integer userId = (Integer) session.getAttribute("userId");
+        model.addAttribute("request", request);
+        model.addAttribute("userId", userId);
+        command = new DepartmentReportList(sqlSession, "pending");
+        command.execute(model);
+        model.addAttribute("initialTab", "pending"); // 결재대기 탭으로 이동
         return "/admin/adminReportList";
     }
 	//부서관리자 특정 보고서 조회(클릭시)
