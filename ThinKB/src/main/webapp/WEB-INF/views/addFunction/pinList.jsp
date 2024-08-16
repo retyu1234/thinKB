@@ -13,7 +13,7 @@ html, body {
 }
 
 .ab-feedback-body {
-	font-family: Arial, sans-serif;
+    font-family: 'KB금융 본문체 Light';
 }
 
 .ab-feedback-banner {
@@ -46,6 +46,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .yellow-button:hover {
@@ -62,6 +63,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .grey-button:hover {
@@ -164,6 +166,7 @@ html, body {
 	border-radius: 15px;
 	font-size: 0.9em;
 	font-weight: bold;
+	font-family: 'KB금융 제목체 Light';
 	margin-bottom: 10px;
 }
 
