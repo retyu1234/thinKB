@@ -644,18 +644,31 @@ body, html {
 								class="idea-circle ${votedIdeaId == idea.ideaID ? 'voted' : ''}"></div>
 							<div
 								class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-								onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
+								data-ideaid="${idea.ideaID}"
+								data-ideatitle="${idea.title.replaceAll("\"", "&quot;")}"
+								data-ideadescription="${idea.description.replaceAll("\"", "&quot;")}"
+								data-ideauserid="${idea.userID}">
+								${idea.title}
+							</div>
 						</div>
 						<c:choose>
 							<c:when test="${sessionScope.userId != idea.userID}">
 								<div class="idea-question"
-									onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'>
-									질문하기 (${ideaReplyCountMap[idea.ideaID]}건)</div>
+									data-ideaid="${idea.ideaID}"
+									data-ideatitle="${idea.title.replaceAll("\"", "&quot;")}"
+									data-ideadescription="${idea.description.replaceAll("\"", "&quot;")}"
+									data-ideauserid="${idea.userID}">
+									질문하기 (${ideaReplyCountMap[idea.ideaID]}건)
+								</div>
 							</c:when>
 							<c:otherwise>
 								<div class="idea-answer"
-									onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'>
-									답변하기 (${ideaReplyCountMap[idea.ideaID]}건)</div>
+									data-ideaid="${idea.ideaID}"
+									data-ideatitle="${idea.title.replaceAll("\"", "&quot;")}"
+									data-ideadescription="${idea.description.replaceAll("\"", "&quot;")}"
+									data-ideauserid="${idea.userID}">
+									답변하기 (${ideaReplyCountMap[idea.ideaID]}건)
+								</div>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -701,6 +714,7 @@ let selectedIdeaDescription = null;
 let selectedIdeaUserId = null;
 let timerEnded = false; // 타이머 종료 여부를 추적하는 변수
 
+// 이벤트 버블링을 방지하고 아이디어 선택을 처리하는 함수
 function toggleSelect(element, ideaId, ideaTitle, ideaDescription, ideaUserId, isCircle) {
 	if (selectedIdea) {
 		selectedIdea.classList.remove('selected');
@@ -723,14 +737,14 @@ function toggleSelect(element, ideaId, ideaTitle, ideaDescription, ideaUserId, i
 	}
 }
 
+// 모달을 닫는 함수
 function closeIdeaMeetingModal() {
 	document.getElementById("ideaMeetingModal").style.display = "none";
-	console.log('아이디어 닫기 버튼 클릭됨');
 	hideReplyForm(); // Hide the reply form container when the modal is closed
-	// 페이지 새로고침
-	location.reload();
+	location.reload(); // 페이지 새로고침
 }
 
+// 모달을 여는 함수
 function openModal(ideaId, ideaTitle, ideaDescription, ideaUserId) {
     document.getElementById("ideaMeetingModal").style.display = "block";
     document.getElementById("modal-idea-id").innerText = ideaId;
@@ -776,7 +790,7 @@ function openModal(ideaId, ideaTitle, ideaDescription, ideaUserId) {
             // 댓글 작성자와 로그인한 사용자가 동일한 경우 삭제 버튼 추가
             if (Number(sessionUserId) === Number(reply.userId)) {
                 const deleteButton = document.createElement('button');
-                deleteButton.classList.add('delete-button'); // CSS에서 이 클래스를 사용
+                deleteButton.classList.add('delete-button');
                 deleteButton.innerText = '삭제';
                 deleteButton.style.marginLeft = '10px';
                 deleteButton.onclick = function(event) {
@@ -826,14 +840,14 @@ function submitReply() {
 		if (!response.ok) {
 			throw new Error('Network response was not ok ' + response.statusText);
 		}
-		return response.text(); // JSON 대신 텍스트 형식으로 응답 처리
+		return response.text(); 
 	})
 	.then(result => {
 		console.log("Submit Reply Result: ", result);
 		if (result === 'success') {
 			alert("댓글이 성공적으로 등록되었습니다.");
-			document.getElementById("replyContent").value = ""; // 입력 폼 비우기
-			openModal(selectedIdeaId, document.getElementById("modal-idea-title").innerText, document.getElementById("modal-idea-description").innerText, ideaUserId); // 모달 새로고침
+			document.getElementById("replyContent").value = ""; 
+			openModal(selectedIdeaId, document.getElementById("modal-idea-title").innerText, document.getElementById("modal-idea-description").innerText, ideaUserId); 
 		} else {
 			alert("댓글 등록에 실패하였습니다.");
 		}
@@ -877,14 +891,14 @@ function submitReplyAnswer() {
 		if (!response.ok) {
 			throw new Error('Network response was not ok ' + response.statusText);
 		}
-		return response.text(); // JSON 대신 텍스트 형식으로 응답 처리
+		return response.text(); 
 	})
 	.then(result => {
 		console.log("Submit Reply Answer Result: ", result);
 		if (result === 'success') {
 			alert("답글이 성공적으로 등록되었습니다.");
-			document.getElementById("replyAnswerContent").value = ""; // 입력 폼 비우기
-			openModal(selectedIdeaId, document.getElementById("modal-idea-title").innerText, document.getElementById("modal-idea-description").innerText, '${sessionScope.userId}'); // 모달 새로고침
+			document.getElementById("replyAnswerContent").value = ""; 
+			openModal(selectedIdeaId, document.getElementById("modal-idea-title").innerText, document.getElementById("modal-idea-description").innerText, '${sessionScope.userId}'); 
 		} else {
 			alert("답글 등록에 실패하였습니다.");
 		}
@@ -912,10 +926,9 @@ function deleteReply(ideaReplyId) {
     })
     .then(response => {
         if (!response.ok) {
-            // 응답이 정상적이지 않을 때 오류를 throw합니다.
             throw new Error('Network response was not ok');
         }
-        return response.text(); // 응답을 텍스트로 변환합니다.
+        return response.text();
     })
     .then(result => {
         console.log("Delete Reply Result: ", result);
@@ -937,10 +950,9 @@ function submitVote() {
 	if (selectedIdea) {
 		const selectedTitle = selectedIdea.innerText;
 
-		// 폼 생성 및 제출
 		const form = document.createElement('form');
 		form.method = 'POST';
-		form.action = '${pageContext.request.contextPath}/submitVote'; // 실제 투표 제출 경로로 변경
+		form.action = '${pageContext.request.contextPath}/submitVote'; 
 
 		const input = document.createElement('input');
 		input.type = 'hidden';
@@ -992,7 +1004,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //타이머 종료시 함수
 function onTimerEnd() {
-timerEnded = true; // 타이머 종료 표시
+timerEnded = true; 
 if ("${meetingRoom.getRoomManagerId()}" === "${userId}") {
 	document.getElementById("nextStepButton").style.display = "block";
 }
@@ -1009,7 +1021,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const toggleText = document.querySelector('.toggle-text');
     const descriptionContent = document.getElementById('descriptionContent');
 
-    if (toggleSwitch) {  // 요소가 존재하는지 확인
+    if (toggleSwitch) {  
         toggleSwitch.addEventListener('change', function() {
             if (this.checked) {
                 descriptionContent.style.display = 'block';
@@ -1020,6 +1032,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+	document.querySelectorAll('.idea-box').forEach(function(box) {
+		box.addEventListener('click', function(event) {
+			event.stopPropagation();
+			const ideaId = box.dataset.ideaid;
+			const ideaTitle = box.dataset.ideatitle;
+			const ideaDescription = box.dataset.ideadescription;
+			const ideaUserId = box.dataset.ideauserid;
+			toggleSelect(box, ideaId, ideaTitle, ideaDescription, ideaUserId, false);
+		});
+	});
+
+	document.querySelectorAll('.idea-question, .idea-answer').forEach(function(item) {
+		item.addEventListener('click', function(event) {
+			event.stopPropagation();
+			const ideaId = item.dataset.ideaid;
+			const ideaTitle = item.dataset.ideatitle;
+			const ideaDescription = item.dataset.ideadescription;
+			const ideaUserId = item.dataset.ideauserid;
+			toggleSelect(item, ideaId, ideaTitle, ideaDescription, ideaUserId, true);
+		});
+	});
 });
 </script>
 </body>
