@@ -16,6 +16,7 @@ import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.UsersDto;
+import com.kb.star.util.NotiDao;
 import com.kb.star.util.RoomDao;
 
 public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
@@ -67,8 +68,10 @@ public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
         List<Ideas> yesPickList = sqlSession.selectList("com.kb.star.util.RoomDao.yesPickIdeaList", roomId);
         model.addAttribute("yesPickList", yesPickList);
 
-        List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
-        model.addAttribute("roomMessage", roomMessage);
+        //왼쪽 사이드바 알림
+		NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
+		List<NotiDto> roomMessage = notiDao.getMessagesAll(userId, roomId);
+		model.addAttribute("roomMessage", roomMessage);
         // 여기까지 leftSideBar 출력용
 
         Integer votedIdeaId = sqlSession.selectOne("com.kb.star.util.IdeaDao.getVotedIdeaId", params);
