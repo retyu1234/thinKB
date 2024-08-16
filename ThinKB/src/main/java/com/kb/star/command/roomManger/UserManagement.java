@@ -65,5 +65,11 @@ public class UserManagement implements RoomCommand {
 			}
 		}
 		model.addAttribute("userList", userList);
+		
+		int totalContributionNum = dao.totalContributionNum(roomId);
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, userId);
+		model.addAttribute("myContributionNum", myContributionNum);
 	}
 }

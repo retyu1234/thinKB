@@ -11,9 +11,9 @@ public class BestDto {
 	private int totalContribution;
 	
 	// 베스트 사용량(팀별)
-	private int departmentId;
-    private String departmentName;
-    private int departmentCount;
+	private int teamId;
+    private String teamName;
+    private int teamCount;
 	
 	
 	// getter setter
@@ -49,29 +49,30 @@ public class BestDto {
 		this.totalContribution = totalContribution;
 	}
 
-	public int getDepartmentId() {
-		return departmentId;
+	public int getTeamId() {
+		return teamId;
 	}
 
-	public void setDepartmentId(int departmentId) {
-		this.departmentId = departmentId;
+	public void setTeamId(int teamId) {
+		this.teamId = teamId;
 	}
 
-	public String getDepartmentName() {
-		return departmentName;
+	public String getTeamName() {
+		return teamName;
 	}
 
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
 	}
 
-	public int getDepartmentCount() {
-		return departmentCount;
+	public int getTeamCount() {
+		return teamCount;
 	}
 
-	public void setDepartmentCount(int departmentCount) {
-		this.departmentCount = departmentCount;
+	public void setTeamCount(int teamCount) {
+		this.teamCount = teamCount;
 	}
+
 	
 	
 	

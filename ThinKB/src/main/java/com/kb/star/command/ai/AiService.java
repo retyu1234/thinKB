@@ -31,7 +31,7 @@ public class AiService {
 
 	public String getAiResponse(String userInput) {
 		String formattedPrompt = String.format(
-				"\"%s\"라는 주제에 대해 아이디어를 만들려고 합니다. 해당주제에 대한 상세설명을 위해 아이디어를 추천하지 말고 개념적인 부분 외 객관적인 현황이나 수치자료를 출처와 함께 한글로 제공해주세요.OpenAi를 사용하고 있어서 웹사이트에 보고서 형식으로 정리해서 보여줘",
+				"\"%s\"라는 주제에 대해 아이디어를 만들려고 합니다. 해당주제에 대한 상세설명을 위해 아이디어를 추천하지 말고 개념적인 부분 외 객관적인 현황이나 수치자료를 출처와 함께 한글로 800자 정도로 제공해주세요.OpenAi를 사용하고 있어서 웹사이트에 보고서 형식으로 정리해서 보여줘",
 				userInput);
 
 		HttpClient httpClient = HttpClients.createDefault();
@@ -49,7 +49,7 @@ public class AiService {
 		messages.add(message);
 
 		requestBody.put("messages", messages);
-		requestBody.put("max_tokens", 600);
+		requestBody.put("max_tokens", 1000);
 
 		Gson gson = new Gson();
 		String jsonBody = gson.toJson(requestBody);

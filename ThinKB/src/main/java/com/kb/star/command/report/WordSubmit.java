@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -23,6 +24,9 @@ import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPPr;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSpacing;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STLineSpacingRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -250,6 +254,15 @@ public class WordSubmit implements ReportCommand {
             XWPFDocument doc = paragraph.getDocument();
             XWPFParagraph currentParagraph = paragraph;
 
+            // 기본 스타일 설정
+            CTPPr ppr = currentParagraph.getCTP().getPPr();
+            if (ppr == null) ppr = currentParagraph.getCTP().addNewPPr();
+            
+            // 기본 줄간격 설정
+            CTSpacing spacing = ppr.isSetSpacing() ? ppr.getSpacing() : ppr.addNewSpacing();
+            spacing.setLine(BigInteger.valueOf(240));
+            spacing.setLineRule(STLineSpacingRule.AUTO);
+
             for (JsonNode op : ops) {
                 if (op.has("insert")) {
                     JsonNode insertNode = op.get("insert");
@@ -261,11 +274,19 @@ public class WordSubmit implements ReportCommand {
                         for (int i = 0; i < lines.length; i++) {
                             if (i > 0) {
                                 currentParagraph = doc.createParagraph();
+                                // 새 단락에도 기본 스타일 적용
+                                ppr = currentParagraph.getCTP().getPPr();
+                                if (ppr == null) ppr = currentParagraph.getCTP().addNewPPr();
+                                spacing = ppr.isSetSpacing() ? ppr.getSpacing() : ppr.addNewSpacing();
+                                spacing.setLine(BigInteger.valueOf(180));
+                                spacing.setLineRule(STLineSpacingRule.AUTO);
                             }
                             
                             if (!lines[i].trim().isEmpty()) {
                                 XWPFRun run = currentParagraph.createRun();
                                 run.setText(lines[i]);
+                                run.setFontFamily("KB금융 본문체 Light");
+                                run.setFontSize(10);
 
                                 if (op.has("attributes")) {
                                     JsonNode attrs = op.get("attributes");

@@ -8,7 +8,7 @@ public class TimersDto {
 	private int ideaId;
 	private String startTime;
 	private String endTime;
-	private String ideaTitle;
+	private String title;
 	private long remainingTime;
 	public int getRoomId() {
 		return roomId;
@@ -34,11 +34,12 @@ public class TimersDto {
 	public void setEndTime(String endTime) {
 		this.endTime = endTime;
 	}
-	public String getIdeaTitle() {
-		return ideaTitle;
+
+	public String getTitle() {
+		return title;
 	}
-	public void setIdeaTitle(String ideaTitle) {
-		this.ideaTitle = ideaTitle;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public long getRemainingTime() {
 		return remainingTime;
