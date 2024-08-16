@@ -11,6 +11,7 @@ import com.kb.star.dto.MeetingRoomMembers;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.StageParticipationIdeas;
 import com.kb.star.dto.RejectLog;
+import com.kb.star.dto.RejectMember;
 import com.kb.star.dto.TimersDto;
 import com.kb.star.dto.UserListDto;
 import com.kb.star.dto.UsersDto;
@@ -139,4 +140,6 @@ public interface RoomDao {
 	int myContributionNum(int roomId, int id);
 	
 	void contributionFivePoint(int roomId, int id);
+
+	RejectMember rejectMember(int roomId, int rejectId);
 }

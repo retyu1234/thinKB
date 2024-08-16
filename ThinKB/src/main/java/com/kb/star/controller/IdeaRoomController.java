@@ -1,6 +1,7 @@
 package com.kb.star.controller;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
@@ -182,7 +183,7 @@ public class IdeaRoomController {
 	        String aiResponse = aiService2.getAiResponse(new String(Base64.getDecoder().decode(userInput), StandardCharsets.UTF_8));
 
 	        // 다중 인코딩 처리
-	        String encodedResponse = multipleEncodingAttempt1(aiResponse);
+	        String encodedResponse = handleEncoding(aiResponse);
 	        
 	        // AI 로그 저장
 	        AiDao aiDao = sqlSession.getMapper(AiDao.class);
@@ -222,7 +223,57 @@ public class IdeaRoomController {
 
 	    return input;  // 적절한 결과가 없으면 원본 반환
 	}
+	private String handleEncoding(String input) {
+	    List<String> charsets = Arrays.asList("UTF-8", "EUC-KR", "ISO-8859-1", "Windows-1252");
+	    List<String> results = new ArrayList();
 
+	    for (String charset : charsets) {
+	        try {
+	            byte[] bytes = input.getBytes("ISO-8859-1");
+	            String decodedString = new String(bytes, charset);
+	            if (containsReadableKorean(decodedString)) {
+	                results.add(decodedString);
+	            }
+	        } catch (Exception e) {
+	            // 예외 발생 시 해당 인코딩 무시
+	        }
+	    }
+
+	    if (!results.isEmpty()) {
+	        // 결과 중 가장 적절한 것 선택 (한글 문자가 가장 많은 것)
+	        String bestResult = input;
+	        int maxKoreanChars = 0;
+	        for (String result : results) {
+	            int koreanCharCount = countKoreanChars(result);
+	            if (koreanCharCount > maxKoreanChars) {
+	                maxKoreanChars = koreanCharCount;
+	                bestResult = result;
+	            }
+	        }
+	        return bestResult;
+	    }
+
+	    // 모든 시도가 실패하면 원본 반환
+	    return input;
+	}
+	private boolean containsReadableKorean(String s) {
+	    for (int i = 0; i < s.length(); i++) {
+	        if (isKorean(s.charAt(i))) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+
+	private int countKoreanChars(String s) {
+	    int count = 0;
+	    for (int i = 0; i < s.length(); i++) {
+	        if (isKorean(s.charAt(i))) {
+	            count++;
+	        }
+	    }
+	    return count;
+	}
 	private boolean containsKorean(String s) {
 	    for (char c : s.toCharArray()) {
 	        if (isKorean(c)) {
