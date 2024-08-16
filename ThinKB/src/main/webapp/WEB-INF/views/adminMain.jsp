@@ -200,6 +200,10 @@
     }
     .approval-box {
         flex: 1;
+        display: flex;
+    	flex-direction: column; /* 요소들을 세로 방향으로 배치 */
+        justify-content: center; /* 가로 방향 가운데 정렬 */
+    	align-items: center; /* 세로 방향 가운데 정렬 */
         text-align: center;
         padding: 20px;
         background-color: #f8f9fa;

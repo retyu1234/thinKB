@@ -20,18 +20,20 @@ public interface ReportDao {
 	List<ReportsDto> getMyReportList(@Param("userId") int userId);
 	List<IdeaSummaryDto> getIdeaSummaries(@Param("roomId") int roomId);
 	
-	// 관리자
+	// 관리자 - adminReportList.jsp
 	// 보고서 목록
 	List<DepartmentReportDto>getDepartmentReportList(@Param("managerId") int userId);
+	// 필터링 - 팀
+	List<String> getAllTeams();
+	// 보고서 결재
+	void approveReport(@Param("reportId") int reportId, @Param("isChoice") int isChoice);
 	
+	
+	// 관리자 - reportDetail.jsp
 	// 특정보고서 상세보기
     ReportDetailsDto getReportDetail(int reportId);
     // 특정보고서 참여자
     List<ReportMemberDto> getReportMember(int roomId);
     // 특정보고서 기안팀명 + 기안자 이름
     ReportMemberDto getReportAuthor(int reportId);
-	
-	// 보고서 결재
-	void approveReport(@Param("reportId") int reportId, @Param("isChoice") int isChoice);
-	
 }

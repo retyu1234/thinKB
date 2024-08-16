@@ -250,7 +250,36 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         theme: 'snow'
     });
-    quill.setContents(reportContent);
+
+    // 이미지 경로 수정 함수
+    function fixImagePaths(delta) {
+        delta.ops.forEach(function(op) {
+            if (op.insert && op.insert.image) {
+                op.insert.image = fixImagePath(op.insert.image);
+            }
+        });
+        return delta;
+    }
+
+    // 개별 이미지 경로 수정
+    function fixImagePath(path) {
+        // 이미 올바른 경로로 시작하는 경우 그대로 반환
+        if (path.startsWith('/upload/images/') || path.startsWith('/upload/temp_images/') ||
+            path.startsWith('./upload/images/') || path.startsWith('./upload/temp_images/')) {
+            return path;
+        }
+        
+        // 상대 경로나 다른 형식의 경로인 경우, 적절히 수정
+        var fileName = path.split('/').pop();
+        if (fileName.startsWith('temp_report_')) {
+            return './upload/temp_images/' + fileName;
+        } else {
+            return './upload/images/' + fileName;
+        }
+    }
+
+    // 수정된 내용으로 에디터에 적용
+    quill.setContents(fixImagePaths(reportContent));
 });
 
 /* 기여도 차트 */
