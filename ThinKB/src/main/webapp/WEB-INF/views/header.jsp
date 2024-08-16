@@ -93,7 +93,7 @@ body.modal-open {
 
         #scrollToTopBtn {
             position: fixed;
-            bottom: 4%;
+            bottom: 12%;
             right: 4%;
             background-color: #ffcc00;
             color: white;
@@ -115,22 +115,22 @@ body.modal-open {
 
         #guideBtn {
             position: fixed;
-            bottom: 12%;
+            bottom: 4%;
             right: 4%;
             background-color: #ffcc00;
             color: white;
-            border: none;
+            border:  none; 
             border-radius: 50%;
             width: 50px;
             height: 50px;
             font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
             z-index: 1000;
         }
 
         #guideBtn:hover {
-            background-color: #D4AA00;
+             background-color: #D4AA00;
         }
 @keyframes blink {
             0% { opacity: 1; }
@@ -562,6 +562,13 @@ body.modal-open {
             // 모달이 열릴 때 초기 체크
             $("#guideModal").on('show.bs.modal', function () {
                 checkScroll(); // 모달이 열릴 때 초기 체크
+            });
+            
+            // 모달 창 바깥 클릭 시 닫기
+            $(window).click(function(event) {
+                if (event.target.id === 'guideModal') {
+                    $('#guideModal').hide();
+                }
             });
 
             function checkScroll() {
