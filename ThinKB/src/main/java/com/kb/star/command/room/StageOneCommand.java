@@ -1,6 +1,7 @@
 package com.kb.star.command.room;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,7 +81,7 @@ public class StageOneCommand implements RoomCommand {
 		
 		//왼쪽 사이드바 알림
 		NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
-		List<NotiDto> roomMessage = notiDao.getMessagesByIdeaId(id, roomId, 0);
+		List<NotiDto> roomMessage = notiDao.getMessagesAll(id, roomId);
 		model.addAttribute("roomMessage", roomMessage);
 		
 		// 반려내용담기

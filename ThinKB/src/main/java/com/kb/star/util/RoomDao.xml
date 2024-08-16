@@ -393,4 +393,9 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 <update id="contributionFivePoint">
 	UPDATE MeetingRoomMembers set ContributionCnt = ContributionCnt+5 where RoomID=#{param1} AND UserID=#{param2}
 </update>
+
+<select id="rejectMember" resultType="com.kb.star.dto.RejectMember">
+	SELECT i.UserID, i.IdeaID from RejectLog rl inner join Ideas i on rl.IdeaID = i.IdeaID 
+	WHERE rl.RoomID = #{param1} and rl.IdeaID = #{param2}
+</select>
 </mapper>

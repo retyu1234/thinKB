@@ -92,5 +92,11 @@
 		AND IsDelete = 0
 		ORDER BY CreatedAt DESC;
 	</select>
+	
+	<select id="getMessagesAll" resultType="com.kb.star.dto.NotiDto">
+		SELECT * FROM Notifications
+		WHERE UserID = #{param1} AND RoomID = #{param2}
+		AND IsRead = 0 AND IsDelete = 0 ORDER BY CreatedAt DESC
+	</select>
 
 </mapper>
