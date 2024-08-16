@@ -109,8 +109,10 @@ public class AdminController {
 	@RequestMapping("/adminMypage")
 	public String mypage(HttpSession session,HttpServletRequest request,Model model) {
 		int userId = (Integer) session.getAttribute("userId");
+		int departmentId = (Integer) session.getAttribute("departmentId");
 		model.addAttribute("request", request);
 		model.addAttribute("userId",userId);
+		model.addAttribute("departmentId",departmentId);
 		adminCommand=new AdminMypage(sqlSession);
 		adminCommand.execute(model);
 		return "admin/adminMypage";

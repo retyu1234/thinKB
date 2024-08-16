@@ -677,10 +677,10 @@ window.onclick = function(event) {
 								<div class="profile-container">
 									<img
 										src="<c:url value='/resources/department${status.index + 1}.png' />"
-										alt="${usage.departmentName}" class="profile-image">
+										alt="${usage.teamName}" class="profile-image">
 								</div>
-								<p class="best-name">${usage.departmentName}</p>
-								<p class="best-description">사용 횟수: ${usage.departmentCount}</p>
+								<p class="best-name">${usage.teamName}</p>
+								<p class="best-description">사용 횟수: ${usage.teamCount}</p>
 							</div>
 						</c:forEach>
 					</div>
