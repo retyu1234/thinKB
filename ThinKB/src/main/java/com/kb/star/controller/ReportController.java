@@ -23,6 +23,7 @@ public class ReportController {
 
 	@Autowired
 	private SqlSession sqlSession;
+	@Autowired
 	private ServletContext servletContext;
 	private ReportCommand command;
 	

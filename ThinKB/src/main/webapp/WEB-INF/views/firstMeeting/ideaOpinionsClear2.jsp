@@ -13,7 +13,7 @@ html, body {
 }
 
 .opinion2-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 /* .content-container {
 	padding: 20px;
@@ -33,6 +33,7 @@ html, body {
 
 /* 5개 단계 표시 */
 .stages {
+	font-family: KB금융 본문체 Light;
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
@@ -61,6 +62,7 @@ html, body {
 
 /* 아이디어 제목 */
 .ideaOpinionList-title2 {
+	font-family: KB금융 제목체 Light;
 	font-size: 18pt;
 	color: black;
 	font-weight: bold;
@@ -68,6 +70,7 @@ html, body {
 	margin-bottom: 20px;
 }
 .ideaOpinionClear-title-detail {
+	font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	position: relative;
     width: 100%;
@@ -83,8 +86,8 @@ html, body {
 
 /* 아이디어 목록 */
 table {
+	font-family: KB금융 본문체 Light;
     width: 100%;
-    margin-top: 30px;
     border-collapse: collapse;
 }
 th, td {
@@ -97,8 +100,10 @@ th {
     font-weight: bold;
 }
 .ideaList {
+	font-family: KB금융 제목체 Light;
     text-align: left;
     margin-top: 50px;
+    margin-bottom: 20px;
     width: 100%;
     font-weight: bold;
     font-size: 18pt;
@@ -107,6 +112,7 @@ th {
 
 /* 보고서 작성하러 가기 버튼 */
 .btn-write {
+	font-family: KB금융 본문체 Light;
 	width: auto;
     height: 50px;
 	border: none;
@@ -227,6 +233,24 @@ document.getElementById('goStage5').addEventListener('submit', function(e) {
     }
 });
 
+//타이머 종료시 Time Out 표시
+document.addEventListener("DOMContentLoaded", function() {
+    const stageId = ${meetingRoom.getStageId()};
+    const timerElement = document.getElementById("timer");
+    const timerMessageElement = document.getElementById("timer-message");
+    if (stageId >= 5) {
+        if (timerElement) {
+            timerElement.innerHTML = "Time Out";
+        }
+        if (timerMessageElement) {
+            timerMessageElement.innerHTML = "지금은 작성할 수 없어요";
+            timerMessageElement.classList.remove("active");
+            timerMessageElement.classList.add("expired");
+        }
+        window.updateTimer = function() {
+        };
+    }
+});
 </script>
 	
 </body>
