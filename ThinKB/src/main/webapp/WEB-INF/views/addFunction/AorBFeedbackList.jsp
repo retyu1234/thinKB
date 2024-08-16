@@ -8,7 +8,7 @@
 <title>ThinkKB</title>
 <style>
 .ab-body {
-	font-family: Arial, sans-serif;
+ font-family: 'KB금융 본문체 Light';
 	background-color: #FFFFf1;
 }
 
@@ -113,6 +113,7 @@
 	border-radius: 10px;
 	color: white;
 	font-weight: bold;
+	 font-family: 'KB금융 제목체 Light';
 	text-align: center;
 	background-color: #EAEAEA;
 }

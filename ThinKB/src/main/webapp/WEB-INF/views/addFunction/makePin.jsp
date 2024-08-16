@@ -15,7 +15,7 @@ html, body {
     overflow-x: hidden;
 }
 .pin-body {
-	font-family: Arial, sans-serif;
+ font-family: 'KB금융 본문체 Light';
 }
 
 
@@ -37,6 +37,7 @@ html, body {
 	font-size: 18pt;
 	color: black;
 	font-weight: bold;
+	 font-family: 'KB금융 제목체 Light';
 }
 .titleAndDetail-detail {
 	font-size: 13pt;
@@ -49,6 +50,7 @@ html, body {
 	border-radius: 20px; /* 라운드 처리 */
 	padding: 20px; /* 내부 여백 */
 	background-color: white; /* 배경색 */
+	 font-family: 'KB금융 본문체 Light';
 }
 
 input.new-subject {
@@ -59,6 +61,7 @@ input.new-subject {
 	padding: 20px;
 	width: 100%;
 	box-sizing: border-box;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 input.new-subject:focus {
@@ -75,6 +78,7 @@ input.new-subject:focus {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .yellow-button:hover {
@@ -91,6 +95,7 @@ input.new-subject:focus {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .grey-button:hover {
@@ -129,6 +134,7 @@ input.new-subject:focus {
     font-weight: bold;
     font-size: 15pt;
     margin-left: 20px;
+     font-family: 'KB금융 제목체 Light';
 }
 
 .image-preview {
@@ -148,6 +154,7 @@ input.new-subject:focus {
 .image-preview-text {
     color: #888;
     font-size: 14px;
+    font-family: 'KB금융 제목체 Light';
 }
 
 </style>

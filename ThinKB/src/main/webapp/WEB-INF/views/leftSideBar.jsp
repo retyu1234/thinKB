@@ -18,6 +18,7 @@
 	display: flex;
 	flex-direction: column;
 	margin-left: 10px;
+	font-family: KB금융 본문체 Light;
 }
 
 .section {
@@ -28,7 +29,7 @@
 .section1 {
 	background-color: #60584C;
 	color: #FFFFFF;
-	font-family: Arial;
+font-family: KB금융 본문체 Light;
 	font-size: 15pt;
 	font-weight: bold;
 	text-align: left;
@@ -44,7 +45,7 @@
 .section3, .section4 {
 	background-color: #FFFFFF;
 	color: #000000;
-	font-family: Arial;
+font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	font-weight: regular;
 	margin-bottom: 15px;
@@ -53,7 +54,7 @@
 .section2 {
 	background-color: #FFFFFF;
 	color: #60584C;
-	font-family: Arial;
+font-family: KB금융 본문체 Light;
 	font-size: 12pt;
 	font-weight: regular;
 	margin-bottom: 15px;
@@ -67,7 +68,7 @@
 .section21 {
 	background-color: #FFFFFF;
 	color: #60584C;
-	font-family: Arial;
+font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	font-weight: regular;
 	text-align: left;
