@@ -7,9 +7,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>아이디어 의견 요약</title>
+<title>1차 의견 List</title>
 <style>
 .ideaOpinionsList-body {
+	font-family: KB금융 본문체 Light;
     margin: 0;
     font-family: 'Arial', sans-serif;
     background-color: #FFFFFF;
@@ -25,6 +26,7 @@
 	font-size: 13pt;
 }
 .stage {
+	font-family: KB금융 본문체 Light;
     flex: 1;
     text-align: center;
     padding: 3px; /* 5px에서 3px로 줄임 */
@@ -47,6 +49,7 @@
 
 /* 아이디어 제목 */
 .ideaOpinionList-title1 {
+	font-family: KB금융 제목체 Light;
 	font-size: 20pt;
 	color: #909090;
 	font-weight: bold;
@@ -54,12 +57,14 @@
 	/* font-style: italic; */
 }
 .ideaOpinionList-title2 {
+	font-family: KB금융 제목체 Light;
 	font-size: 17pt;
 	color: black;
 	font-weight: bold;
 	margin-bottom: 20px;
 }
 .ideaOpinionList-title-detail {
+	font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	position: relative;
     width: 100%;
@@ -75,11 +80,13 @@
 }
 /* 현재 단계 완료 참여자 수 */
 .countDone {
+	font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	margin-right: 10px;
 }
 /* 다음단계로 버튼 */
 .nextStepButton {
+	font-family: KB금융 제목체 Light;
 	background-color: #FFCC00;
 	color: black;
 	padding: 10px 20px;
@@ -118,11 +125,13 @@
     height: auto;
 }
 .tab-title {
+	font-family: KB금융 제목체 Light;
     font-size: 15pt;
     font-weight: bold;
     color: #000000;
 }
 .section-header {
+	font-family: KB금융 제목체 Light;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -158,7 +167,7 @@
 .write-opinion {
     margin-right: 10px;
     font-size: 14px;
-    color: #666;
+    color: #2086FF;
     white-space: nowrap;  /* 텍스트가 줄 바꿈되지 않도록 */
 }
 /* 토글 */
@@ -230,6 +239,7 @@
 
 /* 상세설명 - 토글 */
 .title-detail {
+	font-family: KB금융 본문체 Light;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
@@ -248,12 +258,10 @@
     margin-right: 10px;
 }
 .toggle-text {
-	font-family: Arial, sans-serif;
     margin-left: 10px;
     vertical-align: middle;
 }
 #descriptionContent {
-    font-family: Arial, sans-serif;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -263,7 +271,6 @@
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
 }
 #descriptionContent pre {
-    font-family: Arial, sans-serif;
     white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
     word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
@@ -272,10 +279,8 @@
     opacity: 0;
     width: 0;
     height: 0;
-    font-family: Arial, sans-serif;
 }
 .toggle-label {
-	font-family: Arial, sans-serif;
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -287,7 +292,6 @@
     border-radius: 34px;
 }
 .toggle-label:before {
-	font-family: Arial, sans-serif;
     position: absolute;
     content: "";
     height: 26px;
@@ -305,7 +309,6 @@
     transform: translateX(26px);
 }
 .toggle-text {
-	font-family: Arial, sans-serif;
     margin-left: 10px;
     vertical-align: middle;
 }
@@ -357,7 +360,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const stageId = ${meetingRoom.getStageId()};
     const timerElement = document.getElementById("timer");
     const timerMessageElement = document.getElementById("timer-message");
-    if (stageId >= 2) {
+    if (stageId >= 4) {
         if (timerElement) {
             timerElement.innerHTML = "Time Out";
         }
@@ -369,7 +372,7 @@ document.addEventListener("DOMContentLoaded", function() {
         window.updateTimer = function() {
         };
     }
-});
+}); 
 
 <%
 String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
@@ -489,7 +492,7 @@ function navigateToTab(currentTab) {
 					<div class="spacer" onclick="toggleSection('smart-opinions')"></div>
 					<div class="nav-spacer" onclick="navigateToTab('tab-smart')"></div>
 					<div class="navigate-area" onclick="navigateToTab('tab-smart')">
-						<span class="write-opinion">의견 작성하기</span> <img
+						<span class="write-opinion">의견 작성하러가기</span> <img
 							src="./resources/nextIcon.png" class="next-icon">
 					</div>
 				</div>
@@ -531,7 +534,7 @@ function navigateToTab(currentTab) {
 					<div class="spacer" onclick="toggleSection('positive-opinions')"></div>
 					<div class="nav-spacer" onclick="navigateToTab('tab-positive')"></div>
 					<div class="navigate-area" onclick="navigateToTab('tab-positive')">
-						<span class="write-opinion">의견 작성하기</span> <img
+						<span class="write-opinion">의견 작성하러가기</span> <img
 							src="./resources/nextIcon.png" class="next-icon">
 					</div>
 				</div>
@@ -572,7 +575,7 @@ function navigateToTab(currentTab) {
 					<div class="spacer" onclick="toggleSection('worry-opinions')"></div>
 					<div class="nav-spacer" onclick="navigateToTab('tab-worry')"></div>
 					<div class="navigate-area" onclick="navigateToTab('tab-worry')">
-						<span class="write-opinion">의견 작성하기</span> <img
+						<span class="write-opinion">의견 작성하러가기</span> <img
 							src="./resources/nextIcon.png" class="next-icon">
 					</div>
 				</div>
@@ -612,7 +615,7 @@ function navigateToTab(currentTab) {
 					<div class="spacer" onclick="toggleSection('strict-opinions')"></div>
 					<div class="nav-spacer" onclick="navigateToTab('tab-strict')"></div>
 					<div class="navigate-area" onclick="navigateToTab('tab-strict')">
-						<span class="write-opinion">의견 작성하기</span> <img
+						<span class="write-opinion">의견 작성하러가기</span> <img
 							src="./resources/nextIcon.png" class="next-icon">
 					</div>
 				</div>

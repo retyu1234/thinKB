@@ -7,10 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>아이디어 의견 요약</title>
+<title>아이디어 의견 요약2</title>
 <style>
 /* 5개 단계 표시 */
 .stages {
+	font-family: KB금융 본문체 Light;
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
@@ -39,8 +40,8 @@
 
 
 .ideaOpinionsList-body {
+	font-family: KB금융 본문체 Light;
     margin: 0;
-    font-family: 'Arial', sans-serif;
     background-color: #FFFFFF;
     margin: 0 auto;
     box-sizing: border-box;
@@ -48,19 +49,22 @@
 
 /* 아이디어 제목 */
 .ideaOpinionList-title1 {
+	font-family: KB금융 제목체 Light;
 	font-size: 20pt;
 	color: #909090;
 	font-weight: bold;
 	margin-top: 40px;
 	/* font-style: italic; */
 }
-.ideaOpinionList-title2 {
+.ideaOpinionList-title2 {	
+	font-family: KB금융 제목체 Light;
 	font-size: 17pt;
 	color: black;
 	font-weight: bold;
 	margin-bottom: 20px;
 }
 .ideaOpinionList-title-detail {
+	font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	position: relative;
     width: 100%;
@@ -69,6 +73,7 @@
 }
 /* 상세설명 - 토글 */
 .title-detail {
+	font-family: KB금융 본문체 Light;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
@@ -87,12 +92,10 @@
     margin-right: 10px;
 }
 .toggle-text {
-	font-family: Arial, sans-serif;
     margin-left: 10px;
     vertical-align: middle;
 }
 #descriptionContent {
-    font-family: Arial, sans-serif;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -102,7 +105,6 @@
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
 }
 #descriptionContent pre {
-    font-family: Arial, sans-serif;
     white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
     word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
@@ -111,10 +113,8 @@
     opacity: 0;
     width: 0;
     height: 0;
-    font-family: Arial, sans-serif;
 }
 .toggle-label {
-	font-family: Arial, sans-serif;
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -126,7 +126,6 @@
     border-radius: 34px;
 }
 .toggle-label:before {
-	font-family: Arial, sans-serif;
     position: absolute;
     content: "";
     height: 26px;
@@ -144,7 +143,6 @@
     transform: translateX(26px);
 }
 .toggle-text {
-	font-family: Arial, sans-serif;
     margin-left: 10px;
     vertical-align: middle;
 }
@@ -157,11 +155,13 @@
 }
 /* 현재 단계 완료 참여자 수 */
 .countDone {
+	font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	margin-right: 10px;
 }
 /* 다음단계로 버튼 */
 .nextStepButton {
+	font-family: KB금융 제목체 Light;
 	background-color: #FFCC00;
 	color: black;
 	padding: 10px 20px;
@@ -203,6 +203,7 @@
 
 /* 객관적관점, 기대효과, 문제점, 실현가능성 박스 */
 .box {
+	font-family: KB금융 본문체 Light;
     background-color: #ffffff;
     /* border: 1px solid #FFE297; */
     border-radius: 10px;
@@ -212,6 +213,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* 그림자 추가 */
 }
 .section-header {
+	font-family: KB금융 제목체 Light;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -221,6 +223,7 @@
 
 /* 탭 제목 */
 .tab-title {
+	font-family: KB금융 제목체 Light;
     font-size: 15pt;
     font-weight: bold;
     text-align: left;
@@ -269,11 +272,12 @@
     font-size: 10pt;
 }
 .no-opinions {
+	font-family: KB금융 본문체 Light;
     color: #ccc;
     font-style: italic;
     text-align: center;
     margin-top: 20px;
-    font-size: 20px;
+    font-size: 12pt;
 }
 </style>
 <script>
@@ -313,12 +317,12 @@
         }
     });
     
-  	//타이머 종료시 Time Out 표시
+ 	// 타이머 종료시 Time Out 표시
     document.addEventListener("DOMContentLoaded", function() {
         const stageId = ${meetingRoom.getStageId()};
         const timerElement = document.getElementById("timer");
         const timerMessageElement = document.getElementById("timer-message");
-        if (stageId >= 2) {
+        if (stageId >= 5) {
             if (timerElement) {
                 timerElement.innerHTML = "Time Out";
             }
@@ -428,9 +432,9 @@ request.setAttribute("stages", stages);
                     <c:choose>
                         <c:when test="${empty smartOpinions}">
                             <li class="no-opinions">
-                            <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
-                                <br><br> 의견이 아직 등록되지 않았어요!
+                            <img src="./resources/noIdea.png" alt="No opinions"
+                                style="width: 110px; height: 150px; vertical-align: middle; margin-top: 30px; margin-right: 10px;">
+                                <br> 의견이 아직 등록되지 않았어요!
                             </li>
                         </c:when>
                         <c:otherwise>
@@ -464,9 +468,9 @@ request.setAttribute("stages", stages);
                     <c:choose>
                         <c:when test="${empty positiveOpinions}">
                             <li class="no-opinions">
-                            <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
-                                <br><br> 의견이 아직 등록되지 않았어요!
+                            <img src="./resources/noIdea.png" alt="No opinions"
+                                style="width: 110px; height: 150px; vertical-align: middle; margin-top: 30px; margin-right: 10px;">
+                                <br> 의견이 아직 등록되지 않았어요!
                             </li>
                         </c:when>
                         <c:otherwise>
@@ -500,9 +504,9 @@ request.setAttribute("stages", stages);
                     <c:choose>
                         <c:when test="${empty worryOpinions}">
                             <li class="no-opinions">
-                            <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
-                                <br><br> 의견이 아직 등록되지 않았어요!
+                            <img src="./resources/noIdea.png" alt="No opinions"
+                                style="width: 110px; height: 150px; vertical-align: middle; margin-top: 30px; margin-right: 10px;">
+                                <br> 의견이 아직 등록되지 않았어요!
                             </li>
                         </c:when>
                         <c:otherwise>
@@ -536,9 +540,9 @@ request.setAttribute("stages", stages);
                     <c:choose>
                         <c:when test="${empty strictOpinions}">
                             <li class="no-opinions">
-                            <img src="./resources/noContents.png" alt="No opinions"
-                                style="width: 150px; height: 170px; vertical-align: middle; margin-right: 10px;">
-                                <br><br> 의견이 아직 등록되지 않았어요!
+                            <img src="./resources/noIdea.png" alt="No opinions"
+                                style="width: 110px; height: 150px; vertical-align: middle; margin-top: 30px; margin-right: 10px;">
+                                <br> 의견이 아직 등록되지 않았어요!
                             </li>
                         </c:when>
                         <c:otherwise>

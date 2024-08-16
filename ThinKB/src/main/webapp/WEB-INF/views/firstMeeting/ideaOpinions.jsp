@@ -16,8 +16,8 @@
 }
 
 .ideaOpinions-body {
+	font-family: KB금융 본문체 Light;
 	margin: 0;
-	font-family: 'Arial', sans-serif;
 	background-color: #FFFFFF;
 	width: 60%;
 	margin: 0 auto;
@@ -31,6 +31,7 @@
 
 /* 5개 단계 표시 */
 .stages {
+	font-family: KB금융 본문체 Light;
    display: flex;
    justify-content: space-between;
    padding: 30px 0;
@@ -62,30 +63,40 @@
    width: 30px;
    height: 30px;
    margin-top: 40px;
+   margin-right: 15px;
+   text-decoration: none; /* 링크의 기본 밑줄 제거 */
 }
 .back-btn:hover {
     opacity: 0.8; /* 이미지가 살짝 투명해지게 설정 */
     transform: scale(1.2); /* 이미지가 살짝 커지도록 설정 */
     transition: all 0.3s ease; /* 부드러운 전환 효과 */
 }
+a {
+    text-decoration: none; /* 링크 전체에 밑줄 제거 */
+}
 
 /* 아이디어 제목 */
 .ideaOpinionList-title1 {
+	font-family: KB금융 제목체 Light;
    font-size: 20pt;
    color: #909090;
    font-weight: bold;
    margin-top: 10px;
    /* font-style: italic; */
+   vertical-align: middle; /* 이미지와 텍스트를 수직 가운데 정렬 */
 }
 .ideaOpinionList-title2 {
+	font-family: KB금융 제목체 Light;
    font-size: 17pt;
    color: black;
    font-weight: bold;
    margin-bottom: 20px;
+   vertical-align: middle; /* 이미지와 텍스트를 수직 가운데 정렬 */
 }
 
 /* 상세설명 - 토글 */
 .title-detail {
+	font-family: KB금융 본문체 Light;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
@@ -104,12 +115,10 @@
     margin-right: 10px;
 }
 .toggle-text {
-   font-family: Arial, sans-serif;
     margin-left: 10px;
     vertical-align: middle;
 }
 #descriptionContent {
-    font-family: Arial, sans-serif;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -119,7 +128,6 @@
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
 }
 #descriptionContent pre {
-    font-family: Arial, sans-serif;
     white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
     word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
@@ -128,10 +136,8 @@
     opacity: 0;
     width: 0;
     height: 0;
-    font-family: Arial, sans-serif;
 }
 .toggle-label {
-   font-family: Arial, sans-serif;
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -143,7 +149,6 @@
     border-radius: 34px;
 }
 .toggle-label:before {
-   font-family: Arial, sans-serif;
     position: absolute;
     content: "";
     height: 26px;
@@ -161,7 +166,6 @@
     transform: translateX(26px);
 }
 .toggle-text {
-   font-family: Arial, sans-serif;
     margin-left: 10px;
     vertical-align: middle;
 }
@@ -181,11 +185,13 @@
 }
 /* 현재 단계 완료 참여자 수 */
 .countDone {
+	font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	margin-right: 10px;
 }
 /* 다음단계로 버튼 */
 .nextStepButton {
+	font-family: KB금융 제목체 Light;
 	background-color: #FFCC00;
 	color: black;
 	padding: 10px 20px;
@@ -203,6 +209,7 @@
 
 /* 4가지 탭 */
 .tabs {
+	font-family: KB금융 제목체 Light;
 	display: flex;
 	justify-content: flex-start; /* 탭들을 왼쪽으로 몰리게 함 */
 	gap: 10px; /* 탭 간의 간격 조절 */
@@ -333,6 +340,8 @@ h1 {
     color: #777;
 }
 .opinion-text {
+	white-space: pre-wrap;
+	word-wrap: break-word;
     margin: 10px 0;
     font-size: 10pt;
 }
@@ -373,18 +382,23 @@ h1 {
 }
 /* 의견을 입력해주세요란 */
 .comment-section {
+	font-family: KB금융 본문체 Light;
 	display: flex;
 	align-items: center;
 	margin-top: 20px;
 	border-top: 1px solid #000;
 	padding-top: 10px;
-	flex-wrap: nowrap; /* 요소들이 한 줄에 유지되도록 설정 */
+/* 	flex-wrap: nowrap; /* 요소들이 한 줄에 유지되도록 설정 */ */
 	font-size: 12pt;
 }
 
 .opinion-textarea {
+	font-family: KB금융 본문체 Light;
 	width: calc(100% - 110px); /* 버튼 너비(100px)와 여백(10px)을 고려한 너비 */
-	height: 50px;
+	min-height: 50px;
+	max-height: 200px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
+    height: auto;
 	margin-right: 10px;
 	margin-bottom: 50px;
 	border: 2px solid #ccc;
@@ -392,9 +406,12 @@ h1 {
 	padding: 12px; /* 패딩을 더 두껍게 조정 */
 	border-radius: 5px;
 	box-sizing: border-box; /* 패딩 포함한 크기 조정 */
-	font-size: 13pt;
-	font-weight: bold;
+	font-size: 12pt;
 	transition: border-color 0.3s ease; /* 부드러운 전환 효과 */
+	white-space: pre-wrap;
+    resize: vertical; /* 사용자가 수직으로만 크기 조절 가능 */
+    overflow-y: hidden;
+    line-height: 1.5; /* 줄 간격 설정 */
 }
 .opinion-textarea:focus {
 	outline: none; /* 기본 포커스 스타일 제거 */
@@ -404,6 +421,7 @@ h1 {
 
 /* 작성 버튼 */
 .btn-write {
+	font-family: KB금융 제목체 Light;
 	width: 100px;
 	height: 50px;
 	border: none;
@@ -630,7 +648,7 @@ h1 {
         const stageId = ${meetingRoom.getStageId()};
         const timerElement = document.getElementById("timer");
         const timerMessageElement = document.getElementById("timer-message");
-        if (stageId >= 2) {
+        if (stageId >= 4) {
             if (timerElement) {
                 timerElement.innerHTML = "Time Out";
             }
@@ -643,6 +661,30 @@ h1 {
             };
         }
     });
+  	
+  	// 의견입력란 줄바꿈
+  	function autoResize(textarea) {
+	    textarea.style.height = 'auto';
+	    var singleLineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
+	    var newHeight = Math.max(textarea.scrollHeight, singleLineHeight + 24); // 24는 상하 패딩
+	    
+	    if (newHeight <= singleLineHeight + 24) {
+	        textarea.style.height = (singleLineHeight + 24) + 'px';
+	    } else {
+	        textarea.style.height = newHeight + 'px';
+	    }
+	}
+	
+	document.addEventListener('DOMContentLoaded', function() {
+	    var textareas = document.querySelectorAll('.opinion-textarea');
+	    textareas.forEach(function(textarea) {
+	        textarea.addEventListener('input', function() {
+	            autoResize(this);
+	        });
+	        // 초기 높이 설정
+	        autoResize(textarea);
+	    });
+	});
 </script>
 </head>
 
@@ -678,20 +720,22 @@ h1 {
 	             </c:forEach>
 	         </div>
 	         
-	         <!-- 뒤로가기버튼(ideaOpinionsList로 이동) -->
-	         <a href="./ideaOpinionsList?roomId=${roomId}&ideaId=${ideaId}">
-	             <img src="./resources/back.png" alt="뒤로가기" class="back-btn">
-	         </a>
-	
 	         <!-- 제목 -->
 	         <div class="ideaOpinionList-title1">
 	            <c:choose>
 	               <c:when test="${ideaId == yesPickList[0].ideaID}">
+	               		<!-- 뒤로가기버튼(ideaOpinionsList로 이동) -->
+	               		<a href="./ideaOpinionsList?roomId=${roomId}&ideaId=${ideaId}">
+				        	<img src="./resources/back2.png" alt="뒤로가기" class="back-btn">
+				        </a>
 	                    아이디어 A
-	                   </c:when>
+	               </c:when>
 	               <c:otherwise>
+	               		<a href="./ideaOpinionsList?roomId=${roomId}&ideaId=${ideaId}">
+				        	<img src="./resources/back2.png" alt="뒤로가기" class="back-btn">
+				        </a>	               
 	                    아이디어 B
-	                   </c:otherwise>
+	               </c:otherwise>
 	            </c:choose>
 	         </div>
 	         <div class="ideaOpinionList-title2">
@@ -753,7 +797,7 @@ h1 {
 				<div id="tab-smart" class="tab-content active">
 					<div class="tabExplain" style="margin-left: -840px;">현황, 관련 데이터 등 <br> 객관적인 관점을 작성해주세요.</div>
 					<div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
-						내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
+						나는 2개 중 ${userOpinionCount}개의 댓글을 작성했어요! <br> 
 						<%-- 현재 탭의 작성된 의견 수: ${smartOpinionCount}/(최대)${maxComments} --%>
 					</div>
 
@@ -774,7 +818,7 @@ h1 {
 												<fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" />
 											</div>
 										</div>
-										<div class="opinion-text">${opinion.opinionText}</div> 
+										<pre  class="opinion-text">${opinion.opinionText}</pre> 
 										<c:if test="${opinion.userID == userId}">
 											<button class="delete-button"onclick="deleteOpinion(${opinion.opinionID}, 'tab-smart')">삭제</button>
 										</c:if>
@@ -825,7 +869,7 @@ h1 {
 					<div class="tabExplain" style="margin-left: -250px;">긍정적인 의견과 장점을 작성해주세요. </div>
 
 					<div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
-						내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
+						나는 2개 중 ${userOpinionCount}개의 댓글을 작성했어요! <br> 
 						<%-- 현재 탭의 작성된 의견 수: ${positiveOpinionCount}/(최대)${maxComments} --%>
 					</div>
 
@@ -847,7 +891,8 @@ h1 {
 													pattern="yyyy-MM-dd HH:mm" />
 											</div>
 										</div>
-										<div class="opinion-text">${opinion.opinionText}</div> <c:if
+										<pre class="opinion-text">${opinion.opinionText}</pre> 
+										<c:if
 											test="${opinion.userID == userId}">
 											<button class="delete-button"
 												onclick="deleteOpinion(${opinion.opinionID}, 'tab-positive')">삭제</button>
@@ -899,7 +944,7 @@ h1 {
 				    <div class="tabExplain" style="margin-left: 290px;"> 아이디어에 대한 보완점 <br> 또는 우려사항을 작성해주세요.</div>
 				    
 				    <div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
-				    	내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
+				    	나는 2개 중 ${userOpinionCount}개의 댓글을 작성했어요! <br> 
 						<%-- 현재 탭의 작성된 의견 수: ${worryOpinionCount}/(최대)${maxComments} --%>
 				    </div>
 				    
@@ -918,7 +963,7 @@ h1 {
 				                        <span class="name">${opinion.userName}</span>
 				                        <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
 				                    </div>
-				                    <div class="opinion-text">${opinion.opinionText}</div>
+				                    <pre class="opinion-text">${opinion.opinionText}</pre>
 				                    <c:if test="${opinion.userID == userId}">
 				                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-worry')">삭제</button>
 				                    </c:if>
@@ -968,7 +1013,8 @@ h1 {
 				    <div class="tabExplain" style="margin-left: 840px;"> 개발 비용, 실현 가능성 등 <br> 현실적 관점을 작성해주세요. </div>
 				    
 				    <div class="opinion-counts" style="text-align: right; width: 92%; margin-bottom: 10px;">
-				    	내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) <br> 
+				    	나는 2개 중 ${userOpinionCount}개의 댓글을 작성했어요! <br> 
+				    	<%-- 내가 작성한 의견 수: ${2-userOpinionCount}/2(필수) --%> 
 						<%-- 현재 탭의 작성된 의견 수: ${strictOpinionCount}/(최대)${maxComments} --%>
 				    </div>
 				    
@@ -988,7 +1034,7 @@ h1 {
 				                        <span class="name">${opinion.userName}</span>
 				                        <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
 				                    </div>
-				                    <div class="opinion-text">${opinion.opinionText}</div>
+				                    <pre class="opinion-text">${opinion.opinionText}</pre>
 				                    <c:if test="${opinion.userID == userId}">
 				                        <button class="delete-button" onclick="deleteOpinion(${opinion.opinionID}, 'tab-strict')">삭제</button>
 				                    </c:if>

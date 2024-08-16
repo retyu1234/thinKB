@@ -72,12 +72,12 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
 	    List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo2(roomId);
         model.addAttribute("ideasInfo", ideasInfo);
 	   
-        //다음단계 넘어가는 알림
+        // 다음단계 넘어가는 알림
         String notification = "아이디어 회의가 종료되어 방장이 최종보고서 작성 중입니다. 회의결과를 확인해주세요! 고생하셨습니다.👏👏";
 		for (int user : userIdList) {
 			int notiId = user;
 			dao.makeNotification(notiId, 0, notification, roomId);
-    }
+		}
 }
 }
 
