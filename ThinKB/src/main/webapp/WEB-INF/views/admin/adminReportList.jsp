@@ -38,6 +38,38 @@
     th:nth-child(6), td:nth-child(6) { width: 8%; } /* 상태 */
     th:nth-child(7), td:nth-child(7) { width: 8%; } /* 다운 */
     th:nth-child(8), td:nth-child(8) { width: 10%; } /* 채택 */
+    
+    /* 페이지네이션 */
+    .employee-pagination {
+	    display: flex;
+	    justify-content: center;
+	    margin-top: 2%;
+	}
+	.employee-pagination-list {
+	    list-style-type: none;
+	    padding: 0;
+	    display: flex;
+	}
+	.employee-pagination-item {
+	    margin: 0 5px;
+	}
+	.employee-pagination-link {
+	    text-decoration: none;
+	    padding: 5px 10px;
+	    border: none;
+	    color: #333;
+	    border-radius: 3px;
+	    transition: background-color 0.3s;
+	}
+	.employee-pagination-link:hover {
+	    background-color: #f0f0f0;
+	    border-radius: 30px;
+	}
+	.employee-pagination-item.active .employee-pagination-link {
+	    background-color: #ffcc00;
+	    color: white;
+	    border-radius: 30px;
+	}
 </style>
 </head>
 <body class="reportList-body">
@@ -51,17 +83,17 @@
 		</div>
         
         <div class="tab-container">
-            <button class="tab active" onclick="filterByStatus('all')">전체</button>
-            <button class="tab" onclick="filterByStatus('pending')">결재대기</button>
-            <button class="tab" onclick="filterByStatus('approved')">채택</button>
-            <button class="tab" onclick="filterByStatus('rejected')">미채택</button>
+            <button class="tab active" data-status="all" onclick="filterByStatus('all')">전체</button>
+            <button class="tab" data-status="pending" onclick="filterByStatus('pending')">결재대기</button>
+            <button class="tab" data-status="approved" onclick="filterByStatus('approved')">채택</button>
+            <button class="tab" data-status="rejected" onclick="filterByStatus('rejected')">미채택</button>
         </div>
 
         <div class="search-container">
-            <select id="teamFilter">
+            <select id="teamFilter" onchange="filterReports()">
                 <option value="">모든 팀</option>
                 <c:forEach items="${teams}" var="team">
-                    <option value="${team.teamName}">${team.teamName}</option>
+                    <option value="${team}">${team}</option>
                 </c:forEach>
             </select>
             <input type="text" id="searchInput" placeholder="보고서 제목 / 작성자로 검색">
@@ -111,9 +143,38 @@
                 </c:forEach>
             </tbody>
         </table>
+        <!-- 페이지네이션 -->
+        <div style="margin-top:2%;justify-content:center; display:flex;">
+		    <div class="employee-pagination">
+		        <nav>
+		            <ul class="employee-pagination-list">
+		                <c:forEach var="i" begin="1" end="${totalPages}">
+		                    <li class="employee-pagination-item ${i == currentPage ? 'active' : ''}">
+		                        <a class="employee-pagination-link" href="./departmentReportList?searchTerm=${param.searchTerm}&page=${i}">${i}</a>
+		                    </li>
+		                </c:forEach>
+		            </ul>
+		        </nav>
+		    </div>
+		</div>
     </div>
-
+    
     <script>
+	    document.addEventListener('DOMContentLoaded', function() {
+	    	
+	    	// 기본 탭 설정
+	    	var initialTab = '${initialTab}' || 'all';
+    		filterByStatus(initialTab);
+    		
+	        // 보고서 검색창 enter 검색 기능
+	        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+	            if (e.key === 'Enter') {
+	                e.preventDefault(); // 폼 제출 방지
+	                filterReports();
+	            }
+	        });
+	    });
+    
         let startDate, endDate;
 
         flatpickr("#dateRange", {
@@ -143,8 +204,12 @@
         }
 
         function filterByStatus(status) {
-            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.getAttribute('data-status') === status) {
+                    tab.classList.add('active');
+                }
+            });
 
             var table = document.getElementById("reportTable");
             var tr = table.getElementsByTagName("tr");
@@ -160,6 +225,48 @@
         }
 
         function filterReports() {
+            var input, filter, table, tr, i, txtValue;
+            input = document.getElementById("searchInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("reportTable");
+            tr = table.getElementsByTagName("tr");
+            var teamFilter = document.getElementById("teamFilter").value;
+            var activeTab = document.querySelector('.tab.active').getAttribute('data-status');
+
+            for (i = 1; i < tr.length; i++) {
+                var tdTeam = tr[i].getElementsByTagName("td")[0];
+                var tdTitle = tr[i].getElementsByTagName("td")[1];
+                var tdAuthor = tr[i].getElementsByTagName("td")[3];
+                var tdDate = tr[i].getElementsByTagName("td")[4];
+                var rowStatus = tr[i].getAttribute('data-status');
+                
+                if (tdTeam && tdTitle && tdAuthor && tdDate) {
+                    var teamValue = tdTeam.textContent || tdTeam.innerText;
+                    var titleValue = tdTitle.textContent || tdTitle.innerText;
+                    var authorValue = tdAuthor.textContent || tdAuthor.innerText;
+                    var dateValue = new Date(tdDate.textContent || tdDate.innerText);
+
+                    // 날짜 계산
+                    var dateInRange = true;
+                    if (startDate && endDate) {
+                        dateValue.setHours(0, 0, 0, 0);
+                        dateInRange = dateValue >= startDate && dateValue <= endDate;
+                    }
+
+                    var statusMatch = activeTab === 'all' || activeTab === rowStatus;
+                    var teamMatch = teamFilter === "" || teamValue === teamFilter;
+                    var searchMatch = titleValue.toUpperCase().indexOf(filter) > -1 || 
+                                      authorValue.toUpperCase().indexOf(filter) > -1;
+
+                    if (searchMatch && teamMatch && dateInRange && statusMatch) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+        /* function filterReports() {
             var input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("searchInput");
             filter = input.value.toUpperCase();
@@ -198,7 +305,7 @@
                     }
                 }
             }
-        }
+        } */
     </script>
 </body>
 </html>

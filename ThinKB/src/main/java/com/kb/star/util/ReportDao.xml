@@ -163,7 +163,7 @@
     <result property="opinionUserName" column="OpinionUserName" />
 </resultMap>
 
-	<!-- 관리자 -->
+	<!-- 관리자 - adminReportList.jsp -->
 	<!-- 관리자 보고서 목록 -->
     <select id="getDepartmentReportList" resultType="com.kb.star.dto.DepartmentReportDto">
         SELECT 
@@ -189,7 +189,19 @@
         ORDER BY 
             r.UpdatedAt DESC
     </select>
+    <!-- 필터링 - 팀 -->
+    <select id="getAllTeams" resultType="string">
+	    SELECT DISTINCT TeamName FROM Teams ORDER BY TeamName
+	</select>
+    <!-- 관리자 채택 -->
+    <update id="approveReport">
+        UPDATE Reports
+        SET IsChoice = #{isChoice}
+    	WHERE ReportID = #{reportId}
+    </update>
     
+    
+    <!-- 관리자 - reportDetail.jsp -->
     <!-- 특정보고서 상세보기 -->
     <select id="getReportDetail" parameterType="int" resultType="com.kb.star.dto.ReportDetailsDto">
         SELECT r.*, u.UserName as AuthorName
@@ -214,13 +226,6 @@
 	    JOIN Teams t ON u.TeamID = t.TeamID
 	    WHERE r.ReportID = #{reportId}
 	</select>
-    
-	<!-- 관리자 채택 -->
-    <update id="approveReport">
-        UPDATE Reports
-        SET IsChoice = #{isChoice}
-    	WHERE ReportID = #{reportId}
-    </update>
     
 </mapper>
 

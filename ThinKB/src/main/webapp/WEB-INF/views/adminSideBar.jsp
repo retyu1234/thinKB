@@ -3,6 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <style>
 .admin-sidebar {
 	font-family: KB금융 제목체 Light;
@@ -142,7 +143,85 @@
 .admin-sidebar-footer a:hover {
     text-decoration: underline;
 }
+.admin-sidebar li.active > a,
+.admin-sidebar li.active > span {
+    background-color: #3a3a3a;
+    border-left: 4px solid #007bff;
+}
+
+.admin-sidebar li.active > a:hover,
+.admin-sidebar li.active > span:hover {
+    background-color: #4a4a4a;
+}
+
+/* 새로운 스타일 추가 */
+.admin-controls {
+    position: absolute;
+    bottom: 13%;
+    left: 0;
+    right: 0;
+    padding: 14px;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11pt;
+    font-family: KB 본문체 bold;
+}
+
+.admin-controls button {
+    background-color: transparent;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    font-size: 12pt;
+    font-family: KB금융 제목체 Light;
+    font-weight: bold;
+}
+
+.admin-controls button:hover {
+    background-color: #444;
+}
+
+.admin-controls button i {
+    margin-right: 10px;
+}
 </style>
+<script>
+// 현재 페이지 URL에서 페이지 이름 추출
+function getCurrentPage() {
+    var path = window.location.pathname;
+    var page = path.split("/").pop().split(".")[0];
+    return page || "adminMain"; // 기본값으로 adminMain 설정
+}
+
+// 페이지 로드 시 실행
+document.addEventListener("DOMContentLoaded", function() {
+    var currentPage = getCurrentPage();
+    var menuItems = document.querySelectorAll('.menu-item');
+    
+    menuItems.forEach(function(item) {
+        if (item.getAttribute('data-page') === currentPage) {
+            item.parentElement.classList.add('active');
+            var parentLi = item.closest('li');
+            if (parentLi.parentElement.tagName === 'UL') {
+                parentLi.parentElement.parentElement.classList.add('active');
+            }
+        }
+    });
+});
+function logout() {
+    // 여기에 로그아웃 로직을 구현하세요
+    window.location.href = './logout';
+    alert('로그아웃 되었습니다.');
+    // 실제로는 서버에 로그아웃 요청을 보내고 리다이렉트하는 로직이 필요합니다.
+}
+</script>
 </head>
 <body>
 <div class="admin-sidebar">
@@ -154,23 +233,28 @@
     <ul>
         <li><span class="admin-icon">PJ</span>프로젝트 관리
         	<ul>
-        		<li><a href="./departmentReportList">프로젝트 조회</a></li>
-                <li><a href="./departmentReportList">프로젝트 결재</a></li>
+<li><a href="./departmentReportList" class="menu-item" data-page="departmentReportList">프로젝트 조회</a></li>
+                <li><a href="./departmentReportList2" class="menu-item" data-page="departmentReportList2">프로젝트 결재</a></li>
             </ul>
         </li>
         <li>
             <span class="admin-icon">📁</span>사용자 관리
             <ul>
-                <li><a href="./userAdminView">직원 조회</a></li>
-                <li><a href="./addUserView?departmentId=${departmentId}">직원 추가</a></li> 
+                <li><a href="./userAdminView" class="menu-item" data-page="userAdminView">직원 조회</a></li>
+                <li><a href="./addUserView" class="menu-item" data-page="addUserView">직원 추가</a></li> 
             </ul>
         </li>
 <!--        <li><span class="admin-icon">📊</span>사용량 관리</li> -->
 		        <li>
-            <a href="<c:url value='./adminMypage'/>"><span class="admin-icon">⚙️</span>부서 현황</a>
+           <a href="<c:url value='./adminMypage'/>" class="menu-item" data-page="adminMypage"><span class="admin-icon">⚙️</span>부서 현황</a>
+        </li>
         </li>
     </ul>
-    
+     <div class="admin-controls">
+            <button onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            로그아웃
+        </button></div>
         <div class="admin-sidebar-footer">
         <p>© 2024 ThinKB Admin</p>
         <p>버전 1.0.0</p>

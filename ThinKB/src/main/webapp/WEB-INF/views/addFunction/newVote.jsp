@@ -266,6 +266,7 @@ body.modal-open {
     font-size: 16px;
     border: none;
     outline: none;
+    font-family: KB금융 본문체 Light;
 }
 
 .search-button {
