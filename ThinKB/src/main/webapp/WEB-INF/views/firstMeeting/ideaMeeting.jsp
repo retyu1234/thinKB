@@ -1039,6 +1039,24 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    const stageId = ${meetingRoom.getStageId()};
+    const timerElement = document.getElementById("timer");
+    const timerMessageElement = document.getElementById("timer-message");
+    if (stageId >= 2) {
+        if (timerElement) {
+            timerElement.innerHTML = "Time Out";
+        }
+        if (timerMessageElement) {
+            timerMessageElement.innerHTML = "지금은 작성할 수 없어요";
+            timerMessageElement.classList.remove("active");
+            timerMessageElement.classList.add("expired");
+        }
+        window.updateTimer = function() {
+        };
+    }
+});
 </script>
 </body>
 </html>

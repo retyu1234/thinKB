@@ -84,6 +84,12 @@ public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
         RoomDao dao = sqlSession.getMapper(RoomDao.class);
         int total = dao.totalRoomUsers(roomId);
         model.addAttribute("total", total);
+        
+        int totalContributionNum = dao.totalContributionNum(roomId);
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, userId);
+		model.addAttribute("myContributionNum", myContributionNum);
 
         int voteCnt = dao.voteRoomUsers(roomId);
         model.addAttribute("voteCnt", voteCnt);
