@@ -23,6 +23,7 @@ public class ReportController {
 
 	@Autowired
 	private SqlSession sqlSession;
+	@Autowired
 	private ServletContext servletContext;
 	private ReportCommand command;
 	
@@ -43,6 +44,7 @@ public class ReportController {
 			command.execute(model);
 			path="redirect:/meetingList";
 		} else if ("submit".equals(action)) {
+			System.out.println("여기여기");
 			command = new WordSubmit(sqlSession, servletContext);
 			command.execute(model);
 			path="redirect:/meetingList";

@@ -36,6 +36,7 @@ public class UserInfoCommand implements LoginCommand {
 	public void execute(Model model) {
 		Map<String, Object> map = model.asMap();
 		int id = (Integer) map.get("id");
+		int departmentId = (Integer) map.get("departmentId");
 
 		// 진행중인 회의방 영역
 		UserDao dao = sqlSession.getMapper(UserDao.class);
@@ -115,7 +116,7 @@ public class UserInfoCommand implements LoginCommand {
 	    model.addAttribute("bestEmployees", bestEmployees);
 	    
 	    // 베스트 사용량 팀
-	    List<BestDto> bestUsage = bestDao.getBestUsage();
+	    List<BestDto> bestUsage = bestDao.getBestUsage(departmentId);
 	    model.addAttribute("bestUsage", bestUsage);
 	    
         // 베스트 팀 데이터 가져오기

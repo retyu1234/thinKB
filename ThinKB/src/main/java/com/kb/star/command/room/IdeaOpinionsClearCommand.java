@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 
 import com.kb.star.dto.Ideas;
 import com.kb.star.util.IdeaOpinionsDao;
+import com.kb.star.util.RoomDao;
 
 public class IdeaOpinionsClearCommand implements RoomCommand {
 
@@ -88,6 +89,8 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
 		model.addAttribute("roomId", roomId);
 	    model.addAttribute("ideaId", ideaId);
 	    model.addAttribute("stage", 4);
+	    
+
 	   
     }
 }

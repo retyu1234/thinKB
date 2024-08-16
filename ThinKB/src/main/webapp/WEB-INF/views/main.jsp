@@ -6,6 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <title>Home</title>
 <style>
 .main-body {
@@ -301,7 +302,65 @@
 	text-align: center;
 	color: black;
 }
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
 
+.footer-section {
+    flex: 1;
+    margin: 0 15px;
+    min-width: 200px;
+}
+
+.footer-section h4 {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.footer-section p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.social-icons {
+    display: flex;
+    justify-content:center;
+    gap: 10px;
+}
+
+.social-icon {
+    color: #fff;
+    background-color: #007bff;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.social-icon:hover {
+    background-color: #0056b3;
+}
+
+.footer hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+.footer-bottom {
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+}
 .footer hr {
 	border: none;
 	height: 3px;
@@ -802,7 +861,7 @@
 	padding: 10px;
 	cursor: pointer;
 	z-index: 10;
-	padding: 10px;
+	padding-top: 0;
 }
 
 .slider-button:hover {
@@ -1167,7 +1226,7 @@ document.addEventListener('DOMContentLoaded', function() {
 					더보기</button>
 			</div>
 			<div class="room-container-wrapper">
-				<button class="slider-button prev">⟨</button>
+				<button class="slider-button prev"><img src="<c:url value='./resources/left1.png' />"style="height:40px;"/></button>
 				<div class="room-slider">
 					<div class="room-container">
 						<c:choose>
@@ -1277,7 +1336,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						</c:choose>
 					</div>
 				</div>
-				<button class="slider-button next">⟩</button>
+				<button class="slider-button next"><img src="<c:url value='./resources/right1.png' />"style="height:40px;"/></button>
 				<div class="pagination-indicators"></div>
 			</div>
 
@@ -1382,17 +1441,17 @@ document.addEventListener('DOMContentLoaded', function() {
 							<div class="profile-container">
 								<img
 									src="<c:url value='/resources/department${status.index + 1}.png' />"
-									alt="${usage.departmentName}" class="profile-image">
+									alt="${usage.teamName}" class="profile-image">
 							</div>
-							<p class="best-name">${usage.departmentName}</p>
-							<p class="best-description">사용 횟수: ${usage.departmentCount}</p>
+							<p class="best-name">${usage.teamName}</p>
+							<p class="best-description">사용 횟수: ${usage.teamCount}</p>
 						</div>
 					</c:forEach>
 				</div>
 			</div>
 				<div class="best-section">
 					<div class="section-header">
-						<div class="section-title" style="font-size: 15pt;">👥 베스트 팀</div>
+						<div class="section-title">👥 베스트 팀</div>
 					</div>
 					<div class="best-content">
 						<c:set var="prevRank" value="0" />
@@ -1453,12 +1512,33 @@ document.addEventListener('DOMContentLoaded', function() {
 	</div>
 	<div style="height: 200px;"></div>
 
-	<footer class="footer">
-		<hr>
-		<!-- 흰색 가로 줄 -->
-		<div style="text-align: center;">&copy; 2024 DigiCampus 3rd
-			FourSideOut Team. All rights reserved.</div>
-	</footer>
+<footer class="footer">
+<hr>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>About Us</h4>
+            <p>DigiCampus 3rd FourSideOut Team은 혁신적인 디지털 솔루션을 제공합니다.</p>
+        </div>
+        <div class="footer-section">
+            <h4>Contact</h4>
+            <p>Email: contact@fourdsideout.com</p>
+            <p>Phone: +82 02-1234-5678</p>
+        </div>
+        <div class="footer-section">
+            <h4>Follow Us</h4>
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        &copy; 2024 DigiCampus 3rd FourSideOut Team. All rights reserved.
+    </div>
+</footer>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
 $(document).ready(function() {

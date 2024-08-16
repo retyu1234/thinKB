@@ -16,6 +16,7 @@
 	margin: 0;
 	padding: 0;
 	caret-color: transparent;
+	font-family: KB금융 본문체 Light;
 }
 
 .content {
@@ -23,6 +24,7 @@
 	margin-left: 20%;
 	margin-right: 20%;
 	caret-color: transparent;
+	font-family: KB금융 본문체 Light;
 }
 
 .usertable {
@@ -41,6 +43,7 @@
 .usertable th {
 	background-color: #AB9A80;
 	color: white;
+	font-family: KB금융 제목체 Light;
 }
 
 .usertable button {
@@ -518,6 +521,11 @@ input.manage-subject:focus {
             width: 100%;
             table-layout: fixed; /* 고정 테이블 레이아웃 사용 */
         }
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
 </style>
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
@@ -547,10 +555,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	<div class="content">
 		<div class="manageTop">
-			<h2 style="font-size: 20pt">👩‍👧‍👦참여자 관리</h2>
-			<button id="backButton">🔙</button>
+			<h2 style="font-size: 20pt font-family: KB금융 제목체 Light;">👩‍👧‍👦참여자 관리</h2>
+			<button id="backButton"><img src="./resources/back.png" style="width:35px; height:35px;"/></button>
 		</div>
-		<hr>
+		<hr class="line">
 
 		<h3 style="margin-bottom: 0;">- 참여자 리스트</h3>
 		<div style="display:flex; justify-content:flex-end;">

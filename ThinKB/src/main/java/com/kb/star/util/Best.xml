@@ -22,18 +22,19 @@
 	
 	<!-- 베스트 사용횟수 팀 정보(팀ID, 팀이름, 사용횟수) 가져오기 -->
 	<select id="getBestUsage" resultType="com.kb.star.dto.BestDto">
-        SELECT d.DepartmentID, d.DepartmentName, TopDepartments.DepartmentCount
-        FROM Departments d
-        JOIN (
-            SELECT DepartmentID, COUNT(*) AS DepartmentCount
-            FROM MeetingRooms
-            WHERE StageID = 6
-            GROUP BY DepartmentID
-            ORDER BY DepartmentCount DESC
-            LIMIT 3
-        ) AS TopDepartments
-        ON d.DepartmentID = TopDepartments.DepartmentID
-        ORDER BY TopDepartments.DepartmentCount DESC
+    SELECT t.TeamID, t.TeamName, TopTeams.TeamCount
+    FROM Teams t
+    JOIN (
+        SELECT TeamID, COUNT(*) AS TeamCount
+        FROM MeetingRooms
+        WHERE StageID = 6
+        AND DepartmentID = #{departmentId}
+        GROUP BY TeamID
+        ORDER BY TeamCount DESC
+        LIMIT 3
+    ) AS TopTeams
+    ON t.TeamID = TopTeams.TeamID
+    ORDER BY TopTeams.TeamCount DESC
     </select>
 
 	

@@ -110,6 +110,13 @@ public class IdeaOpinionsCommand implements RoomCommand {
 			}
 		}
 		model.addAttribute("userList", userList);
+		
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, userId); // RoomDao
+		model.addAttribute("myContributionNum", myContributionNum);
 
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);

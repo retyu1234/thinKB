@@ -13,7 +13,7 @@ html, body {
 }
 
 .opinion-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 /* .content-container {
@@ -36,6 +36,7 @@ html, body {
 
 /* 5개 단계 표시 */
 .stages {
+	font-family: KB금융 본문체 Light;
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
@@ -64,6 +65,7 @@ html, body {
 
 /* 아이디어 제목 */
 .ideaOpinionList-title2 {
+	font-family: KB금융 제목체 Light;
 	font-size: 18pt;
 	color: black;
 	font-weight: bold;
@@ -71,6 +73,7 @@ html, body {
 	margin-bottom: 20px;
 }
 .ideaOpinionClear-title-detail {
+	font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	position: relative;
     width: 100%;
@@ -100,6 +103,7 @@ html, body {
 
 /* 완료버튼 */
 .btn-done {
+	font-family: KB금융 제목체 Light;
     width: 120px;
     height: 50px;
     border: none;
@@ -120,8 +124,8 @@ html, body {
 
 /* 아이디어 목록 */
 table {
+	font-family: KB금융 본문체 Light;
     width: 100%;
-    margin-top: 30px;
     border-collapse: collapse;
 }
 th, td {
@@ -133,9 +137,12 @@ th {
     background-color: #f2f2f2;
     font-weight: bold;
 }
+/* 아이디어 목록(완료여부) + 2차 의견 타이머 설정*/
 .ideaList {
+	font-family: KB금융 제목체 Light;
     text-align: left;
     margin-top: 50px;
+    margin-bottom: 20px;
     font-weight: bold;
     font-size: 18pt;
 }
@@ -213,7 +220,7 @@ th {
                 </c:forEach>
             </table>
             
-            <h2 style="text-align: left; margin-top: 50px;">2차 의견 타이머 설정</h2>
+            <div class="ideaList">2차 의견 타이머 설정</div>
             
             <div>
                 <input type="number" class="timer-input" name="timer_hours" min="0" max="23" placeholder="HH">
@@ -294,6 +301,24 @@ document.getElementById('goStage4').addEventListener('submit', function(e) {
         if (timerSeconds) url += '&timer_seconds=' + timerSeconds;
         
         window.location.href = url;
+    }
+});
+//타이머 종료시 Time Out 표시
+document.addEventListener("DOMContentLoaded", function() {
+    const stageId = ${meetingRoom.getStageId()};
+    const timerElement = document.getElementById("timer");
+    const timerMessageElement = document.getElementById("timer-message");
+    if (stageId >= 4) {
+        if (timerElement) {
+            timerElement.innerHTML = "Time Out";
+        }
+        if (timerMessageElement) {
+            timerMessageElement.innerHTML = "지금은 작성할 수 없어요";
+            timerMessageElement.classList.remove("active");
+            timerMessageElement.classList.add("expired");
+        }
+        window.updateTimer = function() {
+        };
     }
 });
 </script>

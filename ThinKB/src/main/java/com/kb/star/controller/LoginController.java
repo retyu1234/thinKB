@@ -44,7 +44,9 @@ public class LoginController {
 	public String mainView(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		int id = (Integer) session.getAttribute("userId");
+		int departmentId = (Integer) session.getAttribute("departmentId");
 		model.addAttribute("id", id);
+		model.addAttribute("departmentId", departmentId);
 		command = new UserInfoCommand(sqlSession);
 		command.execute(model);
 		return "main";
