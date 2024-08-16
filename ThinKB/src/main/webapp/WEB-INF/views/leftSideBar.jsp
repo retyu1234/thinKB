@@ -113,7 +113,6 @@ font-family: KB금융 본문체 Light;
 	padding-left: 15px; /* 왼쪽 여백 */
 	padding-right: 15px; /* 오른쪽 여백 */
 	color: #60584C;
-	font-family: Arial;
 	font-size: 12pt;
 	cursor: pointer;
 	margin-top: 10px;

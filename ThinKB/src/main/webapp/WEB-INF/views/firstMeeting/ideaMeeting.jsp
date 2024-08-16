@@ -635,37 +635,42 @@ body, html {
 			</form>
 		</div>
 		<!-- Idea Voting Section -->
-		<div>
-			<div class="ideaMeeting-idea-container">
-				<c:forEach var="idea" items="${ideas}">
-					<div class="idea-item">
-						<div class="idea-left">
-							<div
-								class="idea-circle ${votedIdeaId == idea.ideaID ? 'voted' : ''}"></div>
-							<div
-								class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
-								onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", false)'>${idea.title}</div>
-						</div>
-						<c:choose>
-							<c:when test="${sessionScope.userId != idea.userID}">
-								<div class="idea-question"
-									onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'>
-									질문하기 (${ideaReplyCountMap[idea.ideaID]}건)</div>
-							</c:when>
-							<c:otherwise>
-								<div class="idea-answer"
-									onclick='toggleSelect(this, ${idea.ideaID}, "${idea.title.replaceAll("\"", "&quot;")}", "${idea.description.replaceAll("\"", "&quot;")}", "${idea.userID}", true)'>
-									답변하기 (${ideaReplyCountMap[idea.ideaID]}건)</div>
-							</c:otherwise>
-						</c:choose>
-					</div>
-				</c:forEach>
-			</div>
-			<div class="vote-button-container">
-				<button id="voteButton" class="yellow-button"
-					style="margin-top: 50px;" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
-			</div>
-		</div>
+<div class="ideaMeeting-idea-container">
+  <c:forEach var="idea" items="${ideas}">
+    <div class="idea-item">
+      <div class="idea-left">
+        <div class="idea-circle" data-idea-id="${idea.ideaID}" 
+             data-idea-title="${idea.title}" 
+             data-idea-description="${idea.description}" 
+             data-idea-userid="${idea.userID}"></div>
+        <div class="idea-box" data-idea-id="${idea.ideaID}" 
+             data-idea-title="${idea.title}" 
+             data-idea-description="${idea.description}" 
+             data-idea-userid="${idea.userID}">
+          ${idea.title}
+        </div>
+      </div>
+      <c:choose>
+        <c:when test="${sessionScope.userId != idea.userID}">
+          <div class="idea-question" data-idea-id="${idea.ideaID}" 
+               data-idea-title="${idea.title}" 
+               data-idea-description="${idea.description}" 
+               data-idea-userid="${idea.userID}">
+            질문하기 (${ideaReplyCountMap[idea.ideaID]}건)
+          </div>
+        </c:when>
+        <c:otherwise>
+          <div class="idea-answer" data-idea-id="${idea.ideaID}" 
+               data-idea-title="${idea.title}" 
+               data-idea-description="${idea.description}" 
+               data-idea-userid="${idea.userID}">
+            답변하기 (${ideaReplyCountMap[idea.ideaID]}건)
+          </div>
+        </c:otherwise>
+      </c:choose>
+    </div>
+  </c:forEach>
+</div>
 	</div>
 
 	<!-- 질문 모달 창 -->
@@ -701,27 +706,33 @@ let selectedIdeaDescription = null;
 let selectedIdeaUserId = null;
 let timerEnded = false; // 타이머 종료 여부를 추적하는 변수
 
-function toggleSelect(element, ideaId, ideaTitle, ideaDescription, ideaUserId, isCircle) {
-	if (selectedIdea) {
-		selectedIdea.classList.remove('selected');
+function toggleSelect(element, ideaId, ideaTitle, ideaDescription, ideaUserId, isModal) {
+	  if (selectedIdea) {
+	    selectedIdea.classList.remove('selected');
+	  }
+	  
+	  const ideaItem = element.closest('.idea-item');
+	  const ideaBox = ideaItem.querySelector('.idea-box');
+	  const ideaCircle = ideaItem.querySelector('.idea-circle');
+	  
+	  if (selectedIdea !== ideaBox) {
+	    ideaBox.classList.add('selected');
+	    ideaCircle.classList.add('selected');
+	    selectedIdea = ideaBox;
+	    selectedIdeaId = ideaId;
+	    selectedIdeaDescription = ideaDescription;
+	    selectedIdeaUserId = ideaUserId;
+	  } else {
+	    selectedIdea = null;
+	    selectedIdeaId = null;
+	    selectedIdeaDescription = null;
+	    selectedIdeaUserId = null;
+	  }
+	  
+	  if (isModal) {
+	    openModal(ideaId, ideaTitle, ideaDescription, ideaUserId);
+	  }
 	}
-	if (selectedIdea !== element) {
-		element.classList.add('selected');
-		selectedIdea = element;
-		selectedIdeaId = ideaId;
-		selectedIdeaDescription = ideaDescription;
-		selectedIdeaUserId = ideaUserId;
-		if (isCircle) {
-			openModal(ideaId, ideaTitle, ideaDescription, ideaUserId);
-		}
-	} else {
-		selectedIdea = null;
-		selectedIdeaId = null;
-		selectedIdeaDescription = null;
-		selectedIdeaUserId = null;
-		closeIdeaMeetingModal();
-	}
-}
 
 function closeIdeaMeetingModal() {
 	document.getElementById("ideaMeetingModal").style.display = "none";
@@ -1005,21 +1016,28 @@ document.getElementById('nextStageForm').submit();
 
 //상세내역 토글
 document.addEventListener('DOMContentLoaded', function() {
-	const toggleSwitch = document.getElementById('toggleDescription');
-    const toggleText = document.querySelector('.toggle-text');
-    const descriptionContent = document.getElementById('descriptionContent');
-
-    if (toggleSwitch) {  // 요소가 존재하는지 확인
-        toggleSwitch.addEventListener('change', function() {
-            if (this.checked) {
-                descriptionContent.style.display = 'block';
-                toggleText.textContent = '설명 숨기기';
-            } else {
-                descriptionContent.style.display = 'none';
-                toggleText.textContent = '설명 보기';
-            }
-        });
+  const ideaContainer = document.querySelector('.ideaMeeting-idea-container');
+  
+  ideaContainer.addEventListener('click', function(event) {
+    event.stopPropagation(); // 이벤트 버블링 방지
+    
+    const target = event.target;
+    const ideaItem = target.closest('.idea-item');
+    
+    if (!ideaItem) return; // 클릭된 요소가 .idea-item 내부가 아니면 무시
+    
+    const ideaId = target.dataset.ideaId;
+    const ideaTitle = target.dataset.ideaTitle;
+    const ideaDescription = target.dataset.ideaDescription;
+    const ideaUserId = target.dataset.ideaUserId;
+    
+    if (target.classList.contains('idea-circle') || target.classList.contains('idea-box')) {
+      toggleSelect(target, ideaId, ideaTitle, ideaDescription, ideaUserId, false);
+    } else if (target.classList.contains('idea-question') || target.classList.contains('idea-answer')) {
+      toggleSelect(target, ideaId, ideaTitle, ideaDescription, ideaUserId, true);
+      openModal(ideaId, ideaTitle, ideaDescription, ideaUserId);
     }
+  });
 });
 </script>
 </body>
