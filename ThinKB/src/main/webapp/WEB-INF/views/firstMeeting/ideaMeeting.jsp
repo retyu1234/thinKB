@@ -237,7 +237,7 @@ body, html {
 	cursor: default;
 }
 
-.modal-idea-box.reply-answer .delete-button {
+.modal-idea-box.reply-answer .delete-button, .modal-idea-box.reply .delete-button  {
 	pointer-events: auto; /* 삭제 버튼은 클릭 가능 */
 	cursor: pointer;
 	color: red;
@@ -246,7 +246,7 @@ body, html {
 	padding: 0; /* 기본 패딩 제거 */
 	font-size: 12px; /* 필요에 따라 글자 크기 조정 */
 	font-weight: bold;
-	font-family: KB금융 본문체 Light;
+	font-family: KB금융 제목체 Light;
 }
 
 .next-step-container {
@@ -308,6 +308,7 @@ body, html {
 .active {
 	color: #FFD700;
 	font-weight: bold;
+		font-family: KB금융 제목체 Light;
 }
 
 .inactive {
@@ -342,7 +343,7 @@ body, html {
 	color: #007AFF;
 	font-weight: bold;
 	font-size: 10pt;
-	font-family: Arial;
+	font-family: KB금융 제목체 Light;
 	margin-left: 10px;
 	cursor: pointer;
 	text-align: right;
@@ -449,6 +450,7 @@ body, html {
 #modal-idea-title {
 	font-size: 16pt;
 	font-weight: bold;
+		font-family: KB금융 제목체 Light;
 }
 /* 상세설명 - 토글 */
 .title-detail {

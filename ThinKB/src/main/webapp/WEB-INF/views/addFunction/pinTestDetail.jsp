@@ -14,7 +14,7 @@ body, html {
 }
 
 .ab-feedback-detail-body {
-	font-family: Arial, sans-serif;
+ font-family: 'KB금융 본문체 Light';
 	align-items: center;
 }
 
@@ -38,6 +38,7 @@ body, html {
 	color: #000000;
 	text-align: left;
 	font-weight: bold;
+	 font-family: 'KB금융 제목체 Light';
 	margin-bottom: 5%;
 }
 
@@ -45,6 +46,7 @@ body, html {
 	display: flex;
 	justify-content: end;
 	margin-right: 10%;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .yellow-button {
@@ -56,6 +58,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .yellow-button:hover {
@@ -71,6 +74,7 @@ body, html {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .grey-button:hover {
@@ -119,6 +123,7 @@ body, html {
 	border-radius: 5px;
 	cursor: pointer;
 	margin: 0;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .submit-button:hover {
@@ -138,6 +143,7 @@ body, html {
     align-items: center;
     justify-content: center;
     z-index: 15;
+     font-family: 'KB금융 본문체 Light';
 }
 
 .coordinate-button::before {
@@ -153,6 +159,7 @@ body, html {
     transform: translate(-50%, -50%);
     background-image: var(--profile-img);
     z-index: 16;
+     font-family: 'KB금융 본문체 Light';
 }
 
 .coordinate-button::after {
@@ -179,6 +186,7 @@ body, html {
 	width: 300px;
 	display: flex;
 	flex-direction: column;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .coordinate-form .form-header {
@@ -200,13 +208,13 @@ body, html {
 	border: none;
 	outline: none;
 	resize: none;
-	font-family: Arial;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .coordinate-form textarea::placeholder {
 	color: #999;
 	font-size: 14px;
-	font-family: Arial;
+	 font-family: 'KB금융 본문체 Light';
 }
 
 .coordinate-form button {
@@ -397,6 +405,7 @@ body, html {
 .abfd-comment-userName {
 	font-size: 12pt;
 	font-weight: bold;
+	 font-family: 'KB금융 제목체 Light';
 	margin-right: 10px;
 }
 

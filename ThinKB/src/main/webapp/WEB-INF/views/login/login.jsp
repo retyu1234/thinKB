@@ -11,7 +11,7 @@
 	align-items: center;
 	height: 100vh;
 	margin: 0;
-	font-family: Arial, sans-serif;
+	font-family: KB금융 제목체 Light;
 	position: relative;
 	overflow: hidden;
 }

@@ -12,7 +12,7 @@ html, body {
     overflow-x: hidden;
 }
 .vote-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .vote-banner {
@@ -35,7 +35,7 @@ html, body {
     padding: 5px 15px;
     border-radius: 15px;
     margin-bottom: 15px;
-    font-weight: bold;
+    font-family: KB금융 제목체 Light;
 }
 
 .vote-title {
@@ -44,6 +44,7 @@ html, body {
 	font-weight: bold;
 	margin-top: 30px;
 	margin-bottom: 20px;
+	font-family: KB금융 제목체 Light;
 }
 
 .vote-title-detail {
@@ -133,7 +134,7 @@ html, body {
 	    <c:forEach var="option" items="${optionList}" varStatus="status">
 	        <tr>
 	            <td>${status.count}</td>
-	            <td>
+	            <td style="font-family: KB금융 제목체 Light;">
 	                <c:choose>
 	                    <c:when test="${option.voteCount eq maxVotes}">
 	                        <span class="highlighted">
@@ -148,7 +149,7 @@ html, body {
 	                    <span class="my-vote">(내가 투표한 항목)</span>
 	                </c:if>
 	            </td>
-	            <td>
+	            <td style="font-family: KB금융 본문체 Light;">
 	                ${option.voteCount}표
 	                <c:choose>
 	                    <c:when test="${totalVotes eq 0}">
@@ -162,8 +163,8 @@ html, body {
 	        </tr>
 	    </c:forEach>
 	</table>
-	
-
+	<!-- 하단 간격조정 -->
+	<div style="margin-bottom: 200px;"></div>
 	
 	</div>
 </body>

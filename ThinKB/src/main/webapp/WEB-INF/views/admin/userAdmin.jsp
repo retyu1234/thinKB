@@ -8,9 +8,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<title>직원관리</title>
+<title>직원 조회</title>
 <style>
 .container {
+	font-family: KB금융 본문체 Light;
     display: flex;
 }
 .employee-content {
@@ -20,17 +21,16 @@
 	flex: 1;
 }
 
-.employee-title {
-	font-size: 30px;
-	font-weight: bold;
-	margin-top: 30px;
-}
+.userAdmin-title { font-family: KB금융 제목체 Light; font-size: 18pt;  font-weight: bold; color: #333;  margin-top: 30px; margin-bottom: 20px; display: flex; align-items: center;}
+.back2 {width: 30px; height: auto;  margin-right: 20px;}
+.userAdmin-line {margin-bottom: 50px; border-bottom: 1px solid #ddd;}
 
 .employee-search-form {
 	margin-bottom: 30px;
 }
 
 .input-group {
+	font-family: KB금융 본문체 Light;
 	position: relative;
 	display: flex;
 }
@@ -49,6 +49,7 @@
 }
 
 .employee-search-input {
+	font-family: KB금융 본문체 Light;
 	flex: 1; /* 화면 가로에 꽉 차도록 설정 (여백 20px 고려) */
 	padding: 12px; /* 내부 여백 설정 */
 	border: 3px solid #666; /* 테두리 두께와 색상 설정 */
@@ -124,6 +125,7 @@
 }
 
 .add-employee-button {
+	font-family: KB금융 제목체 Light;
 	padding: 10px 20px;
 	background-color: #ffcc00;
 	color: white;
@@ -249,21 +251,28 @@
         });
     </script>
 </head>
-<body>
+<body style="background-color: #f4f4f4;">
 <div class="container">
 	
 	<%@ include file="../adminSideBar.jsp"%>
 	<div class="employee-content">
-		<div class="employee-title">직원조회</div>
+	
+		<div class="userAdmin-title">
+			<a href="./adminMain"><img src="./resources/back2.png" alt="back2" class="back2"></a>
+			<span>직원 조회</span>
+		</div>
+		<hr class="userAdmin-line">
 		<div class="add-btn">
-			<a href="./addUserView?departmentId=${departmentId}"><button
-					class="add-employee-button">직원 추가</button></a>
-		</div><hr style="margin-bottom:2%;"/>
+			<a href="./addUserView?departmentId=${departmentId}">
+				<button class="add-employee-button">직원 추가</button>
+			</a>
+		</div>
+		
 		<form action="./userAdminView" method="get"
 			class="employee-search-form">
 			<div class="input-group">
 				<input type="text" class="employee-search-input" name="searchTerm"
-					value="${param.searchTerm}" placeholder="이름/팀명으로 검색하세요..">
+					value="${param.searchTerm}" placeholder="이름 / 팀 명으로 검색하세요..">
 				<div class="input-group-append">
 					<button class="employee-search-button" type="submit">
 						<i class="fa fa-search"></i>

@@ -36,7 +36,7 @@ html, body {
     padding: 5px 15px;
     border-radius: 15px;
     margin-bottom: 15px;
-    font-weight: bold;
+    font-family: KB금융 제목체 Light;
 }
 
 .vote-title {
@@ -103,6 +103,7 @@ html, body {
 .vote-option-text {
     font-size: 18pt;
     font-weight: bold;
+    font-family: KB금융 제목체 Light;
 }
 
 .yellow-button {
@@ -114,6 +115,7 @@ html, body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -245,6 +247,9 @@ html, body {
 			<button type="submit" class="yellow-button">투표하기</button>
 		</div>
 	</form>
+	
+	<!-- 페이지 하단 간격조정용 -->
+	<div style="margin-bottom: 200px;"></div>
 				
 </div>
 

@@ -11,36 +11,27 @@
 <title>회원 등록</title>
 <style>
 /* 전체 배경 설정 */
-.userAdmin-body {
+.addUser-body {
+	font-family: KB금융 본문체 Light;
 	margin: 0;
 	padding: 0;
 	caret-color: transparent;
 	background-color: #f4f4f4;
+	width: 65%;
 }
-
-/* 컨텐츠 컨테이너 설정 */
-.employee-content {
-	width:100%;
-	max-width: 900px;
-	margin: 3% 10% 6% 30%;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.adduser-h2 {
-	font-size: 28px;
-	font-weight: bold;
-	margin-bottom: 20px;
-	color: #333;
-}
+.addUser-container { width: 70%; margin: 0 0 0 350px; padding: 20px; border-radius: 8px;}
+.addUser-title { font-family: KB금융 제목체 Light; font-size: 18pt;  font-weight: bold; color: #333;  margin-top: 30px; margin-bottom: 30px; display: flex; align-items: center;}
+.back2 {width: 30px; height: auto;  margin-right: 20px;}
+.addUser-line {margin-bottom: 50px; border-bottom: 1px solid #ddd;}
 
 .form-group {
+	font-family: KB금융 본문체 Light;
 	margin-bottom: 20px;
 	margin-left: 10px;
 }
 
 .form-group label {
+	font-family: KB금융 본문체 Light;
 	font-weight: bold;
 	display: block;
 	margin-bottom: 8px;
@@ -49,6 +40,7 @@
 .form-group input[type="text"], .form-group input[type="email"],
 	.form-group input[type="date"],
 	.form-group select {
+	font-family: KB금융 본문체 Light;
 	width: 95%;
 	padding: 10px;
 	margin-bottom: 15px;
@@ -58,6 +50,7 @@
 }
 
 .form-group select {
+	font-family: KB금융 본문체 Light;
 	appearance: none; /* 기본 스타일 제거 */
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -69,7 +62,9 @@
 	background-position: right 10px center;
 }
 
+/* 등록 버튼 */
 .form-group input[type="submit"] {
+	font-family: KB금융 제목체 Light;
 	background-color: #ffcc00;
 	color: #fff;
 	border: none;
@@ -78,9 +73,12 @@
 	border-radius: 4px;
 	cursor: pointer;
 	transition: background-color 0.3s;
+	align-items: center;
+	display: flex;
+	justify-content: center;
 }
-
 .form-group input[type="submit"]:hover {
+	font-family: KB금융 제목체 Light;
 	background-color: #ffcd50;
 }
 </style>
@@ -104,49 +102,48 @@ function confirmSubmit() {
 }
 </script>
 </head>
-<body>
-	<div class="userAdmin-body">
-		<%@ include file="../adminSideBar.jsp"%>
+<body class="addUser-body">
+
+<div class="addUser-container">
+	<%@ include file="../adminSideBar.jsp"%>
+	
+	<div class="addUser-title">
+		<a href="./adminMain"><img src="./resources/back2.png" alt="back2" class="back2"></a>
+		<span>직원 추가</span>
 	</div>
-	<div class="employee-content">
-		<h2 class="adduser-h2">회원 등록</h2>
-		<form action="./insertUser" method="post">
-			 <input type="hidden" name="departmentId" value="${departmentId}" />
-			<div class="form-group">
-				<label for="userName">이름:</label> <input type="text" id="userName"
-					name="userName" required>
-			</div>
-			<div class="form-group">
-				<label for="email">이메일:</label> <input type="email" id="email"
-					name="email" required>
-			</div>
-			<div class="form-group">
-				<label for="birth">생년월일:</label> <input type="date" id="birth"
-					name="birth" required>
-			</div>
-			<div class="form-group">
-				<label for="password">직원번호(초기비밀번호):</label> <input type="text"
-					id="userId" name="userId" required>
-			</div>
-			<div class="form-group">
-				<label for="departmentName">부서:</label> <input type="text"
-					id="departmentName" name="departmentName" value="${departmentName}"
-					readonly>
-			</div>
-			<div class="form-group">
-				<label for="team">팀:</label> <select id="team" name="team" required>
-					<option value="">팀을 선택하세요</option>
-					<!-- 여기에 부서에 해당하는 팀 목록 추가 -->
-					<c:forEach var="team" items="${teamList}">
-						<option value="${team.teamId}">${team.teamName}</option>
-					</c:forEach>
-				</select>
-			</div>
-			<br>
-			<div class="form-group">
-				    <input type="submit" value="등록" onclick="return confirmSubmit();">
-			</div>
-		</form>
-	</div>
+	<hr class="addUser-line">
+	
+	<form action="./insertUser" method="post">
+		<input type="hidden" name="departmentId" value="${departmentId}" />
+		<div class="form-group">
+			<label for="userName">이름:</label> <input type="text" id="userName" name="userName" required>
+		</div>
+		<div class="form-group">
+			<label for="email">이메일:</label> <input type="email" id="email" name="email" required>
+		</div>
+		<div class="form-group">
+			<label for="birth">생년월일:</label> <input type="date" id="birth" name="birth" required>
+		</div>
+		<div class="form-group">
+			<label for="password">직원번호(초기비밀번호):</label> <input type="text" id="userId" name="userId" required>
+		</div>
+		<div class="form-group">
+			<label for="departmentName">부서:</label> <input type="text" id="departmentName" name="departmentName" value="${departmentName}" readonly>
+		</div>
+		<div class="form-group">
+			<label for="team">팀:</label> 
+			<select id="team" name="team" required><option value="">팀을 선택하세요</option>
+				<!-- 여기에 부서에 해당하는 팀 목록 추가 -->
+				<c:forEach var="team" items="${teamList}">
+					<option value="${team.teamId}">${team.teamName}</option>
+				</c:forEach>
+			</select>
+		</div>
+		<br>
+		<div class="form-group" style="display: flex; justify-content: center;">
+			<input type="submit" value="등록" onclick="return confirmSubmit();">
+		</div>
+	</form>
+</div>
 </body>
 </html>

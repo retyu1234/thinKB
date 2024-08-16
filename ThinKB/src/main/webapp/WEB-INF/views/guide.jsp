@@ -14,22 +14,27 @@
 <style>
 /* Guide 섹션 스타일 */
 #guide-section {
-	padding: 100px 0;
 	background-color: #ffffff;
 	overflow-x: hidden; /* 가로 스크롤 방지 */
+
 }
 
 #guide-container {
 	width: 85%;
-	margin: 0 auto;
+	margin: 0 auto;	
 }
 
+
 .guide-title {
-	height: auto;
-	display: flex;
-	align-items: center; /* 이미지와 텍스트를 같은 높이에 배치 */
-	margin-top:-10%;
+    height: auto;
+    display: flex;
+    align-items: center; /* 이미지와 텍스트를 같은 높이에 배치 */
+    justify-content: center; /* 양쪽 여백을 동일하게 하기 위해 가운데 정렬 */
+    font-family: 'KB금융 제목체 Light';
+    font-weight: bold;
+    text-align: center;
 }
+
 /* 초기 상태에서 콘텐츠를 숨기고, 이동 및 투명도 설정 */
 .guide-item {
 	opacity: 0;
@@ -56,7 +61,6 @@
 	transition: transform 0.5s ease;
 }
 
-
 .guide-item:hover .guide-image-container {
 	transform: scale(1.05);
 }
@@ -64,7 +68,6 @@
 .guide-item:hover .guide-text {
 	transform: translateY(-5px);
 }
-
 
 .guide-image-container {
 	aspect-ratio: 1 / 1; /* 1:1 비율을 유지합니다. */
@@ -143,13 +146,12 @@
 </style>
 </head>
 <body>
-	<section id="guide-section">
 		<div id="guide-container">
 			<div class="guide-title" style="display: flex; align-items: center;">
-    	<img src="<c:url value='/resources/thinkb_logo.png' />" alt="logo" style="width: 15%; margin-right: 10px;"/>
-    	<span style="font-size:25px; font-weight:bold;">사용 가이드</span>
+    	<img src="<c:url value='/resources/thinkb_logo.png' />" alt="logo" style="width: 20%; margin-right: 10px;"/>
+    	<span style="font-size:30px; font-weight:bold;">사용 가이드</span>
 			</div>
-			<div class="guide-item">
+			<div class="guide-item visible"> <!-- visible 클래스를 추가 -->
 				<div class="guide-image-container">
 					<dotlottie-player
 						src="https://lottie.host/2fddae35-0cdc-4b5b-857a-585948fbe4c8/GCE5AsQQMK.json"
@@ -164,7 +166,7 @@
 				</div>
 			</div>
 
-			<div class="guide-item">
+			<div class="guide-item visible">
 				<div class="guide-image-container">
 					<dotlottie-player
 						src="https://lottie.host/57ac9edb-1df4-4273-943f-bf6c1df8817b/1B3u1zcSOX.json"
@@ -252,9 +254,5 @@
 			</div>
 
 		</div>
-	</section>
 </body>
-<script>
-	
-</script>
 </html>

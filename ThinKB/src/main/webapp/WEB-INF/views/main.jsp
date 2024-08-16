@@ -11,7 +11,7 @@
 .main-body {
 	margin: 0;
 	padding: 0;
-	font-family: Arial, sans-serif;
+    font-family: KB금융 본문체 Light;
 	caret-color: transparent;
 }
 
@@ -33,6 +33,7 @@
 	font-size: 20pt;
 	font-weight: bold;
 	color: black;
+		font-family: KB금융 제목체 Light;
 }
 
 .more-button {
@@ -169,6 +170,7 @@
 .notification-time {
 	font-weight: bold;
 	margin-bottom: 5px;
+		font-family: KB금융 제목체 Light;
 }
 
 .notification-content {
@@ -394,6 +396,7 @@
 .todo-date {
 	font-weight: bold;
 	margin-bottom: 5px;
+		font-family: KB금융 제목체 Light;
 }
 
 .fc-event {
@@ -422,6 +425,7 @@
 .fc-daygrid-day-number {
 	font-weight: bold;
 	color: #495057;
+		font-family: KB금융 제목체 Light;
 }
 
 .fc-scrollgrid-sync-table {
@@ -454,6 +458,7 @@
 	font-weight: bold;
 	font-size: 25pt;
 	transition: all 0.3s ease;
+		font-family: KB금융 제목체 Light;
 }
 
 .fc-button-primary:hover {
@@ -467,6 +472,7 @@
 	text-transform: uppercase;
 	padding: 10px 0 !important;
 	background-color: #f1f3f5;
+		font-family: KB금융 제목체 Light;
 }
 
 .fc-day {
@@ -497,6 +503,7 @@
 	font-size: 1.1em !important;
 	font-weight: bold;
 	color: #ffffff;
+		font-family: KB금융 제목체 Light;
 }
 
 .fc-day-today {
@@ -513,7 +520,7 @@
 }
 
 .fc {
-	font-family: 'Arial', sans-serif;
+    font-family: KB금융 본문체 Light;
 	background-color: #ffffff;
 	border-radius: 15px;
 	overflow: hidden;
@@ -762,6 +769,7 @@
 	font-size: 16px;
 	font-weight: bold;
 	margin-bottom: 5px;
+		font-family: KB금융 제목체 Light;
 }
 
 .best-description {
@@ -906,6 +914,7 @@
 	font-weight: bold;
 	font-size: 14px;
 	color: #ffffff;
+		font-family: KB금융 제목체 Light;
 }
 
 .gold {
