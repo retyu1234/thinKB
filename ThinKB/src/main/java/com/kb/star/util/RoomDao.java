@@ -142,4 +142,6 @@ public interface RoomDao {
 	void contributionFivePoint(int roomId, int id);
 
 	RejectMember rejectMember(int roomId, int rejectId);
+
+	int whatsParticipant(int roomId, int id);
 }

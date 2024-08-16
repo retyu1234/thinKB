@@ -32,7 +32,10 @@ public class SubmitIdeaCommand implements RoomCommand {
 		dao.updateParticipantStage1(roomId, id);
 		
 		//기여도 +1 추가
+		int partiPoint = dao.whatsParticipant(roomId, id);
+		if(partiPoint == 0) {
 		dao.contributionFivePoint(roomId, id);
+		}
 		
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", stage);

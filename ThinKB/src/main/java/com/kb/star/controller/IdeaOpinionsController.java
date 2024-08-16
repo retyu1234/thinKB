@@ -226,6 +226,13 @@ public class IdeaOpinionsController {
 		}
 		model.addAttribute("userList", userList); 
 		
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, userId); // RoomDao
+		model.addAttribute("myContributionNum", myContributionNum);
+		
 		// 타이머
 		String timer = dao.roomTimerInfo(roomId);
 		model.addAttribute("timer", timer);
@@ -237,6 +244,13 @@ public class IdeaOpinionsController {
 		// Ideas 테이블에서 Title과 StageID 가져오기
 	    List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
         model.addAttribute("ideasInfo", ideasInfo);
+        
+		// 다음단계 넘어가는 알림
+        String notification = "'관점별 의견 더 확장하기' 단계가 시작되었습니다! 창의적인 의견을 작성해주세요! 💡";
+		for (int user : userIdList) {
+			int notiId = user;
+			dao.makeNotification(notiId, ideaId, notification, roomId);
+		}
         
         return "/firstMeeting/ideaOpinionsClear";
     }
@@ -428,6 +442,13 @@ public class IdeaOpinionsController {
     		}
     	}
     	model.addAttribute("userList", userList); 
+    	
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, userId); // RoomDao
+		model.addAttribute("myContributionNum", myContributionNum);
     	
     	// 타이머
 		String timer = dao.roomTimerInfo(roomId);

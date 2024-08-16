@@ -398,4 +398,8 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 	SELECT i.UserID, i.IdeaID from RejectLog rl inner join Ideas i on rl.IdeaID = i.IdeaID 
 	WHERE rl.RoomID = #{param1} and rl.IdeaID = #{param2}
 </select>
+
+<select id="whatsParticipant" resultType="int">
+	SELECT ContributionCnt FROM MeetingRoomMembers WHERE RoomID = #{param1} and UserID = #{param2}
+</select>
 </mapper>

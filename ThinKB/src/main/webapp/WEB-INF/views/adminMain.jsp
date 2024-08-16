@@ -65,7 +65,7 @@
     
     /* 관리자 대시보드 */
     .header {
-    	width: 89.5%;
+    	width: 89.7%;
         padding: 10px 20px;
         display: flex;
         justify-content: space-between;
@@ -73,6 +73,15 @@
         background-color: #fff;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .header-left {
+	    display: flex;
+	    align-items: center;
+	}
+	
+	.header-right {
+	    display: flex;
+	    align-items: center;
+	}
     .header-title {
     	font-family: KB금융 제목체 Light;
     	font-size: 20pt;
@@ -88,14 +97,17 @@
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        margin-right: 15px;
+        margin-right: 15px; /* 프로필 이미지와 이름 간의 간격 */
     }
-    .img-logout {
-		width: 25px; 
-		height: 25px;
-		cursor: pointer;
-		margin-left: 50px;
-		align-items: center;
+    /* 로그아웃 */
+    .img-logout button {
+	    background-color: transparent; /* 배경색 투명하게 설정 */
+	    border: none; /* 테두리 없애기 */
+	    cursor: pointer; /* 손 모양의 커서 설정 */
+	}
+	.img-logout i {
+	    color: #333; /* 아이콘 색상 설정 (필요 시 변경 가능) */
+	    font-size: 20px; /* 아이콘 크기 조정 */
 	}
     
     /* 섹션 박스 */
@@ -311,24 +323,31 @@
     </div>
     <div class="admin-content">
         <div class="header">
-            <div class="header-title">관리자 대시보드</div>
-            <!-- 프로필 -->
-            <div class="profile">
-	            <a href="<c:url value='./mypage'/>">
-	                <c:choose>
-	                    <c:when test="${not empty profileImg}">
-	                        <img src="<c:url value='./upload/${profileImg}'/>" alt="Profile Image">
-	                    </c:when>
-	                    <c:otherwise>
-	                        <img src="<c:url value='./resources/noprofile.png'/>" alt="Logo">
-	                    </c:otherwise>
-	                </c:choose>
-	            </a>
-	            <span>${userName} 님</span>
-	           
-	        </div>
-	        <!-- 로그아웃 -->
-            
+        	<div class="header-left">
+            	<div class="header-title">관리자 대시보드</div>
+            </div>
+            <div class="header-right">
+	            <!-- 프로필 -->
+	            <div class="profile">
+		            <a href="<c:url value='./mypage'/>">
+		                <c:choose>
+		                    <c:when test="${not empty profileImg}">
+		                        <img src="<c:url value='./upload/${profileImg}'/>" alt="Profile Image">
+		                    </c:when>
+		                    <c:otherwise>
+		                        <img src="<c:url value='./resources/noprofile.png'/>" alt="Logo">
+		                    </c:otherwise>
+		                </c:choose>
+		            </a>
+		            <span>${userName} 님</span>
+		        </div>
+		        <!-- 로그아웃 -->
+	            <div class="img-logout">
+					<button onclick="logout()">
+						<i class="fas fa-sign-out-alt"></i>
+					</button>
+				</div>
+			</div>
         </div>
         
         <!-- 프로젝트 관리 -->
@@ -624,6 +643,11 @@ document.querySelectorAll('.usage-table tbody tr').forEach(row => {
         fetchTeamMembers(teamName);
     });
 });
+// 로그아웃 
+function logout() {
+	window.location.href = './logout';
+	alert('로그아웃 되었습니다.');
+}
 </script>
 </body>
 </html>

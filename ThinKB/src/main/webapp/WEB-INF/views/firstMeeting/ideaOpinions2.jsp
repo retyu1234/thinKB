@@ -3,6 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<% pageContext.setAttribute("newLineChar", "\n"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +12,8 @@
 <title>2차 의견</title>
 <style>
 .ideaOpinions2-body {
+	font-family: KB금융 본문체 Light;
     margin: 0;
-    font-family: 'Arial', sans-serif;
     background-color: #FFFFFF;
     width: 60%;
     margin: 0 auto;
@@ -25,6 +26,7 @@
 
 /* 5개 단계 표시 */
 .stages {
+	font-family: KB금융 본문체 Light;
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
@@ -53,18 +55,24 @@
 
 /* 뒤로가기 버튼 */
 .back-btn{
-	width: 30px;
-	height: 30px;
-	margin-top: 40px;
+   width: 30px;
+   height: 30px;
+   margin-top: 40px;
+   margin-right: 15px;
+   text-decoration: none; /* 링크의 기본 밑줄 제거 */
 }
 .back-btn:hover {
     opacity: 0.8; /* 이미지가 살짝 투명해지게 설정 */
     transform: scale(1.2); /* 이미지가 살짝 커지도록 설정 */
     transition: all 0.3s ease; /* 부드러운 전환 효과 */
 }
+a {
+    text-decoration: none; /* 링크 전체에 밑줄 제거 */
+}
 
 /* 아이디어 제목 */
 .ideaOpinionList-title1 {
+	font-family: KB금융 제목체 Light;
 	font-size: 20pt;
 	color: #909090;
 	font-weight: bold;
@@ -72,12 +80,14 @@
 	/* font-style: italic; */
 }
 .ideaOpinionList-title2 {
+	font-family: KB금융 제목체 Light;
 	font-size: 17pt;
 	color: black;
 	font-weight: bold;
 	margin-bottom: 20px;
 }
 .ideaOpinionList-title-detail {
+	font-family: KB금융 본문체 Light;
 	font-size: 13pt;
 	position: relative;
     width: 100%;
@@ -86,6 +96,7 @@
 }
 /* 상세설명 - 토글 */
 .title-detail {
+	font-family: KB금융 본문체 Light;
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
@@ -104,12 +115,10 @@
     margin-right: 10px;
 }
 .toggle-text {
-	font-family: Arial, sans-serif;
     margin-left: 10px;
     vertical-align: middle;
 }
 #descriptionContent {
-    font-family: Arial, sans-serif;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -119,7 +128,6 @@
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
 }
 #descriptionContent pre {
-    font-family: Arial, sans-serif;
     white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
     word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
@@ -128,10 +136,8 @@
     opacity: 0;
     width: 0;
     height: 0;
-    font-family: Arial, sans-serif;
 }
 .toggle-label {
-	font-family: Arial, sans-serif;
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -143,7 +149,6 @@
     border-radius: 34px;
 }
 .toggle-label:before {
-	font-family: Arial, sans-serif;
     position: absolute;
     content: "";
     height: 26px;
@@ -161,7 +166,6 @@
     transform: translateX(26px);
 }
 .toggle-text {
-	font-family: Arial, sans-serif;
     margin-left: 10px;
     vertical-align: middle;
 }
@@ -181,6 +185,7 @@
     
 /* 4가지 탭 */
 .tabs {
+	font-family: KB금융 제목체 Light;
     display: flex;
     /* justify-content: space-around; */
     justify-content: flex-start; /* 탭들을 왼쪽으로 몰리게 함 */
@@ -210,6 +215,7 @@
 
 /* 작성버튼 */
 .write-button {
+	font-family: KB금융 제목체 Light;
     width: 100px;
     height: 50px;
     border: none;
@@ -229,8 +235,15 @@
 
 /* 의견을 입력해주세요란 */
 .opinion-textarea {
+	font-family: KB금융 본문체 Light;
     width: calc(100% - 120px);
-    height: 50px;
+    /* min-height: 50px; */
+    max-height: 200px;
+    overflow-y: auto;
+    resize: vertical;
+    line-height: 1.5;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     margin-right: 10px;
     margin-bottom: 50px;
     border: 2px solid #ccc;
@@ -278,14 +291,15 @@
     }
     .no-opinions {
         color: #909090; /* 기본 색상 */
-	font-style: italic; /* 기울임꼴로 표시 */
-	text-align: center;
-	margin-top: 30px;
-	margin-bottom: 30px;
-	font-size: 13pt;
-    }
+		font-style: italic; /* 기울임꼴로 표시 */
+		text-align: center;
+		margin-top: 30px;
+		margin-bottom: 30px;
+		font-size: 13pt;
+	}
     /* 기존 의견들, 현재 의견들 */
     .opinion-title {
+    	font-family: KB금융 제목체 Light;
     	font-size: 15pt;
     	font-weight: bold;
     }
@@ -331,6 +345,8 @@
     .opinion-text {
         margin: 10px 0;
         font-size: 10pt;
+        white-space: pre-wrap;
+    	word-wrap: break-word;
     }
     
     /* 좋아요 */
@@ -358,8 +374,9 @@
 	    font-weight: bold;
 	}
 
-    
+    /* 삭제버튼 */
     .delete-button {
+    	font-family: KB금융 제목체 Light;
         background-color: #FFE297;
         color: #777 !important;
         text-align: left; /* 좌측 정렬 */
@@ -369,9 +386,7 @@
         font-weight: bold;
         
     }
-/*     .delete-button:hover {
-        background-color: #c82333;
-    } */
+
     
     .comment-section {
         display: flex;
@@ -461,6 +476,17 @@
 	            this.classList.add('active');
 	        });
 	    });
+	    
+	    // 입력창 줄바꿈 반영
+	    var textareas = document.querySelectorAll('.opinion-textarea');
+	    textareas.forEach(function(textarea) {
+	        textarea.addEventListener('input', autoResize, false);
+	    });
+
+	    function autoResize() {
+	        this.style.height = 'auto';
+	        this.style.height = this.scrollHeight + 'px';
+	    }
 	});
 
 function getHatColorFromTab(tab) {
@@ -539,7 +565,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const stageId = ${meetingRoom.getStageId()};
     const timerElement = document.getElementById("timer");
     const timerMessageElement = document.getElementById("timer-message");
-    if (stageId >= 2) {
+    if (stageId >= 5) {
         if (timerElement) {
             timerElement.innerHTML = "Time Out";
         }
@@ -583,20 +609,23 @@ request.setAttribute("stages", stages);
 	        </c:choose>
 	    </c:forEach>
 	</div>
-	
-	<!-- 뒤로가기버튼(ideaOpinionsList로 이동) -->
-	<a href="./ideaOpinionsList2?roomId=${roomId}&ideaId=${ideaId}">
-	    <img src="./resources/back.png" alt="뒤로가기" class="back-btn">
-	</a>
-	    
+	  
 	<!-- 제목 -->
 	<div class="ideaOpinionList-title1">
 		<c:choose>
 			<c:when test="${ideaId == yesPickList[0].ideaID}">
-	           아이디어 A
+				<!-- 뒤로가기버튼(ideaOpinionsList2로 이동) -->
+				<a href="./ideaOpinionsList2?roomId=${roomId}&ideaId=${ideaId}">
+		       		<img src="./resources/back2.png" alt="뒤로가기" class="back-btn">
+		       	</a>
+	           	아이디어 A
 	       	</c:when>
 			<c:otherwise>
-	           아이디어 B
+				<!-- 뒤로가기버튼(ideaOpinionsList2로 이동) -->
+				<a href="./ideaOpinionsList2?roomId=${roomId}&ideaId=${ideaId}">
+		       		<img src="./resources/back2.png" alt="뒤로가기" class="back-btn">
+		       	</a>
+	           	아이디어 B
        		</c:otherwise>
 		</c:choose>
 	</div>
@@ -668,7 +697,8 @@ request.setAttribute("stages", stages);
                                             <div class="date"><fmt:formatDate value="${opinion.createdAt}" pattern="yyyy-MM-dd HH:mm" /></div>
                                         </div>
                                     </div>
-                                    <div class="opinion-text">${opinion.opinionText}</div>
+                                    <%-- <div class="opinion-text">${opinion.opinionText}</div> --%>
+                                    <div class="opinion-text"><c:out value="${fn:replace(opinion.opinionText, newLineChar, '<br>')}" escapeXml="false"/></div>
                                 </li>
                             </c:forEach>
                         </c:otherwise>
@@ -721,7 +751,8 @@ request.setAttribute("stages", stages);
 									    </div>
 									</div>
                                 </div>
-                                <div class="opinion-text">${opinion.opinionText}</div>
+                                <%-- <div class="opinion-text">${opinion.opinionText}</div> --%>
+                                <div class="opinion-text"><c:out value="${fn:replace(opinion.opinionText, newLineChar, '<br>')}" escapeXml="false"/></div>
                                 <c:if test="${opinion.userID == userId}">
                                     <form action="deleteOpinion2" method="post" onsubmit="return confirmDelete();" style="display: inline;">
                                         <input type="hidden" name="opinionId" value="${opinion.opinionID}" />
