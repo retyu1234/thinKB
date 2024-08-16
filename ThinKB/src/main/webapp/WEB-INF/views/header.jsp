@@ -131,7 +131,25 @@ body.modal-open {
         #guideBtn:hover {
             background-color: #D4AA00;
         }
+@keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
 
+        @keyframes ring {
+            0% { transform: rotate(0); }
+            10% { transform: rotate(30deg); }
+            20% { transform: rotate(-28deg); }
+            30% { transform: rotate(34deg); }
+            40% { transform: rotate(-32deg); }
+            50% { transform: rotate(30deg); }
+            60% { transform: rotate(-28deg); }
+            70% { transform: rotate(34deg); }
+            80% { transform: rotate(-32deg); }
+            90% { transform: rotate(30deg); }
+            100% { transform: rotate(0); }
+        }
         /* 알림 아이콘 및 카운트 */
         #notificationIcon {
             cursor: pointer;

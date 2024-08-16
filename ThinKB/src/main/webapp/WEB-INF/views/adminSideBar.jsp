@@ -250,7 +250,8 @@
 					<li><a href="./userAdminView" class="menu-item"
 						data-page="userAdminView">직원 조회</a></li>
 
-					<li><a href="./addUserView?departmentId=${departmentId}">직원
+					<li><a href="./addUserView?departmentId=${departmentId}" class="menu-item"
+						data-page="addUserView">직원
 							추가</a></li>
 				</ul></li>
 			<!--        <li><span class="admin-icon">📊</span>사용량 관리</li> -->

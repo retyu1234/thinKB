@@ -60,6 +60,11 @@ public class RoomManagement implements RoomCommand {
 		params.put("roomId", roomId);
 		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByRoomId", params);
 		model.addAttribute("roomMessage", roomMessage);
+		int totalContributionNum = dao.totalContributionNum(roomId);
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, userId);
+		model.addAttribute("myContributionNum", myContributionNum);
 	}
 
 }

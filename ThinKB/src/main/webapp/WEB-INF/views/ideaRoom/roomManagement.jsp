@@ -19,10 +19,11 @@
 	margin-left: 20%;
 	margin-right: 20%;
 	caret-color: transparent;
+	font-family: KB금융 본문체 Light;
 }
 
 .title {
-	font-size: 18pt;
+	font-size: 16pt;
 	font-weight: bold;
 	color: black;
 	margin-top: 30px;
@@ -32,12 +33,13 @@
 .custom-input {
 	width: 100%; /* 화면 가로에 꽉 차도록 설정 (여백 20px 고려) */
 	padding: 12px; /* 내부 여백 설정 */
-	border: 3px solid #666; /* 테두리 두께와 색상 설정 */
+	border: 2px solid #666; /* 테두리 두께와 색상 설정 */
 	border-radius: 8px; /* 테두리 둥글기 설정 */
 	transition: border-color 0.3s ease; /* 테두리 색 변화에 대한 transition 설정 */
 	/* 기본 테두리 색상 */
 	border-color: #666;
 	font-size: 16px; /* 글자 크기 설정 */
+	font-family: KB금융 본문체 Light;
 }
 
 /* 입력 중에는 노란색 테두리로 변경 */
@@ -64,7 +66,7 @@
 .date-input {
 	width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
 	padding: 12px;
-	border: 3px solid #666;
+	border: 2px solid #666;
 	border-radius: 8px;
 	font-size: 16px;
 	box-sizing: border-box;
@@ -339,6 +341,7 @@
 #backButton:hover{
 	font-size: 30pt;
 }
+
 </style>
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
@@ -370,8 +373,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	<div class="content">
 	<div class="manageTop">
-	<h2 style="font-size:20pt">⚙️회의방 관리</h2>
-	<button id="backButton">🔙</button></div><hr>
+	<h2 style="font-size:20pt font-family: KB금융 제목체 Light;">⚙️회의방 관리</h2>
+	<button id="backButton"><img src="./resources/back.png" style="width:35px; height:35px;"/></button></div><hr class="line">
 		<form action="./updateRoomInfo" method="post"
 			onsubmit="return validateForm()">
 			<input type="hidden" name="roomId" value="${meetingRoom.roomId}" />
@@ -436,7 +439,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						<c:if test="${timer.ideaId > 0}">
 							<div class="ideaTimer-card">
 								<div class="card-header">
-									<h3>${timer.ideaTitle}</h3>
+									<h3>${timer.title}</h3>
 									<p>방 ID: ${timer.roomId}</p>
 								</div>
 								<div class="card-body">
@@ -466,7 +469,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						<c:if test="${timer.ideaId == 0}">
 							<div class="ideaTimer-card">
 								<div class="card-header">
-									<h3>${timer.ideaId == 0 ? '초안작성' : timer.ideaTitle}</h3>
+									<h3>${timer.ideaId == 0 ? '초안작성' : timer.title}</h3>
 									<p>방 ID: ${timer.roomId}</p>
 								</div>
 								<div class="card-body">
