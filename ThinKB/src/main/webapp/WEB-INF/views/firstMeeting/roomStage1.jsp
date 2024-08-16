@@ -1164,7 +1164,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	<div class="titleAndDetail">
 	    <div class="title-container">
 	        <div class="titleAndDetail-title">나의 아이디어</div>
-	        <div class="titleAndDetail-title-link">반려 이력보기 ></div>
+	        <c:if test="${not empty rejectList}">
+	            <div class="titleAndDetail-title-link">반려 이력보기 ></div>
+	        </c:if>
 	    </div>
 	    <div class="titleAndDetail-detail">회의 주제에 대한 나의 아이디어를 작성해주세요.</div>
 	</div>

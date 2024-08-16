@@ -61,12 +61,12 @@ body, html {
 	border-radius: 20px;
 	font-size: 15pt;
 	box-sizing: border-box;
+	font-family: KB금융 본문체 Light;
 }
 
 .date-input:focus {
 	border-color: #FFD700;
 	outline: none;
-	font-family: KB금융 본문체 Light;
 }
 
 .new-subject {
@@ -160,6 +160,7 @@ textarea.new-subject:focus {
 	display: flex;
 	justify-content: space-between;
 	padding: 0 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
