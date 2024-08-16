@@ -10,9 +10,10 @@
 html, body {
     max-width: 100%;
     overflow-x: hidden;
+    
 }
 .report-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 	caret-color: transparent;
 }
 

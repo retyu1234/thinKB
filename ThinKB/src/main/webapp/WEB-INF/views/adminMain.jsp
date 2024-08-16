@@ -200,6 +200,10 @@
     }
     .approval-box {
         flex: 1;
+        display: flex;
+    	flex-direction: column; /* 요소들을 세로 방향으로 배치 */
+        justify-content: center; /* 가로 방향 가운데 정렬 */
+    	align-items: center; /* 세로 방향 가운데 정렬 */
         text-align: center;
         padding: 20px;
         background-color: #f8f9fa;
@@ -316,16 +320,12 @@
 	                        <img src="<c:url value='./upload/${profileImg}'/>" alt="Profile Image">
 	                    </c:when>
 	                    <c:otherwise>
-	                        <img src="<c:url value='./resources/profile1.png'/>" alt="Logo">
+	                        <img src="<c:url value='./resources/noprofile.png'/>" alt="Logo">
 	                    </c:otherwise>
 	                </c:choose>
 	            </a>
 	            <span>${userName} 님</span>
-	            
-	            <div>
-	                <a href="<c:url value='/logout'/>"> 
-	                <img src="<c:url value='/resources/logout.png'/>" class="img-logout" alt="img-logout"></a>
-	            </div>
+	           
 	        </div>
 	        <!-- 로그아웃 -->
             
