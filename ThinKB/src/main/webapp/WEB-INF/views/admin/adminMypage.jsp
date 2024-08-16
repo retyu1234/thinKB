@@ -580,6 +580,19 @@
 .bronze {
 	color: #CD7F32;
 }
+    /* 더보기 버튼 */
+    .more-button { 
+		border: none;
+		background-color: transparent; /* 배경색 제거 */
+		align-items: center;
+		cursor: pointer;
+		font-size: 9pt;
+		color: #007AFF;
+		margin-top: 10px;
+	}
+	.more-button:hover {
+		color: #0056B3;
+	}
 </style>
 <script>
 function openModal(modalId) {
@@ -734,7 +747,7 @@ window.onclick = function(event) {
 				<div class="best-section">
 					<div class="section-header">
 						<div class="section-title" style="font-size: 15pt;">📊 오늘의
-							결재내역</div>
+							결재내역</div><button class="more-button" onclick="location.href='./departmentReportList'">+ 더보기</button>
 					</div>
 					<div class="adminReport-content">
 						<c:choose>
@@ -757,10 +770,10 @@ window.onclick = function(event) {
 						</c:choose>
 					</div>
 				</div>
-				<div class="best-section">
+				<div class="best-section" >
 					<div class="section-header">
 						<div class="section-title" style="font-size: 15pt;">🏆 연간 채택
-							아이디어</div>
+							아이디어</div><button class="more-button" onclick="location.href='./departmentReportList'">+ 더보기</button>
 					</div>
 					<div class="adminReport-content">
 						<c:choose>
