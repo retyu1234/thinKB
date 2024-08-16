@@ -13,7 +13,7 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 <style>
 .password-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 제목체 Light;
 	background-color: #f8f8f8;
 	margin: 0;
 	padding: 0;

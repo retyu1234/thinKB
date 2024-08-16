@@ -316,16 +316,12 @@
 	                        <img src="<c:url value='./upload/${profileImg}'/>" alt="Profile Image">
 	                    </c:when>
 	                    <c:otherwise>
-	                        <img src="<c:url value='./resources/profile1.png'/>" alt="Logo">
+	                        <img src="<c:url value='./resources/noprofile.png'/>" alt="Logo">
 	                    </c:otherwise>
 	                </c:choose>
 	            </a>
 	            <span>${userName} 님</span>
-	            
-	            <div>
-	                <a href="<c:url value='/logout'/>"> 
-	                <img src="<c:url value='/resources/logout.png'/>" class="img-logout" alt="img-logout"></a>
-	            </div>
+	           
 	        </div>
 	        <!-- 로그아웃 -->
             
