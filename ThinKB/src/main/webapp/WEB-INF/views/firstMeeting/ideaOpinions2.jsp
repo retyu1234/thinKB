@@ -758,6 +758,7 @@ request.setAttribute("stages", stages);
 				        <form action="addOpinion2" method="post" class="comment-section" onsubmit="return validateAndSubmitForm()">
 				            <input type="hidden" name="ideaId" value="${ideaId}" />
 			                <input type="hidden" name="roomId" value="${roomId}" />
+			                <input type="hidden" name="stage" value="${stage}" />
 			                <input type="hidden" name="currentTab" value="${currentTab}" />
 			                <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력해주세요" rows="1"></textarea>
 				        	<button type="submit" class="write-button">작성</button>

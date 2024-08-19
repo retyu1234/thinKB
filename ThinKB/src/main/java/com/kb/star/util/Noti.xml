@@ -110,5 +110,34 @@
 		WHERE UserID = #{param1} AND RoomID = #{param2}
 		AND IsRead = 0 AND IsDelete = 0 ORDER BY CreatedAt DESC
 	</select>
+	
+	<!-- 메인 알림함 -->
+    <select id="getRecentNotifications" resultType="com.kb.star.dto.NotiDto">
+        SELECT n.*, m.RoomTitle, i.Title as IdeaTitle
+        FROM Notifications n
+        LEFT JOIN MeetingRooms m ON n.RoomID = m.RoomID
+        LEFT JOIN Ideas i ON n.IdeaID = i.IdeaID
+        WHERE n.UserID = #{userId} AND n.IsDelete = FALSE
+        ORDER BY n.CreatedAt DESC, n.IsRead ASC
+        LIMIT 4
+    </select>
+
+    <select id="getUnreadNotificationCount" resultType="int">
+        SELECT COUNT(*)
+        FROM Notifications
+        WHERE UserID = #{userId} AND IsRead = FALSE AND IsDelete = FALSE
+    </select>
+    
+    <!-- 전체 알림함 개선-->
+        <select id="getAllNotiWithDetails" resultType="com.kb.star.dto.NotiDto">
+        SELECT n.*, m.RoomTitle,
+               CASE WHEN n.IdeaID != 0 THEN i.Title ELSE NULL END AS IdeaTitle
+        FROM Notifications n
+        LEFT JOIN MeetingRooms m ON n.RoomID = m.RoomID
+        LEFT JOIN Ideas i ON n.IdeaID = i.IdeaID
+        WHERE n.UserID = #{userId} AND n.IsDelete = FALSE
+        ORDER BY n.CreatedAt DESC
+    </select>
+    
 
 </mapper>
