@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>아이디어 투표 결과</title>
+<title>thinKB - 아이디어 투표 결과</title>
 <style>
 body, html {
 	margin: 0;
