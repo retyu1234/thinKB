@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ABTest 투표</title>
+<title>thinKB - 핀메모</title>
 <style>
 /* 기존 스타일 */
 body, html {
