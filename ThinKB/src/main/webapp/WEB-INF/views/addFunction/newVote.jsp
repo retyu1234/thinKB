@@ -459,7 +459,7 @@ body.modal-open {
 			<div class="date-input-container">
 				<div class="date-input-and-error">
         <div class="date-input-wrapper">
-            <input type="text" class="date-input" name="endDate" id="datepicker" placeholder="YYYYMMDD">
+            <input type="text" class="date-input" name="endDate" id="datepicker" placeholder="YYYYMMDD" readonly>
             <span class="calendar-icon" onclick="toggleCalendar()">📅</span>
         </div>
         <div class="error-message-container">
