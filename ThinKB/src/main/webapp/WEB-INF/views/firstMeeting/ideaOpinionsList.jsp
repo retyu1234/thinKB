@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1차 의견 List</title>
+<title>thinKB - 의견 모으기</title>
 <style>
 .ideaOpinionsList-body {
 	font-family: KB금융 본문체 Light;
@@ -214,6 +214,7 @@
     margin-top: 5px;
     margin-left: 13pt;
     font-size: 13pt;
+    white-space: pre-wrap;
 }
 .toggle-area {
     display: flex;
@@ -492,8 +493,8 @@ function navigateToTab(currentTab) {
 					<div class="spacer" onclick="toggleSection('smart-opinions')"></div>
 					<div class="nav-spacer" onclick="navigateToTab('tab-smart')"></div>
 					<div class="navigate-area" onclick="navigateToTab('tab-smart')">
-						<span class="write-opinion">의견 작성하러가기</span> <img
-							src="./resources/nextIcon.png" class="next-icon">
+						<span class="write-opinion">의견 작성하러가기</span> 
+							<img src="./resources/nextIcon.png" class="next-icon">
 					</div>
 				</div>
 				<ul id="smart-opinions" class="opinion-list">
@@ -606,7 +607,7 @@ function navigateToTab(currentTab) {
 		</div>
 		<!-- 실현가능성 의견 목록 -->
 		<div class="column">
-			<div class="box">
+			<div class="box" style="margin-bottom: 100px;">
 				<div class="section-header">
 					<div class="toggle-area" onclick="toggleSection('strict-opinions')">
 						<span id="smart-opinions-icon" class="toggle-icon">▶</span>

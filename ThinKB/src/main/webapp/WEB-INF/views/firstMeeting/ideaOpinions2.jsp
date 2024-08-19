@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2차 의견</title>
+<title>thinKB - 의견 확장하기</title>
 <style>
 .ideaOpinions2-body {
 	font-family: KB금융 본문체 Light;
