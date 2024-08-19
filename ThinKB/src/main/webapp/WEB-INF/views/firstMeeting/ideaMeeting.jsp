@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>아이디어 투표</title>
+<title>thinKB - 초안 투표하기</title>
 <style>
 body, html {
 	margin: 0;
@@ -81,7 +81,7 @@ body, html {
 }
 .idea-item.voted-item {
 /*     background-color: #f0f8ff; */
-    background-color: #FFE297; 
+    background-color: #FFFBD8; 
     border-radius: 20px;
     padding:1%;
 }

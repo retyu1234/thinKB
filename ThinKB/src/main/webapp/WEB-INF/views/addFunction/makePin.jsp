@@ -5,10 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>테스트 생성</title>
-<head>
-<meta charset="UTF-8">
-<title>테스트 생성</title>
+<title>thinKB - 핀메모 만들기</title>
 <style>
 html, body {
     max-width: 100%;
