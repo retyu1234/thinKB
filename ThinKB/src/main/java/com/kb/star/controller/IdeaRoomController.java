@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.kb.star.command.ai.AiService;
@@ -389,7 +390,7 @@ public class IdeaRoomController {
 	@RequestMapping("/submitIdea")
 	public String submitIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
 			@RequestParam("myIdea") String myIdea, @RequestParam("ideaDetail") String ideaDetail,
-			@RequestParam("stage") int stage, Model model) {
+			@RequestParam("stage") int stage, Model model, RedirectAttributes redirectAttributes) {
 		HttpSession session = request.getSession();
 		int userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("userId", userId);
@@ -399,14 +400,17 @@ public class IdeaRoomController {
 		model.addAttribute("stage", stage);
 		command = new SubmitIdeaCommand(sqlSession);
 		command.execute(model);
-		return "redirect:/roomDetail";
+		// Flash Attributes를 사용해서 수정해도 링크에 정보 안보이게 수정
+	    redirectAttributes.addFlashAttribute("myIdea", myIdea);
+	    redirectAttributes.addFlashAttribute("ideaDetail", ideaDetail);
+	    return "redirect:/roomDetail?roomId=" + roomId + "&stage=" + stage;
 	}
 
 	// 아이디어 초안 타이머 시간내 수정하기
 	@RequestMapping("/updateIdea")
 	public String updateIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
 			@RequestParam("myIdea") String myIdea, @RequestParam("ideaDetail") String ideaDetail,
-			@RequestParam("stage") int stage, Model model) {
+			@RequestParam("stage") int stage, Model model, RedirectAttributes redirectAttributes) {
 		System.out.println("/updateIdea()실행되는지");
 		HttpSession session = request.getSession();
 		int userId = (Integer) session.getAttribute("userId");
@@ -417,7 +421,10 @@ public class IdeaRoomController {
 		model.addAttribute("stage", stage);
 		command = new UpdateIdeaCommand(sqlSession);
 		command.execute(model);
-		return "redirect:/roomDetail";
+		// Flash Attributes를 사용해서 수정해도 링크에 정보 안보이게 수정
+	    redirectAttributes.addFlashAttribute("myIdea", myIdea);
+	    redirectAttributes.addFlashAttribute("ideaDetail", ideaDetail);
+	    return "redirect:/roomDetail?roomId=" + roomId + "&stage=" + stage;
 	}
 
 	// 방정보 수정
