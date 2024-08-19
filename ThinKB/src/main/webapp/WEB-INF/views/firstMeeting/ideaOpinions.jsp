@@ -482,9 +482,11 @@ h1 {
             var currentTab = urlParams.get('currentTab') || 'tab-smart'; // 기본값을 'tab-smart'로 설정
             var roomId = urlParams.get('roomId');
             var ideaId = urlParams.get('ideaId');
+            var stage = urlParams.get('ideaId');
+
 
             if (roomId && ideaId) {
-                showTab(currentTab, roomId, ideaId);
+                showTab(currentTab, roomId, ideaId,stage);
             }
         };
 
@@ -528,7 +530,7 @@ h1 {
                 history.replaceState(null, '', `?roomId=${roomId}&ideaId=${ideaId}`);
             }
         } */
-        window.showTab = function(tabName, roomId, ideaId) {
+        window.showTab = function(tabName, roomId, ideaId,stage) {
             // 모든 탭 컨텐츠와 탭을 비활성화
             var tabs = document.getElementsByClassName('tab-content');
             for (var i = 0; i < tabs.length; i++) {
@@ -555,7 +557,7 @@ h1 {
             }
 
             // URL을 업데이트
-            history.replaceState(null, '', '?roomId=' + roomId + '&ideaId=' + ideaId + '&currentTab=' + tabName);
+            history.replaceState(null, '', '?roomId=' + roomId + '&ideaId=' + ideaId + '&currentTab=' + tabName+'&stage='+stage);
         };
 
     	// 의견을 작성하지 않은 상태로 작성 버튼 클릭시 오류 팝업창 + 작성할 수 있는 의견 수가 0개인 탭에 의견 작성시 오류 팝업창
@@ -572,6 +574,7 @@ h1 {
         window.deleteOpinion = function(opinionId, currentTab) {
             var roomId = '<c:out value="${roomId}" />';
             var ideaId = '<c:out value="${ideaId}" />';
+            var stage = '<c:out value="${stage}" />';
             
             // opinionId와 currentTab이 올바른지 확인
             if (!opinionId || !currentTab) {
@@ -580,7 +583,7 @@ h1 {
             }
             
             if (confirm('정말로 이 의견을 삭제하시겠습니까?')) {
-                var url = 'deleteOpinion?opinionId=' + opinionId + '&currentTab=' + currentTab + '&roomId=' + roomId + '&ideaId=' + ideaId;
+                var url = 'deleteOpinion?opinionId=' + opinionId + '&currentTab=' + currentTab + '&roomId=' + roomId + '&ideaId=' + ideaId+'&stage='+stage;
                 window.location.href = url;
             }
         };
@@ -589,8 +592,9 @@ h1 {
         var currentTab = urlParams.get('currentTab');
         var roomId = urlParams.get('roomId');
         var ideaId = urlParams.get('ideaId');
-        if (currentTab && roomId && ideaId) {
-            showTab(currentTab, roomId, ideaId);
+        var stage = urlParams.get('stage');
+        if (currentTab && roomId && ideaId && stage) {
+            showTab(currentTab, roomId, ideaId,stage);
         }
     });
     
@@ -768,16 +772,16 @@ h1 {
 
 			<!-- 4가지 탭 -->
 			<div class="tabs">
-				<div class="tab tab-smart" onclick="showTab('tab-smart', '#FFE297', '${roomId}', '${ideaId}')">객관적관점<br>
+				<div class="tab tab-smart" onclick="showTab('tab-smart', '${roomId}', '${ideaId}','${stage}')">객관적관점<br>
 					<div style="font-size: 11pt;">(추가작성 ${maxComments-smartOpinionCount}개 가능)</div>
 				</div>
-				<div class="tab tab-positive" onclick="showTab('tab-positive', '#FFE297', '${roomId}', '${ideaId}')">기대효과<br>
+				<div class="tab tab-positive" onclick="showTab('tab-positive', '${roomId}', '${ideaId}','${stage}')">기대효과<br>
 					<div style="font-size: 11pt;">(추가작성 ${maxComments-positiveOpinionCount}개 가능)</div>
 				</div>
-				<div class="tab tab-worry" onclick="showTab('tab-worry', '#FFE297', '${roomId}', '${ideaId}')">문제점<br>
+				<div class="tab tab-worry" onclick="showTab('tab-worry', '${roomId}', '${ideaId}','${stage}')">문제점<br>
 					<div style="font-size: 11pt;">(추가작성 ${maxComments-worryOpinionCount}개 가능)</div>
 				</div>
-				<div class="tab tab-strict" onclick="showTab('tab-strict', '#FFE297', '${roomId}', '${ideaId}')">실현가능성<br>
+				<div class="tab tab-strict" onclick="showTab('tab-strict', '${roomId}', '${ideaId}','${stage}')">실현가능성<br>
 					<div style="font-size: 11pt;">(추가작성 ${maxComments-strictOpinionCount}개 가능)</div>
 				</div>
 			</div>
@@ -831,6 +835,7 @@ h1 {
 					                <form:hidden path="currentTab" value="tab-smart" />
 					                <form:hidden path="roomId" value="${roomId}" />
 					                <form:hidden path="ideaId" value="${ideaId}" />
+					                <input type="hidden" name="stage" value="${stage}" />
 					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" rows="1" />
 					                <button type="button" class="btn-write"
 					                    onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성 
@@ -911,6 +916,7 @@ h1 {
 					                <form:hidden path="currentTab" value="tab-positive" />
 					                <form:hidden path="roomId" value="${roomId}" />
 					                <form:hidden path="ideaId" value="${ideaId}" />
+					                <input type="hidden" name="stage" value="${stage}" />
 					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" rows="1" />
 					                <button type="button" class="btn-write"
 					                    onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount})">작성</button>
@@ -986,6 +992,7 @@ h1 {
 					                <form:hidden path="currentTab" value="tab-worry" />
 					                <form:hidden path="roomId" value="${roomId}" />
 					                <form:hidden path="ideaId" value="${ideaId}" />
+					                <input type="hidden" name="stage" value="${stage}" />
 					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" rows="1" />
 					                <button type="button" class="btn-write"
 					                    onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount})">작성</button>
@@ -1062,6 +1069,7 @@ h1 {
 					                <form:hidden path="currentTab" value="tab-strict" />
 					                <form:hidden path="roomId" value="${roomId}" />
 					                <form:hidden path="ideaId" value="${ideaId}" />
+					                <input type="hidden" name="stage" value="${stage}" />
 					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" rows="1" />
 					                <button type="button" class="btn-write"
 					                    onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount})">작성</button>

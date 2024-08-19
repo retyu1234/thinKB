@@ -284,8 +284,9 @@
     function navigateToTab(currentTab) {
         var roomId = '${roomId}';
         var ideaId = '${ideaId}';
+        var stage= '${stage}';
         var url = '<c:url value="/ideaOpinions2"/>' + '?roomId=' + roomId
-                + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
+                + '&ideaId=' + ideaId + '&currentTab=' + currentTab+'&stage='+stage;
         window.location.href = url;
     }
     

@@ -419,38 +419,6 @@ a {
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 // 페이질 로드시 실행
-/* document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOMContentLoaded event fired');
-    var currentTab = '${currentTab}';
-    var currentHatColor = '${currentHatColor}';
-    var userCommentedTabs = [<c:forEach items="${userCommentedTabs}" var="tab" varStatus="status">"${tab}"<c:if test="${!status.last}">,</c:if></c:forEach>];
-    var alreadyWritten = ${alreadyWritten};
-    
-    console.log('currentTab:', currentTab);
-    console.log('currentHatColor:', currentHatColor);
-    console.log('userCommentedTabs:', userCommentedTabs);
-    console.log('alreadyWritten:', alreadyWritten);
-    
-    if (alreadyWritten === true || userCommentedTabs.includes(currentHatColor)) { 
-        document.querySelectorAll(".comment-section").forEach(function(el) {
-            el.style.display = "none";
-        });
-        document.querySelectorAll(".comment-full").forEach(function(el) {
-            el.style.display = "block";
-        });
-    }
-
-    // 폼 제출 이벤트 리스너 추가
-    var form = document.querySelector('form.comment-section');
-    if (form) {
-        form.addEventListener('submit', function(event) {
-            if (!validateAndSubmitForm(currentTab, userCommentedTabs)) {
-                event.preventDefault();
-            }
-        });
-    }
-});
- */
  document.addEventListener('DOMContentLoaded', function() {
 	 	var currentTab = '${currentTab}' || 'tab-smart';
 	    var activeTab = document.querySelector('.tab.' + currentTab);
@@ -654,16 +622,6 @@ request.setAttribute("stages", stages);
 	<hr class="line">
         
         <!-- 4가지 탭 -->
-<%--         <div class="tabs">
-            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-smart" 
-            class="tab tab-smart ${currentTab == 'tab-smart' ? 'active' : ''}">객관적관점</a>
-            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-positive" 
-            class="tab tab-positive ${currentTab == 'tab-positive' ? 'active' : ''}">기대효과</a>
-            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-worry" 
-            class="tab tab-worry ${currentTab == 'tab-worry' ? 'active' : ''}">문제점</a>
-            <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-strict" 
-            class="tab tab-strict ${currentTab == 'tab-strict' ? 'active' : ''}">실현가능성</a>
-        </div> --%>
         <div class="tabs">
 		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-smart" 
 		       class="tab tab-smart ${currentTab == 'tab-smart' || empty currentTab ? 'active' : ''}">객관적관점</a>
@@ -734,6 +692,7 @@ request.setAttribute("stages", stages);
 									        <input type="hidden" name="like" value="${opinion.likedByCurrentUser ? false : true}" /> 
 									        <input type="hidden" name="roomId" value="${roomId}" />
 									        <input type="hidden" name="ideaId" value="${ideaId}" />
+									        <input type="hidden" name="stage" value="${stage}" />
 									        <input type="hidden" name="currentTab" value="${currentTab}" />
 									        <button type="submit" class="like-button">
 									            <c:choose>
@@ -758,6 +717,7 @@ request.setAttribute("stages", stages);
                                         <input type="hidden" name="opinionId" value="${opinion.opinionID}" />
                                         <input type="hidden" name="ideaId" value="${ideaId}" />
                                         <input type="hidden" name="roomId" value="${roomId}" />
+                                        <input type="hidden" name="stage" value="${stage}" />
                                         <input type="hidden" name="currentTab" value="${currentTab}" />
                                         <button type="submit" class="delete-button" >삭제</button>
                                     </form>
@@ -773,6 +733,7 @@ request.setAttribute("stages", stages);
 			            <form action="addOpinion2" method="post" class="comment-section" onsubmit="return validateAndSubmitForm()"> 
 			                <input type="hidden" name="ideaId" value="${ideaId}" />
 			                <input type="hidden" name="roomId" value="${roomId}" />
+			                <input type="hidden" name="stage" value="${stage}" />
 			                <input type="hidden" name="currentTab" value="${currentTab}" />
 			                <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력해주세요"></textarea>
 			                <button type="submit" class="write-button">작성</button>
