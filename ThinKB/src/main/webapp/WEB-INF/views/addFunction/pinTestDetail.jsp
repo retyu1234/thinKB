@@ -90,6 +90,7 @@ body, html {
 
 .ab-feedback-image-detail {
 	width: 50%;
+	max-width: 50%;
 	margin-left: 8%;
 	margin-right: 2%;
 }
@@ -110,7 +111,8 @@ body, html {
 
 .choice img {
 	margin-top: 5%;
-	width: auto;
+	width: 100%;
+	max-width: 100%;
 	height: auto;
 }
 
