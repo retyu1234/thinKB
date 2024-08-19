@@ -61,37 +61,63 @@ html, body {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    table-layout: fixed;
 }
-.vote-table th {
-    font-size: 13pt;
+
+.vote-table th, .vote-table td {
     padding: 10px;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+.vote-table th {
+    font-size: 13pt;
+    white-space: nowrap;
+}
+
 .vote-table td {
     font-size: 15pt;
     font-weight: bold;
-    padding: 10px;
-    text-align: center;
 }
+
+.vote-table th:nth-child(1), .vote-table td:nth-child(1) {
+    width: 10%;
+}
+
+.vote-table th:nth-child(2), .vote-table td:nth-child(2) {
+    width: 70%;
+}
+
+.vote-table th:nth-child(3), .vote-table td:nth-child(3) {
+    width: 20%;
+}
+
 .highlighted {
     position: relative;
-    display: inline-block;
+    display: inline;
+    background: linear-gradient(to bottom, transparent 60%, #FFD700 40%);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
-.highlighted::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 5px;
-    background-color: #FFD700;
-    z-index: -1;
-}
+
 .my-vote {
     font-size: 9pt;
     color: blue;
     margin-left: 5px;
 }
+
+.vote-table td:nth-child(2) {
+    text-align: center;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.option-text-wrapper {
+    display: inline-block;
+    text-align: left;
+}
+
 
 
 </style>
@@ -135,6 +161,7 @@ html, body {
 	        <tr>
 	            <td>${status.count}</td>
 	            <td style="font-family: KB금융 제목체 Light;">
+	            <div class="option-text-wrapper">
 	                <c:choose>
 	                    <c:when test="${option.voteCount eq maxVotes}">
 	                        <span class="highlighted">
@@ -148,6 +175,7 @@ html, body {
 	                <c:if test="${option.optionId eq myVote.optionId}">
 	                    <span class="my-vote">(내가 투표한 항목)</span>
 	                </c:if>
+	                </div>
 	            </td>
 	            <td style="font-family: KB금융 본문체 Light;">
 	                ${option.voteCount}표

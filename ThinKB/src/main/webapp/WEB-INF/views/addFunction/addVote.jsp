@@ -60,15 +60,28 @@ html, body {
 
 .vote-options {
     list-style-type: none;
-    padding: 10px;
+    padding: 0;
+    width: 100%;
 }
 
 .vote-option {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 20px;
-    text-align: center;
+    margin: 20px 0;
+    text-align: left;
+}
+
+.vote-option-text {
+    font-size: 18pt;
+    font-weight: bold;
+    font-family: KB금융 제목체 Light;
+    flex-grow: 1;
+    word-break: break-word;
+}
+
+.vote-radio-container {
+    min-width: 40px;
+    margin-right: 15px;
 }
 
 .vote-radio {
@@ -78,11 +91,11 @@ html, body {
     height: 24px;
     border: 2px solid #ccc;
     border-radius: 50%;
-    margin-right: 10px;
     cursor: pointer;
     position: relative;
+    display: inline-block;
+    vertical-align: middle;
 }
-
 .vote-radio:checked {
     background-color: #ffc000;
     border-color: #ffc000;
@@ -235,12 +248,14 @@ html, body {
 	<input type="hidden" name="userId" value="${userId}">
 	<input type="hidden" name="addVoteId" value="${voteInfo.addVoteId}">
 		<ul class="vote-options">
-			<c:forEach var="vote" items="${optionList}">
-				<li class="vote-option">
-					<input type="radio" id="option_${vote.addVoteId}" name="optionId" value="${vote.optionId}" class="vote-radio">
-					<label for="option_${vote.addVoteId}" class="vote-option-text">${vote.optionText}</label>
-				</li>
-			</c:forEach>
+		    <c:forEach var="vote" items="${optionList}">
+		        <li class="vote-option">
+		            <div class="vote-radio-container">
+		                <input type="radio" id="option_${vote.addVoteId}" name="optionId" value="${vote.optionId}" class="vote-radio">
+		            </div>
+		            <label for="option_${vote.addVoteId}" class="vote-option-text">${vote.optionText}</label>
+		        </li>
+		    </c:forEach>
 		</ul>
 		<input type="hidden" id="selectedAddVoteId" name="addVoteId" value="">
 		<div style="text-align: center; margin-top: 50px;">

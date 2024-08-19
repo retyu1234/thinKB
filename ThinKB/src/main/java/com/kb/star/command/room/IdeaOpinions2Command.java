@@ -1,6 +1,9 @@
 package com.kb.star.command.room;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,7 @@ import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.UsersDto;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
+
 
 public class IdeaOpinions2Command implements RoomCommand {
 
@@ -45,10 +49,6 @@ public class IdeaOpinions2Command implements RoomCommand {
         
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
-        
-	    // 타이머 종료 시간 
-        String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
-        model.addAttribute("timer", endTime);
         
         // 방장 ID 가져오기
         int roomManagerId = ideaOpinionsDao.getRoomManagerId(roomId);
@@ -173,9 +173,22 @@ public class IdeaOpinions2Command implements RoomCommand {
 		params.put("roomId", roomId);
 		params.put("ideaId", ideaId);
 
-		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByroomId", params);
 		model.addAttribute("roomMessage", roomMessage);
+//		int stageId = Integer.parseInt(request.getParameter("stage"));
+//		model.addAttribute("stage",stageId);
 		// 여기까지 leftSideBar 출력용
+		
+		
+		// 타이머 종료 시간 
+        String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
+        model.addAttribute("timer", endTime);
+        boolean isTimerEnded = isTimerEnded(endTime);
+        model.addAttribute("isTimerEnded", isTimerEnded);
+        // 사용자의 의견 작성 가능 여부를 확인
+        boolean canWriteOpinion = !isTimerEnded && userOpinionCount < 4 && !userCommentedTabs.contains(currentHatColor);
+        model.addAttribute("canWriteOpinion", canWriteOpinion);
+        
     }
     
     private String getHatColorFromTab(String currentTab) {
@@ -185,6 +198,18 @@ public class IdeaOpinions2Command implements RoomCommand {
             case "tab-worry": return "Worry";
             case "tab-strict": return "Strict";
             default: return "Smart";
+        }
+    }
+    
+    private boolean isTimerEnded(String endTime) {
+        if (endTime == null) return false;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date end = sdf.parse(endTime);
+            return new Date().after(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
         }
     }
     

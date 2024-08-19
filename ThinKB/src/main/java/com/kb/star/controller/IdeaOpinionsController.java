@@ -64,13 +64,14 @@ public class IdeaOpinionsController {
     @RequestMapping("/ideaOpinions")
     public String getIdeaOpinions(HttpServletRequest request, Model model, ServletRequest session,
     		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,
-    		@RequestParam(value = "currentTab", required = false) String currentTab) {
+    		@RequestParam(value = "currentTab", required = false, defaultValue = "tab-smart") String currentTab) {
     	
     	model.addAttribute("request", request);
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
-        String activeHatColor = getHatColor(currentTab);
-        model.addAttribute("currentTab", activeHatColor);
+        model.addAttribute("currentTab", currentTab);
+//        String activeHatColor = getHatColor(currentTab);
+//        model.addAttribute("currentTab", activeHatColor);
         
         IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
         IdeaOpinionsCommand.execute(model);
@@ -245,12 +246,12 @@ public class IdeaOpinionsController {
 	    List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
         model.addAttribute("ideasInfo", ideasInfo);
         
-		// 다음단계 넘어가는 알림
-        String notification = "'관점별 의견 더 확장하기' 단계가 시작되었습니다! 창의적인 의견을 작성해주세요! 💡";
-		for (int user : userIdList) {
-			int notiId = user;
-			dao.makeNotification(notiId, ideaId, notification, roomId);
-		}
+//		// 다음단계 넘어가는 알림
+//        String notification = "'관점별 의견 더 확장하기' 단계가 시작되었습니다! 창의적인 의견을 작성해주세요! 💡";
+//		for (int user : userIdList) {
+//			int notiId = user;
+//			dao.makeNotification(notiId, 0, notification, roomId);
+//		}
         
         return "/firstMeeting/ideaOpinionsClear";
     }
@@ -260,12 +261,42 @@ public class IdeaOpinionsController {
 	public String goStage4(@RequestParam("roomId") int roomId, 
 		            	   @RequestParam("ideaId") int ideaId, 
 		            	   @RequestParam("currentTab") String currentTab,
-		            	   HttpServletRequest request, Model model) {
+		            	   HttpServletRequest request, Model model, HttpSession session) {
 
 		model.addAttribute("request", request);
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("ideaId", ideaId);
 		model.addAttribute("currentTab", currentTab);
+		
+		// 수정 알림발송
+		RoomDao dao=sqlSession.getMapper(RoomDao.class);
+		Integer userId = (Integer) session.getAttribute("userId");
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("userId", userId);
+		params.put("roomId", roomId);
+		params.put("ideaId", ideaId);
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+		model.addAttribute("roomMessage", roomMessage);
+		// 여기까지 leftSideBar 출력용
+		
+		//오른쪽 사이드바
+		List<Integer> userIdList = dao.roomIdFormember(roomId);
+		List<UsersDto> userList = new ArrayList<UsersDto>();
+		for(int ids : userIdList) {
+			UsersDto user = dao.whosMember(ids);
+			if(user != null) {
+				userList.add(user);
+			}
+		}
+		model.addAttribute("userList", userList); 
+		
+		// 다음단계 넘어가는 알림
+        String notification = "'관점별 의견 더 확장하기' 단계가 시작되었습니다! 창의적인 의견을 작성해주세요! 💡";
+		for (int user : userIdList) {
+			int notiId = user;
+			dao.makeNotification(notiId, 0, notification, roomId);
+		}
+		// 수정
 		
 		IdeaOpinionsClearCommand ideaOpinionsClearCommand = new IdeaOpinionsClearCommand(sqlSession);
 		ideaOpinionsClearCommand.execute(model);

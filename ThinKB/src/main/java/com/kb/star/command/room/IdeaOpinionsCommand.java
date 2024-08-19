@@ -75,6 +75,39 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		} else { // 댓글을 삭제해서 2개 미만으로 떨어질 경우
 			ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
 		}
+		
+		// 수정
+		// 현재 탭에 이미 의견을 작성했는지 확인
+        String currentTab = (String) map.get("currentTab");
+        if (currentTab == null || currentTab.isEmpty()) {
+            currentTab = "tab-smart"; // 기본값 설정
+        }
+        model.addAttribute("currentTab", currentTab);
+        
+        // 현재 탭의 hatColor 설정
+        String currentHatColor = getHatColorFromTab(currentTab);
+        model.addAttribute("currentHatColor", currentHatColor);
+        
+		// 사용자가 작성한 탭 목록 가져오기(사용자가 각 탭에 하나씩만 의견을 달 수 있도록 제한 / 이미 의견을 단 탭을 표시하거나 강조 목적)
+        List<String> userCommentedTabs = ideaOpinionsDao.getUserCommentedTabs(userId, ideaId); 
+        model.addAttribute("userCommentedTabs", userCommentedTabs);
+        
+        // 디버깅을 위한 로그
+        System.out.println("userCommentedTabs : " + userCommentedTabs);
+        System.out.println("currentTab : " + currentTab);
+        System.out.println("currentHatColor : " + currentHatColor);
+        
+
+        // 현재 탭에 이미 의견을 작성했는지 확인
+//        String currentHatColor = getHatColorFromTab(currentTab);
+//        model.addAttribute("currentHatColor", currentHatColor);
+//        System.out.println("currentHatColor : " + currentHatColor);
+//        if (userCommentedTabs.contains(currentHatColor)) {
+//            model.addAttribute("alreadyWritten", true);
+//        } else {
+//        	model.addAttribute("alreadyWritten", false);
+//        }
+        // 수정
 
 		// 타이머 종료 시간
 		String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
@@ -130,8 +163,20 @@ public class IdeaOpinionsCommand implements RoomCommand {
 
 		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
 		model.addAttribute("roomMessage", roomMessage);
+//		int stageId = Integer.parseInt(request.getParameter("stage"));
+//		model.addAttribute("stage",stageId);
 		// 여기까지 leftSideBar 출력용
 		
 
 	}
+	
+    private String getHatColorFromTab(String currentTab) {
+        switch (currentTab) {
+            case "tab-smart": return "Smart";
+            case "tab-positive": return "Positive";
+            case "tab-worry": return "Worry";
+            case "tab-strict": return "Strict";
+            default: return "Smart";
+        }
+    }
 }
