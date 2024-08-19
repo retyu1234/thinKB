@@ -617,7 +617,7 @@ window.onclick = function(event) {
 		<div class="adminMypageContainer">
 			<div class="userAdmin-title">
 				<a href="./adminMain"><img src="./resources/back2.png" alt="back2" class="back2"></a>
-				<span>부서 현황</span>
+				<span>thinKB-부서 현황</span>
 			</div>
 			<hr class="userAdmin-line">
 			
@@ -756,9 +756,10 @@ window.onclick = function(event) {
 									<c:forEach var="report" items="${todayReports}">
 										<li><span class="adminReport-title">${report.reportTitle}</span>
 											<span class="adminReport-status"> <c:choose>
-													<c:when test="${report.isChoice == null}">결재대기</c:when>
-													<c:when test="${report.isChoice == 1}">채택</c:when>
-													<c:when test="${report.isChoice == 0}">미채택</c:when>
+                                <c:when test="${report.isChoice == null}">결재대기</c:when>
+                                <c:when test="${report.isChoice == 1}">채택</c:when>
+                                <c:when test="${report.isChoice == 0}">미채택</c:when>
+                                <c:otherwise>알 수 없음</c:otherwise>
 												</c:choose>
 										</span></li>
 									</c:forEach>

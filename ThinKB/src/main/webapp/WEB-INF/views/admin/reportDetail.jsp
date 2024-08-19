@@ -4,7 +4,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>보고서 상세</title>
+    <title>thinKB-보고서 상세</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
 /*         body {
@@ -264,8 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 개별 이미지 경로 수정
     function fixImagePath(path) {
         // 이미 올바른 경로로 시작하는 경우 그대로 반환
-        if (path.startsWith('/upload/images/') || path.startsWith('/upload/temp_images/') ||
-            path.startsWith('./upload/images/') || path.startsWith('./upload/temp_images/')) {
+        if (path.startsWith('./upload/images/') || path.startsWith('./upload/temp_images/')) {
             return path;
         }
         
