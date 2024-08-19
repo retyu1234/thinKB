@@ -291,6 +291,7 @@ body.modal-open {
             height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
+            box-sizing: border-box;
         }
 
         .modal-content {
@@ -342,6 +343,23 @@ body.modal-open {
             color: black;
             text-decoration: none;
             cursor: pointer;
+        }
+        .modalMessageDiv{
+        border:1px solid #ccc;
+        width :95%;
+        height:auto;
+        box-sizing: border-box;
+        min-height:300px;
+        padding:20px; 
+        margin:3%;
+        margin-top:1%;
+        border-radius: 20px;
+        }
+        #modalRoomTitle{
+        font-size:15pt;
+        }
+        #modalTime{
+        text-align:end;
         }
     </style>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -418,9 +436,9 @@ body.modal-open {
                 var message = $(this).data("message");
                 var createdTime = $(this).data("time");  // 시간 정보 가져오기
 
-                $("#modalRoomTitle").text("RoomTitle : " + roomTitle);
+                $("#modalRoomTitle").text("회의방 : " + roomTitle);
                 $("#modalMessage").text(message);
-                $("#modalTime").text("Created at: " + createdTime);  // 모달에 시간 표시
+                $("#modalTime").text("알림일자: " + createdTime);  // 모달에 시간 표시
                 $("#notificationModal").show();
 
                 $.post("${pageContext.request.contextPath}/readNotification", { notificationId: notificationId }, function (response) {
@@ -535,8 +553,10 @@ body.modal-open {
             <h2 id="modalRoomTitle"></h2>
             <p id="modalTime"></p>
             <hr>
-            <h3>Noti Contents : </h3>
+            <h3>알림 내용 : </h3>
+            <div class="modalMessageDiv">
             <p id="modalMessage"></p>
+            </div>
         </div>
     </div>
     <button id="scrollToTopBtn">▲</button>

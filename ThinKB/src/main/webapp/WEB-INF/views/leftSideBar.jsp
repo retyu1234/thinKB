@@ -339,13 +339,14 @@
             $('.section21').on('click', function() {
                 const roomId = $(this).data('room-id');
                 const ideaId = $(this).data('idea-id');
-                const stage = $(this).data('stage-id');
-                console.log(ideaId);
-
+                var stage = $(this).data('stage-id');
+                var serverStage = ${stage};
+                console.log(stage);
+                console.log(serverStage);
                 // 폼에 값 설정
                 $('#formRoomId').val(roomId);
                 $('#formIdeaId').val(ideaId);
-                $('#formStage').val(stage);
+                $('#formStage').val(serverStage);
 
                 // 폼 제출
                 $('#ideaForm').submit();

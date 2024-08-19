@@ -327,8 +327,14 @@ ORDER BY
     <select id="getMeetingRoomStats" resultMap="MeetingRoomStatsMap">
     <![CDATA[
     SELECT 
-        SUM(CASE WHEN mr.StageID < 6 THEN 1 ELSE 0 END) as ongoing_meetings,
-        SUM(CASE WHEN mr.StageID >= 6 THEN 1 ELSE 0 END) as completed_meetings,
+        SUM(CASE 
+            WHEN mr.StageID < 6 AND mr.EndDate >= CURDATE() THEN 1 
+            ELSE 0 
+        END) as ongoing_meetings,
+        SUM(CASE 
+            WHEN mr.StageID >= 6 THEN 1 
+            ELSE 0 
+        END) as completed_meetings,
         COUNT(*) as total_meetings,
         COALESCE(SUM(mrm.ContributionCnt), 0) as total_contribution
     FROM MeetingRooms mr
@@ -342,7 +348,10 @@ ORDER BY
 <select id="getMeetingRoomStatsAdmin" resultMap="MeetingRoomStatsMapAdmin">
     <![CDATA[
     SELECT
-        SUM(CASE WHEN mr.StageID < 6 THEN 1 ELSE 0 END) as ongoing_meetings,
+                SUM(CASE 
+            WHEN mr.StageID < 6 AND mr.EndDate >= CURDATE() THEN 1 
+            ELSE 0 
+        END) as ongoing_meetings,
         SUM(CASE WHEN mr.StageID >= 6 THEN 1 ELSE 0 END) as completed_meetings,
         COUNT(*) as total_meetings
     FROM MeetingRooms mr
