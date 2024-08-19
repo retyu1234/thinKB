@@ -6,7 +6,7 @@ public class ReportLow {
 
     private int reportId;
     private String reportTitle;
-    private int isChoice;
+    private Integer isChoice;
     private LocalDateTime updatedAt;
     private String authorName;
     private String departmentName;
@@ -31,10 +31,11 @@ public class ReportLow {
 	public void setReportTitle(String reportTitle) {
 		this.reportTitle = reportTitle;
 	}
-	public int getIsChoice() {
+
+	public Integer getIsChoice() {
 		return isChoice;
 	}
-	public void setIsChoice(int isChoice) {
+	public void setIsChoice(Integer isChoice) {
 		this.isChoice = isChoice;
 	}
 	public LocalDateTime getUpdatedAt() {

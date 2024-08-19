@@ -580,6 +580,19 @@
 .bronze {
 	color: #CD7F32;
 }
+    /* 더보기 버튼 */
+    .more-button { 
+		border: none;
+		background-color: transparent; /* 배경색 제거 */
+		align-items: center;
+		cursor: pointer;
+		font-size: 9pt;
+		color: #007AFF;
+		margin-top: 10px;
+	}
+	.more-button:hover {
+		color: #0056B3;
+	}
 </style>
 <script>
 function openModal(modalId) {
@@ -604,7 +617,7 @@ window.onclick = function(event) {
 		<div class="adminMypageContainer">
 			<div class="userAdmin-title">
 				<a href="./adminMain"><img src="./resources/back2.png" alt="back2" class="back2"></a>
-				<span>부서 현황</span>
+				<span>thinKB-부서 현황</span>
 			</div>
 			<hr class="userAdmin-line">
 			
@@ -734,7 +747,7 @@ window.onclick = function(event) {
 				<div class="best-section">
 					<div class="section-header">
 						<div class="section-title" style="font-size: 15pt;">📊 오늘의
-							결재내역</div>
+							결재내역</div><button class="more-button" onclick="location.href='./departmentReportList'">+ 더보기</button>
 					</div>
 					<div class="adminReport-content">
 						<c:choose>
@@ -743,9 +756,10 @@ window.onclick = function(event) {
 									<c:forEach var="report" items="${todayReports}">
 										<li><span class="adminReport-title">${report.reportTitle}</span>
 											<span class="adminReport-status"> <c:choose>
-													<c:when test="${report.isChoice == null}">결재대기</c:when>
-													<c:when test="${report.isChoice == 1}">채택</c:when>
-													<c:when test="${report.isChoice == 0}">미채택</c:when>
+                                <c:when test="${report.isChoice == null}">결재대기</c:when>
+                                <c:when test="${report.isChoice == 1}">채택</c:when>
+                                <c:when test="${report.isChoice == 0}">미채택</c:when>
+                                <c:otherwise>알 수 없음</c:otherwise>
 												</c:choose>
 										</span></li>
 									</c:forEach>
@@ -757,10 +771,10 @@ window.onclick = function(event) {
 						</c:choose>
 					</div>
 				</div>
-				<div class="best-section">
+				<div class="best-section" >
 					<div class="section-header">
 						<div class="section-title" style="font-size: 15pt;">🏆 연간 채택
-							아이디어</div>
+							아이디어</div><button class="more-button" onclick="location.href='./departmentReportList'">+ 더보기</button>
 					</div>
 					<div class="adminReport-content">
 						<c:choose>

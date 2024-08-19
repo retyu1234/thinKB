@@ -336,7 +336,7 @@
 
 .social-icon {
     color: #fff;
-    background-color: #007bff;
+    background-color: #D9D9D9;
     width: 36px;
     height: 36px;
     display: flex;
@@ -347,7 +347,7 @@
 }
 
 .social-icon:hover {
-    background-color: #0056b3;
+    background-color: #BCBCBC;
 }
 
 .footer hr {
