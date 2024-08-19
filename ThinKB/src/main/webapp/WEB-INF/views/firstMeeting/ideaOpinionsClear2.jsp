@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>보고서 작성 설정</title>
+<title>thinKB - 보고서 작성 설정</title>
 <style>
 html, body {
 	max-width: 100%;
