@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.util.RoomDao;
 
@@ -96,7 +97,15 @@ public class UpdateStageThreeCommand implements RoomCommand {
 		// roomId, stage값 다시 model에 넣기
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", 3);	
-		model.addAttribute("ideaId", firstIdeaId);
+//		model.addAttribute("ideaId", firstIdeaId);
+		
+		//방장 링크 수정
+		if(secondIdeaId == null) {
+			model.addAttribute("ideaId", firstIdeaId);
+		} else {
+			List<Ideas> room = dao.yesPickIdeaList(roomId);
+			model.addAttribute("ideaId", room.get(0).getIdeaID());
+		}
 		
 		// 알림발송 추가
 		MeetingRooms roomInfo = dao.roomDetailInfo(roomId);

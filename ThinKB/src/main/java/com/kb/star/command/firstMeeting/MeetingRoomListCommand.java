@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.ReportsDto;
 import com.kb.star.dto.Teams;
 import com.kb.star.util.UserDao;
 
@@ -52,5 +53,8 @@ public class MeetingRoomListCommand implements FirstMeetingCommand {
         String department = dao.userDepartment(id);
         List<Teams> teamDto = dao.myDepartmentTeams(department);
         model.addAttribute("teamInfo", teamDto);
+        
+        List<ReportsDto> reportsResult = dao.reportsResult();
+        model.addAttribute("reportsResult", reportsResult);
     }
 }

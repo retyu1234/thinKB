@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>thinKB - 회의여정 살펴보기</title>
 <style type="text/css">
 body, html {
 	font-family: KB금융 본문체 Light;
@@ -231,12 +231,15 @@ body, html {
 .opinions-grid {
     display: flex;
     justify-content: space-between;
-    gap: 40px;
 }
 
 .opinion-column {
-    width: 45%;
-    text-align: center;
+    width: 48%;
+}
+
+.opinion-column-single {
+    width: 70%;
+    margin: 0 auto;
 }
 
 .idea-title {
@@ -484,30 +487,38 @@ body, html {
 	</div>
 
 
-<!-- 선택된 아이디어 ${yesPickList} -->
-	<div class="selected-ideas fade-in-section">
-	    <p class="selected-intro">이 아이디어 중에 투표를 통해 두 가지를 선정했어요.</p>
-	    <div class="selected-idea-list fade-in-section">
-	        <div class="selected-idea-item fade-in-section">
-	            <img src="<c:url value='./resources/first.png'/>" alt="first" class="rank-icon">
-	            <h3 class="selected-idea-title">"${yesPickList[0].getTitle()}"</h3>
-	            <c:forEach var="user" items="${userList}">
-	                <c:if test="${user.getUserId() eq yesPickList[0].getUserID()}">
-	                    <p class="idea-author">${user.getUserName()} 님이 낸 아이디어에요!</p>
-	                </c:if>
-	            </c:forEach>
-	        </div>
-	        <div class="selected-idea-item">
-	            <img src="<c:url value='./resources/second.png'/>" alt="second" class="rank-icon">
-	            <h3 class="selected-idea-title">"${yesPickList[1].getTitle()}"</h3>
-	            <c:forEach var="user" items="${userList}">
-	                <c:if test="${user.getUserId() eq yesPickList[1].getUserID()}">
-	                    <p class="idea-author">${user.getUserName()} 님이 낸 아이디어에요!</p>
-	                </c:if>
-	            </c:forEach>
-	        </div>
-	    </div>
-	</div>
+ <!-- 선택된 아이디어 ${yesPickList} -->
+    <div class="selected-ideas fade-in-section">
+        <p class="selected-intro">
+            <% if (((java.util.List)request.getAttribute("yesPickList")).size() > 1) { %>
+                이 아이디어 중에 투표를 통해 두 가지를 선정했어요.
+            <% } else { %>
+                이 아이디어 중에 투표를 통해 한 가지를 선정했어요.
+            <% } %>
+        </p>
+        <div class="selected-idea-list fade-in-section">
+            <div class="selected-idea-item fade-in-section">
+                <img src="<c:url value='./resources/first.png'/>" alt="first" class="rank-icon">
+                <h3 class="selected-idea-title">"${yesPickList[0].getTitle()}"</h3>
+                <c:forEach var="user" items="${userList}">
+                    <c:if test="${user.getUserId() eq yesPickList[0].getUserID()}">
+                        <p class="idea-author">${user.getUserName()} 님이 낸 아이디어에요!</p>
+                    </c:if>
+                </c:forEach>
+            </div>
+            <% if (((java.util.List)request.getAttribute("yesPickList")).size() > 1) { %>
+                <div class="selected-idea-item">
+                    <img src="<c:url value='./resources/second.png'/>" alt="second" class="rank-icon">
+                    <h3 class="selected-idea-title">"${yesPickList[1].getTitle()}"</h3>
+                    <c:forEach var="user" items="${userList}">
+                        <c:if test="${user.getUserId() eq yesPickList[1].getUserID()}">
+                            <p class="idea-author">${user.getUserName()} 님이 낸 아이디어에요!</p>
+                        </c:if>
+                    </c:forEach>
+                </div>
+            <% } %>
+        </div>
+    </div>
 
 <!-- 이미지 -->
 	<div class="fade-in-section" style="text-align: center;">
@@ -516,88 +527,138 @@ body, html {
 	</div>
 
 <!-- 아이디어별 의견 ${firstOpinion} ${secondOpinion} -->
+    <!-- 아이디어별 의견 ${firstOpinion} ${secondOpinion} -->
 	<div class="opinions-container fade-in-section">
-	    <p class="opinions-intro">모두 의견을 모아서 이 두 가지 아이디어를 확장 시켰어요.</p>
+	    <p class="opinions-intro">
+	        <% if (((java.util.List)request.getAttribute("yesPickList")).size() > 1) { %>
+	            모두 의견을 모아서 이 두 가지 아이디어를 확장 시켰어요.
+	        <% } else { %>
+	            모두 의견을 모아서 이 아이디어를 확장 시켰어요.
+	        <% } %>
+	    </p>
 	    <div class="opinions-grid fade-in-section">
-	        <div class="opinion-column fade-in-section">
-	            <h2 class="idea-title">"${yesPickList[0].getTitle()}" 에 대해서는...</h2>
-	            
-	            <h3 class="opinion-category fade-in-section">👍 이런 <span class="highlight">긍정적인 효과</span>가 있을 것 같아요.</h3>
-	            <ul class="opinion-list">
-	                <c:forEach var="opinion" items="${firstOpinion}">
-	                    <c:if test="${opinion.getHatColor() eq 'Positive'}">
-	                        <li>${opinion.getOpinionText()}</li>
-	                    </c:if>
-	                </c:forEach>
-	            </ul>
-	            
-	            <h3 class="opinion-category fade-in-section">📊 관련된 <span class="highlight">현황</span>이나 <span class="highlight">데이터</span>는 이래요.</h3>
-	            <ul class="opinion-list">
-	                <c:forEach var="opinion" items="${firstOpinion}">
-	                    <c:if test="${opinion.getHatColor() eq 'Smart'}">
-	                        <li>${opinion.getOpinionText()}</li>
-	                    </c:if>
-	                </c:forEach>
-	            </ul>
-	            
-	            <h3 class="opinion-category fade-in-section">🔍 이런 부분은 <span class="highlight">보완</span>이 필요해요.</h3>
-	            <ul class="opinion-list">
-	                <c:forEach var="opinion" items="${firstOpinion}">
-	                    <c:if test="${opinion.getHatColor() eq 'Worry'}">
-	                        <li>${opinion.getOpinionText()}</li>
-	                    </c:if>
-	                </c:forEach>
-	            </ul>
-	            
-	            <h3 class="opinion-category fade-in-section">🚀 <span class="highlight">실현 가능성</span>에 대한 부분은 이래요.</h3>
-	            <ul class="opinion-list">
-	                <c:forEach var="opinion" items="${firstOpinion}">
-	                    <c:if test="${opinion.getHatColor() eq 'Strict'}">
-	                        <li>${opinion.getOpinionText()}</li>
-	                    </c:if>
-	                </c:forEach>
-	            </ul>
-	        </div>
-	        
-	        <div class="opinion-column">
-	            <h2 class="idea-title">"${yesPickList[1].getTitle()}" 에 대해서는...</h2>
-	            
-	            <h3 class="opinion-category fade-in-section">👍 이런 <span class="highlight">긍정적인 효과</span>가 있을 것 같아요.</h3>
-	            <ul class="opinion-list">
-	                <c:forEach var="opinion" items="${secondOpinion}">
-	                    <c:if test="${opinion.getHatColor() eq 'Positive'}">
-	                        <li>${opinion.getOpinionText()}</li>
-	                    </c:if>
-	                </c:forEach>
-	            </ul>
-	            
-	            <h3 class="opinion-category fade-in-section">📊 관련된 <span class="highlight">현황</span>이나 <span class="highlight">데이터</span>는 이래요.</h3>
-	            <ul class="opinion-list">
-	                <c:forEach var="opinion" items="${secondOpinion}">
-	                    <c:if test="${opinion.getHatColor() eq 'Smart'}">
-	                        <li>${opinion.getOpinionText()}</li>
-	                    </c:if>
-	                </c:forEach>
-	            </ul>
-	            
-	            <h3 class="opinion-category fade-in-section">🔍 이런 부분은 <span class="highlight">보완</span>이 필요해요.</h3>
-	            <ul class="opinion-list">
-	                <c:forEach var="opinion" items="${secondOpinion}">
-	                    <c:if test="${opinion.getHatColor() eq 'Worry'}">
-	                        <li>${opinion.getOpinionText()}</li>
-	                    </c:if>
-	                </c:forEach>
-	            </ul>
-	            
-	            <h3 class="opinion-category fade-in-section">🚀 <span class="highlight">실현 가능성</span>에 대한 부분은 이래요.</h3>
-	            <ul class="opinion-list">
-	                <c:forEach var="opinion" items="${secondOpinion}">
-	                    <c:if test="${opinion.getHatColor() eq 'Strict'}">
-	                        <li>${opinion.getOpinionText()}</li>
-	                    </c:if>
-	                </c:forEach>
-	            </ul>
-	        </div>
+	        <% if (((java.util.List)request.getAttribute("yesPickList")).size() > 1) { %>
+	            <!-- 두 개의 아이디어일 때 -->
+	            <div class="opinion-column fade-in-section">
+	                <h2 class="idea-title">"${yesPickList[0].getTitle()}" 에 대해서는...</h2>
+	                
+	                <h3 class="opinion-category fade-in-section">👍 이런 <span class="highlight">긍정적인 효과</span>가 있을 것 같아요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${firstOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Positive'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">📊 관련된 <span class="highlight">현황</span>이나 <span class="highlight">데이터</span>는 이래요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${firstOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Smart'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">🔍 이런 부분은 <span class="highlight">보완</span>이 필요해요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${firstOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Worry'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">🚀 <span class="highlight">실현 가능성</span>에 대한 부분은 이래요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${firstOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Strict'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	            </div>
+	            <div class="opinion-column fade-in-section">
+	                <h2 class="idea-title">"${yesPickList[1].getTitle()}" 에 대해서는...</h2>
+	                
+	                <h3 class="opinion-category fade-in-section">👍 이런 <span class="highlight">긍정적인 효과</span>가 있을 것 같아요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${secondOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Positive'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">📊 관련된 <span class="highlight">현황</span>이나 <span class="highlight">데이터</span>는 이래요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${secondOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Smart'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">🔍 이런 부분은 <span class="highlight">보완</span>이 필요해요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${secondOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Worry'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">🚀 <span class="highlight">실현 가능성</span>에 대한 부분은 이래요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${secondOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Strict'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	            </div>
+	        <% } else { %>
+	            <!-- 하나의 아이디어일 때 -->
+	            <div class="opinion-column opinion-column-single fade-in-section">
+	                <h2 class="idea-title">"${yesPickList[0].getTitle()}" 에 대해서는...</h2>
+	                
+	                <h3 class="opinion-category fade-in-section">👍 이런 <span class="highlight">긍정적인 효과</span>가 있을 것 같아요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${firstOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Positive'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">📊 관련된 <span class="highlight">현황</span>이나 <span class="highlight">데이터</span>는 이래요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${firstOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Smart'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">🔍 이런 부분은 <span class="highlight">보완</span>이 필요해요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${firstOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Worry'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	                
+	                <h3 class="opinion-category fade-in-section">🚀 <span class="highlight">실현 가능성</span>에 대한 부분은 이래요.</h3>
+	                <ul class="opinion-list">
+	                    <c:forEach var="opinion" items="${firstOpinion}">
+	                        <c:if test="${opinion.getHatColor() eq 'Strict'}">
+	                            <li>${opinion.getOpinionText()}</li>
+	                        </c:if>
+	                    </c:forEach>
+	                </ul>
+	            </div>
+	        <% } %>
 	    </div>
 	</div>
 
