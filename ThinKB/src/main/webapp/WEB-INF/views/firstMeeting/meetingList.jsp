@@ -301,6 +301,38 @@ body {
 .idea[data-stage="6"] .line {
 	border-top: 2px solid #808080;
 }
+
+/* 보고서 결재 상태 태그 */
+.status-tag {
+    align-self: flex-start;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+
+.status-pending {
+    background-color: #FFA500;
+    color: white;
+}
+
+.status-rejected {
+    background-color: #f0f0f0;
+    color: white;
+}
+
+.status-accepted {
+    background-color: #32CD32;
+    color: white;
+}
+
+.tag-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
 </style>
 </head>
 
@@ -352,16 +384,36 @@ body {
 					<c:if test="${li.getStageId() < 3}">
 		                onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'"
 		            </c:if>>
-					<div class="team-tag">
-						<c:choose>
-							<c:when test="${li.getStageId() == 6}">
-					            완료
-					        </c:when>
-							<c:otherwise>
-					            진행중
-					        </c:otherwise>
-						</c:choose>
-					</div>
+					<div class="tag-container">
+                    <div class="team-tag">
+                        <c:choose>
+                            <c:when test="${li.getStageId() == 6}">
+                                완료
+                            </c:when>
+                            <c:otherwise>
+                                진행중
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <c:forEach var="report" items="${reportsResult}">
+                        <c:if test="${report.getRoomId() == li.getRoomId()}">
+                            <div class="status-tag 
+                                <c:choose>
+                                    <c:when test="${report.getIsChoice() == -1}">status-pending</c:when>
+	                                <c:when test="${report.getIsChoice() == 0}">status-rejected</c:when>
+	                                <c:when test="${report.getIsChoice() == 1}">status-accepted</c:when>
+	                                <c:otherwise>status-pending</c:otherwise>
+                                </c:choose>">
+                                <c:choose>
+                                    <c:when test="${report.getIsChoice() == -1}">결재대기</c:when>
+	                                <c:when test="${report.getIsChoice() == 0}">미채택</c:when>
+	                                <c:when test="${report.getIsChoice() == 1}">채택</c:when>
+	                                <c:otherwise>결재대기</c:otherwise>
+                                </c:choose>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
 					<div class="room-title">${li.getRoomTitle()}</div>
 					<div class="line-container">
 						<hr class="line">

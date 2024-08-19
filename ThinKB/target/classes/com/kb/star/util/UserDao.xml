@@ -372,4 +372,9 @@ ORDER BY
         <result property="roomTitle" column="RoomTitle"/>
         <result property="contribution" column="ContributionCnt"/>
     </resultMap>
+    
+<!-- 보고서 결재여부 -->
+<select id="reportsResult" resultType="com.kb.star.dto.ReportsDto">
+	SELECT RoomId, COALESCE(IsChoice, -1) IsChoice from Reports
+</select>
 </mapper>
