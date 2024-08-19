@@ -80,8 +80,7 @@ body, html {
 	padding:1%;
 }
 .idea-item.voted-item {
-/*     background-color: #f0f8ff; */
-    background-color: #FFFBD8; 
+  	background-color: #FFFBD8;
     border-radius: 20px;
     padding:1%;
 }
