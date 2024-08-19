@@ -37,10 +37,12 @@ public class RoomManagement implements RoomCommand {
 		MeetingRooms meetingRoom = dao.selectRoomId(roomId);
 		List<TimersDto> dto1 = dao.selectTimersByRoomId(roomId);
 		List<Ideas> dto2 = dao.selectIdeasByRoomId(roomId);
+		int pickOneId = dao.getIdeaIdPickOne(roomId);
 		model.addAttribute("meetingRoom",meetingRoom);
 		model.addAttribute("timers",dto1);
 		model.addAttribute("ideas",dto2);
 		model.addAttribute("roomId",roomId);
+		model.addAttribute("ideaId",pickOneId);
 		List<Integer> userIdList = dao.roomIdFormember(roomId);
 		List<UsersDto> userList = new ArrayList<UsersDto>();
 		for(int ids : userIdList) {

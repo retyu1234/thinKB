@@ -10,7 +10,7 @@
 <title>My Page</title>
 <style>
 .mypage-body {
-	font-family: 'Arial', sans-serif;
+	font-family: KB금융 본문체 Light;
 	background-color: #ffffff;
 	margin: 0;
 	padding: 0;

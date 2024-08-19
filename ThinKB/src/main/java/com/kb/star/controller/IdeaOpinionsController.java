@@ -47,9 +47,10 @@ public class IdeaOpinionsController {
     
     // 4가지 의견 한 번에 보기 1
     @RequestMapping("/ideaOpinionsList")
-    public String viewOpinions(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
+    public String viewOpinions(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,@RequestParam("stage") int stage, HttpServletRequest request, Model model) {
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
+        model.addAttribute("stage", stage);
         model.addAttribute("request", request);
         
         IdeaOpinionsCommand IdeaOpinionsCommand = new IdeaOpinionsCommand(sqlSession);
@@ -63,12 +64,13 @@ public class IdeaOpinionsController {
 	// 아이디어 의견을 가져오는 메서드
     @RequestMapping("/ideaOpinions")
     public String getIdeaOpinions(HttpServletRequest request, Model model, ServletRequest session,
-    		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,
+    		@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,@RequestParam("stage") int stage,
     		@RequestParam(value = "currentTab", required = false, defaultValue = "tab-smart") String currentTab) {
     	
     	model.addAttribute("request", request);
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
+        model.addAttribute("stage", stage);
         model.addAttribute("currentTab", currentTab);
 //        String activeHatColor = getHatColor(currentTab);
 //        model.addAttribute("currentTab", activeHatColor);
@@ -108,7 +110,7 @@ public class IdeaOpinionsController {
     // 의견 작성시 추가
     @RequestMapping("/addOpinion")
     public String addOpinion(@ModelAttribute IdeaOpinionsDto opinionForm, HttpSession session, 
-                             @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId, Model model) {
+                             @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId,@RequestParam("stage") int stage, Model model) {
     	Integer userId = (Integer) session.getAttribute("userId");
         opinionForm.setUserID(userId);
         opinionForm.setIdeaID(ideaId);
@@ -166,7 +168,7 @@ public class IdeaOpinionsController {
 //            ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
 //        }
         
-        return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+        return "redirect:/ideaOpinions?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId+"&stage="+stage;
     }
 
     // 의견 삭제(자신이 작성한 의견일 경우)
@@ -174,14 +176,15 @@ public class IdeaOpinionsController {
     public String deleteOpinion(@RequestParam int opinionId, 
                                 @RequestParam String currentTab,
                                 @RequestParam int roomId,
-                                @RequestParam int ideaId) {
+                                @RequestParam int ideaId,
+                                @RequestParam int stage) {
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
         // 의견 삭제 처리
         ideaOpinionsDao.deleteOpinion(opinionId);
         
         // 현재 탭과 roomId, ideaId를 포함하여 리다이렉트
-        return "redirect:/ideaOpinions?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
+        return "redirect:/ideaOpinions?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab+"&stage="+stage;
     }
     
     
@@ -307,9 +310,10 @@ public class IdeaOpinionsController {
     
     // 4가지 의견 한 번에 보기 2
     @RequestMapping("/ideaOpinionsList2")
-    public String ideaOpinionsList2(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, HttpServletRequest request, Model model) {
+    public String ideaOpinionsList2(@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,@RequestParam("stage") int stage, HttpServletRequest request, Model model) {
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
+        model.addAttribute("stage", stage);
         model.addAttribute("request", request);
         
         IdeaOpinions2Command ideaOpinions2Command = new IdeaOpinions2Command(sqlSession);
@@ -324,14 +328,13 @@ public class IdeaOpinionsController {
     // 기존 의견들 불러오기
     @RequestMapping("/ideaOpinions2")
     public String viewIdeaDetails(HttpServletRequest request, Model model,
-    							@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, 
+    							@RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,@RequestParam("stage") int stage, 
     							@RequestParam(value = "currentTab", required = false) String currentTab) {
     	model.addAttribute("request", request);
     	model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
         model.addAttribute("currentTab", currentTab);
-//        int stage = Integer.parseInt((String) request.getParameter("stage"));
-//        model.addAttribute("stage", stage);
+        model.addAttribute("stage", stage);
         
         if (currentTab == null || currentTab.isEmpty()) {
             currentTab = "tab-smart";  // 기본값 설정
@@ -347,7 +350,7 @@ public class IdeaOpinionsController {
     // 의견 작성시 추가 + 현재 의견들 불러오기
     @RequestMapping("/addOpinion2")
     public String addOpinion2(@ModelAttribute IdeaOpinionsDto opinionForm, HttpSession session, Model model,
-                             @RequestParam String currentTab, @RequestParam int roomId, @RequestParam int ideaId) {
+                             @RequestParam String currentTab, @RequestParam int roomId,@RequestParam int ideaId,@RequestParam int stage) {
         
         Integer userId = (Integer) session.getAttribute("userId");
         opinionForm.setUserID(userId);
@@ -379,7 +382,7 @@ public class IdeaOpinionsController {
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         ideaOpinionsDao.insertOpinion2(opinionForm);
         
-        return "redirect:/ideaOpinions2?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId;
+        return "redirect:/ideaOpinions2?currentTab=" + currentTab + "&roomId=" + roomId + "&ideaId=" + ideaId+"&stage="+stage;
     }
     
     // 의견 삭제(자신이 작성한 의견일 경우)
@@ -387,7 +390,8 @@ public class IdeaOpinionsController {
     public String deleteOpinion2(@RequestParam int opinionId, 
                                 @RequestParam String currentTab,
                                 @RequestParam int roomId,
-                                @RequestParam int ideaId) {
+                                @RequestParam int ideaId,
+                                @RequestParam int stage) {
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
         // 해당 의견에 대한 모든 좋아요 삭제 처리
@@ -397,13 +401,13 @@ public class IdeaOpinionsController {
         ideaOpinionsDao.deleteOpinion(opinionId);
         
         // 현재 탭과 roomId, ideaId를 포함하여 리다이렉트
-        return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
+        return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab+"&stage="+stage;
     }
     
     // 좋아요 
     @RequestMapping(value = "/likeOpinion", method = RequestMethod.POST)
     public String likeOpinion(@RequestParam("opinionId") int opinionId, @RequestParam("like") boolean like, @RequestParam("userId") int userId,
-                              @RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId, @RequestParam("currentTab") String currentTab, Model model) {
+                              @RequestParam("roomId") int roomId, @RequestParam("ideaId") int ideaId,@RequestParam("stage") int stage, @RequestParam("currentTab") String currentTab, Model model) {
 
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
 
@@ -420,7 +424,7 @@ public class IdeaOpinionsController {
             ideaOpinionsDao.decreaseLikeNum(opinionId); // 좋아요 수를 1 감소
         }
 
-        return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab;
+        return "redirect:/ideaOpinions2?roomId=" + roomId + "&ideaId=" + ideaId + "&currentTab=" + currentTab+"&stage="+stage;
     }
 
     // 사용자가 특정 의견에 좋아요를 눌렀는지 확인하는 메서드

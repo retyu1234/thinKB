@@ -1440,7 +1440,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						<div class="best-item">
 							<div class="profile-container">
 								<img
-									src="<c:url value='/resources/department${status.index + 1}.png' />"
+									src="<c:url value='/resources/departmentImg${status.index + 1}.png' />"
 									alt="${usage.teamName}" class="profile-image">
 							</div>
 							<p class="best-name">${usage.teamName}</p>

@@ -36,8 +36,10 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		int roomId = Integer.parseInt(map.get("roomId").toString());
 		int ideaId = Integer.parseInt(map.get("ideaId").toString());
+		int stage = Integer.parseInt(map.get("stage").toString());
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("ideaId", ideaId);
+		model.addAttribute("stage", stage);
 
 		HttpSession session = request.getSession();
 		int userId = (Integer) session.getAttribute("userId");
@@ -92,10 +94,6 @@ public class IdeaOpinionsCommand implements RoomCommand {
         List<String> userCommentedTabs = ideaOpinionsDao.getUserCommentedTabs(userId, ideaId); 
         model.addAttribute("userCommentedTabs", userCommentedTabs);
         
-        // 디버깅을 위한 로그
-        System.out.println("userCommentedTabs : " + userCommentedTabs);
-        System.out.println("currentTab : " + currentTab);
-        System.out.println("currentHatColor : " + currentHatColor);
         
 
         // 현재 탭에 이미 의견을 작성했는지 확인
@@ -154,7 +152,6 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);
-		System.out.println("yesPickList :" + dao.yesPickIdeaList(roomId));
 		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);

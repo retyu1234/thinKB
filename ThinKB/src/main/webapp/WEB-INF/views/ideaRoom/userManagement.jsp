@@ -10,7 +10,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<title>참여자 관리</title>
+<title>thinKB - 참여자 관리</title>
 <style>
 .newRoom-body {
 	margin: 0;
@@ -540,7 +540,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('backButton').addEventListener('click', function() {
         var roomId = '${meetingRoom.roomId}';
         var stageId = '${meetingRoom.stageId}';
-        window.location.href = './roomDetail?roomId=' + roomId + '&stage=' + stageId;
+        var ideaId='${ideaId}';
+        window.location.href = './roomDetail?roomId=' + roomId + '&stage=' + stageId+'&ideaId='+ideaId;
     });
 });
 </script>

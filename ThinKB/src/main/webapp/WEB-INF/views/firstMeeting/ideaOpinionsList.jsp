@@ -386,7 +386,8 @@ function navigateToTab(currentTab) {
     var container = document.getElementById('dataContainer');
     var roomId = container.dataset.roomId;
     var ideaId = container.dataset.ideaId;
-    var url = './ideaOpinions?roomId=' + roomId + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
+    var stage= container.dataset.stageId;
+    var url = './ideaOpinions?roomId=' + roomId + '&ideaId=' + ideaId + '&currentTab=' + currentTab+'&stage='+stage;
     window.location.href = url;
 }
 </script>
@@ -431,7 +432,7 @@ function navigateToTab(currentTab) {
 			</c:forEach>
 		</div>
 		<div id="dataContainer" data-room-id="${roomId}"
-			data-idea-id="${ideaId}"></div>
+			data-idea-id="${ideaId}" data-stage-id="${stage}"></div>
 		<!-- 제목 -->
 		<div class="ideaOpinionList-title1">
 			<c:choose>

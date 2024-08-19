@@ -319,7 +319,6 @@ public class IdeaRoomController {
 
 	@RequestMapping("/roomDetail")
 	public String roomDetail(HttpServletRequest request, @RequestParam("roomId") int roomId,
-
 	                         @RequestParam("stage") int stage, Model model,
 	                         @RequestParam(value = "ideaId", required = false) Integer ideaId,
 	                         @RequestParam(value = "currentTab", required = false) String currentTab) {
