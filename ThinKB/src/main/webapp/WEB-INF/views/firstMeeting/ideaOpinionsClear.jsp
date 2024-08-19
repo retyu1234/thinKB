@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>2차 의견 타이머 설정</title>
+<title>thinKB - 의견 확장하기 설정</title>
 <style>
 html, body {
 	max-width: 100%;

@@ -8,7 +8,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1차 의견</title>
+<title>thinKB - 의견 모으기</title>
 <style>
 .stage3-header {
 	position: relative;
@@ -394,23 +394,20 @@ h1 {
 
 .opinion-textarea {
 	font-family: KB금융 본문체 Light;
-	width: calc(100% - 110px); /* 버튼 너비(100px)와 여백(10px)을 고려한 너비 */
-	min-height: 50px;
-	max-height: 200px; /* 최대 높이 설정 */
-    overflow-y: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
-    height: auto;
-	margin-right: 10px;
-	margin-bottom: 50px;
-	border: 2px solid #ccc;
-	/* border: 4px solid #ffc107; */
-	padding: 12px; /* 패딩을 더 두껍게 조정 */
-	border-radius: 5px;
-	box-sizing: border-box; /* 패딩 포함한 크기 조정 */
-	font-size: 12pt;
-	transition: border-color 0.3s ease; /* 부드러운 전환 효과 */
-	white-space: pre-wrap;
-    resize: vertical; /* 사용자가 수직으로만 크기 조절 가능 */
-    overflow-y: hidden;
+    width: calc(100% - 110px);
+    height: 50px; /* 고정된 높이 설정 */
+    min-height: 50px;
+    max-height: 150px; /* 최대 높이 설정 */
+    margin-right: 10px;
+    margin-bottom: 50px;
+    border: 2px solid #ccc;
+    padding: 12px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 12pt;
+    transition: border-color 0.3s ease;
+    rresize: none; /* 사용자가 크기를 조절할 수 없게 함 */
+    overflow-y: hidden; /* 스크롤바 숨김 */
     line-height: 1.5; /* 줄 간격 설정 */
 }
 .opinion-textarea:focus {
@@ -643,6 +640,22 @@ h1 {
         }
     });
   	
+    document.addEventListener('DOMContentLoaded', function() {
+        function adjustTextareaHeight(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+
+        document.querySelectorAll('.opinion-textarea').forEach(function(textarea) {
+            textarea.addEventListener('input', function() {
+                adjustTextareaHeight(this);
+            });
+
+            // 초기 높이 설정
+            adjustTextareaHeight(textarea);
+        });
+    });
+  	
   	// 타이머 종료시 Time Out 표시
     document.addEventListener("DOMContentLoaded", function() {
         const stageId = ${meetingRoom.getStageId()};
@@ -662,29 +675,7 @@ h1 {
         }
     });
   	
-  	// 의견입력란 줄바꿈
-  	function autoResize(textarea) {
-	    textarea.style.height = 'auto';
-	    var singleLineHeight = parseInt(window.getComputedStyle(textarea).lineHeight);
-	    var newHeight = Math.max(textarea.scrollHeight, singleLineHeight + 24); // 24는 상하 패딩
-	    
-	    if (newHeight <= singleLineHeight + 24) {
-	        textarea.style.height = (singleLineHeight + 24) + 'px';
-	    } else {
-	        textarea.style.height = newHeight + 'px';
-	    }
-	}
-	
-	document.addEventListener('DOMContentLoaded', function() {
-	    var textareas = document.querySelectorAll('.opinion-textarea');
-	    textareas.forEach(function(textarea) {
-	        textarea.addEventListener('input', function() {
-	            autoResize(this);
-	        });
-	        // 초기 높이 설정
-	        autoResize(textarea);
-	    });
-	});
+
 </script>
 </head>
 
@@ -833,14 +824,14 @@ h1 {
 					        <div class="error-message">${error}</div>
 					    </c:if>
 					    <c:choose>
-					        <c:when test="${2 - userOpinionCount > 0 && smartOpinionCount < maxComments}">
+					        <c:when test="${(2 - userOpinionCount > 0) && (smartOpinionCount < maxComments) && !userCommentedTabs.contains('Smart')}">
 					            <form:form method="post" action="./addOpinion"
 					                class="input-form" modelAttribute="opinionForm">
 					                <form:hidden path="hatColor" value="Smart" />
 					                <form:hidden path="currentTab" value="tab-smart" />
 					                <form:hidden path="roomId" value="${roomId}" />
 					                <form:hidden path="ideaId" value="${ideaId}" />
-					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
+					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" rows="1" />
 					                <button type="button" class="btn-write"
 					                    onclick="validateAndSubmitForm('tab-smart', ${maxComments}, ${smartOpinionCount})">작성 
 					                </button>
@@ -848,7 +839,12 @@ h1 {
 					        </c:when>
 					        <c:when test="${2 - userOpinionCount <= 0}">
 					            <div style="margin-left: 80px; margin-bottom: 200px;">
-					                필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            	필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            </div>
+					        </c:when>
+						    <c:when test="${userCommentedTabs.contains('Smart')}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                이미 해당 탭에 의견을 작성하셨습니다. 다른 탭에 의견을 작성해주세요.
 					            </div>
 					        </c:when>
 					        <c:when test="${smartOpinionCount >= maxComments}">
@@ -908,14 +904,14 @@ h1 {
 					        <div class="error-message">${error}</div>
 					    </c:if>
 					    <c:choose>
-					        <c:when test="${2 - userOpinionCount > 0 && positiveOpinionCount < maxComments}">
+					    	<c:when test="${(2 - userOpinionCount > 0) && (positiveOpinionCount < maxComments) && !userCommentedTabs.contains('Positive')}">
 					            <form:form method="post" action="./addOpinion"
 					                modelAttribute="opinionForm" class="input-form">
 					                <form:hidden path="hatColor" value="Positive" />
 					                <form:hidden path="currentTab" value="tab-positive" />
 					                <form:hidden path="roomId" value="${roomId}" />
 					                <form:hidden path="ideaId" value="${ideaId}" />
-					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
+					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" rows="1" />
 					                <button type="button" class="btn-write"
 					                    onclick="validateAndSubmitForm('tab-positive', ${maxComments}, ${positiveOpinionCount})">작성</button>
 					            </form:form>
@@ -923,6 +919,11 @@ h1 {
 					        <c:when test="${2 - userOpinionCount <= 0}">
 					            <div style="margin-left: 80px; margin-bottom: 200px;">
 					                필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            </div>
+					        </c:when>
+					        <c:when test="${userCommentedTabs.contains('Positive')}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                이미 해당 탭에 의견을 작성하셨습니다. 다른 탭에 의견을 작성해주세요.
 					            </div>
 					        </c:when>
 					        <c:when test="${positiveOpinionCount >= maxComments}">
@@ -978,14 +979,14 @@ h1 {
 					        <div class="error-message">${error}</div>
 					    </c:if>
 					    <c:choose>
-					        <c:when test="${2 - userOpinionCount > 0 && worryOpinionCount < maxComments}">
+					    	<c:when test="${(2 - userOpinionCount > 0) && (worryOpinionCount < maxComments) && !userCommentedTabs.contains('Worry')}">
 					            <form:form method="post" action="./addOpinion"
 					                modelAttribute="opinionForm" class="input-form">
 					                <form:hidden path="hatColor" value="Worry" />
 					                <form:hidden path="currentTab" value="tab-worry" />
 					                <form:hidden path="roomId" value="${roomId}" />
 					                <form:hidden path="ideaId" value="${ideaId}" />
-					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
+					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" rows="1" />
 					                <button type="button" class="btn-write"
 					                    onclick="validateAndSubmitForm('tab-worry', ${maxComments}, ${worryOpinionCount})">작성</button>
 					            </form:form>
@@ -993,6 +994,11 @@ h1 {
 					        <c:when test="${2 - userOpinionCount <= 0}">
 					            <div style="margin-left: 80px; margin-bottom: 200px;">
 					                필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            </div>
+					        </c:when>
+					        <c:when test="${userCommentedTabs.contains('Worry')}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                이미 해당 탭에 의견을 작성하셨습니다. 다른 탭에 의견을 작성해주세요.
 					            </div>
 					        </c:when>
 					        <c:when test="${worryOpinionCount >= maxComments}">
@@ -1049,14 +1055,14 @@ h1 {
 					        <div class="error-message">${error}</div>
 					    </c:if>
 					    <c:choose>
-					        <c:when test="${2 - userOpinionCount > 0 && strictOpinionCount < maxComments}">
+					    	<c:when test="${(2 - userOpinionCount > 0) && (strictOpinionCount < maxComments) && !userCommentedTabs.contains('Strict')}">
 					            <form:form method="post" action="./addOpinion"
 					                modelAttribute="opinionForm" class="input-form">
 					                <form:hidden path="hatColor" value="Strict" />
 					                <form:hidden path="currentTab" value="tab-strict" />
 					                <form:hidden path="roomId" value="${roomId}" />
 					                <form:hidden path="ideaId" value="${ideaId}" />
-					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" />
+					                <form:textarea path="opinionText" class="opinion-textarea" placeholder="의견을 입력해주세요" rows="1" />
 					                <button type="button" class="btn-write"
 					                    onclick="validateAndSubmitForm('tab-strict', ${maxComments}, ${strictOpinionCount})">작성</button>
 					            </form:form>
@@ -1064,6 +1070,11 @@ h1 {
 					        <c:when test="${2 - userOpinionCount <= 0}">
 					            <div style="margin-left: 80px; margin-bottom: 200px;">
 					                필수 의견 2개 작성을 완료하셨습니다. 더 이상 의견을 작성할 수 없습니다.
+					            </div>
+					        </c:when>
+					        <c:when test="${userCommentedTabs.contains('Strict')}">
+					            <div style="margin-left: 80px; margin-bottom: 200px;">
+					                이미 해당 탭에 의견을 작성하셨습니다. 다른 탭에 의견을 작성해주세요.
 					            </div>
 					        </c:when>
 					        <c:when test="${strictOpinionCount >= maxComments}">
