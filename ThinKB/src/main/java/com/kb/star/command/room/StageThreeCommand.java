@@ -43,7 +43,6 @@ public class StageThreeCommand implements RoomCommand {
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);
-		System.out.println("스테이지3커맨드" + dto);
 
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
@@ -55,7 +54,6 @@ public class StageThreeCommand implements RoomCommand {
 
 		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
 		model.addAttribute("roomMessage", roomMessage);
-		System.out.println(roomMessage);
 		// 여기까지 leftSideBar 출력용
 	}
 

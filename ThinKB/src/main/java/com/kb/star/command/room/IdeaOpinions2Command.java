@@ -173,8 +173,10 @@ public class IdeaOpinions2Command implements RoomCommand {
 		params.put("roomId", roomId);
 		params.put("ideaId", ideaId);
 
-		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByroomId", params);
 		model.addAttribute("roomMessage", roomMessage);
+//		int stageId = Integer.parseInt(request.getParameter("stage"));
+//		model.addAttribute("stage",stageId);
 		// 여기까지 leftSideBar 출력용
     }
     

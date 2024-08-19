@@ -92,6 +92,18 @@
 		AND IsDelete = 0
 		ORDER BY CreatedAt DESC;
 	</select>
+	<select id="getMessagesByroomId"
+		resultType="com.kb.star.dto.NotiDto">
+		SELECT * 
+		FROM Notifications
+		WHERE UserID = #{userId} 
+		AND 
+		RoomID = #{roomId} 
+		and IdeaID in (0, #{ideaId}) <!-- 추가 -->
+		AND IsRead = 0 
+		AND IsDelete = 0 
+		ORDER BY CreatedAt DESC
+	</select>
 	
 	<select id="getMessagesAll" resultType="com.kb.star.dto.NotiDto">
 		SELECT * FROM Notifications
