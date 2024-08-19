@@ -91,13 +91,6 @@ public class UserInfoCommand implements LoginCommand {
 		model.addAttribute("notifications", notifications);
 		model.addAttribute("unreadCount", unreadCount); // 읽지 않은 알림 개수 추가
 
-		// 내가 쓴 보고서 목록 가져오기
-		ReportDao repoDao = sqlSession.getMapper(ReportDao.class);
-
-		List<ReportsDto> repoDto = repoDao.getMyReportList(id);
-		model.addAttribute("reportList", repoDto);
-		
-
 		// 아이디어 목록을 저장할 맵
 		Map<Integer, List<Ideas>> roomIdeasMap = new HashMap<>();
 		// 각 회의방에 대한 아이디어 리스트를 맵에 추가
