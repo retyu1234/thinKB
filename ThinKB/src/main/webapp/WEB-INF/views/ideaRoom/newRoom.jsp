@@ -576,9 +576,12 @@ body.modal-open {
 				placeholder="여기에 작성해주세요">
 
 	<!-- 아이디어 회의 상세설명 -->
-			<div class="titleAndDetail">
-				<div class="titleAndDetail-title">아이디어 회의 상세설명</div><button type="button" id="autoCompleteBtn" class="yellow-button">자동완성</button>
-				<div class="titleAndDetail-detail">상세 설명을 직접 입력하거나, 자동완성(KB AI) 버튼을 통해 채울 수 있어요.</div>
+			<div class="userList">
+				<div class="userList-left">
+					<div class="userList-title">아이디어 회의 상세설명</div>
+					<button type="button" id="autoCompleteBtn" class="yellow-button">자동완성</button>
+				</div>
+				<div class="userList-detail">상세 설명을 직접 입력하거나, 자동완성(KB AI) 버튼을 통해 채울 수 있어요.</div>
 			</div>
 			<textarea id="content" class="new-subject" style="height: 400px; width: 100%; resize: vertical;" name="content" placeholder="여기에 작성해주세요"></textarea>
 	
