@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>관리자 페이지</title>
+<title>thinKB-관리자 페이지</title>
 <style>
 	/* 전체 */
     .admin-body {
