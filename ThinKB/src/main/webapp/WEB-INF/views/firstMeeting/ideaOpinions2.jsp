@@ -237,10 +237,10 @@ a {
 .opinion-textarea {
 	font-family: KB금융 본문체 Light;
     width: calc(100% - 120px);
-    /* min-height: 50px; */
-    max-height: 200px;
-    overflow-y: auto;
-    resize: vertical;
+    min-height: 50px;
+    max-height: 150px;
+    overflow-y: hidden; /* 스크롤바 숨김 */
+    resize: none;
     line-height: 1.5;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -547,6 +547,23 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    var textareas = document.querySelectorAll('.opinion-textarea');
+    
+    textareas.forEach(function(textarea) {
+        textarea.addEventListener('input', autoResize, false);
+    });
+
+    function autoResize() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    }
+
+    // 초기 높이 설정
+    textareas.forEach(autoResize);
+});
+
+
 <%
 String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
 request.setAttribute("stages", stages);
@@ -727,7 +744,27 @@ request.setAttribute("stages", stages);
 		            </c:otherwise>
 		        </c:choose>
 		    </ul>
-	       <c:if test="${4 - userOpinionCount > 0}">
+		    	<c:choose>
+				    <c:when test="${isTimerEnded}">
+				        <div class="comment-ended">타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.</div>
+				    </c:when>
+				    <c:when test="${userOpinionCount >= 4}">
+				        <div class="comment-full">최대 작성 가능 의견 4개 작성을 완료하셨습니다. <br> 더 이상 의견을 작성할 수 없습니다.</div>
+				    </c:when>
+				    <c:when test="${userCommentedTabs.contains(currentHatColor)}">
+				        <div class="comment-ended">이미 해당 탭에 의견을 작성하셨습니다.<br> 다른 탭에 의견을 추가 작성해주세요</div>
+				    </c:when>
+				    <c:when test="${canWriteOpinion}">
+				        <form action="addOpinion2" method="post" class="comment-section" onsubmit="return validateAndSubmitForm()">
+				            <input type="hidden" name="ideaId" value="${ideaId}" />
+			                <input type="hidden" name="roomId" value="${roomId}" />
+			                <input type="hidden" name="currentTab" value="${currentTab}" />
+			                <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력해주세요" rows="1"></textarea>
+				        	<button type="submit" class="write-button">작성</button>
+				        </form>
+				    </c:when>
+				</c:choose>
+<%-- 	       <c:if test="${4 - userOpinionCount > 0}">
 			    <c:choose>
 			        <c:when test="${!userCommentedTabs.contains(currentHatColor)}">
 			            <form action="addOpinion2" method="post" class="comment-section" onsubmit="return validateAndSubmitForm()"> 
@@ -735,7 +772,7 @@ request.setAttribute("stages", stages);
 			                <input type="hidden" name="roomId" value="${roomId}" />
 			                <input type="hidden" name="stage" value="${stage}" />
 			                <input type="hidden" name="currentTab" value="${currentTab}" />
-			                <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력해주세요"></textarea>
+			                <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력해주세요" rows="1"></textarea>
 			                <button type="submit" class="write-button">작성</button>
 			            </form>
 			        </c:when>
@@ -749,7 +786,7 @@ request.setAttribute("stages", stages);
 			</c:if>
             <div class="comment-ended" style="display: none;">
 				타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
-			</div>
+			</div> --%>
 		    </div>
 		</div>
 </div>
