@@ -110,7 +110,6 @@ button {
 			var loginSuccess = "${loginSuccess}";
 
 			if (loginSuccess === 'true') { // 로그인 성공일 경우
-				alert("로그인 성공");
 
 				var isAdmin = "${isAdmin}";
 

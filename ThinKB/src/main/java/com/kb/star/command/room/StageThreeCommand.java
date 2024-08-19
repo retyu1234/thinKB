@@ -37,7 +37,6 @@ public class StageThreeCommand implements RoomCommand {
 
 		// ideaId를 먼저 확인
 		Integer ideaId = (Integer) map.get("ideaId");
-		System.out.println(ideaId);
 		model.addAttribute("ideaId", ideaId);
 
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
