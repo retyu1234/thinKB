@@ -237,7 +237,8 @@ body, html {
 	cursor: default;
 }
 
-.modal-idea-box.reply-answer .delete-button, .modal-idea-box.reply .delete-button  {
+.modal-idea-box.reply-answer .delete-button, .modal-idea-box.reply .delete-button
+	{
 	pointer-events: auto; /* 삭제 버튼은 클릭 가능 */
 	cursor: pointer;
 	color: red;
@@ -308,7 +309,7 @@ body, html {
 .active {
 	color: #FFD700;
 	font-weight: bold;
-		font-family: KB금융 제목체 Light;
+	font-family: KB금융 제목체 Light;
 }
 
 .inactive {
@@ -450,7 +451,7 @@ body, html {
 #modal-idea-title {
 	font-size: 16pt;
 	font-weight: bold;
-		font-family: KB금융 제목체 Light;
+	font-family: KB금융 제목체 Light;
 }
 /* 상세설명 - 토글 */
 .title-detail {
@@ -488,7 +489,6 @@ body, html {
 	box-sizing: border-box;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
-	
 }
 
 #descriptionContent pre {
@@ -497,7 +497,6 @@ body, html {
 	white-space: pre-wrap; /* 자동 줄바꿈을 허용 */
 	word-wrap: break-word; /* 단어 단위로 줄바꿈 */
 }
-
 
 .toggle-input {
 	opacity: 0;
@@ -628,8 +627,9 @@ body, html {
 					<c:if test="${userId == meetingRoom.getRoomManagerId()}">
 						<div class="vote-info">현재 투표 참여인원 : ${voteCnt}명 / ${total}명</div>
 						<c:if test="${meetingRoom.stageId==2}">
-						<button id="nextStepButton" class="yellow-button"
-							onclick="goToNextStep()">다음 단계</button></c:if>
+							<button id="nextStepButton" class="yellow-button"
+								onclick="goToNextStep()">다음 단계</button>
+						</c:if>
 					</c:if>
 				</div>
 			</form>
@@ -645,30 +645,31 @@ body, html {
 							<div
 								class="idea-box ${votedIdeaId == idea.ideaID ? 'voted' : ''}"
 								data-ideaid="${idea.ideaID}"
-								data-ideatitle="${idea.title.replaceAll("\"", "&quot;")}"
-								data-ideadescription="${idea.description.replaceAll("\"", "&quot;")}"
+								data-ideatitle="${idea.title.replaceAll("
+								\"", "&quot;")}"
+								data-ideadescription="${idea.description.replaceAll("
+								\"", "&quot;")}"
 								data-ideauserid="${idea.userID}">
-								${idea.title}
-							</div>
+								${idea.title}</div>
 						</div>
 						<c:choose>
 							<c:when test="${sessionScope.userId != idea.userID}">
-								<div class="idea-question"
-									data-ideaid="${idea.ideaID}"
-									data-ideatitle="${idea.title.replaceAll("\"", "&quot;")}"
-									data-ideadescription="${idea.description.replaceAll("\"", "&quot;")}"
+								<div class="idea-question" data-ideaid="${idea.ideaID}"
+									data-ideatitle="${idea.title.replaceAll("
+									\"", "&quot;")}"
+									data-ideadescription="${idea.description.replaceAll("
+									\"", "&quot;")}"
 									data-ideauserid="${idea.userID}">
-									질문하기 (${ideaReplyCountMap[idea.ideaID]}건)
-								</div>
+									질문하기 (${ideaReplyCountMap[idea.ideaID]}건)</div>
 							</c:when>
 							<c:otherwise>
-								<div class="idea-answer"
-									data-ideaid="${idea.ideaID}"
-									data-ideatitle="${idea.title.replaceAll("\"", "&quot;")}"
-									data-ideadescription="${idea.description.replaceAll("\"", "&quot;")}"
+								<div class="idea-answer" data-ideaid="${idea.ideaID}"
+									data-ideatitle="${idea.title.replaceAll("
+									\"", "&quot;")}"
+									data-ideadescription="${idea.description.replaceAll("
+									\"", "&quot;")}"
 									data-ideauserid="${idea.userID}">
-									답변하기 (${ideaReplyCountMap[idea.ideaID]}건)
-								</div>
+									답변하기 (${ideaReplyCountMap[idea.ideaID]}건)</div>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -806,9 +807,21 @@ function openModal(ideaId, ideaTitle, ideaDescription, ideaUserId) {
 }
 
 function showReplyForm(replyID, replyContent) {
-	document.getElementById("replyAnswerContent").placeholder = "@" + replyContent + "에 대한 답변을 입력해주세요";
-	document.getElementById("replyToId").value = replyID;
+    const replyAnswerContent = document.getElementById("replyAnswerContent");
+    replyAnswerContent.placeholder = "@" + replyContent + "에 대한 답변을 입력해주세요";
+    document.getElementById("replyToId").value = replyID;
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.reply').forEach(function(replyBox) {
+        replyBox.addEventListener('click', function() {
+            const replyID = replyBox.dataset.replyId;
+            const replyContent = replyBox.innerText.trim();
+            showReplyForm(replyID, replyContent);
+        });
+    });
+});
+
 
 function hideReplyForm() {
 	document.getElementById("reply-form-container").style.display = "none";
