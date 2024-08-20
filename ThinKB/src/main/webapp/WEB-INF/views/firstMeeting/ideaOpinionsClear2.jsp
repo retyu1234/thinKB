@@ -5,23 +5,19 @@
 <%@ page import="java.util.*, java.text.SimpleDateFormat" %>
 <%
 // 사용자 확인
-List<Integer> userIdList = (List<Integer>) request.getAttribute("userIdList");
+Integer managerId = (Integer) request.getAttribute("managerId");
 Integer userId = (Integer) session.getAttribute("userId");
 boolean isParticipant = false;
 
-if (userIdList != null && userId != null) {
-    for (Integer id : userIdList) {
-        if (id.equals(userId)) {
-            isParticipant = true;
-            break;
-        }
-    }
-}
+   if (managerId.equals(userId)) {
+       isParticipant = true;
+   }
+
 
 if (!isParticipant) {
 	%>
     <script>
-        alert("회의방 참여자가 아닙니다. 회의방 목록 화면으로 이동합니다.");
+        alert("회의방 방장이 아닙니다. 회의방 목록 화면으로 이동합니다.");
         window.location.href = "./meetingList";
     </script>
     <%
