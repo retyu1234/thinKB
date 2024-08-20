@@ -42,4 +42,9 @@ public interface NotiDao {
 	public List<NotiDto> getMessagesByroomId(@Param("userId")int userId, @Param("roomId") int roomId, @Param("ideaId") int ideaId);
 	public List<NotiDto> getMessagesAll(int id, int roomId);
 	
+	List<NotiDto> getRecentNotifications(@Param("userId") int userId);
+	int getUnreadNotificationCount(@Param("userId") int userId);
+	
+	List<NotiDto> getAllNotiWithDetails(@Param("userId") int userId);
+	
 }

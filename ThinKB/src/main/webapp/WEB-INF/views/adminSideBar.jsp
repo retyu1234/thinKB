@@ -225,8 +225,6 @@
 	function logout() {
 		// 여기에 로그아웃 로직을 구현하세요
 		window.location.href = './logout';
-		alert('로그아웃 되었습니다.');
-		// 실제로는 서버에 로그아웃 요청을 보내고 리다이렉트하는 로직이 필요합니다.
 	}
 </script>
 </head>

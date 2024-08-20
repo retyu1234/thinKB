@@ -40,8 +40,10 @@ public class IdeaOpinions2Command implements RoomCommand {
         HttpServletRequest request = (HttpServletRequest) map.get("request");
         int roomId = Integer.parseInt(map.get("roomId").toString());
         int ideaId = Integer.parseInt(map.get("ideaId").toString());
+        int stage = Integer.parseInt(map.get("stage").toString());
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
+        model.addAttribute("stage", stage);
 
         HttpSession session = request.getSession();
         int userId = (Integer) session.getAttribute("userId");
