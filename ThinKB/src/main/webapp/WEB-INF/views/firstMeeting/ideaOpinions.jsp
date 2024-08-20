@@ -119,6 +119,7 @@ a {
     vertical-align: middle;
 }
 #descriptionContent {
+	font-family: KB금융 본문체 Light;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -128,6 +129,7 @@ a {
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
 }
 #descriptionContent pre {
+	font-family: KB금융 본문체 Light;
     white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
     word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
@@ -727,8 +729,8 @@ h1 {
 	         <div class="ideaOpinionList-title1">
 	            <c:choose>
 	               <c:when test="${ideaId == yesPickList[0].ideaID}">
-	               		<!-- 뒤로가기버튼(ideaOpinionsList로 이동) -->
-	               		<a href="./ideaOpinionsList?roomId=${roomId}&ideaId=${ideaId}">
+				        <!-- 뒤로가기버튼(ideaOpinionsList로 이동) -->
+	               		<a href="./ideaOpinionsList?roomId=${roomId}&ideaId=${ideaId}&stage=${stage}">
 				        	<img src="./resources/back2.png" alt="뒤로가기" class="back-btn">
 				        </a>
 	                    아이디어 A
