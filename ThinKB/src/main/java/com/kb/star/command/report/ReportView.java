@@ -74,6 +74,9 @@ public class ReportView implements RoomCommand{
 		//상단 6개 단계를 위한 yesPickList
 		List<Ideas> dto2 = dao1.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto2);
+		// 회의방 방장인지 확인하는 값
+		int managerId = info.getRoomManagerId();
+		model.addAttribute("managerId", managerId);
 	}
 
 }

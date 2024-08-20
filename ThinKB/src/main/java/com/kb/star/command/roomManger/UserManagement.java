@@ -73,5 +73,9 @@ public class UserManagement implements RoomCommand {
 		
 		int myContributionNum = dao.myContributionNum(roomId, userId);
 		model.addAttribute("myContributionNum", myContributionNum);
+		
+		// 회의방 방장인지 확인하는 값
+		int managerId = info.getRoomManagerId();
+		model.addAttribute("managerId", managerId);
 	}
 }
