@@ -62,8 +62,9 @@ public interface IdeaOpinionsDao {
     
     // 다음단계
     // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
-    void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
-	
+    // void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
+    void updateContribution(@Param("roomId") int roomId, @Param("userId") int userId);
+    
     // Timer 시간 새로 insert 해주기
 	void updateNewTimer(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("formattedTime") String formattedTime);
     

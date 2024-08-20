@@ -107,7 +107,7 @@
     
     
     <!-- 다음 단계 -->
-    <update id="updateContribution">
+<!--     <update id="updateContribution">
 	    UPDATE MeetingRoomMembers m
 	    JOIN StageParticipation s 
 	    ON m.UserID = s.UserID AND m.RoomID = s.RoomID
@@ -122,20 +122,27 @@
 	    AND s.Status = true 
 	    AND s.IdeaID = #{ideaId}
 	    AND s.StageID = 3;
+	</update> -->
+	<update id="updateContribution">
+		UPDATE MeetingRoomMembers m
+		SET m.ContributionCnt = m.ContributionCnt + (
+		    SELECT COUNT(DISTINCT CASE WHEN s.Status = 1 THEN s.IdeaID END)
+		    FROM StageParticipation s
+		    WHERE s.RoomID = m.RoomID
+		      AND s.UserID = m.UserID
+		      AND s.StageID = 3
+		)
+		WHERE m.RoomID = #{roomId}
+		  AND EXISTS (
+		    SELECT 1
+		    FROM StageParticipation s
+		    WHERE s.RoomID = m.RoomID
+		      AND s.UserID = m.UserID
+		      AND s.StageID = 3
+		      AND s.Status = 1
+		  );
 	</update>
-<!-- 	<select id="RoomForUserList" resultType="Integer">
-        SELECT UserID from
-        MeetingRoomMembers WHERE RoomID=#{param1}
-    </select>
 
-    <update id="updateContribution">
-        UPDATE MeetingRoomMembers m
-        JOIN StageParticipation s 
-        ON m.UserID = s.UserID AND m.RoomID = s.RoomID
-        SET m.ContributionCnt = m.ContributionCnt + 1
-        WHERE 
-        s.Status = true and s.IdeaID = #{ideaId} and s.UserID = #{userId} AND s.RoomID = #{roomId} AND s.StageID = 3;
-    </update> -->
 	
     <!-- Timer 시간 새로 insert 해주기 -->
     <update id="updateNewTimer">
