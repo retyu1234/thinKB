@@ -45,8 +45,9 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
         
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
-        // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
-        ideaOpinionsDao.updateContribution(ideaId, userId, roomId); // status의 t/f 검증은 xml파일에서 함
+        // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1 : 조건에 부합하는지는 xml파일에서 검증
+        // ideaOpinionsDao.updateContribution(ideaId, userId, roomId); // status의 t/f 검증은 xml파일에서 함
+        ideaOpinionsDao.updateContribution(roomId, userId);
         
         // ideaOpinionsClear.jsp
         // 타이머
@@ -79,11 +80,13 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
 		ideaOpinionsDao.updateStage(roomId); 
 		
 		// StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기
-		List<Integer> users = ideaOpinionsDao.RoomForUserList(roomId);
-		for(Integer list : users) {
-			ideaOpinionsDao.insertStageParticipation(roomId, ideaId, list);
-		}
-		System.out.println("here"+users);
+		List<Integer> users = ideaOpinionsDao.RoomForUserList(roomId); // 특정 방에 참여자 list
+		List<Ideas> pickedIdeas = ideaOpinionsDao.yesPickIdeaList(roomId); // stage3인 아이디어 2개 가져오기
+		for (Ideas idea : pickedIdeas) {
+            for (Integer userIdd : users) {
+                ideaOpinionsDao.insertStageParticipation(roomId, idea.getIdeaID(), userIdd);
+            }
+        }
 
 		// roomId, stage값 다시 model에 넣기
 		model.addAttribute("roomId", roomId);
