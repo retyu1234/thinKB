@@ -108,6 +108,8 @@ public class RoomStage2Command implements FirstMeetingCommand, RoomCommand {
         }
         model.addAttribute("userList", userList);
         
+        //회의방 참여자 확인
+        model.addAttribute("userIdList", userIdList);
         
     }
 }
