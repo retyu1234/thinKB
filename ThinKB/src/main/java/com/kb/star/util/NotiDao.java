@@ -45,6 +45,7 @@ public interface NotiDao {
 	List<NotiDto> getRecentNotifications(@Param("userId") int userId);
 	int getUnreadNotificationCount(@Param("userId") int userId);
 	
-	List<NotiDto> getAllNotiWithDetails(@Param("userId") int userId);
+    List<NotiDto> getNotificationsWithPagination(@Param("userId") int userId,@Param("offset")  int offset,@Param("pageSize") int pageSize);
+    int getTotalNotificationCount(int userId);
 	
 }
