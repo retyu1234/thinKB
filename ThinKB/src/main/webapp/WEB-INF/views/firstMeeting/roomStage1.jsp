@@ -3,6 +3,31 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%
+// 사용자 확인
+List<Integer> userIdList = (List<Integer>) request.getAttribute("userIdList");
+Integer userId = (Integer) session.getAttribute("userId");
+boolean isParticipant = false;
+
+if (userIdList != null && userId != null) {
+    for (Integer id : userIdList) {
+        if (id.equals(userId)) {
+            isParticipant = true;
+            break;
+        }
+    }
+}
+
+if (!isParticipant) {
+	%>
+    <script>
+        alert("회의방 참여자가 아닙니다. 회의방 목록 화면으로 이동합니다.");
+        window.location.href = "./meetingList";
+    </script>
+    <%
+    return;
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -1108,6 +1133,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     // stageId가 2 미만일 때는 아무 처리도 하지 않음 (기존 updateTimer 함수가 동작)
 });
+
 </script>
 <script type="text/javascript">
 // 특정 요소 비활성화 함수
@@ -1166,24 +1192,6 @@ window.onload = function() {
 };
 </script>
 <body style="margin: 0;">
-<%
-    // 사용자 확인
-    List<Integer> userIdList = (List<Integer>) request.getAttribute("userIdList");
-    Integer userId = (Integer) session.getAttribute("userId");
-    boolean isParticipant = false;
-    
-    for (Integer id : userIdList) {
-        if (id.equals(userId)) {
-            isParticipant = true;
-            break;
-        }
-    }
-    
-    if (!isParticipant) {
-        response.sendRedirect("./main");
-        return;
-    }
-%>
 <!-- 헤더영역 -->
 <header class="room1-header">
 	<%@ include file="../header.jsp"%>

@@ -99,6 +99,8 @@ public class StageOneCommand implements RoomCommand {
 		//상단 6개 단계를 위한 yesPickList
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);
+		
+		model.addAttribute("userIdList", userIdList);
 	}
 
 }

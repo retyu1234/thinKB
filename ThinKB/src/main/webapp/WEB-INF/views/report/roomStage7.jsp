@@ -648,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if (!isParticipant) {
-        response.sendRedirect("./main");
+        response.sendRedirect("./meetingList");
         return;
     }
 %>
