@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Insert title here</title>
+<title>thinKB - 회의방관리</title>
 <style>
 .newRoom-body {
 	margin: 0;
@@ -356,7 +356,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('backButton').addEventListener('click', function() {
         var roomId = '${meetingRoom.roomId}';
         var stageId = '${meetingRoom.stageId}';
-        window.location.href = './roomDetail?roomId=' + roomId + '&stage=' + stageId;
+        var ideaId='${ideaId}';
+        window.location.href = './roomDetail?roomId=' + roomId + '&stage=' + stageId+'&ideaId='+ideaId;
     });
 });
 </script>
@@ -435,9 +436,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			<c:choose>
 				<c:when test="${hasNonZeroIdea}">
+				<div style="display:flex; justify-content:flex-start;">
 					<c:forEach var="timer" items="${timers}">
 						<c:if test="${timer.ideaId > 0}">
-							<div class="ideaTimer-card">
+							<div class="ideaTimer-card" style="margin-right:5%;">
 								<div class="card-header">
 									<h3>${timer.title}</h3>
 									<p>방 ID: ${timer.roomId}</p>
@@ -463,6 +465,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							</div>
 						</c:if>
 					</c:forEach>
+					</div>
 				</c:when>
 				<c:otherwise>
 					<c:forEach var="timer" items="${timers}">

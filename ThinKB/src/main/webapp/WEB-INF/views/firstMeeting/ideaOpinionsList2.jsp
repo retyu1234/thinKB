@@ -269,7 +269,9 @@
 }
 .opinion-text {
     margin-top: 5px;
-    font-size: 10pt;
+    font-size: 10pt; 
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 .no-opinions {
 	font-family: KB금융 본문체 Light;
@@ -284,8 +286,9 @@
     function navigateToTab(currentTab) {
         var roomId = '${roomId}';
         var ideaId = '${ideaId}';
+        var stage= '${stage}';
         var url = '<c:url value="/ideaOpinions2"/>' + '?roomId=' + roomId
-                + '&ideaId=' + ideaId + '&currentTab=' + currentTab;
+                + '&ideaId=' + ideaId + '&currentTab=' + currentTab+'&stage='+stage;
         window.location.href = url;
     }
     

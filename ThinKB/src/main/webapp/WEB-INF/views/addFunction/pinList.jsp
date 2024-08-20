@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ThinkKB</title>
+<title>thinKB - 핀메모 목록</title>
 <style>
 html, body {
 	max-width: 100%;

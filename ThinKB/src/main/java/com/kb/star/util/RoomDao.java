@@ -144,4 +144,6 @@ public interface RoomDao {
 	RejectMember rejectMember(int roomId, int rejectId);
 
 	int whatsParticipant(int roomId, int id);
+	
+	int getIdeaIdPickOne(int roomId);
 }
