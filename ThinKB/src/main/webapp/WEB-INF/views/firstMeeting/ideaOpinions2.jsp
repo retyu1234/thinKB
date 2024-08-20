@@ -544,6 +544,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         window.updateTimer = function() {
         };
+        
+        document.querySelectorAll(".comment-section, .comment-full").forEach(function(el) {
+            el.style.display = "none";
+        });
+        document.querySelectorAll(".comment-ended").forEach(function(el) {
+            el.style.display = "block";
+            el.textContent = "타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.";
+        });
     }
 });
 

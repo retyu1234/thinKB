@@ -660,7 +660,7 @@ h1 {
         });
     });
   	
-  	// 타이머 종료시 Time Out 표시
+  	// 타이머 종료시 Time Out 표시(다음 단계에서 되돌아올 때)
     document.addEventListener("DOMContentLoaded", function() {
         const stageId = ${meetingRoom.getStageId()};
         const timerElement = document.getElementById("timer");
@@ -676,6 +676,14 @@ h1 {
             }
             window.updateTimer = function() {
             };
+            
+            // 입력창 숨기고 타이머 종료 메세지 띄우기
+            document.querySelectorAll(".comment-section").forEach(function(el) {
+                el.style.display = "none";
+            });
+            document.querySelectorAll(".comment-ended").forEach(function(el) {
+                el.style.display = "block";
+            });
         }
     });
   	
