@@ -2,6 +2,34 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%
+// 사용자 확인
+List<Integer> userIdList = (List<Integer>) request.getAttribute("userIdList");
+Integer userId = (Integer) session.getAttribute("userId");
+boolean isParticipant = false;
+
+if (userIdList != null && userId != null) {
+    for (Integer id : userIdList) {
+        if (id.equals(userId)) {
+            isParticipant = true;
+            break;
+        }
+    }
+}
+
+if (!isParticipant) {
+	%>
+    <script>
+        alert("회의방 참여자가 아닙니다. 회의방 목록 화면으로 이동합니다.");
+        window.location.href = "./meetingList";
+    </script>
+    <%
+    return;
+}
+%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,6 +291,7 @@
     vertical-align: middle;
 }
 #descriptionContent {
+	font-family: KB금융 본문체 Light;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -272,6 +301,7 @@
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
 }
 #descriptionContent pre {
+	font-family: KB금융 본문체 Light;
     white-space: pre-wrap; /* 긴 줄을 wrap합니다 */
     word-wrap: break-word; /* 긴 단어를 강제로 줄바꿈합니다 */
     max-width: 100%; /* 최대 너비를 부모 요소에 맞춥니다 */
