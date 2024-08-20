@@ -80,7 +80,9 @@ public class StageEndCommand implements RoomCommand {
 		// 기여도 조회 담기
 		List<MeetingRoomMember> member = dao.memberForRoomId(roomId);
 		model.addAttribute("member", member);
-
+		
+		// 회의방 참여자 여부 확인
+		model.addAttribute("userIdList", userIdList);
 	}
 
 }

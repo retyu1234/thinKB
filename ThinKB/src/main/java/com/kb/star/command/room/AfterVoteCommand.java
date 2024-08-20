@@ -35,7 +35,6 @@ public class AfterVoteCommand implements RoomCommand {
 
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
 		model.addAttribute("meetingRoom", meetingRoom);
-		System.out.println("회의실 정보: " + meetingRoom);
 
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 
@@ -49,7 +48,6 @@ public class AfterVoteCommand implements RoomCommand {
 		model.addAttribute("yesPickList", yesPickList);
 
 		int userId = (Integer) map.get("userId");
-		System.out.println("map.get:" + userId);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);
 		params.put("roomId", roomId);
@@ -83,6 +81,10 @@ public class AfterVoteCommand implements RoomCommand {
 		//상단 6개 단계를 위한 yesPickList
 		List<Ideas> dto1 = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto1);
+		
+		// 회의방 방장인지 확인하는 값
+		int managerId = meetingRoom.getRoomManagerId();
+		model.addAttribute("managerId", managerId);
 	}
 
 }
