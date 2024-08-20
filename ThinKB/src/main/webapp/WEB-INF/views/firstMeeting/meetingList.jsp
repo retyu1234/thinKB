@@ -412,7 +412,7 @@ body {
 								완료
 							</c:when>
 							<c:when test="${li.getEndDate() < currentDate}">
-								기한초과
+								기간종료
 							</c:when>
 							<c:otherwise>
 								진행중
