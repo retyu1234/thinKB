@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate var="currentDate" value="${now}" pattern="yyyy-MM-dd" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -153,6 +157,14 @@ body {
 	transition: all 0.3s ease;
 }
 
+.team-tag-active {
+	background-color: #FFD700;
+}
+
+.team-tag-completed, .team-tag-overdue {
+	background-color: #808080;
+	color: #ffffff;
+}
 .idea[data-stage="6"] {
 	background-color: #f0f0f0;
 }
@@ -370,7 +382,6 @@ body {
 					type="checkbox" data-stage="6" onchange="filterIdeas()"> 완료</label>
 			</div>
 		</div>
-
 		<!-- 회의방 목록 -->
 		<div class="ideas">
 			<c:forEach var="li" items="${roomList}">
@@ -385,16 +396,28 @@ body {
 		                onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'"
 		            </c:if>>
 					<div class="tag-container">
-                    <div class="team-tag">
-                        <c:choose>
-                            <c:when test="${li.getStageId() == 6}">
-                                완료
-                            </c:when>
-                            <c:otherwise>
-                                진행중
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
+					<div class="team-tag 
+						<c:choose>
+							<c:when test="${li.getStageId() == 6 || li.getEndDate() < currentDate}">
+								team-tag-completed
+							</c:when>
+							<c:otherwise>
+								team-tag-active
+							</c:otherwise>
+						</c:choose>
+					">
+						<c:choose>
+							<c:when test="${li.getStageId() == 6}">
+								완료
+							</c:when>
+							<c:when test="${li.getEndDate() < currentDate}">
+								기간종료
+							</c:when>
+							<c:otherwise>
+								진행중
+							</c:otherwise>
+						</c:choose>
+					</div>
                     <c:forEach var="report" items="${reportsResult}">
                         <c:if test="${report.getRoomId() == li.getRoomId()}">
                             <div class="status-tag 

@@ -1,6 +1,33 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%
+// 사용자 확인
+List<Integer> userIdList = (List<Integer>) request.getAttribute("userIdList");
+Integer userId = (Integer) session.getAttribute("userId");
+boolean isParticipant = false;
+
+if (userIdList != null && userId != null) {
+    for (Integer id : userIdList) {
+        if (id.equals(userId)) {
+            isParticipant = true;
+            break;
+        }
+    }
+}
+
+if (!isParticipant) {
+	%>
+    <script>
+        alert("회의방 참여자가 아닙니다. 회의방 목록 화면으로 이동합니다.");
+        window.location.href = "./meetingList";
+    </script>
+    <%
+    return;
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
