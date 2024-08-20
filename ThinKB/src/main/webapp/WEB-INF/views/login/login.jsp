@@ -81,6 +81,7 @@ button {
 	border-radius: 4px;
 	cursor: pointer;
 	margin-top: 10px;
+	font-family: KB금융 제목체 Light;
 }
 
 .loginBtn:hover {
