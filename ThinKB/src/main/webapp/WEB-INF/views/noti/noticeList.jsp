@@ -237,6 +237,32 @@ html, body {
 .btn-allRead:hover {
 	background-color: #D4AA00;
 }
+.idea-title {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 10px;
+}
+ .notiPagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+.notiPagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    margin: 0 4px;
+}
+.notiPagination a.notiActive {
+    background-color: #FFCC00;
+    color: white;
+    border: 1px solid #FFCC00;
+    border-radius:100px;
+    font-family: KB금융 본문체 Light
+}
+.notiPagination a:hover:not(.notiActive) {background-color: #ddd;}
 </style>
 </head>
 <body class="notiList-body">
@@ -251,6 +277,8 @@ html, body {
             <div class="user">${userName}님</div> <!-- 세션의 userName 출력 -->
         </div> --%>
      <!-- 모두읽음 버튼 추가 -->   
+     <div style="display:flex; justify-content:space-between">
+     <h2 style="margin:0; margin-top:20px;">알림함</h2> 
 	<div style="margin: 20px;">
         <form id="allReadForm" action="./allRead" method="post">
 		    <input type="hidden" name="userId" value="${userId}">
@@ -258,8 +286,8 @@ html, body {
 		        <button type="submit" class="btn-allRead">모두 읽음</button>
 		    </div>
 		</form>
-	</div>
-	
+	</div></div>
+	<hr style="border:1px solid lightgrey"/>
 	<c:if test="${not empty message}">
 	    <script>
 	        alert("${message}");
@@ -272,35 +300,46 @@ html, body {
         </div>
     </div>
 
-    <div class="notification-list">
-    <c:forEach var="notification" items="${notifications}">
-        <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
-           <div class="notification-content">
-                <c:choose>
-                    <c:when test="${notification.getIdeaID() != 0}">
+       <div class="notification-list">
+            <c:forEach var="notification" items="${notifications}">
+                <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
+                    <div class="notification-content">
                         <div class="title">
-                        	<img src="./resources/idea.png" style="width:40px; height:40px; margin-right:7px;" alt="아이디어제목"> 
-                        	[${notification.idea.title}]
+                            <img src="./resources/meeting.png" style="width:35px; height:35px; margin-right:10px;" alt="회의방제목"> 
+                            ${notification.roomTitle}
+                            <c:if test="${notification.getIdeaID() != 0}">
+                                <span class="idea-title">(아이디어: ${notification.idea.title})</span>
+                            </c:if>
                         </div>
+                        <div style="margin-left: 40px;">${notification.message}</div>
+                    </div>
+                    <div class="notification-date">
+                        <div class="delete" data-id="${notification.notificationID}">
+                            <img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
+                        </div>
+                        <div class="date">${notification.createdAt}</div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+                <div class="notiPagination">
+            <c:if test="${currentPage > 1}">
+                <a href="?page=${currentPage - 1}&pageSize=${pageSize}">&laquo;</a>
+            </c:if>
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <a class="notiActive" href="#">${i}</a>
                     </c:when>
                     <c:otherwise>
-                    	<div class="title">
-                    		<img src="./resources/meeting.png" style="width:35px; height:35px; margin-right:10px;" alt="회의방제목"> 
-                        	 [${notification.roomTitle}]
-                        </div>
+                        <a href="?page=${i}&pageSize=${pageSize}">${i}</a>
                     </c:otherwise>
                 </c:choose>
-                <div style="margin-left: 40px;">${notification.message}</div>
-            </div>
-            <div class="notification-date">
-                <div class="delete" data-id="${notification.notificationID}">
-                    <img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
-                </div>
-                <div class="date">${notification.createdAt}</div>
-            </div>
+            </c:forEach>
+            <c:if test="${currentPage < totalPages}">
+                <a href="?page=${currentPage + 1}&pageSize=${pageSize}">&raquo;</a>
+            </c:if>
         </div>
-    </c:forEach>
-</div>
 </div>
 
 <!-- 모달 창 -->

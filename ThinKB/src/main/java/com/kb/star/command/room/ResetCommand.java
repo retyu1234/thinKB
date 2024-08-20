@@ -113,7 +113,7 @@ public class ResetCommand implements RoomCommand {
 		
 		//반려된 사람한테만 알림 보내기
 		MeetingRooms roomInfo = dao.roomDetailInfo(roomId);
-		String notification = "[" + roomInfo.getRoomTitle() + "] 회의방에 제출된 아이디어 초안이 반려되었어요. 다른 아이디어를 제출해주세요.";
+		String notification = "제출했던 아이디어 초안이 🙅‍♂️반려되었어요. 다른 아이디어를 제출해주세요.";
 		for (RejectLog log : dto) {
 			System.out.println("아이디어id " + log.getRejectId());
 			RejectMember rejectMem = dao.rejectMember(roomId, log.getRejectId());

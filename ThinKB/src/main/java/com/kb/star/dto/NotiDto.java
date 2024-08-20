@@ -13,12 +13,22 @@ public class NotiDto {
     private int roomId;
     private Ideas idea; // noticeList.jsp에서 한 번의 반복문만 돌리기 위한 아이디어 정보 추가
     private String roomTitle; // noticeList.jsp에서 한 번의 반복문만 돌리기 위한 roomTitle 정보 추가
+    private String ideaTitle;
+    
+    
 
 
     
     // Getters and setters
+    
 	public int getNotificationID() {
 		return notificationID;
+	}
+	public String getIdeaTitle() {
+		return ideaTitle;
+	}
+	public void setIdeaTitle(String ideaTitle) {
+		this.ideaTitle = ideaTitle;
 	}
 	public void setNotificationID(int notificationID) {
 		this.notificationID = notificationID;
