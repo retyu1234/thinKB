@@ -640,13 +640,13 @@ request.setAttribute("stages", stages);
         
         <!-- 4가지 탭 -->
         <div class="tabs">
-		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-smart" 
+		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-smart&stage=${stage}" 
 		       class="tab tab-smart ${currentTab == 'tab-smart' || empty currentTab ? 'active' : ''}">객관적관점</a>
-		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-positive" 
+		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-positive&stage=${stage}" 
 		       class="tab tab-positive ${currentTab == 'tab-positive' ? 'active' : ''}">기대효과</a>
-		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-worry" 
+		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-worry&stage=${stage}" 
 		       class="tab tab-worry ${currentTab == 'tab-worry' ? 'active' : ''}">문제점</a>
-		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-strict" 
+		    <a href="ideaOpinions2?roomId=${roomId}&ideaId=${ideaId}&currentTab=tab-strict&stage=${stage}" 
 		       class="tab tab-strict ${currentTab == 'tab-strict' ? 'active' : ''}">실현가능성</a>
 		</div>
         
