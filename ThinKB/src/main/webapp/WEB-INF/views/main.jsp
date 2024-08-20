@@ -944,7 +944,7 @@
 	background-color: #333;
 }
 .team-icon {
-	font-size: 30px;
+	font-size: 45px;
 }
 
 .profile-container {
@@ -965,7 +965,7 @@
 	left: -5px;
 	width: 25px;
 	height: 25px;
-	background-color: #007bff;
+	background-color: #AB9A80;
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
@@ -1441,7 +1441,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							<div class="profile-container">
 								<img
 									src="<c:url value='/resources/departmentImg${status.index + 1}.png' />"
-									alt="${usage.teamName}" class="profile-image">
+									alt="${usage.teamName}" style="border-radius:0;" class="profile-image">
 							</div>
 							<p class="best-name">${usage.teamName}</p>
 							<p class="best-description">사용 횟수: ${usage.teamCount}</p>
