@@ -538,7 +538,7 @@
 }
 
 .team-icon {
-	font-size: 30px;
+	font-size: 45px;
 }
 
 .profile-container {
@@ -559,7 +559,7 @@
 	left: -5px;
 	width: 25px;
 	height: 25px;
-	background-color: #007bff;
+	background-color: #AB9A80;
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
@@ -687,10 +687,10 @@ window.onclick = function(event) {
 					<div class="best-content">
 						<c:forEach var="usage" items="${bestUsage}" varStatus="status">
 							<div class="best-item">
-								<div class="profile-container">
+								<div class="profile-container style="border:none;">
 									<img
-										src="<c:url value='/resources/department${status.index + 1}.png' />"
-										alt="${usage.teamName}" class="profile-image">
+										src="<c:url value='/resources/departmentImg${status.index + 1}.png' />"
+										alt="${usage.teamName}" style="border-radius:0;" class="profile-image">
 								</div>
 								<p class="best-name">${usage.teamName}</p>
 								<p class="best-description">사용 횟수: ${usage.teamCount}</p>
@@ -745,10 +745,10 @@ window.onclick = function(event) {
 			</div>
 			<div class="best-sections-wrapper" style="margin-bottom: 5%;">
 				<div class="best-section">
-					<div class="section-header">
+					<div class="section-header" style="display:flex;justify-content:space-between;">
 						<div class="section-title" style="font-size: 15pt;">📊 오늘의
-							결재내역</div><button class="more-button" onclick="location.href='./departmentReportList'">+ 더보기</button>
-					</div>
+							결재내역</div><button class="more-button" onclick="location.href='./departmentReportList2'">결재하러가기</button>
+					</div><hr style="border:1px solid lightgrey"/>
 					<div class="adminReport-content">
 						<c:choose>
 							<c:when test="${not empty todayReports}">
@@ -772,10 +772,10 @@ window.onclick = function(event) {
 					</div>
 				</div>
 				<div class="best-section" >
-					<div class="section-header">
+					<div class="section-header"style="display:flex;justify-content:space-between;">
 						<div class="section-title" style="font-size: 15pt;">🏆 연간 채택
-							아이디어</div><button class="more-button" onclick="location.href='./departmentReportList'">+ 더보기</button>
-					</div>
+							아이디어</div><button class="more-button" onclick="location.href='./departmentReportList'">전체보기</button>
+					</div><hr style="border:1px solid lightgrey"/>
 					<div class="adminReport-content">
 						<c:choose>
 							<c:when test="${not empty yearlyAdoptedReports}">

@@ -437,7 +437,130 @@
 .reset-btn:hover {
     background-color: #5a6268;
 }
+/* 물음표 버튼 스타일 */
+        .info-button {
+            background: none;
+            border: 2px solid black;
+            font-size: 16px;
+            cursor: pointer;
+            vertical-align: middle;
+            color: black;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            padding: 0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1;
+            margin-left: 5px;
+            transition: all 0.3s ease;
+            font-family: KB금융 본문체 light;
+            font-weight: bold;
+            margin:5%;
+        }
 
+        .info-button:hover {
+            background-color: #f0f0f0;
+        }
+        .level-info-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .level-info-modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 600px;
+            height:auto;
+            min-height:300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .level-info-close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .level-info-close:hover,
+        .level-info-close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .level-progression {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 60px;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: #e0e0e0;
+            z-index: 1;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #FFD700;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .level-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .level-icon i {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .level-icon.current {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .level-name {
+            font-size: 14px;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .level-points {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
 </style>
 <script>
 function openModal(modalId) {
@@ -498,8 +621,9 @@ window.onclick = function(event) {
 
 			<div class="badge-mileage-container">
 				<div class="badge">
+				<div style="display:flex; justify-content:space-between">
 					<p class="mypage-title-p"><i class="fas fa-medal" style="margin-right: 10px;"></i>Think level</p>
-					<div style="text-align: center; padding: 20px;">
+					<button class="info-button" onclick="openLevelInfoModal()">?</button></div><div style="text-align: center; padding: 20px;">
 						<c:choose>
 							<c:when test="${MeetingRoomStats.totalContribution <= 100}">
 								<i class="fas fa-award" style="color: #CD7F32; font-size: 40px;"></i>
@@ -554,6 +678,7 @@ window.onclick = function(event) {
 						</c:choose>
 					</div>
 				</div>
+
 <div class="mileage">
     <p class="mypage-title-p" style="margin-top:0;"><i class="fas fa-coins" style="margin-right: 10px;"></i>내 마일리지</p>
     <div class="mileage-content">
@@ -637,6 +762,40 @@ window.onclick = function(event) {
 				<div class="mypagePagination" id="mypagePagination"></div>
 			</div>
 		</div>
+					 
+    <!-- Think level 설명 모달 (body 끝 부분으로 이동) -->
+    <div id="levelInfoModal" class="level-info-modal">
+        <div class="level-info-modal-content">
+            <span class="level-info-close" onclick="closeLevelInfoModal()">&times;</span>
+            <h2>Think Level 안내</h2>
+            <p>Think Level은 회원님의 활동량과 기여도에 따라 부여되는 등급입니다.</p>
+            <div class="level-progression">
+                <div class="progress-line">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="level-icon" id="bronzeIcon">
+                    <i class="fas fa-award" style="color: #CD7F32;"></i>
+                    <span class="level-name">Bronze</span>
+                    <span class="level-points">0 - 100</span>
+                </div>
+                <div class="level-icon" id="silverIcon">
+                    <i class="fas fa-award" style="color: #C0C0C0;"></i>
+                    <span class="level-name">Silver</span>
+                    <span class="level-points">101 - 200</span>
+                </div>
+                <div class="level-icon" id="goldIcon">
+                    <i class="fas fa-award" style="color: #FFD700;"></i>
+                    <span class="level-name">Gold</span>
+                    <span class="level-points">201 - 300</span>
+                </div>
+                <div class="level-icon" id="platinumIcon">
+                    <i class="fas fa-crown" style="color: #B9F2FF;"></i>
+                    <span class="level-name">Platinum</span>
+                    <span class="level-points">301+</span>
+                </div>
+            </div>
+        </div>
+    </div>
 		<!-- 프로필업로드 모달 -->
 <div id="profileUploadModal" class="mypageModal">
     <div class="mypageModal-content" style="width:400px;">
@@ -662,6 +821,7 @@ window.onclick = function(event) {
         </form>
     </div>
 </div>
+
 	</div>
 
 	<script>
@@ -850,6 +1010,50 @@ document.getElementById('profileUploadForm').addEventListener('submit', function
     }
 });
 </script>
+<script>
+function openLevelInfoModal() {
+    document.getElementById('levelInfoModal').style.display = 'block';
+    updateLevelProgression();
+}
 
+function closeLevelInfoModal() {
+    document.getElementById('levelInfoModal').style.display = 'none';
+}
+
+function updateLevelProgression() {
+    const totalContribution = ${MeetingRoomStats.totalContribution};
+    let currentLevel, progressPercentage;
+
+    if (totalContribution <= 100) {
+        currentLevel = 'bronzeIcon';
+        progressPercentage = (totalContribution / 100) * 100;
+    } else if (totalContribution <= 200) {
+        currentLevel = 'silverIcon';
+        progressPercentage = ((totalContribution - 100) / 100) * 100 + 33.33;
+    } else if (totalContribution <= 300) {
+        currentLevel = 'goldIcon';
+        progressPercentage = ((totalContribution - 200) / 100) * 100 + 66.66;
+    } else {
+        currentLevel = 'platinumIcon';
+        progressPercentage = 100;
+    }
+
+    document.querySelectorAll('.level-icon').forEach(icon => {
+        icon.classList.remove('current');
+    });
+
+    const currentIcon = document.getElementById(currentLevel);
+    currentIcon.classList.add('current');
+
+    document.getElementById('progressFill').style.width = progressPercentage + '%';
+}
+
+// 모달 외부 클릭 시 닫기
+window.onclick = function(event) {
+    if (event.target == document.getElementById('levelInfoModal')) {
+        closeLevelInfoModal();
+    }
+}
+    </script>
 </body>
 </html>
