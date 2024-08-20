@@ -80,11 +80,13 @@ public class IdeaOpinionsClearCommand implements RoomCommand {
 		ideaOpinionsDao.updateStage(roomId); 
 		
 		// StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기
-		List<Integer> users = ideaOpinionsDao.RoomForUserList(roomId);
-		for(Integer list : users) {
-			ideaOpinionsDao.insertStageParticipation(roomId, ideaId, list);
-		}
-		System.out.println("here"+users);
+		List<Integer> users = ideaOpinionsDao.RoomForUserList(roomId); // 특정 방에 참여자 list
+		List<Ideas> pickedIdeas = ideaOpinionsDao.yesPickIdeaList(roomId); // stage3인 아이디어 2개 가져오기
+		for (Ideas idea : pickedIdeas) {
+            for (Integer userIdd : users) {
+                ideaOpinionsDao.insertStageParticipation(roomId, idea.getIdeaID(), userIdd);
+            }
+        }
 
 		// roomId, stage값 다시 model에 넣기
 		model.addAttribute("roomId", roomId);

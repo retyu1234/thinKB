@@ -126,6 +126,8 @@ public class IdeaOpinionsCommand implements RoomCommand {
 
 		model.addAttribute("opinionForm", new IdeaOpinionsDto());
 		model.addAttribute("userOpinions", ideaOpinionsDao.getUserCommentedTabs(userId, ideaId));
+		
+		
 
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
@@ -141,6 +143,9 @@ public class IdeaOpinionsCommand implements RoomCommand {
 			}
 		}
 		model.addAttribute("userList", userList);
+		
+		// url로 접속 막기
+		model.addAttribute("userIdList", userIdList);
 		
 		// 오른쪽 사이드바 기여도
 		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao

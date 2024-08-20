@@ -159,6 +159,9 @@ public class IdeaOpinions2Command implements RoomCommand {
 		}
 		model.addAttribute("userList", userList);
 		
+		// url로 접속 막기
+		model.addAttribute("userIdList", userIdList);
+		
 		// 오른쪽 사이드바 기여도
 		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao
 		model.addAttribute("totalContributionNum", totalContributionNum);

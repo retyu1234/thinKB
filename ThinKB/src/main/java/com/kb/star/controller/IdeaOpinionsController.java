@@ -230,6 +230,9 @@ public class IdeaOpinionsController {
 		}
 		model.addAttribute("userList", userList); 
 		
+		// url로 접속 막기
+		model.addAttribute("userIdList", userIdList);
+		
 		// 오른쪽 사이드바 기여도
 		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao
 		model.addAttribute("totalContributionNum", totalContributionNum);
@@ -489,18 +492,21 @@ public class IdeaOpinionsController {
 		String timer = dao.roomTimerInfo(roomId);
 		model.addAttribute("timer", timer);
 		
+		
 		// Ideas에서 아이디어 StageID 5로 변경
 		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
 		ideaOpinionsDao.updateIdeaStage5(roomId); // ideaId -> roomId 로 변경 : 방 전체의 아이디어 2개 모두 update
     	
-		// 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
-        ideaOpinionsDao.updateContribution2(ideaId, userId, roomId); // status의 t/f 검증은 xml파일에서 함
-        
-        // StageParticipation에서 참여자별 StageID 5로 새로 생성해서 Status 0으로 일괄 넣기
-		List<Integer> users = ideaOpinionsDao.RoomForUserList5(roomId);
-		for(Integer list : users) {
-			ideaOpinionsDao.insertStageParticipation5(roomId, ideaId, list);
-		}
+		// clearCommand2로 이동함
+//		// 1개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
+//        // ideaOpinionsDao.updateContribution2(ideaId, userId, roomId); // status의 t/f 검증은 xml파일에서 함
+//		ideaOpinionsDao.updateContribution2(roomId, userId);
+//		
+//        // StageParticipation에서 참여자별 StageID 5로 새로 생성해서 Status 0으로 일괄 넣기
+//		List<Integer> users = ideaOpinionsDao.RoomForUserList5(roomId);
+//		for(Integer list : users) {
+//			ideaOpinionsDao.insertStageParticipation5(roomId, ideaId, list);
+//		}
         
     	// Ideas 테이블에서 Title과 StageID 가져오기
         List<Ideas> ideasInfo = ideaOpinionsDao.getIdeasInfo(roomId);
@@ -524,10 +530,12 @@ public class IdeaOpinionsController {
 		ideaOpinionsClear2Command.execute(model);
 		
 		IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
-		 // 모든 참가자의 기여도를 한 번에 업데이트
-	    ideaOpinionsDao.updateContributionLikeNum(roomId);
-	    // 기안자들 +20점
-	    ideaOpinionsDao.updateContributionCntForYesPick(roomId);
+		
+		 // 기여도 업데이트 순차적으로 실행
+		ideaOpinionsDao.updateContribution2(roomId);  // 의견 작성에 따른 기여도 업데이트
+	    ideaOpinionsDao.updateContributionLikeNum(roomId); // 좋아요 수에 따른 기여도 업데이트
+	    ideaOpinionsDao.updateContributionCntForYesPick(roomId);  // 기안자 기여도 업데이트 +20
+	    
 	    // 업데이트 후 각 참가자의 좋아요 수 로그 출력 (선택적)
 	    List<Integer> participantList = ideaOpinionsDao.RoomForUserList5(roomId);
 	    for (Integer participantId : participantList) {

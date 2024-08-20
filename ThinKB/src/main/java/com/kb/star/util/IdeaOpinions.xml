@@ -169,9 +169,7 @@
 	</select>
 	
 	<!-- StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기 -->
-	<insert id="insertStageParticipation">
-		<!-- INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) 
-		values (#{ideaId},4,#{list},0,#{roomId}) -->
+	<!-- <insert id="insertStageParticipation">
 		INSERT INTO StageParticipation (IdeaID, StageID, UserID, Status, RoomID)
 		SELECT #{ideaId}, 4, #{list}, 0, #{roomId}
 		WHERE NOT EXISTS (
@@ -182,7 +180,19 @@
 		    AND UserID = #{list} 
 		    AND RoomID = #{roomId}
 		)
-	</insert>
+	</insert> -->
+	<insert id="insertStageParticipation">
+        INSERT INTO StageParticipation (IdeaID, StageID, UserID, Status, RoomID)
+        SELECT #{ideaId}, 4, #{userId}, 0, #{roomId}
+        WHERE NOT EXISTS (
+            SELECT 1 
+            FROM StageParticipation 
+            WHERE IdeaID = #{ideaId} 
+            AND StageID = 4 
+            AND UserID = #{userId} 
+            AND RoomID = #{roomId}
+        )
+    </insert>
 	
 	<!-- ideaOpinionsClear.jsp -->
 	<!-- Ideas 테이블에서 제목, stageID 가져오기 -->
@@ -310,7 +320,7 @@
     
     <!-- 다음단계 -->
     <!-- 1개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1 -->
-    <update id="updateContribution2">
+<!--     <update id="updateContribution2">
 	    UPDATE MeetingRoomMembers m
 	    JOIN StageParticipation s 
 	    ON m.UserID = s.UserID AND m.RoomID = s.RoomID
@@ -325,18 +335,33 @@
 	    AND s.Status = true 
 	    AND s.IdeaID = #{ideaId}
 	    AND s.StageID = 4;
-	</update>
-<!-- 	<update id="updateContribution2">
-	    UPDATE MeetingRoomMembers m
-	    JOIN StageParticipation s 
-	    ON m.UserID = s.UserID AND m.RoomID = s.RoomID
-	    SET m.ContributionCnt = m.ContributionCnt + 
-								(CASE 
-						            WHEN #{status} = true THEN 1 
-						            ELSE -1 
-						        END)
-	    WHERE s.IdeaID = #{ideaId} and s.UserID = #{userId} AND s.RoomID = #{roomId} AND s.StageID = 4;
 	</update> -->
+	<update id="updateContribution2">
+		UPDATE MeetingRoomMembers m
+	    SET m.ContributionCnt = m.ContributionCnt + (
+	        SELECT COUNT(DISTINCT CASE 
+	            WHEN opinion_count >= 1 THEN s.IdeaID 
+	        END)
+	        FROM (
+	            SELECT IdeaID, UserID, COUNT(*) as opinion_count
+	            FROM StageParticipation
+	            WHERE RoomID = #{roomId}
+	              AND StageID = 4
+	              AND Status = 1
+	            GROUP BY IdeaID, UserID
+	        ) s
+	        WHERE s.UserID = m.UserID
+	    )
+	    WHERE m.RoomID = #{roomId}
+	      AND EXISTS (
+	        SELECT 1
+	        FROM StageParticipation sp
+	        WHERE sp.RoomID = m.RoomID
+	          AND sp.UserID = m.UserID
+	          AND sp.StageID = 4
+	          AND sp.Status = 1
+	      );
+	</update>
 	
 	
     <!-- 좋아요 수 가져오기(특정 사용자/roomId기준) -->
@@ -389,7 +414,7 @@
 	
 	<!-- StageParticipation에서 참여자별 StageID 5로 새로 생성해서 Status 0으로 일괄 넣기 -->
 	<insert id="insertStageParticipation5">
-		INSERT into StageParticipation (IdeaID,StageID,UserID,Status,RoomID) values (#{ideaId},5,#{list},0,#{roomId})
+		INSERT into StageParticipation (IdeaID, StageID,UserID,Status,RoomID) values (0, 5,#{list},0,#{roomId})
 	</insert>
 	
 	
