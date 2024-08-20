@@ -382,7 +382,6 @@ body {
 					type="checkbox" data-stage="6" onchange="filterIdeas()"> 완료</label>
 			</div>
 		</div>
-
 		<!-- 회의방 목록 -->
 		<div class="ideas">
 			<c:forEach var="li" items="${roomList}">
