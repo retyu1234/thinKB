@@ -230,8 +230,10 @@ public class IdeaOpinionsController {
 		}
 		model.addAttribute("userList", userList); 
 		
-		// url로 접속 막기
-		model.addAttribute("userIdList", userIdList);
+    	// 회의방 방장인지 확인하는 값 : url로 접속 막기
+    	MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
+		int managerId = meetingRoom.getRoomManagerId();
+		model.addAttribute("managerId", managerId);
 		
 		// 오른쪽 사이드바 기여도
 		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao
@@ -480,6 +482,11 @@ public class IdeaOpinionsController {
     		}
     	}
     	model.addAttribute("userList", userList); 
+    	
+    	// 회의방 방장인지 확인하는 값 : url로 접속 막기
+    	MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
+		int managerId = meetingRoom.getRoomManagerId();
+		model.addAttribute("managerId", managerId);
     	
 		// 오른쪽 사이드바 기여도
 		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao

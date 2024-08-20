@@ -35,6 +35,7 @@ public class RoomManagement implements RoomCommand {
 		int roomId=Integer.parseInt(request.getParameter("roomId"));
 		RoomDao dao=sqlSession.getMapper(RoomDao.class);
 		MeetingRooms meetingRoom = dao.selectRoomId(roomId);
+		MeetingRooms info = dao.roomDetailInfo(roomId);
 		List<TimersDto> dto1 = dao.selectTimersByRoomId(roomId);
 		List<Ideas> dto2 = dao.selectIdeasByRoomId(roomId);
 		Integer pickOneId = dao.getIdeaIdPickOne(roomId);
@@ -67,6 +68,10 @@ public class RoomManagement implements RoomCommand {
 		
 		int myContributionNum = dao.myContributionNum(roomId, userId);
 		model.addAttribute("myContributionNum", myContributionNum);
+		
+		// 회의방 방장인지 확인하는 값
+		int managerId = info.getRoomManagerId();
+		model.addAttribute("managerId", managerId);
 	}
 
 }

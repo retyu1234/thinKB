@@ -57,7 +57,7 @@
 <body>
     <div class="error-container">
         <!-- Error 이미지 -->
-        <img src="<c:url value='./resources/404error.png' />" alt="ERROR" class="error-image">
+        <img src="<c:url value='/resources/404error.png' />" alt="ERROR" class="error-image">
         
         <!-- 에러 메시지 -->
         <div class="error-title">찾을 수 없는 페이지입니다.</div>
@@ -66,8 +66,8 @@
         </div>
         
         <!-- 메인으로 가기 버튼 -->
-        <a href="./main" class="main-button">
-            <img src="<c:url value='./resources/logoFinal.png' />" alt="Logo">
+        <a href="${pageContext.request.contextPath}/main" class="main-button">
+            <img src="<c:url value='/resources/logoFinal.png' />" alt="Logo">
             메인으로 가기
         </a>
     </div>

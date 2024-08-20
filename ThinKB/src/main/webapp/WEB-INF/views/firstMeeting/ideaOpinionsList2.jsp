@@ -310,6 +310,27 @@ if (!isParticipant) {
     margin-top: 20px;
     font-size: 12pt;
 }
+    /* 비활성화된 요소를 위한 스타일 추가 */
+    .disabled-element {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+    .meeting-ended-notice {
+        color: #cc0000;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        width: 100%;
+        box-sizing: border-box;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    /* 스테이지 네비게이션 링크 스타일 */
+    .stages a {
+        pointer-events: auto !important;
+        opacity: 1 !important;
+    }
 </style>
 <script>
     function navigateToTab(currentTab) {
@@ -372,6 +393,62 @@ if (!isParticipant) {
 String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
 request.setAttribute("stages", stages);
 %>
+</script>
+<script>
+    // 특정 요소 비활성화 함수
+    function disableInteraction() {
+        const elementsToDisable = document.querySelectorAll('input, textarea, button, select');
+        elementsToDisable.forEach(element => {
+            if (!element.closest('.stages')) {  // stages 클래스 내부의 요소는 제외
+                element.disabled = true;
+                element.classList.add('disabled-element');
+            }
+        });
+
+        // 폼 제출 방지
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                return false;
+            };
+        });
+
+        // 회의 종료 안내 메시지 추가
+        const notice = document.createElement('div');
+        notice.className = 'meeting-ended-notice';
+        notice.innerHTML = '회의 기간이 종료되어 더 이상 수정이 불가능합니다. 단, 스테이지 간 이동은 가능합니다.';
+        
+        // 헤더 다음에 알림 삽입
+        const header = document.querySelector('header');
+        if (header && header.nextSibling) {
+            header.parentNode.insertBefore(notice, header.nextSibling);
+        } else {
+            document.body.insertBefore(notice, document.body.firstChild);
+        }
+
+        // stages 클래스 내부의 요소들은 비활성화에서 제외
+        const stageLinks = document.querySelectorAll('.stages a');
+        stageLinks.forEach(link => {
+            link.classList.remove('disabled-element');
+        });
+    }
+
+    // 페이지 로드 시 실행
+    window.onload = function() {
+        // 기존 onload 함수 내용 유지
+        
+        // 회의 기간 종료 확인
+        const endDateStr = '${meetingRoom.getEndDate()}';
+        if (endDateStr) {
+            const endDate = new Date(endDateStr);
+            const now = new Date();
+            
+            if (now > endDate) {
+                disableInteraction();
+            }
+        }
+    };
 </script>
 </head>
 <body class="ideaOpinionsList-body">
