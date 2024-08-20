@@ -90,8 +90,9 @@ public class makeRoomCommand implements RoomCommand {
 		//방만들고 알림 보내기 추가
 		RoomDao roomDao = sqlSession.getMapper(RoomDao.class);
 		
-		String notification = "[" + title + "] 회의방이 새로 만들어졌어요, 🕒"
-				+ hour + "시간 " + min + "분 "+ sec + "초안에 아이디어를 제출해주세요!";
+		String notification = "회의방이 새로 만들어졌어요, 🕒"
+				+ hour + "시간 " + min + "분 "+ sec + "초안에 [" + title
+						+ "]에 대한 아이디어를 제출해주세요!";
 		
 		roomDao.makeNotification(Integer.parseInt(id), 0, notification, roomNum);
 		for (String user : list) {
