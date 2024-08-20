@@ -44,12 +44,12 @@ public class UserManagement implements RoomCommand {
 		List<UserListDto> dto1 = dao.selectAvailableEmployees(roomId, departmentId);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
 		List<StageParticipationIdeas> statusList= dao.getStatusIdeasTitle(roomId); 
-		int pickOneId = dao.getIdeaIdPickOne(roomId);
+		Integer pickOneId = dao.getIdeaIdPickOne(roomId);
 		model.addAttribute("meetingRoom", info);
 		model.addAttribute("addUser",dto1);
 		model.addAttribute("roomId",roomId);
 		model.addAttribute("statusList",statusList);
-		model.addAttribute("ideaId",pickOneId);
+		model.addAttribute("ideaId", pickOneId != null ? pickOneId : 0);
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto2 = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto2);
