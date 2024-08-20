@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.UsersDto;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
@@ -76,8 +77,10 @@ public class IdeaOpinionsClear2Command implements RoomCommand {
 		}
 		model.addAttribute("userList", userList);
 		
-		// url로 접속 막기
-		model.addAttribute("userIdList", userIdList);
+    	// 회의방 방장인지 확인하는 값 : url로 접속 막기
+    	MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
+		int managerId = meetingRoom.getRoomManagerId();
+		model.addAttribute("managerId", managerId);
 		
 		// 타이머
 		String timer = dao.roomTimerInfo(roomId);
