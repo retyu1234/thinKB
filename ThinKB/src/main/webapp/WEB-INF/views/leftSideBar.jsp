@@ -220,6 +220,22 @@
     width: 24px; /* 이미지를 원본 비율대로 축소 또는 확대 */
     margin-right: 10px;
 }
+
+.yellow-button {
+	background-color: #FFCC00;
+	color: black;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 10px;
+	font-size: 13pt;
+	cursor: pointer;
+	font-weight: bold;
+	font-family: KB금융 본문체 Light;
+}
+
+.yellow-button:hover {
+	background-color: #D4AA00;
+}
 </style>
 </head>
 <body class="LeftSideBar_body">
@@ -292,7 +308,7 @@
                 <p id="modalMessageLeft" class="modal-message"></p>
             </div>
             <div class="modal-footer-left-noti">
-                <button id="close-left-noti" class="modal-button-left-noti">닫기</button>
+                <button id="close-left-noti" class="yellow-button">닫기</button>
             </div>
         </div>
     </div>
