@@ -647,26 +647,26 @@ display: none;
     margin-left: 10px;
     vertical-align: middle;
 }
-    .disabled-element {
-        opacity: 0.5;
-        pointer-events: none;
-    }
-    .meeting-ended-notice {
-        color: #cc0000;
-        padding: 10px;
-        text-align: center;
-        font-weight: bold;
-        width: 100%;
-        box-sizing: border-box;
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-    }
-    /* 스테이지 네비게이션 링크 스타일 */
-    .stages a {
-        pointer-events: auto !important;
-        opacity: 1 !important;
-    }
+.disabled-element {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.meeting-ended-notice {
+    color: #cc0000;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+/* 스테이지 네비게이션 링크 스타일 */
+.stages a {
+    pointer-events: auto !important;
+    opacity: 1 !important;
+}
 </style>
 </head>
 <script>
