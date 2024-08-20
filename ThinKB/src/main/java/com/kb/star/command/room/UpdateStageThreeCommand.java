@@ -58,7 +58,6 @@ public class UpdateStageThreeCommand implements RoomCommand {
 		LocalDateTime endTime = currentTime.plusHours(hour).plusMinutes(min).plusSeconds(sec);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		String formattedTime = endTime.format(formatter); // 이 시간으로 업데이트 하면 됨
-		System.out.println("타이머 저장될 시간? " + formattedTime);
 		
 		// MeetingRooms 에서 stage +1 0
 		dao.updateStage(roomId); 
@@ -97,7 +96,6 @@ public class UpdateStageThreeCommand implements RoomCommand {
 		// roomId, stage값 다시 model에 넣기
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("stage", 3);	
-//		model.addAttribute("ideaId", firstIdeaId);
 		
 		//방장 링크 수정
 		if(secondIdeaId == null) {
@@ -109,7 +107,7 @@ public class UpdateStageThreeCommand implements RoomCommand {
 		
 		// 알림발송 추가
 		MeetingRooms roomInfo = dao.roomDetailInfo(roomId);
-		String notification = "[" + roomInfo.getRoomTitle() + "] 회의방의 아이디어 투표가 완료되었어요👍 아이디어를 확장시킬 수 있도록 다양한 관점의 의견을 자유롭게 달아주세요.";
+		String notification = "아이디어 투표가 완료되었어요👍 아이디어를 확장시킬 수 있도록 다양한 관점의 의견을 자유롭게 달아주세요.";
 
 		for (int user : users) {
 			dao.makeNotification(user, 0, notification, roomId);

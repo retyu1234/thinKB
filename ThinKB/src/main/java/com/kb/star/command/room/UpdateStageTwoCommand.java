@@ -69,7 +69,7 @@ public class UpdateStageTwoCommand implements RoomCommand {
 
 		// 알림 보내기 추가
 		MeetingRooms roomInfo = dao.roomDetailInfo(roomId);
-		String notification = "[" + roomInfo.getRoomTitle() + "] 회의방의 아이디어 초안에 대한 ✅투표가 시작됐어요. 제출된 아이디어를 확인해보고 좋은 아이디어라고 생각되는 곳에 투표해주세요.";
+		String notification = "아이디어 초안에 대한 ✅투표가 시작됐어요. 제출된 아이디어를 확인해보고 좋은 아이디어라고 생각되는 곳에 투표해주세요.";
 
 		for (int user : users) {
 			dao.makeNotification(user, 0, notification, roomId);
