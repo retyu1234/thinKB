@@ -646,7 +646,6 @@ document.querySelectorAll('.usage-table tbody tr').forEach(row => {
 // 로그아웃 
 function logout() {
 	window.location.href = './logout';
-	alert('로그아웃 되었습니다.');
 }
 </script>
 </body>

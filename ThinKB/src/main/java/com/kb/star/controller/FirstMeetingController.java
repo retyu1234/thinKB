@@ -45,7 +45,7 @@ public class FirstMeetingController<Command> {
 		this.command = new FirstMeeting(sqlSession); // SqlSession을 사용하여 FirstMeetingCommand 구현체를 생성
 	}
 
-	// 진행 중인 회의 및 단계 + 희의정보 불러오는거 추가함 + 페이지네이션 추가
+	// 진행 중인 회의 및 단계
 	@RequestMapping("/meetingList")
 	public String meetingList(HttpServletRequest request, Model model, @RequestParam(defaultValue = "1") int page) {
 		HttpSession session = request.getSession();

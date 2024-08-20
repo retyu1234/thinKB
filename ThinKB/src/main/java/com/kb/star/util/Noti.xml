@@ -118,7 +118,7 @@
         LEFT JOIN MeetingRooms m ON n.RoomID = m.RoomID
         LEFT JOIN Ideas i ON n.IdeaID = i.IdeaID
         WHERE n.UserID = #{userId} AND n.IsDelete = FALSE
-        ORDER BY n.CreatedAt DESC, n.IsRead ASC
+        ORDER BY  n.IsRead ASC, n.CreatedAt DESC
         LIMIT 4
     </select>
 
@@ -127,17 +127,24 @@
         FROM Notifications
         WHERE UserID = #{userId} AND IsRead = FALSE AND IsDelete = FALSE
     </select>
-    
-    <!-- 전체 알림함 개선-->
-        <select id="getAllNotiWithDetails" resultType="com.kb.star.dto.NotiDto">
+    <!-- 알림 목록 가져오기 (페이지네이션 적용) -->
+    <select id="getNotificationsWithPagination" resultType="com.kb.star.dto.NotiDto">
         SELECT n.*, m.RoomTitle,
                CASE WHEN n.IdeaID != 0 THEN i.Title ELSE NULL END AS IdeaTitle
         FROM Notifications n
         LEFT JOIN MeetingRooms m ON n.RoomID = m.RoomID
         LEFT JOIN Ideas i ON n.IdeaID = i.IdeaID
         WHERE n.UserID = #{userId} AND n.IsDelete = FALSE
-        ORDER BY n.CreatedAt DESC
+        ORDER BY n.IsRead ASC, n.CreatedAt DESC
+        LIMIT #{offset}, #{pageSize}
     </select>
-    
+
+    <!-- 전체 알림 개수 가져오기 -->
+    <select id="getTotalNotificationCount" resultType="int">
+        SELECT COUNT(*)
+        FROM Notifications
+        WHERE UserID = #{userId} AND IsDelete = FALSE
+    </select>
+
 
 </mapper>

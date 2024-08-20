@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<title>Home</title>
+<title>thinKB - Home</title>
 <style>
 .main-body {
 	margin: 0;
@@ -169,9 +169,9 @@
 }
 
 .notification-time {
-	font-weight: bold;
 	margin-bottom: 5px;
-		font-family: KB금융 제목체 Light;
+	font-family: KB금융 본문체 Light;
+	text-align: right;
 }
 
 .notification-content {
@@ -214,7 +214,7 @@
 	z-index: 1001;
 	color: #000;
 	text-align: center;
-	border-radius: 20px;
+	border-radius: 10px;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
@@ -944,7 +944,7 @@
 	background-color: #333;
 }
 .team-icon {
-	font-size: 30px;
+	font-size: 45px;
 }
 
 .profile-container {
@@ -965,7 +965,7 @@
 	left: -5px;
 	width: 25px;
 	height: 25px;
-	background-color: #007bff;
+	background-color: #AB9A80;
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
@@ -1356,14 +1356,14 @@ document.addEventListener('DOMContentLoaded', function() {
 						end="3">
 						<div class="notification ${notification.read ? 'read' : 'unread'}"
 							onclick="location.href='<c:url value="/noticeList"/>';">
-							<h4 class="notiRoomTitle">
-								Title : ${notification.roomTitle}
+							<h4 class="notiRoomTitle" style="margin-left: 15px; margin-top: 10px;">
+								• ${notification.roomTitle}
 								</h3>
-								<p class="notification-time">
+								<p class="notification-time" style="margin-top: 2px; margin-right: 15px;">
 									<fmt:formatDate value="${notification.createdAt}"
 										pattern="yyyy-MM-dd HH:mm" />
 								</p>
-								<p class="notification-content">
+								<p class="notification-content" style="margin-right: 15px;">
 									<c:if test="${notification.getIdeaID() != 0}">
                         *${notification.idea.title}*&nbsp;&nbsp;
                     </c:if>
@@ -1441,7 +1441,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							<div class="profile-container">
 								<img
 									src="<c:url value='/resources/departmentImg${status.index + 1}.png' />"
-									alt="${usage.teamName}" class="profile-image">
+									alt="${usage.teamName}" style="border-radius:0;" class="profile-image">
 							</div>
 							<p class="best-name">${usage.teamName}</p>
 							<p class="best-description">사용 횟수: ${usage.teamCount}</p>

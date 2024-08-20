@@ -386,7 +386,12 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 </select>
 
 <select id="myContributionNum" resultType="int">
-	SELECT ContributionCnt from MeetingRoomMembers WHERE RoomID = #{param1} and UserID = #{param2} and IsDelete=0
+	SELECT COALESCE(m.ContributionCnt, 0) as ContributionCnt
+    FROM (SELECT #{param1} as RoomID, #{param2} as UserID) as params
+    LEFT JOIN MeetingRoomMembers m
+        ON m.RoomID = params.RoomID 
+        AND m.UserID = params.UserID 
+        AND m.IsDelete = 0
 </select>
 
 <!-- 기여도 +5 -->
@@ -405,5 +410,9 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 <!-- pickNum 1 인 아이디어 아이디(방장화면용) -->
 <select id="getIdeaIdPickOne" resultType="int">
 select * from Ideas where RoomID = #{param1} and PickNum = 1
+</select>
+
+<select id="acceptMember" resultType="com.kb.star.dto.MeetingRoomMember">
+	SELECT * FROM MeetingRoomMembers WHERE RoomID = #{param1} and IsDelete = 0
 </select>
 </mapper>

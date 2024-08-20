@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import com.kb.star.command.room.RoomCommand;
 import com.kb.star.dto.IdeaSummaryDto;
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
 import com.kb.star.dto.ReportDetailsDto;
 import com.kb.star.dto.UsersDto;
@@ -42,6 +43,8 @@ public class ReportView implements RoomCommand{
 	    model.addAttribute("ideaSummaries", ideaSummaries);
 		model.addAttribute("reports",dto);
 		model.addAttribute("reportsFirst",dto1);
+		MeetingRooms info = dao1.roomDetailInfo(roomId);
+		model.addAttribute("info", info);
 		//오른쪽 사이드바
 		List<Integer> userIdList = dao1.roomIdFormember(roomId);
 		List<UsersDto> userList = new ArrayList<UsersDto>();
@@ -52,6 +55,7 @@ public class ReportView implements RoomCommand{
 			}
 		}
 		model.addAttribute("userList", userList);
+		model.addAttribute("userIdList", userIdList);
 		//왼쪽 사이드바		
 		List<Ideas> dto3 = dao1.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto3);
