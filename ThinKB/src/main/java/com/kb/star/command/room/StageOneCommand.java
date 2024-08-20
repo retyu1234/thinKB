@@ -78,6 +78,7 @@ public class StageOneCommand implements RoomCommand {
 			}
 		}
 		model.addAttribute("userList", userList);
+		model.addAttribute("userIdList", userIdList);
 		
 		//왼쪽 사이드바 알림
 		NotiDao notiDao = sqlSession.getMapper(NotiDao.class);
