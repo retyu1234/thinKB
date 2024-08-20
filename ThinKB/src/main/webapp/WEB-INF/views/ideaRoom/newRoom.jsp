@@ -589,8 +589,7 @@ body.modal-open {
 			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
 				<div class="date-input-wrapper">
-					<input type="text" class="date-input" name="endDate"
-						id="datepicker" placeholder="YYYYMMDD"> <span
+					<input type="text" class="date-input" name="endDate" id="datepicker" placeholder="YYYYMMDD" readonly> <span
 						class="calendar-icon" onclick="toggleCalendar()">📅</span>
 				</div>
 				<div class="error-message-container">
