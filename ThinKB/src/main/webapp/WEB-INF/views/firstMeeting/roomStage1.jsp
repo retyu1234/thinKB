@@ -683,6 +683,9 @@ display: none;
     color: blue;
     cursor: pointer;
 }
+.ai-history-link:hover, .reject-history-link:hover {
+    text-decoration: underline;
+}
 
 /* ai로그 없는경우 */
 .no-ai-history {
@@ -704,6 +707,9 @@ display: none;
     font-size: 18px;
     font-weight: bold;
 }
+
+
+
 </style>
 </head>
 <script>
@@ -869,14 +875,15 @@ display: none;
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-// 모달 관련 스크립트
+    // AI 로그 모달 관련
     var aiModal = document.getElementById("aiLogModal");
-    var aiBtn = document.querySelector("button[onclick='openAiLogModal()']");
+    var aiBtn = document.querySelector(".ai-history-link");
     var aiSpan = document.querySelector(".aiClose");
 
-    function openAiLogModal() {
-        aiModal.style.display = "block";
-        loadAiLog();
+    if (aiBtn) {
+        aiBtn.onclick = function() {
+            openAiLogModal();
+        }
     }
 
     if (aiSpan) {
@@ -885,14 +892,40 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // 반려 이력 모달 관련
+    var rejectModal = document.getElementById("rejectHistoryModal");
+    var rejectBtn = document.querySelector(".reject-history-link");
+    var rejectSpan = document.querySelector("#rejectHistoryModal .close");
+
+    if (rejectBtn) {
+        rejectBtn.onclick = function() {
+            rejectModal.style.display = "block";
+        }
+    }
+
+    if (rejectSpan) {
+        rejectSpan.onclick = function() {
+            rejectModal.style.display = "none";
+        }
+    }
+
+    // 윈도우 클릭 시 모달 닫기
     window.onclick = function(event) {
         if (event.target == aiModal) {
             aiModal.style.display = "none";
+        }
+        if (event.target == rejectModal) {
+            rejectModal.style.display = "none";
         }
     }
 
     // openAiLogModal 함수를 전역 스코프에 노출
     window.openAiLogModal = openAiLogModal;
+
+    function openAiLogModal() {
+        aiModal.style.display = "block";
+        loadAiLog();
+    }
 
     function loadAiLog() {
         var userId = ${userId};
@@ -1310,7 +1343,7 @@ window.onload = function() {
 	    <div class="title-container">
 	        <div class="titleAndDetail-title">나의 아이디어</div>
 	        <c:if test="${not empty rejectList}">
-	            <div class="titleAndDetail-title-link">반려 이력보기 ></div>
+	            <div class="reject-history-link" id="rejectHistoryBtn">반려 이력보기 ></div>
 	        </c:if>
 	    </div>
 	    <div class="titleAndDetail-detail">회의 주제에 대한 나의 아이디어를 작성해주세요.</div>
