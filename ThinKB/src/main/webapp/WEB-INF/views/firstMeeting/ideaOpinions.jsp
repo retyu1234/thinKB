@@ -840,7 +840,7 @@ h1 {
 	                    아이디어 A
 	               </c:when>
 	               <c:otherwise>
-	               		<a href="./ideaOpinionsList?roomId=${roomId}&ideaId=${ideaId}">
+	               		<a href="./ideaOpinionsList?roomId=${roomId}&ideaId=${ideaId}&stage=${stage}">
 				        	<img src="./resources/back2.png" alt="뒤로가기" class="back-btn">
 				        </a>	               
 	                    아이디어 B

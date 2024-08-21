@@ -714,7 +714,7 @@ request.setAttribute("stages", stages);
 		<c:choose>
 			<c:when test="${ideaId == yesPickList[0].ideaID}">
 				<!-- 뒤로가기버튼(ideaOpinionsList2로 이동) -->
-				<a href="./ideaOpinionsList2?roomId=${roomId}&ideaId=${ideaId}">
+				<a href="./ideaOpinionsList2?roomId=${roomId}&ideaId=${ideaId}&stage=${stage}">
 		       		<img src="./resources/back2.png" alt="뒤로가기" class="back-btn">
 		       	</a>
 	           	아이디어 A

@@ -229,6 +229,7 @@ public class IdeaOpinionsController {
 			}
 		}
 		model.addAttribute("userList", userList); 
+		model.addAttribute("userIdList", userIdList); 
 		
     	// 회의방 방장인지 확인하는 값 : url로 접속 막기
     	MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
@@ -482,6 +483,7 @@ public class IdeaOpinionsController {
     		}
     	}
     	model.addAttribute("userList", userList); 
+    	model.addAttribute("userIdList", userIdList); 
     	
     	// 회의방 방장인지 확인하는 값 : url로 접속 막기
     	MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
