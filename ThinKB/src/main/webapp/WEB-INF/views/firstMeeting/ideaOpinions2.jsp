@@ -268,7 +268,7 @@ a {
     width: calc(100% - 120px);
     min-height: 50px;
     max-height: 150px;
-    overflow-y: hidden; /* 스크롤바 숨김 */
+    overflow-y: auto;
     resize: none;
     line-height: 1.5;
     white-space: pre-wrap;
@@ -280,7 +280,6 @@ a {
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 12pt;
-    font-weight: bold;
 }
 .opinion-textarea:focus {
 	outline: none; /* 기본 포커스 스타일 제거 */
