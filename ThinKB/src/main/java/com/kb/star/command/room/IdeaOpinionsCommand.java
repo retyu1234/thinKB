@@ -78,7 +78,6 @@ public class IdeaOpinionsCommand implements RoomCommand {
 			ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
 		}
 		
-		// 수정
 		// 현재 탭에 이미 의견을 작성했는지 확인
         String currentTab = (String) map.get("currentTab");
         if (currentTab == null || currentTab.isEmpty()) {
@@ -93,19 +92,7 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		// 사용자가 작성한 탭 목록 가져오기(사용자가 각 탭에 하나씩만 의견을 달 수 있도록 제한 / 이미 의견을 단 탭을 표시하거나 강조 목적)
         List<String> userCommentedTabs = ideaOpinionsDao.getUserCommentedTabs(userId, ideaId); 
         model.addAttribute("userCommentedTabs", userCommentedTabs);
-        
-        
 
-        // 현재 탭에 이미 의견을 작성했는지 확인
-//        String currentHatColor = getHatColorFromTab(currentTab);
-//        model.addAttribute("currentHatColor", currentHatColor);
-//        System.out.println("currentHatColor : " + currentHatColor);
-//        if (userCommentedTabs.contains(currentHatColor)) {
-//            model.addAttribute("alreadyWritten", true);
-//        } else {
-//        	model.addAttribute("alreadyWritten", false);
-//        }
-        // 수정
 
 		// 타이머 종료 시간
 		String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
@@ -132,7 +119,6 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
 		model.addAttribute("meetingRoom", meetingRoom);
-		
 		// 오른쪽 사이드바
 		List<Integer> userIdList = dao.roomIdFormember(roomId);
 		List<UsersDto> userList = new ArrayList<UsersDto>();
@@ -153,6 +139,7 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		
 		int myContributionNum = dao.myContributionNum(roomId, userId); // RoomDao
 		model.addAttribute("myContributionNum", myContributionNum);
+
 
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
