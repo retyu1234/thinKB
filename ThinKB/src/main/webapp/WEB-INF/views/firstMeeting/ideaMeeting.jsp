@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.util.*, java.text.SimpleDateFormat"%>
 <%
 // 사용자 확인
 List<Integer> userIdList = (List<Integer>) request.getAttribute("userIdList");
@@ -10,24 +10,25 @@ Integer userId = (Integer) session.getAttribute("userId");
 boolean isParticipant = false;
 
 if (userIdList != null && userId != null) {
-    for (Integer id : userIdList) {
-        if (id.equals(userId)) {
-            isParticipant = true;
-            break;
-        }
-    }
+	for (Integer id : userIdList) {
+		if (id.equals(userId)) {
+	isParticipant = true;
+	break;
+		}
+	}
 }
 
 if (!isParticipant) {
-	%>
-    <script>
+%>
+<script>
         alert("회의방 참여자가 아닙니다. 회의방 목록 화면으로 이동합니다.");
         window.location.href = "./meetingList";
     </script>
-    <%
-    return;
+<%
+return;
 }
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,8 +110,8 @@ body, html {
 
 .idea-item.voted {
 	background-color: #FFFBD8 !important;
-    border-radius: 20px !important;
-    padding: 1% !important;
+	border-radius: 20px !important;
+	padding: 1% !important;
 }
 
 .idea-left {
@@ -926,13 +927,8 @@ body, html {
 	    }
 	}
 	
-	// 페이지 로드 시 에러 메시지가 있으면 경고창으로 표시
-	window.onload = function() {
-	    const Message = '${errorMessage}';
-	    if (Message) {
-	        alert(Message);
-	    }
-	}
+	
+
 
 	// 다음 단계로 이동하는 함수
 	function goToNextStep() {
@@ -1077,15 +1073,22 @@ body, html {
 
     // 페이지 로드 시 실행
     window.onload = function() {
-        // 기존 onload 함수 내용 유지
-        
-        // 회의 기간 종료 확인
-        const endDateStr = '${info.getEndDate()}';
+    	const Message = '${errorMessage}';
+    	if (Message) {
+    		alert(Message);
+    	}    
+    	// 회의 기간 종료 확인
+        const endDateStr = '${meetingRoom.getEndDate()}';
         if (endDateStr) {
             const endDate = new Date(endDateStr);
             const now = new Date();
             
-            if (now > endDate) {
+            // 종료일의 다음날 자정을 계산
+            const dayAfterEnd = new Date(endDate);
+            dayAfterEnd.setDate(dayAfterEnd.getDate() + 1);
+            dayAfterEnd.setHours(0, 0, 0, 0);
+            
+            if (now >= dayAfterEnd) {
                 disableInteraction();
             }
         }
@@ -1097,14 +1100,13 @@ body, html {
     });
 	</script>
 <body>
+	<c:if test="${not empty sessionScope.Message}">
+		<div class="alert">${sessionScope.Message}</div>
+	</c:if>
 	<input type="hidden" id="session-user-id"
 		value="${sessionScope.userId}">
 	<input type="hidden" id="session-room-id"
 		value="${sessionScope.roomId}">
-
-	<c:if test="${not empty sessionScope.Message}">
-		<div class="alert">${sessionScope.Message}</div>
-	</c:if>
 
 	<%
 	String[] stages = { "아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료" };
