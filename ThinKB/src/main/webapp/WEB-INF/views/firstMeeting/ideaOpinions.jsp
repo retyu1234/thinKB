@@ -436,7 +436,7 @@ h1 {
     font-size: 12pt;
     transition: border-color 0.3s ease;
     rresize: none; /* 사용자가 크기를 조절할 수 없게 함 */
-    overflow-y: hidden; /* 스크롤바 숨김 */
+    overflow-y: auto;
     line-height: 1.5; /* 줄 간격 설정 */
 }
 .opinion-textarea:focus {
@@ -532,11 +532,11 @@ h1 {
             var currentTab = urlParams.get('currentTab') || 'tab-smart'; // 기본값을 'tab-smart'로 설정
             var roomId = urlParams.get('roomId');
             var ideaId = urlParams.get('ideaId');
-            var stage = urlParams.get('ideaId');
+            var stage = urlParams.get('stage');
 
 
             if (roomId && ideaId) {
-                showTab(currentTab, roomId, ideaId,stage);
+                showTab(currentTab, roomId, ideaId, stage);
             }
         };
 
