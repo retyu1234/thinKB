@@ -694,9 +694,9 @@ if (!isParticipant) {
 						</div>
 						<hr style="margin-bottom: 30px">
 						<div class="form-group">
-							<label for="report-title">제목을 입력해주세요 *</label> <input type="text"
+							<label for="report-title">제목을 입력해주세요</label> <input type="text"
 								id="report-title" name="reportTitle"
-								value="${reports.reportTitle != null ? reports.reportTitle : ''}"
+								value="${reports.reportTitle != null ? reports.reportTitle : reportsFirst.roomTitle}"
 								required>
 						</div>
 						<div class="input-row">

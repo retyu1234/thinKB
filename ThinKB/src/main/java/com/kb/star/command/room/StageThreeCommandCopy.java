@@ -40,20 +40,17 @@ public class StageThreeCommandCopy implements RoomCommand {
 		// 06:10)
 		List<Ideas> list = dao.yesPickIdeaList(roomId);
 		int ideaId = list.get(0).getIdeaID(); // 선택된것중에 첫번째꺼
-		System.out.println("1번"+ideaId);
 
 		if ((Integer) map.get("ideaId") != null) {
 			Integer ideaIdSide = (Integer) map.get("ideaId");
 			System.out.println(ideaIdSide);
 			ideaId = ideaIdSide;
-			System.out.println("2번"+ideaId);
 		}
 		model.addAttribute("ideaId", ideaId); // 선택된 것 중 첫 번째 아이디어의 ID 담기
 
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);
-		System.out.println("여기" + dto);
 
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);

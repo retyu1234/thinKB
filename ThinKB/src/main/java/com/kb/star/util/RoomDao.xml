@@ -409,7 +409,14 @@ SELECT UserID FROM Ideas WHERE RoomID=#{param2} and IsDelete=0 and IdeaID=#{para
 </select>
 <!-- pickNum 1 인 아이디어 아이디(방장화면용) -->
 <select id="getIdeaIdPickOne" resultType="int">
-select * from Ideas where RoomID = #{param1} and PickNum = 1
+    SELECT i.IdeaID
+    FROM Ideas i
+    INNER JOIN MeetingRoomMembers m ON i.RoomID = m.RoomID AND i.UserID = m.UserID
+    WHERE i.RoomID = #{param1}
+    AND m.Role = 'yesPick'
+    AND i.IsDelete = 0
+    ORDER BY i.PickNum DESC
+    LIMIT 1
 </select>
 
 <select id="acceptMember" resultType="com.kb.star.dto.MeetingRoomMember">
