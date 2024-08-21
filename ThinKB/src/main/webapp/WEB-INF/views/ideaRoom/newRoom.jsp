@@ -846,65 +846,8 @@ body.modal-open {
 					openModal();
 				});
 
-		//모달 외부 영역 클릭 시 모달 닫기
-		window.onclick = function(event) {
-			var modal = document.getElementById('employeeModal');
-			if (event.target == modal) {
-				closeModal();
-			}
-		};
 
-		//?
-		// 선택된 직원들을 저장할 배열
-		var selectedEmployees = [];
-
-		//직원 선택 처리 함수
-		function toggleEmployeeSelection(employeeId, employeeName) {
-			var index = selectedEmployees.findIndex(function(emp) {
-				return emp.id === employeeId;
-			});
-
-			if (index === -1) {
-				// 직원이 선택되지 않았으면 배열에 추가
-				selectedEmployees.push({
-					id : employeeId,
-					name : employeeName
-				});
-			} else {
-				// 이미 선택된 직원이면 배열에서 제거
-				selectedEmployees.splice(index, 1);
-			}
-
-			updateSelectedEmployeesDisplay();
-			updateHiddenInput();
-		}
-
-		//선택된 직원 목록을 화면에 업데이트하는 함수
-		function updateSelectedEmployeesDisplay() {
-			var selectedEmployeesDiv = document
-					.getElementById('selectedEmployees');
-			selectedEmployeesDiv.innerHTML = '';
-
-			if (selectedEmployees.length > 0) {
-				var ul = document.createElement('ul');
-				selectedEmployees.forEach(function(emp) {
-					var li = document.createElement('li');
-					li.textContent = emp.name + ' (' + emp.id + ')';
-					ul.appendChild(li);
-				});
-				selectedEmployeesDiv.appendChild(ul);
-			}
-		}
-
-		//hidden input 업데이트 함수
-		function updateHiddenInput() {
-			var hiddenInput = document.getElementById('selectedEmployeeIds');
-			hiddenInput.value = selectedEmployees.map(function(emp) {
-				return emp.id;
-			}).join(',');
-		}
-
-		//직원 선택 체크박스에 대한 이벤트 리스너
+//직원 선택 체크박스에 대한 이벤트 리스너
 function addEmployeeCheckboxListeners() {
     document.querySelectorAll('input[name="employees"]').forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
@@ -915,31 +858,31 @@ function addEmployeeCheckboxListeners() {
     });
 }
 
-		//선택된 직원들의 ID를 담을 배열
-		var selectedEmployees = [];
+//선택된 직원들의 ID를 담을 배열
+var selectedEmployees = [];
 
-		// 직원 선택 처리 함수 (employeeId 추가)
-		function toggleEmployeeSelection(employeeId, employeeName) {
-		    var index = selectedEmployees.findIndex(function(emp) {
-		        return emp.id === employeeId;
-		    });
-		
-		    if (index === -1) {
-		        // 직원이 선택되지 않았으면 배열에 추가
-		        selectedEmployees.push({
-		            id: employeeId,
-		            name: employeeName
-		        });
-		    } else {
-		        // 이미 선택된 직원이면 배열에서 제거
-		        selectedEmployees.splice(index, 1);
-		    }
-		
-		    updateSelectedEmployeesDisplay();
-		    updateHiddenInput();
-		}
+// 직원 선택 처리 함수 (employeeId 추가)
+function toggleEmployeeSelection(employeeId, employeeName) {
+    var index = selectedEmployees.findIndex(function(emp) {
+        return emp.id === employeeId;
+    });
 
-		// 선택된 직원 목록을 화면에 업데이트하는 함수
+    if (index === -1) {
+        // 직원이 선택되지 않았으면 배열에 추가
+        selectedEmployees.push({
+            id: employeeId,
+            name: employeeName
+        });
+    } else {
+        // 이미 선택된 직원이면 배열에서 제거
+        selectedEmployees.splice(index, 1);
+    }
+
+    updateSelectedEmployeesDisplay();
+    updateHiddenInput();
+}
+
+// 선택된 직원 목록을 화면에 업데이트하는 함수
 function updateSelectedEmployeesDisplay() {
     var selectedEmployeesDiv = document.getElementById('selectedEmployees');
     selectedEmployeesDiv.innerHTML = '';
@@ -955,7 +898,7 @@ function updateSelectedEmployeesDisplay() {
     }
 }
 
-		// hidden input 업데이트 함수
+// hidden input 업데이트 함수
 function updateHiddenInput() {
     var hiddenInput = document.getElementById('selectedEmployeeIds');
     hiddenInput.value = selectedEmployees.map(function(emp) {
@@ -963,210 +906,202 @@ function updateHiddenInput() {
     }).join(',');
 }
 
-		// 유효성 검사 함수 (수정됨)
-		function validateForm() {
-			let isValid = true;
+// 유효성 검사 함수 (수정됨)
+function validateForm() {
+	let isValid = true;
 
-			const titleInput = document.querySelector('input[name="title"]');
-			const contentInput = document.getElementById('content');
-			const endDateInput = document
-					.querySelector('input[name="endDate"]');
-			const selectedEmployeeIdsInput = document
-					.getElementById('selectedEmployeeIds');
+	const titleInput = document.querySelector('input[name="title"]');
+	const contentInput = document.getElementById('content');
+	const endDateInput = document
+			.querySelector('input[name="endDate"]');
+	const selectedEmployeeIdsInput = document
+			.getElementById('selectedEmployeeIds');
 
-			const timerHours = document
-					.querySelector('input[name="timer_hours"]');
-			const timerMinutes = document
-					.querySelector('input[name="timer_minutes"]');
-			const timerSeconds = document
-					.querySelector('input[name="timer_seconds"]');
-			const timerError = document.getElementById('timerError');
+	const timerHours = document
+			.querySelector('input[name="timer_hours"]');
+	const timerMinutes = document
+			.querySelector('input[name="timer_minutes"]');
+	const timerSeconds = document
+			.querySelector('input[name="timer_seconds"]');
+	const timerError = document.getElementById('timerError');
 
-			// Validate title
-			if (!titleInput.value.trim()) {
-				showError(titleInput, '(필수)주제를 입력해주세요');
-				isValid = false;
-			} else {
-				clearError(titleInput);
-			}
+	// Validate title
+	if (!titleInput.value.trim()) {
+		showError(titleInput, '(필수)주제를 입력해주세요');
+		isValid = false;
+	} else {
+		clearError(titleInput);
+	}
 
-			// Validate content
-			if (!contentInput.value.trim()) {
-				showError(contentInput, '(필수)설명을 입력해주세요');
-				isValid = false;
-			} else {
-				clearError(contentInput);
-			}
+	// Validate content
+	if (!contentInput.value.trim()) {
+		showError(contentInput, '(필수)설명을 입력해주세요');
+		isValid = false;
+	} else {
+		clearError(contentInput);
+	}
 
-			// Validate end date
-			if (!endDateInput.value.trim()) {
-				document.getElementById('endDateError').textContent = '(필수)회의 종료일을 선택해주세요';
-				isValid = false;
-			} else {
-				document.getElementById('endDateError').textContent = '';
-			}
+	// Validate end date
+	if (!endDateInput.value.trim()) {
+		document.getElementById('endDateError').textContent = '(필수)회의 종료일을 선택해주세요';
+		isValid = false;
+	} else {
+		document.getElementById('endDateError').textContent = '';
+	}
 
-			// Validate selected employees
-			if (!selectedEmployeeIdsInput.value.trim()) {
-				showError(selectedEmployeeIdsInput, '(필수)참여할 직원을 선택해주세요');
-				isValid = false;
-			} else {
-				clearError(selectedEmployeeIdsInput);
-			}
+	// Validate selected employees
+	if (!selectedEmployeeIdsInput.value.trim()) {
+		showError(selectedEmployeeIdsInput, '(필수)참여할 직원을 선택해주세요');
+		isValid = false;
+	} else {
+		clearError(selectedEmployeeIdsInput);
+	}
 
-			//타이머검증
-			if (timerHours.value.trim() === ''
-					&& timerMinutes.value.trim() === ''
-					&& timerSeconds.value.trim() === '') {
-				timerError.textContent = '(필수)타이머를 설정해주세요';
-				isValid = false;
-			} else {
-				timerError.textContent = '';
-			}
+	//타이머검증
+	if (timerHours.value.trim() === ''
+			&& timerMinutes.value.trim() === ''
+			&& timerSeconds.value.trim() === '') {
+		timerError.textContent = '(필수)타이머를 설정해주세요';
+		isValid = false;
+	} else {
+		timerError.textContent = '';
+	}
 
-			return isValid;
+	return isValid;
+}
+
+// 오류 표시 함수 (새로 추가)
+function showError(input, message) {
+	let errorElement = input.nextElementSibling;
+	if (!errorElement
+			|| !errorElement.classList.contains('error-message')) {
+		errorElement = document.createElement('span');
+		errorElement.classList.add('error-message');
+		input.parentNode.insertBefore(errorElement, input.nextSibling);
+	}
+	errorElement.textContent = message;
+}
+
+// 오류 제거 함수 (수정됨)
+function clearError(input) {
+	let errorElement;
+	if (input.id === 'datepicker') {
+		errorElement = document.getElementById('endDateError');
+	} else if (input.id === 'selectedEmployeeIds') {
+		errorElement = input.nextElementSibling;
+	} else {
+		errorElement = input.nextElementSibling;
+	}
+
+	if (errorElement
+			&& errorElement.classList.contains('error-message')) {
+		errorElement.textContent = '';
+	}
+}
+
+// 타이머 입력 오류 제거 함수
+function clearTimerError() {
+	let timerHours = document
+			.querySelector('input[name="timer_hours"]').value.trim();
+	let timerMinutes = document
+			.querySelector('input[name="timer_minutes"]').value.trim();
+	let timerSeconds = document
+			.querySelector('input[name="timer_seconds"]').value.trim();
+	let errorElement = document.getElementById('timerError');
+
+	if (timerHours !== '' || timerMinutes !== '' || timerSeconds !== '') {
+		if (errorElement
+				&& errorElement.classList.contains('error-message')) {
+			errorElement.textContent = '';
 		}
+	}
+}
 
-		// 오류 표시 함수 (새로 추가)
-		function showError(input, message) {
-			let errorElement = input.nextElementSibling;
-			if (!errorElement
-					|| !errorElement.classList.contains('error-message')) {
-				errorElement = document.createElement('span');
-				errorElement.classList.add('error-message');
-				input.parentNode.insertBefore(errorElement, input.nextSibling);
-			}
-			errorElement.textContent = message;
-		}
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[name="title"], input[name="content"], input[name="endDate"]')
+        .forEach(function(input) {
+            input.addEventListener('input', function() {
+                clearError(this);
+            });
+        });
 
-		// 오류 제거 함수 (수정됨)
-		function clearError(input) {
-			let errorElement;
-			if (input.id === 'datepicker') {
-				errorElement = document.getElementById('endDateError');
-			} else if (input.id === 'selectedEmployeeIds') {
-				errorElement = input.nextElementSibling;
-			} else {
-				errorElement = input.nextElementSibling;
-			}
+    document.querySelectorAll('input[name="timer_hours"], input[name="timer_minutes"], input[name="timer_seconds"]')
+        .forEach(function(input) {
+            input.addEventListener('input', function() {
+                clearTimerError();
+            });
+        });
 
-			if (errorElement
-					&& errorElement.classList.contains('error-message')) {
-				errorElement.textContent = '';
-			}
-		}
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        clearError(document.getElementById('selectedEmployeeIds'));
+    });
 
-		// 타이머 입력 오류 제거 함수
-		function clearTimerError() {
-			let timerHours = document
-					.querySelector('input[name="timer_hours"]').value.trim();
-			let timerMinutes = document
-					.querySelector('input[name="timer_minutes"]').value.trim();
-			let timerSeconds = document
-					.querySelector('input[name="timer_seconds"]').value.trim();
-			let errorElement = document.getElementById('timerError');
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        closeModal();
+    });
 
-			if (timerHours !== '' || timerMinutes !== '' || timerSeconds !== '') {
-				if (errorElement
-						&& errorElement.classList.contains('error-message')) {
-					errorElement.textContent = '';
-				}
-			}
-		}
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        openModal();
+    });
 
-		document.addEventListener('DOMContentLoaded', function() {
-		    // 기존 코드 유지
-		    document.querySelectorAll('input[name="title"], input[name="content"], input[name="endDate"]')
-		        .forEach(function(input) {
-		            input.addEventListener('input', function() {
-		                clearError(this);
-		            });
-		        });
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        closeModal();
+    });
 
-		    document.querySelectorAll('input[name="timer_hours"], input[name="timer_minutes"], input[name="timer_seconds"]')
-		        .forEach(function(input) {
-		            input.addEventListener('input', function() {
-		                clearTimerError();
-		            });
-		        });
+    document.getElementById('datepicker').addEventListener('input', function() {
+        clearError(this);
+    });
 
-		    document.getElementById('openModalBtn').addEventListener('click', function() {
-		        clearError(document.getElementById('selectedEmployeeIds'));
-		    });
+    document.querySelectorAll('input[name="employees"]').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            var employeeId = this.value;
+            var employeeName = this.parentElement.nextElementSibling.textContent.trim();
+            toggleEmployeeSelection(employeeId, employeeName);
+        });
+    });
 
-		    document.getElementById('closeModalBtn').addEventListener('click', function() {
-		        closeModal();
-		    });
+    createCalendar();
 
-		    document.getElementById('openModalBtn').addEventListener('click', function() {
-		        openModal();
-		    });
+    // 새로운 검색 기능 추가
+    const searchInput = document.getElementById('employeeSearch');
+    const searchBtn = document.getElementById('searchBtn');
+    const employeeTableBody = document.getElementById('employeeTableBody');
+    const allRows = Array.from(employeeTableBody.getElementsByTagName('tr'));
 
-		    document.getElementById('submitBtn').addEventListener('click', function() {
-		        closeModal();
-		    });
+    function performSearch() {
+        const searchTerm = searchInput.value.trim().toLowerCase();
 
-		    document.getElementById('datepicker').addEventListener('input', function() {
-		        clearError(this);
-		    });
+        allRows.forEach(row => {
+            const employeeInfo = row.cells[1].textContent.toLowerCase();
+            if (searchTerm === '' || employeeInfo.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
 
-		    document.querySelectorAll('input[name="employees"]').forEach(function(checkbox) {
-		        checkbox.addEventListener('change', function() {
-		            var employeeId = this.value;
-		            var employeeName = this.parentElement.nextElementSibling.textContent.trim();
-		            toggleEmployeeSelection(employeeId, employeeName);
-		        });
-		    });
+    // 검색 버튼 클릭 이벤트
+    searchBtn.addEventListener('click', performSearch);
 
-		    createCalendar();
+    // 검색 입력 필드에서 키 입력 이벤트
+    searchInput.addEventListener('input', performSearch);
 
-		    // 새로운 검색 기능 추가
-		    const searchInput = document.getElementById('employeeSearch');
-		    const searchBtn = document.getElementById('searchBtn');
-		    const employeeTableBody = document.getElementById('employeeTableBody');
-		    const allRows = Array.from(employeeTableBody.getElementsByTagName('tr'));
+    // 모달이 열릴 때마다 검색 입력 필드를 초기화하고 모든 행을 표시
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        searchInput.value = '';
+        allRows.forEach(row => row.style.display = '');
+    });
 
-		    function performSearch() {
-		        const searchTerm = searchInput.value.trim().toLowerCase();
+    // 모달 닫기 버튼 이벤트 (변경 없음)
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
 
-		        allRows.forEach(row => {
-		            const employeeInfo = row.cells[1].textContent.toLowerCase();
-		            if (searchTerm === '' || employeeInfo.includes(searchTerm)) {
-		                row.style.display = '';
-		            } else {
-		                row.style.display = 'none';
-		            }
-		        });
-		    }
-
-		    // 검색 버튼 클릭 이벤트
-		    searchBtn.addEventListener('click', performSearch);
-
-		    // 검색 입력 필드에서 키 입력 이벤트
-		    searchInput.addEventListener('input', performSearch);
-
-		    // 모달이 열릴 때마다 검색 입력 필드를 초기화하고 모든 행을 표시
-		    document.getElementById('openModalBtn').addEventListener('click', function() {
-		        searchInput.value = '';
-		        allRows.forEach(row => row.style.display = '');
-		    });
-
-		    // 모달 닫기 버튼 이벤트 (변경 없음)
-		    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
-
-		    // 선택 완료 버튼 이벤트 (변경 없음)
-		    document.getElementById('submitBtn').addEventListener('click', closeModal);
-		});
+    // 선택 완료 버튼 이벤트 (변경 없음)
+    document.getElementById('submitBtn').addEventListener('click', closeModal);
+});
 
 
-	// 모달 외부 영역 클릭 시 모달 닫기 (변경 없음)
-	window.onclick = function(event) {
-		var modal = document.getElementById('employeeModal');
-		if (event.target == modal) {
-			closeModal();
-		}
-	};
-	</script>
+</script>
 <script type="text/javascript">
 //로딩 화면 요소
 const loadingScreen = document.getElementById('loading-screen');

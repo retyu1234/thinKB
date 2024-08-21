@@ -330,17 +330,24 @@ input.room1-subject:focus {
     border: 1px solid #888;
     width: 80%;
     max-width: 800px;
+    height: 70vh;
+    max-height: 70vh;
     border-radius: 10px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative; /* 추가 */
 }
 
 .aiClose {
     color: #aaa;
-    float: right;
     font-size: 28px;
     font-weight: bold;
     cursor: pointer;
+    position: absolute; /* 추가 */
+    top: 10px; /* 추가 */
+    right: 20px; /* 추가 */
 }
-
 .aiClose:hover,
 .aiClose:focus {
     color: black;
@@ -349,9 +356,10 @@ input.room1-subject:focus {
 }
 
 #aiLogChat {
-    height: 700px;
+    flex-grow: 1;
     overflow-y: auto;
     padding: 10px;
+    margin-bottom: 20px;
 }
 
 .aiChat-message {
@@ -667,6 +675,35 @@ display: none;
     pointer-events: auto !important;
     opacity: 1 !important;
 }
+
+/* 모달창 두개 중복방지를 위해서 한개 추가함 */
+.ai-history-link, .reject-history-link {
+    margin-left: 20px;
+    font-size: 13pt;
+    color: blue;
+    cursor: pointer;
+}
+
+/* ai로그 없는경우 */
+.no-ai-history {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    text-align: center;
+}
+
+.no-ai-history img {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.no-ai-history p {
+    font-size: 18px;
+    font-weight: bold;
+}
 </style>
 </head>
 <script>
@@ -864,22 +901,29 @@ document.addEventListener("DOMContentLoaded", function() {
             .then(response => response.json())
             .then(data => {
                 var chatHtml = '';
-                data.forEach(function(log) {
-                    var profileImg = log.profileImg;
-                    var aiQuestion = log.aiQuestion.replace(/\n/g, '<br>');
-                    var aiContent = log.aiContent.replace(/\n/g, '<br>');
-                    var aiImgSrc = "<c:url value='/resources/aiImg.png'/>";
+                if (data.length === 0) {
+                    // 데이터가 없는 경우
+                    document.getElementById('noAiHistory').style.display = 'flex';
+                } else {
+                    // 데이터가 있는 경우
+                    document.getElementById('noAiHistory').style.display = 'none';
+                    data.forEach(function(log) {
+                        var profileImg = log.profileImg;
+                        var aiQuestion = log.aiQuestion.replace(/\n/g, '<br>');
+                        var aiContent = log.aiContent.replace(/\n/g, '<br>');
+                        var aiImgSrc = "<c:url value='/resources/aiImg.png'/>";
 
-                    chatHtml += '<div class="aiChat-message aiUser-message">' +
-                                '<img src="./upload/' + profileImg + '" alt="User" class="aiProfile-img">' +
-                                '<div class="aiMessage-content">' + aiQuestion + '</div>' +
-                                '</div>' +
-                                '<div class="aiChat-message ai-message">' +
-                                '<div class="aiMessage-content">' + aiContent + '</div>' +
-                                '<img src="' + aiImgSrc + '" alt="AI" class="ai-img">' +
-                                '</div>';
-                });
-                document.getElementById('aiLogChat').innerHTML = chatHtml;
+                        chatHtml += '<div class="aiChat-message aiUser-message">' +
+                                    '<img src="./upload/' + profileImg + '" alt="User" class="aiProfile-img">' +
+                                    '<div class="aiMessage-content">' + aiQuestion + '</div>' +
+                                    '</div>' +
+                                    '<div class="aiChat-message ai-message">' +
+                                    '<div class="aiMessage-content">' + aiContent + '</div>' +
+                                    '<img src="' + aiImgSrc + '" alt="AI" class="ai-img">' +
+                                    '</div>';
+                    });
+                }
+                document.getElementById('aiLogChat').innerHTML += chatHtml;
             })
             .catch(error => console.error('Error:', error));
     }
@@ -1066,7 +1110,7 @@ document.addEventListener('DOMContentLoaded', function() {
 //반려이력 모달
 document.addEventListener("DOMContentLoaded", function() {
     var modal = document.getElementById("rejectHistoryModal");
-    var btn = document.querySelector(".titleAndDetail-title-link");
+    var btn = document.querySelector(".reject-history-link");
     var span = document.querySelector("#rejectHistoryModal .close");
     var reapplyButton = document.getElementById("reapplyButton");
     
@@ -1292,7 +1336,7 @@ window.onload = function() {
 	<div class="titleAndDetail ai-opinion-section">
 	    <div class="title-container">
 	        <div class="titleAndDetail-title">나의 아이디어에 대한 KB AI 의견</div>
-	        <div class="titleAndDetail-title-link" onclick="openAiLogModal()">나의 AI 이력 ></div>	
+	        <div class="titleAndDetail-title-link ai-history-link" onclick="openAiLogModal()">나의 AI 이력 ></div>	
 	    </div>
 	    <button class="yellow-button" onclick="showFeedback()">AI에게 피드백받기</button>
 	</div>
@@ -1365,7 +1409,12 @@ window.onload = function() {
 	    <div class="aiModal-content">
 	        <span class="aiClose">&times;</span>
 	        <h2>나의 AI 이력</h2>
-	        <div id="aiLogChat"></div>
+	        <div id="aiLogChat">
+	            <div id="noAiHistory" class="no-ai-history" style="display: none;">
+	                <img src="<c:url value='./resources/noContent.png'/>" alt="No AI History" class="no-history-image">
+	                <p>AI와 대화한 이력이 없어요!</p>
+	            </div>
+	        </div>
 	    </div>
 	</div>
 	
