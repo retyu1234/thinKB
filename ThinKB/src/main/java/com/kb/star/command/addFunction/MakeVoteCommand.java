@@ -37,16 +37,16 @@ public class MakeVoteCommand implements AddCommand {
         // 투표 항목 가져오기
         String[] optionTexts = request.getParameterValues("optionText");
 
-        for (String user : list) {
-            System.out.println(user);
-        }
+//        for (String user : list) {
+//            System.out.println(user);
+//        }
 
         // MeetingRooms 회의방 신규 생성
         AddVoteDao dao = sqlSession.getMapper(AddVoteDao.class);
         dao.insertNewVote(title, departmentId, endDate, id);
 
         int addVoteId = dao.voteIdConfirm(departmentId);
-        System.out.println("addVoteId " + addVoteId);
+//        System.out.println("addVoteId " + addVoteId);
 
         // 투표 항목 추가
         if (optionTexts != null) {

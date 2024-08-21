@@ -72,11 +72,27 @@ body {
 		<div class="error-message">문제를 해결하기 위해 열심히 노력하고 있습니다. 잠시 후 다시
 			확인해주세요.</div>
 
-		<!-- 메인으로 가기 버튼 -->
-		<a href="${pageContext.request.contextPath}/main" class="main-button">
-			<img src="<c:url value='/resources/logoFinal.png' />" alt="Logo">
-			메인으로 가기
-		</a>
+		  <!-- 메인으로 가기 버튼 -->
+        <c:choose>
+            <c:when test="${sessionScope.userId == 1}">
+                <a href="${pageContext.request.contextPath}/adminMain" class="main-button">
+                    <img src="<c:url value='/resources/logoFinal.png' />" alt="Logo">
+                    메인으로 가기
+                </a>
+            </c:when>
+            <c:when test="${sessionScope.userId == null}">
+                <a href="${pageContext.request.contextPath}/loginView" class="main-button">
+                    <img src="<c:url value='/resources/logoFinal.png' />" alt="Logo">
+                    메인으로 가기
+                </a>
+            </c:when>
+            <c:otherwise>
+                <a href="${pageContext.request.contextPath}/main" class="main-button">
+                    <img src="<c:url value='/resources/logoFinal.png' />" alt="Logo">
+                    메인으로 가기
+                </a>
+            </c:otherwise>
+        </c:choose>
 	</div>
 </body>
 </html>

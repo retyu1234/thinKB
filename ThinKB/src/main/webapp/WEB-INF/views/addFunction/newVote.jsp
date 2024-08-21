@@ -873,12 +873,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // 모달 외부 영역 클릭 시 모달 닫기
-window.onclick = function(event) {
+/* window.onclick = function(event) {
     var modal = document.getElementById('employeeModal');
     if (event.target == modal) {
         closeModal();
     }
-};
+}; */
 </script>
 </body>
 </html>
