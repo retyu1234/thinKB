@@ -426,7 +426,7 @@
 	                </thead>
 	                <tbody>
 	                    <c:forEach var="user" items="${userList}" varStatus="status">
-           					<c:if test="${status.index < 5}">
+           					<c:if test="${status.index < 5 && user.userId != 1}">
 					            <tr>
 					                <td>${user.departmentName}</td>
 					                <td>${user.teamName}</td>

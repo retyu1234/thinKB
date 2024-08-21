@@ -79,6 +79,7 @@ public class FirstMeetingController<Command> {
 
 		redirectAttributes.addFlashAttribute("Message", message);
 
+
 		return "redirect:" + redirectUrl;
 	}
 
