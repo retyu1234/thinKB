@@ -121,7 +121,14 @@
     <div id="userList">
     <c:forEach items="${userList}" var="user">
         <div class="user-item">
-            <img src="<c:url value='./upload/${user.profileImg}'/>" alt="Profile Image" class="user-profile-img">
+            <c:choose>
+                <c:when test="${not empty user.profileImg}">                  
+                    <img src="<c:url value='./upload/${user.profileImg}'/>" alt="Profile Image" class="user-profile-img">
+                </c:when>
+                <c:otherwise>
+                    <img src="<c:url value='./upload/noprofile.png'/>" alt="Profile Image" class="user-profile-img">
+                </c:otherwise>
+            </c:choose>  
             <span class="user-name">
                 <c:if test="${user.userId eq meetingRoom.roomManagerId}">[방장] </c:if>
                 ${user.userName}

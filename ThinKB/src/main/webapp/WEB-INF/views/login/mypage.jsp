@@ -593,7 +593,7 @@ window.onclick = function(event) {
 								class="profile-pic">
 						</c:when>
 						<c:otherwise>
-							<img src="./resources/profile1.png" alt="Profile Picture"
+							<img src="./resources/noprofile.png" alt="Profile Picture"
 								class="profile-pic">
 						</c:otherwise>
 					</c:choose>

@@ -410,7 +410,6 @@ public class IdeaRoomController {
 	public String updateIdea(HttpServletRequest request, @RequestParam("roomId") int roomId,
 			@RequestParam("myIdea") String myIdea, @RequestParam("ideaDetail") String ideaDetail,
 			@RequestParam("stage") int stage, Model model, RedirectAttributes redirectAttributes) {
-		System.out.println("/updateIdea()실행되는지");
 		HttpSession session = request.getSession();
 		int userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("userId", userId);
