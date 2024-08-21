@@ -85,7 +85,7 @@
 
 	<select id="userList" resultType="com.kb.star.dto.UsersDto">
 		select * from Users where
-		DepartmentID=#{param1} and UserId!=#{param2}
+		DepartmentID=#{param1} and UserId not IN (1, #{param2})
 	</select>
 
 	<insert id="insertNewRoom">

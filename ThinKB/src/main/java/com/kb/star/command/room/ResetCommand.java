@@ -54,7 +54,6 @@ public class ResetCommand implements RoomCommand {
 		LocalDateTime endTime = currentTime.plusHours(hour).plusMinutes(min).plusSeconds(sec);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		String formattedTime = endTime.format(formatter); // 이 시간으로 업데이트 하면 됨
-		System.out.println("타이머 저장될 시간? " + formattedTime);
 
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 
@@ -89,7 +88,6 @@ public class ResetCommand implements RoomCommand {
 
 		// 반려사유 db에 추가하고, ideas에서 isReject업데이트
 		for (RejectLog log : dto) {
-			System.out.println("RejectId: " + log.getRejectId() + ", RejectContents: " + log.getRejectContents());
 			dao.updateRejectLog(roomId,log.getRejectId(),log.getRejectContents());
 			dao.isRejectUpdate(log.getRejectId());
 		}
@@ -115,7 +113,6 @@ public class ResetCommand implements RoomCommand {
 		MeetingRooms roomInfo = dao.roomDetailInfo(roomId);
 		String notification = "제출했던 아이디어 초안이 🙅‍♂️반려되었어요. 다른 아이디어를 제출해주세요.";
 		for (RejectLog log : dto) {
-			System.out.println("아이디어id " + log.getRejectId());
 			RejectMember rejectMem = dao.rejectMember(roomId, log.getRejectId());
 			dao.makeNotification(rejectMem.getUserId(), rejectMem.getIdeaId(), notification, roomId);
 		}
