@@ -668,17 +668,22 @@ request.setAttribute("stages", stages);
         });
     }
 
-    // 페이지 로드 시 실행
+ // 페이지 로드 시 실행
     window.onload = function() {
         // 기존 onload 함수 내용 유지
         
         // 회의 기간 종료 확인
-        const endDateStr = '${info.getEndDate()}';
+        const endDateStr = '${meetingRoom.getEndDate()}';
         if (endDateStr) {
             const endDate = new Date(endDateStr);
             const now = new Date();
             
-            if (now > endDate) {
+            // 종료일의 다음날 자정을 계산
+            const dayAfterEnd = new Date(endDate);
+            dayAfterEnd.setDate(dayAfterEnd.getDate() + 1);
+            dayAfterEnd.setHours(0, 0, 0, 0);
+            
+            if (now >= dayAfterEnd) {
                 disableInteraction();
             }
         }

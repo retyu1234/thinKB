@@ -779,7 +779,7 @@ h1 {
         });
     }
 
-    // 페이지 로드 시 실행
+ // 페이지 로드 시 실행
     window.onload = function() {
         // 기존 onload 함수 내용 유지
         
@@ -789,7 +789,12 @@ h1 {
             const endDate = new Date(endDateStr);
             const now = new Date();
             
-            if (now > endDate) {
+            // 종료일의 다음날 자정을 계산
+            const dayAfterEnd = new Date(endDate);
+            dayAfterEnd.setDate(dayAfterEnd.getDate() + 1);
+            dayAfterEnd.setHours(0, 0, 0, 0);
+            
+            if (now >= dayAfterEnd) {
                 disableInteraction();
             }
         }
