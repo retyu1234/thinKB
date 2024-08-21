@@ -140,22 +140,17 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		int myContributionNum = dao.myContributionNum(roomId, userId); // RoomDao
 		model.addAttribute("myContributionNum", myContributionNum);
 
-
+		
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);
-		
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);
 		params.put("roomId", roomId);
 		params.put("ideaId", ideaId);
 
-		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByroomId", params);
 		model.addAttribute("roomMessage", roomMessage);
-//		int stageId = Integer.parseInt(request.getParameter("stage"));
-//		model.addAttribute("stage",stageId);
-		// 여기까지 leftSideBar 출력용
-		
 
 	}
 	
