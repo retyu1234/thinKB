@@ -67,6 +67,14 @@ ORDER BY
 		AddVoteId = #{param1}
 		order by OptionID desc;
 	</select>
+	
+	<select id="voteOptionsResult"
+		resultType="com.kb.star.dto.AddVoteOptionsDto">
+		SELECT * from AddVoteOptions
+		where
+		AddVoteId = #{param1}
+		order by VoteCount desc;
+	</select>
 
 	<select id="voteOptionsAfter"
 		resultType="com.kb.star.dto.AddVoteOptionsDto">
