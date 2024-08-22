@@ -519,7 +519,7 @@ body.modal-open {
                                     <img src="<c:url value='./upload/${profileImg}'/>" alt="Profile Image">
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="<c:url value='./resources/profile1.png'/>" alt="Logo">
+                                    <img src="<c:url value='./resources/noprofile.png'/>" alt="Logo">
                                 </c:otherwise>
                             </c:choose></a> ${userName} 님
                     </div>

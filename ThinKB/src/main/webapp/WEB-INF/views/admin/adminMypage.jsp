@@ -8,7 +8,7 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <meta charset="UTF-8">
-<title>부서 현황</title>
+<title>thinKB-부서 현황</title>
 <style>
 .adminMypage-body {
 	font-family: KB금융 본문체 Light;
@@ -617,7 +617,7 @@ window.onclick = function(event) {
 		<div class="adminMypageContainer">
 			<div class="userAdmin-title">
 				<a href="./adminMain"><img src="./resources/back2.png" alt="back2" class="back2"></a>
-				<span>thinKB-부서 현황</span>
+				<span>부서 현황</span>
 			</div>
 			<hr class="userAdmin-line">
 			

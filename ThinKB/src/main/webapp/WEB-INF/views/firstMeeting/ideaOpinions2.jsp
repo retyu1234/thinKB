@@ -266,9 +266,10 @@ a {
 .opinion-textarea {
 	font-family: KB금융 본문체 Light;
     width: calc(100% - 120px);
+    
     min-height: 50px;
     max-height: 150px;
-    overflow-y: hidden; /* 스크롤바 숨김 */
+    overflow-y: auto;
     resize: none;
     line-height: 1.5;
     white-space: pre-wrap;
@@ -280,7 +281,6 @@ a {
     border-radius: 5px;
     box-sizing: border-box;
     font-size: 12pt;
-    font-weight: bold;
 }
 .opinion-textarea:focus {
 	outline: none; /* 기본 포커스 스타일 제거 */
@@ -415,12 +415,18 @@ a {
         font-weight: bold;
         
     }
-
     
+	.comment-ended {
+		margin-bottom: 100px;
+	}
+	.comment-full {
+		margin-bottom: 100px;
+	}
     .comment-section {
         display: flex;
         align-items: center;
         margin-top: 20px;
+        margin-bottom: 100px;
         border-top: 1px solid #000;
         padding-top: 10px;
         flex-wrap: nowrap;
@@ -884,29 +890,6 @@ request.setAttribute("stages", stages);
 				        </form>
 				    </c:when>
 				</c:choose>
-<%-- 	       <c:if test="${4 - userOpinionCount > 0}">
-			    <c:choose>
-			        <c:when test="${!userCommentedTabs.contains(currentHatColor)}">
-			            <form action="addOpinion2" method="post" class="comment-section" onsubmit="return validateAndSubmitForm()"> 
-			                <input type="hidden" name="ideaId" value="${ideaId}" />
-			                <input type="hidden" name="roomId" value="${roomId}" />
-			                <input type="hidden" name="stage" value="${stage}" />
-			                <input type="hidden" name="currentTab" value="${currentTab}" />
-			                <textarea class="opinion-textarea" name="opinionText" placeholder="의견을 입력해주세요" rows="1"></textarea>
-			                <button type="submit" class="write-button">작성</button>
-			            </form>
-			        </c:when>
-			        <c:otherwise>
-			            <div class="comment-ended">이미 해당 탭에 의견을 작성하셨습니다.<br> 다른 탭에 의견을 추가 작성해주세요</div>
-			        </c:otherwise>
-			    </c:choose>
-			</c:if>
-			<c:if test="${4 - userOpinionCount <= 0}">
-			    <div class="comment-full">최대 작성 가능 의견 4개 작성을 완료하셨습니다. <br> 더 이상 의견을 작성할 수 없습니다.</div>
-			</c:if>
-            <div class="comment-ended" style="display: none;">
-				타이머가 종료되었습니다. 더 이상 의견을 작성할 수 없습니다.
-			</div> --%>
 		    </div>
 		</div>
 </div>
