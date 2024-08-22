@@ -364,7 +364,12 @@ if (!isParticipant) {
 #backButton:hover{
 	font-size: 30pt;
 }
-
+.custom-textarea {
+    height: 150px; /* Adjust the height as needed */
+    resize: vertical; /* Allows vertical resizing */
+    white-space: pre-wrap; /* Preserves line breaks */
+    overflow-y: auto; /* Adds a vertical scrollbar if needed */
+}
 </style>
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
@@ -410,9 +415,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				value="${meetingRoom.roomTitle}" placeholder="여기에 입력하세요">
 
 			<div class="title" style="margin-top: 70px;">회의 상세설명 변경</div>
-			<input type="text" class="custom-input" style="height: 70px;"
-				name="content" value="${meetingRoom.description}"
-				placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">
+<div class="title" style="margin-top: 70px;">회의 상세설명 변경</div>
+<textarea class="custom-input custom-textarea" name="content" placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">${meetingRoom.description}</textarea>
 
 			<div class="title" style="margin-top: 70px;">회의 종료일 변경</div>
 			<div class="date-input-container">
