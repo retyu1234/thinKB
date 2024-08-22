@@ -215,6 +215,7 @@ if (!isParticipant) {
 .columns {
     width: 60%;
     margin: 0 auto;
+    margin-bottom: 100px;
 }
 /* 가운데 내용 부분 */
 .container {
@@ -534,7 +535,7 @@ request.setAttribute("stages", stages);
 
     <div class="container">
     	<!-- 객관적관점 -->
-        <div class="column">
+        <div class="column" style="margin-top: 30px;">
             <div class="box">
 	            <div class="section-header">
 					<div class="tab-title tab-smart" onclick="navigateToTab('tab-smart')">객관적관점</div>
@@ -570,7 +571,7 @@ request.setAttribute("stages", stages);
         </div>
         
         <!-- 기대효과 -->
-        <div class="column">
+        <div class="column" style="margin-top: 30px;">
             <div class="box">
             	<div class="section-header">
 					<div class="tab-title tab-positive" onclick="navigateToTab('tab-positive')">기대효과</div>
