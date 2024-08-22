@@ -47,4 +47,6 @@ public interface AddVoteDao {
 
 	void voteUpdate(int optionId, int addVoteId, int userId);
 
+	List<AddVoteOptionsDto> voteOptionsResult(int addVoteId);
+
 }

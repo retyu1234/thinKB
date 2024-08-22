@@ -26,7 +26,7 @@ public class addVoteAfterCommand implements AddCommand {
 		int userId = (Integer) map.get("id");
 
 		AddVoteDao dao = sqlSession.getMapper(AddVoteDao.class);
-		List<AddVoteOptionsDto> dto = dao.voteOptions(addVoteId);
+		List<AddVoteOptionsDto> dto = dao.voteOptionsResult(addVoteId);
 		model.addAttribute("optionList", dto);
 
 //		List<VoteParticipationsDto> myVote = dao.myVoteResult(addVoteId, userId);
