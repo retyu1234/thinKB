@@ -1262,12 +1262,7 @@ window.onload = function() {
         const endDate = new Date(endDateStr);
         const now = new Date();
         
-        // 종료일의 다음날 자정을 계산
-        const dayAfterEnd = new Date(endDate);
-        dayAfterEnd.setDate(dayAfterEnd.getDate() + 1);
-        dayAfterEnd.setHours(0, 0, 0, 0);
-        
-        if (now >= dayAfterEnd) {
+        if (now > endDate) {
             disableInteraction();
         }
     }
