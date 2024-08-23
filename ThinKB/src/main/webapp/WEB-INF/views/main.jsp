@@ -1263,12 +1263,12 @@ document.addEventListener('DOMContentLoaded', function() {
 														<div class="room" style="">
 															<c:choose>
 																<c:when test="${li.getParticipationStatus() == 0}">
-																	<div style="background-color: ${bgColor}; width:30%; border-radius: 30px;"><p style=" padding:3px;font-weight:bold; text-align:center;color:white; font-size:13px;">참여필요</p></div>
+																	<div style="background-color: ${bgColor}; width:30%; border-radius: 30px;"><p style=" padding:3px; text-align:center;color:white; font-size:13px;">참여필요</p></div>
 																	<h2>${li.getRoomTitle()}</h2>																	
 																	<!-- 미참여 상태 배경색 -->
 																</c:when>
 																<c:when test="${li.getParticipationStatus() == 1}">
-																	<div style="background-color: ${bgColor}; width:30%; border-radius: 30px;"><p style="padding:3px; font-weight:bold; text-align:center;color:white; font-size:13px;">참여완료</p></div>
+																	<div style="background-color: ${bgColor}; width:30%; border-radius: 30px;"><p style="padding:3px; text-align:center;color:white; font-size:13px;">참여완료</p></div>
 																	<h2>${li.getRoomTitle()}</h2>												
 																	<!-- 참여 상태 배경색 -->
 																</c:when>

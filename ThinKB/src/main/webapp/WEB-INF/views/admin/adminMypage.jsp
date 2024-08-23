@@ -774,7 +774,7 @@ window.onclick = function(event) {
 				<div class="best-section" >
 					<div class="section-header"style="display:flex;justify-content:space-between;">
 						<div class="section-title" style="font-size: 15pt;">🏆 연간 채택
-							아이디어</div><button class="more-button" onclick="location.href='./departmentReportList'">전체보기</button>
+							아이디어</div><button class="more-button" onclick="location.href='./departmentReportList3'">전체보기</button>
 					</div><hr style="border:1px solid lightgrey"/>
 					<div class="adminReport-content">
 						<c:choose>
