@@ -338,7 +338,14 @@ input.room1-subject:focus {
     flex-direction: column;
     position: relative; /* 추가 */
 }
-
+#aiLogContainer {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+}
 .aiClose {
     color: #aaa;
     font-size: 28px;
@@ -361,7 +368,13 @@ input.room1-subject:focus {
     padding: 10px;
     margin-bottom: 20px;
 }
-
+#aiLogChat, #noAiHistory {
+    width: 95%;
+    height: 95%;
+}
+#aiLogChat {
+    display: none; /* 초기에는 숨김 */
+}
 .aiChat-message {
     display: flex;
     margin-bottom: 15px;
@@ -693,7 +706,7 @@ display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 300px;
+    height: 100%;
     text-align: center;
 }
 
@@ -875,39 +888,46 @@ function updateForm() {
 </script>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // AI 로그 모달 관련
+    // AI 로그 모달 관련 요소
     var aiModal = document.getElementById("aiLogModal");
     var aiBtn = document.querySelector(".ai-history-link");
     var aiSpan = document.querySelector(".aiClose");
+    var aiLogChat = document.getElementById('aiLogChat');
+    var noAiHistory = document.getElementById('noAiHistory');
 
-    if (aiBtn) {
-        aiBtn.onclick = function() {
-            if (aiModal) {
-                aiModal.style.display = "block";
-                loadAiLog(); // 모달이 열릴 때마다 로그를 새로 불러옵니다.
-            }
-        }
-    }
-
-    if (aiSpan) {
-        aiSpan.onclick = function() {
-            if (aiModal) {
-                aiModal.style.display = "none";
-            }
-        }
-    }
-
-    // 반려 이력 모달 관련
+    // 반려 이력 모달 관련 요소
     var rejectModal = document.getElementById("rejectHistoryModal");
     var rejectBtn = document.querySelector(".reject-history-link");
     var rejectSpan = document.querySelector("#rejectHistoryModal .close");
 
+    // AI 로그 모달 열기
+    if (aiBtn) {
+        aiBtn.onclick = function() {
+            if (aiModal) {
+                aiModal.style.display = "block";
+                loadAiLog();
+            }
+        }
+    }
+
+    // AI 로그 모달 닫기
+    if (aiSpan) {
+        aiSpan.onclick = function() {
+            if (aiModal) {
+                aiModal.style.display = "none";
+                clearAiLogChat(); // 모달 닫을 때 내용 초기화
+            }
+        }
+    }
+
+    // 반려 이력 모달 열기
     if (rejectBtn) {
         rejectBtn.onclick = function() {
             rejectModal.style.display = "block";
         }
     }
 
+    // 반려 이력 모달 닫기
     if (rejectSpan) {
         rejectSpan.onclick = function() {
             rejectModal.style.display = "none";
@@ -918,69 +938,114 @@ document.addEventListener("DOMContentLoaded", function() {
     window.onclick = function(event) {
         if (event.target == aiModal) {
             aiModal.style.display = "none";
+            clearAiLogChat();
         }
         if (event.target == rejectModal) {
             rejectModal.style.display = "none";
         }
     }
 
-    // openAiLogModal 함수를 전역 스코프에 노출
-    window.openAiLogModal = openAiLogModal;
-
-    function openAiLogModal() {
+    // AI 로그 모달 열기 함수 (전역 스코프에 노출)
+    window.openAiLogModal = function() {
         aiModal.style.display = "block";
         loadAiLog();
     }
 
-    function loadAiLog() {
-        var userId = ${userId};
-        var roomId = ${info.getRoomId()};
-        var aiLogChat = document.getElementById('aiLogChat');
-        var noAiHistory = document.getElementById('noAiHistory');
+    // AI 로그 불러오기 함수
+ function loadAiLog() {
+    var userId = ${userId};
+    var roomId = ${info.getRoomId()};
+    var aiLogChat = document.getElementById('aiLogChat');
+    var noAiHistory = document.getElementById('noAiHistory');
 
-        if (!aiLogChat || !noAiHistory) {
-            console.error('Required DOM elements not found');
-            return;
+    fetch(`./getUserAiLog?userId=${userId}&roomId=${roomId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.length === 0) {
+                aiLogChat.style.display = 'none';
+                noAiHistory.style.display = 'flex';
+            } else {
+                aiLogChat.style.display = 'block';
+                noAiHistory.style.display = 'none';
+                displayAiLogs(data);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            aiLogChat.style.display = 'none';
+            noAiHistory.style.display = 'flex';
+            noAiHistory.querySelector('p').textContent = '데이터를 불러오는 중 오류가 발생했습니다.';
+        });
+}
+
+
+    // AI 로그 채팅 내용 초기화
+    function clearAiLogChat() {
+        if (aiLogChat) {
+            aiLogChat.innerHTML = '';
         }
+    }
 
-        fetch(`./getUserAiLog?userId=${userId}&roomId=${roomId}`)
-            .then(response => response.json())
-            .then(data => {
-                var chatHtml = '';
+    // 데이터 없음 메시지 표시
+    function showNoAiHistory() {
+        if (noAiHistory) {
+            noAiHistory.style.display = 'flex';
+        }
+        if (aiLogChat) {
+            aiLogChat.style.display = 'none';
+        }
+    }
 
-                // Clear previous content
-                aiLogChat.innerHTML = '';
+    // 데이터 없음 메시지 숨기기
+    function hideNoAiHistory() {
+        if (noAiHistory) {
+            noAiHistory.style.display = 'none';
+        }
+        if (aiLogChat) {
+            aiLogChat.style.display = 'block';
+        }
+    }
 
-                if (data.length === 0) {
-                    // 데이터가 없는 경우
-                    noAiHistory.style.display = 'flex';
-                } else {
-                    // 데이터가 있는 경우
-                    noAiHistory.style.display = 'none';
-                    data.forEach(function(log) {
-                        var profileImg = log.profileImg;
-                        var aiQuestion = log.aiQuestion.replace(/\n/g, '<br>');
-                        var aiContent = log.aiContent.replace(/\n/g, '<br>');
-                        var aiImgSrc = "<c:url value='/resources/aiImg.png'/>";
+    // AI 로그 표시
+    function displayAiLogs(logs) {
+        var chatHtml = '';
+        logs.forEach(function(log) {
+            var profileImg = log.profileImg;
+            var aiQuestion = log.aiQuestion.replace(/\n/g, '<br>');
+            var aiContent = log.aiContent.replace(/\n/g, '<br>');
+            var aiImgSrc = "<c:url value='/resources/aiImg.png'/>";
+            chatHtml += '<div class="aiChat-message aiUser-message">' +
 
-                        chatHtml += '<div class="aiChat-message aiUser-message">' +
-                                    '<img src="./upload/' + profileImg + '" alt="User" class="aiProfile-img">' +
-                                    '<div class="aiMessage-content">' + aiQuestion + '</div>' +
-                                    '</div>' +
-                                    '<div class="aiChat-message ai-message">' +
-                                    '<div class="aiMessage-content">' + aiContent + '</div>' +
-                                    '<img src="' + aiImgSrc + '" alt="AI" class="ai-img">' +
-                                    '</div>';
-                    });
-                    aiLogChat.innerHTML = chatHtml;
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                if (aiLogChat) {
-                    aiLogChat.innerHTML = '<p>데이터를 불러오는 중 오류가 발생했습니다.</p>';
-                }
-            });
+            '<img src="./upload/' + profileImg + '" alt="User" class="aiProfile-img">' +
+
+            '<div class="aiMessage-content">' + aiQuestion + '</div>' +
+
+            '</div>' +
+
+            '<div class="aiChat-message ai-message">' +
+
+            '<div class="aiMessage-content">' + aiContent + '</div>' +
+
+            '<img src="' + aiImgSrc + '" alt="AI" class="ai-img">' +
+
+            '</div>';
+        });
+
+        if (aiLogChat) {
+            aiLogChat.innerHTML = chatHtml;
+        }
+    }
+
+    // 에러 메시지 표시
+    function showErrorMessage() {
+        if (aiLogChat) {
+            aiLogChat.innerHTML = '<p>데이터를 불러오는 중 오류가 발생했습니다.</p>';
+        }
     }
 });
 </script>
@@ -1464,19 +1529,20 @@ window.onload = function() {
 
 	</div>
 	
-	<!-- AI 로그 모달 -->
-	<div id="aiLogModal" class="aiModal">
-	    <div class="aiModal-content">
-	        <span class="aiClose">&times;</span>
-	        <h2>나의 AI 이력</h2>
-	        <div id="aiLogChat">
-	            <div id="noAiHistory" class="no-ai-history" style="display: none;">
-	                <img src="<c:url value='./resources/noContent.png'/>" alt="No AI History" class="no-history-image">
-	                <p>AI와 대화한 이력이 없어요!</p>
-	            </div>
-	        </div>
-	    </div>
-	</div>
+<!-- AI 로그 모달 -->
+<div id="aiLogModal" class="aiModal">
+    <div class="aiModal-content">
+        <span class="aiClose">&times;</span>
+        <h2>나의 AI 이력</h2>
+        <div id="aiLogContainer">
+            <div id="aiLogChat"></div>
+            <div id="noAiHistory" class="no-ai-history">
+                <img src="<c:url value='./resources/noContent.png'/>" alt="No AI History" class="no-history-image">
+                <p>AI와 대화한 이력이 없어요!</p>
+            </div>
+        </div>
+    </div>
+</div>
 	
 	<!-- 반려 이력 모달 -->
 	<div id="rejectHistoryModal" class="modal">
