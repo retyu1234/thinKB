@@ -84,6 +84,17 @@ public class ReportController {
         model.addAttribute("initialTab", "pending"); // 결재대기 탭으로 이동
         return "/admin/adminReportList";
     }
+    //부서관리자 보고서 채택 목록
+    @RequestMapping("/departmentReportList3")
+    public String departmentReportList3(HttpServletRequest request, Model model, HttpSession session) {
+    	Integer userId = (Integer) session.getAttribute("userId");
+    	model.addAttribute("request", request);
+    	model.addAttribute("userId", userId);
+    	command = new DepartmentReportList(sqlSession, "approved");
+    	command.execute(model);
+    	model.addAttribute("initialTab", "approved"); // 결재대기 탭으로 이동
+    	return "/admin/adminReportList";
+    }
 	//부서관리자 특정 보고서 조회(클릭시)
     @RequestMapping("/reportDetail")
     public String reportDetail(HttpServletRequest request, Model model, HttpSession session) {
