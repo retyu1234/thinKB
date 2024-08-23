@@ -24,7 +24,6 @@ public class RoomStage2VoteCommand implements RoomCommand {
 		int roomId = (Integer) map.get("roomId");
 		int userId = (Integer) map.get("userId");
 
-		System.out.println("투표 도달");
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("ideaId", ideaId);
 		params.put("stageId", 2);
