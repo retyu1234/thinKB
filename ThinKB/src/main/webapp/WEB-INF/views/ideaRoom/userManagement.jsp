@@ -53,7 +53,7 @@ if (!isParticipant) {
 .usertable {
 	width: 100%;
 	border-collapse: collapse;
-	margin-bottom: 20px;
+	margin-bottom: 50px;
 	border-radius: 25px;
 }
 
@@ -93,6 +93,7 @@ if (!isParticipant) {
 	cursor: pointer;
 	transition: background-color 0.3s;
 	padding: 10px 15px;
+	font-family: KB금융 제목체 Light;
 }
 
 .btn-primary:hover {
@@ -107,6 +108,7 @@ if (!isParticipant) {
 	border-radius: 25px;
 	cursor: pointer;
 	transition: background-color 0.3s;
+	font-family: KB금융 제목체 Light;
 }
 
 .btn-primary1:hover {
@@ -584,7 +586,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		</div>
 		<hr class="line">
 
-		<h3 style="margin-bottom: 0;">- 참여자 리스트</h3>
+		<h3 style="margin-bottom: 0; font-size: 16pt;">◾ 참여자 리스트</h3>
 		<div style="display:flex; justify-content:flex-end;">
 				<p style="margin-left:3%; font-size:10pt; margin-bottom:0;">※ 참여자 리스트에서 선택한 직원에게 알림을 보내실 수 있습니다.</p>
 				</div>
@@ -631,7 +633,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			</tbody>
 		</table>
 
-		<h3>- 참여자 기여도 보기</h3>
+		<h3 style="font-size: 16pt;">◾ 참여자 기여도 보기</h3>
 		<!-- 기여도 차트 -->
 		<div class="charts-container">
 			<div class="chart-wrapper">
@@ -735,7 +737,11 @@ document.addEventListener('DOMContentLoaded', function() {
 					</form>
 				</div>
 			</div>
-
+			
+	<!-- 화면 하단 여백 -->
+	<div style="margin-top: 200px;"></div>
+</div>
+</div>
 			<script>
 		
 	function removeParticipant(userId, roomId) {

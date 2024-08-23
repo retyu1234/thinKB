@@ -1233,6 +1233,9 @@ body, html {
 					style="margin-top: 50px;" onclick="submitVote()">${hasVoted ? '투표 변경하기' : '투표하기'}</button>
 			</div>
 		</div>
+		
+		<!-- 화면 하단 여백 -->
+		<div style="margin-top: 200px;"></div>
 	</div>
 
 	<!-- 질문 모달 창 -->
