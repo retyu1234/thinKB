@@ -763,7 +763,7 @@ body, html {
 	    data.append("ideaId", selectedIdeaId);
 	    data.append("roomId", ${meetingRoom.roomId});
 
-	    fetch('/star/submitReply', {
+	    fetch('./submitReply', {
 	        method: 'POST',
 	        headers: {
 	            'Content-Type': 'application/x-www-form-urlencoded'
@@ -815,7 +815,7 @@ body, html {
 
 	    console.log("Submitting reply answer with data: ", data.toString());
 
-	    fetch('/star/submitReplyAnswer', {
+	    fetch('./submitReplyAnswer', {
 	        method: 'POST',
 	        headers: {
 	            'Content-Type': 'application/x-www-form-urlencoded'
@@ -853,7 +853,7 @@ body, html {
 	    const data = new URLSearchParams();
 	    data.append("ideaReplyId", ideaReplyId);
 
-	    fetch('/star/deleteReply', {
+	    fetch('./deleteReply', {
 	        method: 'POST',
 	        headers: {
 	            'Content-Type': 'application/x-www-form-urlencoded'
