@@ -93,6 +93,7 @@ if (!isParticipant) {
 	border-radius: 8px;
 	font-size: 16px;
 	box-sizing: border-box;
+	font-family: KB금융 본문체 Light;
 }
 
 .calendar-icon {
@@ -147,6 +148,7 @@ if (!isParticipant) {
 	display: flex;
 	justify-content: space-between;
 	padding: 0 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
@@ -179,6 +181,7 @@ if (!isParticipant) {
 	border-radius: 5px;
 	font-size: 16px;
 	text-align: center;
+	font-family: KB금융 본문체 Light;
 }
 
 .timer-input:hover {
@@ -410,15 +413,15 @@ document.addEventListener('DOMContentLoaded', function() {
 			<input type="hidden" name="departmentId" value="${departmentId}" />
 			<input type="hidden" name="teamId" value="${teamId}" />
 
-			<div class="title">주제 변경</div>
+			<div class="title">◾ 주제 변경</div>
 			<input type="text" class="custom-input" name="title"
 				value="${meetingRoom.roomTitle}" placeholder="여기에 입력하세요">
 
-			<div class="title" style="margin-top: 70px;">회의 상세설명 변경</div>
-<div class="title" style="margin-top: 70px;">회의 상세설명 변경</div>
-<textarea class="custom-input custom-textarea" name="content" placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">${meetingRoom.description}</textarea>
+			<div class="title" style="margin-top: 70px;">◾ 회의 상세설명 변경</div>
+			<textarea class="custom-input custom-textarea" name="content" 
+			placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">${meetingRoom.description}</textarea>
 
-			<div class="title" style="margin-top: 70px;">회의 종료일 변경</div>
+			<div class="title" style="margin-top: 70px;">◾ 회의 종료일 변경</div>
 			<div class="date-input-container">
 				<div class="date-input-wrapper">
 					<input type="text" class="date-input" name="endDate"
@@ -432,8 +435,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				<div class="calendar-popup" id="calendarPopup">
 					<div class="calendar-nav">
-						<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
-						<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
+						<span onclick="prevMonth()">&lt;</span>
+						<span id="calendarYear"></span>
+						<span id="calendarMonth"></span>
+						<span onclick="nextMonth()">&gt;</span>
 					</div>
 					<table id="calendarTable" class="calendar-table">
 						<thead>
@@ -452,7 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 
-			<div class="title" style="margin-top: 70px;">타이머 설정 변경</div>
+			<div class="title" style="margin-top: 70px;">◾ 타이머 설정 변경</div>
 
 			<c:set var="hasNonZeroIdea" value="false" />
 			<c:forEach var="timer" items="${timers}">
