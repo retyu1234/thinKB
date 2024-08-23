@@ -713,67 +713,101 @@ display: none;
 </style>
 </head>
 <script>
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("DOMContentLoaded 이벤트 발생");
+    
+    var hasExistingIdea = ${result == true}; // 기존 아이디어 존재 여부
+    var originalIdea = "${submittedIdea.getTitle()}".trim(); // 원래 아이디어 제목
+    var originalDetail = "${submittedIdeaDescription}".trim(); // 원래 아이디어 설명
 
+    try {
+        showNextStageButton();
+    } catch (error) {
+        console.error("showNextStageButton 함수 실행 중 오류 발생:", error);
+    }
+    
+    try {
+        checkRejectedIdea();
+    } catch (error) {
+        console.error("checkRejectedIdea 함수 실행 중 오류 발생:", error);
+    }
+
+    try {
+        if (${result}) {
+            const submitButton = document.getElementById("submitButton");
+            const updateButton = document.getElementById("updateButton");
+            if (submitButton) submitButton.style.display = "none";
+            if (updateButton) updateButton.style.display = "inline-block";
+        } else {
+            const submitButton = document.getElementById("submitButton");
+            const updateButton = document.getElementById("updateButton");
+            if (submitButton) submitButton.style.display = "inline-block";
+            if (updateButton) updateButton.style.display = "none";
+        }
+    } catch (error) {
+        console.error("버튼 표시 설정 중 오류 발생:", error);
+    }
+});
+
+function submitIdeaForm1() {
+    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
+    var ideaDetail = document.querySelector('textarea[name="ideaDetail"]').value.trim();
+    var hasExistingIdea = ${result == true};
+    var originalIdea = "${submittedIdea.getTitle()}".trim();
+    var originalDetail = "${submittedIdeaDescription}".trim();
+
+    if (hasExistingIdea) {
+        // 기존 아이디어가 있는 경우
+        if (myIdea === "" || ideaDetail === "") {
+            // 필드가 비어있으면 원래 값으로 복원
+            document.querySelector('input[name="myIdea"]').value = originalIdea;
+            document.querySelector('textarea[name="ideaDetail"]').value = originalDetail.replace(/\\n/g, '\n');
+            alert("아이디어와 상세 설명을 비워둘 수 없습니다. 원래 값으로 복원됩니다.");
+            return;
+        } else if (myIdea === originalIdea && ideaDetail.replace(/\n/g, '\\n') === originalDetail) {
+            alert("변경된 내용이 없습니다.");
+            return;
+        }
+    } else {
+        // 새 아이디어 제출의 경우
+        if (myIdea === "" || ideaDetail === "") {
+            alert("아이디어와 상세 설명을 모두 입력해주세요.");
+            return;
+        }
+    }
+
+    // 폼 제출
+    document.getElementById('myIdeaHidden').value = myIdea;
+    document.getElementById('ideaDetailHidden').value = ideaDetail;
+    document.getElementById('ideaForm1').submit();
+}
+
+function updateForm() {
+    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
+    var ideaDetail = document.querySelector('textarea[name="ideaDetail"]').value.trim();
+    var originalIdea = "${submittedIdea.getTitle()}".trim();
+    var originalDetail = "${submittedIdeaDescription}".trim();
+
+    if (myIdea === "" || ideaDetail === "") {
+        // 필드가 비어있으면 원래 값으로 복원
+        document.querySelector('input[name="myIdea"]').value = originalIdea;
+        document.querySelector('textarea[name="ideaDetail"]').value = originalDetail.replace(/\\n/g, '\n');
+        alert("아이디어와 상세 설명을 비워둘 수 없습니다. 이전에 작성했던 내용이 복원됩니다.");
+        return;
+    } else if (myIdea === originalIdea && ideaDetail.replace(/\n/g, '\\n') === originalDetail) {
+        alert("변경된 내용이 없습니다.");
+        return;
+    }
+
+    document.getElementById('myIdeaHidden2').value = myIdea;
+    document.getElementById('ideaDetailHidden2').value = ideaDetail;
+    document.getElementById('updateForm').submit();
+}
 	function showResponse() {
 		const responseDiv = document.getElementById("kb-ai-response");
 		const responseText = document.getElementById("ai-response-text");
 		responseDiv.style.display = "flex"; // "block" 대신 "flex" 사용
 		responseText.innerText = "api써서 받아온 응답이 보여집니다.";
-	}
-
-	function submitIdeaForm1() {
-	    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
-	    var ideaDetail = document.querySelector('textarea[name="ideaDetail"]').value.trim();
-	    var hasExistingIdea = ${result == true};
-	    var originalIdea = "${submittedIdea.getTitle()}";
-	    var originalDetail = "${submittedIdea.getDescription()}";
-
-	    if (hasExistingIdea) {
-	        // 기존 아이디어가 있는 경우
-	        if (myIdea === "" || ideaDetail === "") {
-	            // 필드가 비어있으면 원래 값으로 복원
-	            document.querySelector('input[name="myIdea"]').value = originalIdea;
-	            document.querySelector('textarea[name="ideaDetail"]').value = originalDetail;
-	            alert("아이디어와 상세 설명을 비워둘 수 없습니다. 원래 값으로 복원됩니다.");
-	            return;
-	        } else if (myIdea === originalIdea && ideaDetail === originalDetail) {
-	            alert("변경된 내용이 없습니다.");
-	            return;
-	        }
-	    } else {
-	        // 새 아이디어 제출의 경우
-	        if (myIdea === "" || ideaDetail === "") {
-	            alert("아이디어와 상세 설명을 모두 입력해주세요.");
-	            return;
-	        }
-	    }
-
-	    // 폼 제출
-	    document.getElementById('myIdeaHidden').value = myIdea;
-	    document.getElementById('ideaDetailHidden').value = ideaDetail;
-	    document.getElementById('ideaForm1').submit();
-	}
-
-	function updateForm() {
-	    var myIdea = document.querySelector('input[name="myIdea"]').value.trim();
-	    var ideaDetail = document.querySelector('textarea[name="ideaDetail"]').value.trim();
-	    var originalIdea = "${submittedIdea.getTitle()}";
-	    var originalDetail = "${submittedIdea.getDescription()}";
-
-	    if (myIdea === "" || ideaDetail === "") {
-	        // 필드가 비어있으면 원래 값으로 복원
-	        document.querySelector('input[name="myIdea"]').value = originalIdea;
-	        document.querySelector('textarea[name="ideaDetail"]').value = originalDetail;
-	        alert("아이디어와 상세 설명을 비워둘 수 없습니다. 이전에 작성했던 내용이 복원됩니다.");
-	        return;
-	    } else if (myIdea === originalIdea && ideaDetail === originalDetail) {
-	        alert("변경된 내용이 없습니다.");
-	        return;
-	    }
-
-	    document.getElementById('myIdeaHidden2').value = myIdea;
-	    document.getElementById('ideaDetailHidden2').value = ideaDetail;
-	    document.getElementById('updateForm').submit();
 	}
 
 	function nextStage() {
@@ -831,41 +865,7 @@ display: none;
 	    }
 	}
 
-	document.addEventListener("DOMContentLoaded", function() {
-	    console.log("DOMContentLoaded 이벤트 발생");
-	    
-	    var hasExistingIdea = ${result == true}; // 기존 아이디어 존재 여부
-	    var originalIdea = "${submittedIdea.getTitle()}"; // 원래 아이디어 제목
-	    var originalDetail = "${submittedIdea.getDescription()}"; // 원래 아이디어 설명
 
-	    try {
-	        showNextStageButton();
-	    } catch (error) {
-	        console.error("showNextStageButton 함수 실행 중 오류 발생:", error);
-	    }
-	    
-	    try {
-	        checkRejectedIdea();
-	    } catch (error) {
-	        console.error("checkRejectedIdea 함수 실행 중 오류 발생:", error);
-	    }
-
-	    try {
-	        if (${result}) {
-	            const submitButton = document.getElementById("submitButton");
-	            const updateButton = document.getElementById("updateButton");
-	            if (submitButton) submitButton.style.display = "none";
-	            if (updateButton) updateButton.style.display = "inline-block";
-	        } else {
-	            const submitButton = document.getElementById("submitButton");
-	            const updateButton = document.getElementById("updateButton");
-	            if (submitButton) submitButton.style.display = "inline-block";
-	            if (updateButton) updateButton.style.display = "none";
-	        }
-	    } catch (error) {
-	        console.error("버튼 표시 설정 중 오류 발생:", error);
-	    }
-	});
 	
 	<%
 	    String[] stages = {"아이디어 초안", "초안 투표하기", "관점별 의견 모으기", "더 확장하기", "기획 보고서 작성", "회의 완료"};
@@ -1252,7 +1252,7 @@ function disableInteraction() {
     });
 }
 
-// 페이지 로드 시 실행
+//페이지 로드 시 실행
 window.onload = function() {
     // 기존 onload 함수 내용 유지
     
@@ -1262,7 +1262,12 @@ window.onload = function() {
         const endDate = new Date(endDateStr);
         const now = new Date();
         
-        if (now > endDate) {
+        // 종료일의 다음날 자정을 계산
+        const dayAfterEnd = new Date(endDate);
+        dayAfterEnd.setDate(dayAfterEnd.getDate() + 1);
+        dayAfterEnd.setHours(0, 0, 0, 0);
+        
+        if (now >= dayAfterEnd) {
             disableInteraction();
         }
     }
