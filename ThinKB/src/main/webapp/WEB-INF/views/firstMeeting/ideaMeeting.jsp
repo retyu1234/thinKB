@@ -779,7 +779,6 @@ body, html {
 	    .then(result => {
 	        console.log("Submit Reply Result: ", result);
 	        if (result === 'success') {
-	            alert("댓글이 성공적으로 등록되었습니다.");
 	            document.getElementById("replyContent").value = ""; 
 	            openModal(selectedIdeaId, document.getElementById("modal-idea-title").innerText, document.getElementById("modal-idea-description").innerText, ideaUserId); 
 	        } else {
@@ -831,7 +830,6 @@ body, html {
 	    .then(result => {
 	        console.log("Submit Reply Answer Result: ", result);
 	        if (result === 'success') {
-	            alert("답글이 성공적으로 등록되었습니다.");
 	            document.getElementById("replyAnswerContent").value = ""; 
 	            openModal(selectedIdeaId, document.getElementById("modal-idea-title").innerText, document.getElementById("modal-idea-description").innerText, '${sessionScope.userId}'); 
 	        } else {
