@@ -75,7 +75,7 @@
 		IsDelete, IsAdmin)
 		VALUES (#{param1}, #{param2}, #{param3}, #{param4},
 		#{param5},
-		#{param6}, #{param7}, null, false, false)
+		#{param6}, #{param7}, 'noprofile.png', false, false)
 	</insert>
 
 	<select id="userDepartment" resultType="String">
