@@ -882,13 +882,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (aiBtn) {
         aiBtn.onclick = function() {
-            openAiLogModal();
+            if (aiModal) {
+                aiModal.style.display = "block";
+                loadAiLog(); // 모달이 열릴 때마다 로그를 새로 불러옵니다.
+            }
         }
     }
 
     if (aiSpan) {
         aiSpan.onclick = function() {
-            aiModal.style.display = "none";
+            if (aiModal) {
+                aiModal.style.display = "none";
+            }
         }
     }
 
@@ -930,16 +935,28 @@ document.addEventListener("DOMContentLoaded", function() {
     function loadAiLog() {
         var userId = ${userId};
         var roomId = ${info.getRoomId()};
+        var aiLogChat = document.getElementById('aiLogChat');
+        var noAiHistory = document.getElementById('noAiHistory');
+
+        if (!aiLogChat || !noAiHistory) {
+            console.error('Required DOM elements not found');
+            return;
+        }
+
         fetch(`./getUserAiLog?userId=${userId}&roomId=${roomId}`)
             .then(response => response.json())
             .then(data => {
                 var chatHtml = '';
+
+                // Clear previous content
+                aiLogChat.innerHTML = '';
+
                 if (data.length === 0) {
                     // 데이터가 없는 경우
-                    document.getElementById('noAiHistory').style.display = 'flex';
+                    noAiHistory.style.display = 'flex';
                 } else {
                     // 데이터가 있는 경우
-                    document.getElementById('noAiHistory').style.display = 'none';
+                    noAiHistory.style.display = 'none';
                     data.forEach(function(log) {
                         var profileImg = log.profileImg;
                         var aiQuestion = log.aiQuestion.replace(/\n/g, '<br>');
@@ -955,10 +972,15 @@ document.addEventListener("DOMContentLoaded", function() {
                                     '<img src="' + aiImgSrc + '" alt="AI" class="ai-img">' +
                                     '</div>';
                     });
+                    aiLogChat.innerHTML = chatHtml;
                 }
-                document.getElementById('aiLogChat').innerHTML += chatHtml;
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                if (aiLogChat) {
+                    aiLogChat.innerHTML = '<p>데이터를 불러오는 중 오류가 발생했습니다.</p>';
+                }
+            });
     }
 });
 </script>
