@@ -210,7 +210,7 @@ html, body {
 	<!-- 상단 배너영역 -->
 	<div class="ab-feedback-banner">
 		<img src="<c:url value='./resources/pinMemoBanner.png'/>"
-			alt="pinMemoBanner" style="max-width: 100%; height: 100%;">
+			alt="pinMemoBanner" style="max-width: 100%; height: auto;">
 	</div>
 
 	<!-- 결과피드백, 테스트만들기 버튼 -->
