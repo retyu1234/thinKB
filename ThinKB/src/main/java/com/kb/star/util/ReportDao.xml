@@ -186,6 +186,7 @@
             MeetingRooms mr ON r.RoomID = mr.RoomID
         WHERE 
             u.DepartmentID = (SELECT DepartmentID FROM Users WHERE UserID = #{managerId})
+            and r.IsFinal=1
         ORDER BY 
             r.UpdatedAt DESC
     </select>
