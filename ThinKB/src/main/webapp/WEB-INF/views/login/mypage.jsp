@@ -1026,13 +1026,13 @@ function updateLevelProgression() {
 
     if (totalContribution <= 100) {
         currentLevel = 'bronzeIcon';
-        progressPercentage = (totalContribution / 100) * 100;
+        progressPercentage = (totalContribution / 100) * 33.33;
     } else if (totalContribution <= 200) {
         currentLevel = 'silverIcon';
-        progressPercentage = ((totalContribution - 100) / 100) * 100 + 33.33;
+        progressPercentage = ((totalContribution - 100) / 100) * 33.33 + 33.33;
     } else if (totalContribution <= 300) {
         currentLevel = 'goldIcon';
-        progressPercentage = ((totalContribution - 200) / 100) * 100 + 66.66;
+        progressPercentage = ((totalContribution - 200) / 100) * 33.33 + 66.66;
     } else {
         currentLevel = 'platinumIcon';
         progressPercentage = 100;
@@ -1047,7 +1047,6 @@ function updateLevelProgression() {
 
     document.getElementById('progressFill').style.width = progressPercentage + '%';
 }
-
 // 모달 외부 클릭 시 닫기
 window.onclick = function(event) {
     if (event.target == document.getElementById('levelInfoModal')) {
