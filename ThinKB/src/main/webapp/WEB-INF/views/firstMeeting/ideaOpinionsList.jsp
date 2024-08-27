@@ -639,9 +639,8 @@ function navigateToTab(currentTab) {
 		<div class="column">
 			<div class="box">
 				<div class="section-header">
-					<div class="toggle-area"
-						onclick="toggleSection('positive-opinions')">
-						<span id="smart-opinions-icon" class="toggle-icon">▶</span>
+					<div class="toggle-area" onclick="toggleSection('positive-opinions')">
+						<span id="positive-opinions-icon" class="toggle-icon">▶</span>
 						<div class="tab-title tab-positive">기대효과</div>
 					</div>
 					<div class="spacer" onclick="toggleSection('positive-opinions')"></div>
@@ -682,8 +681,8 @@ function navigateToTab(currentTab) {
 			<div class="box">
 				<div class="section-header">
 					<div class="toggle-area" onclick="toggleSection('worry-opinions')">
-						<span id="smart-opinions-icon" class="toggle-icon">▶</span>
-						<div class="tab-title tab-smart">문제점</div>
+						<span id="worry-opinions-icon" class="toggle-icon">▶</span>
+						<div class="tab-title tab-worry">문제점</div>
 					</div>
 					<div class="spacer" onclick="toggleSection('worry-opinions')"></div>
 					<div class="nav-spacer" onclick="navigateToTab('tab-worry')"></div>
@@ -722,8 +721,8 @@ function navigateToTab(currentTab) {
 			<div class="box" style="margin-bottom: 100px;">
 				<div class="section-header">
 					<div class="toggle-area" onclick="toggleSection('strict-opinions')">
-						<span id="smart-opinions-icon" class="toggle-icon">▶</span>
-						<div class="tab-title tab-smart">실현가능성</div>
+						<span id="strict-opinions-icon" class="toggle-icon">▶</span>
+						<div class="tab-title tab-strict">실현가능성</div>
 					</div>
 					<div class="spacer" onclick="toggleSection('strict-opinions')"></div>
 					<div class="nav-spacer" onclick="navigateToTab('tab-strict')"></div>
