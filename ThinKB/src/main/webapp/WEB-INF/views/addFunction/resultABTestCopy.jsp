@@ -136,7 +136,7 @@ html, body {
 }
 
 .choice.winning img {
-	border-color: #ffd700;
+	/* border-color: #ffd700; */
 }
 </style>
 </head>
@@ -183,10 +183,10 @@ html, body {
 <script>
     // 페이지 로드 시 사용자의 선택을 표시
     window.onload = function() {
-        var userChoice = "${userChoice}"; // 서버에서 사용자의 선택을 받아옴
-        if (userChoice === "A") {
+        var userChoice = ${userChoice}; // 서버에서 사용자의 선택을 받아옴
+        if (userChoice === 1) {
             document.getElementById('choiceA').classList.add('selected');
-        } else if (userChoice === "B") {
+        } else if (userChoice === 0) {
             document.getElementById('choiceB').classList.add('selected');
         }
     }
