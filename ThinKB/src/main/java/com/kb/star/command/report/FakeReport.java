@@ -49,7 +49,7 @@ public class FakeReport implements ReportCommand{
         if (reportExists > 0) {
             dao.updateReport(roomId, userId, reportTitle, reportContent);
         } else {
-            dao.insertReport(roomId, userId, reportTitle, reportContent);
+            dao.insertReportFalse(roomId, userId, reportTitle, reportContent);
         }
     }
 
