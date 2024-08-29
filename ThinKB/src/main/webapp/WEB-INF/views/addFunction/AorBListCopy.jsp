@@ -266,7 +266,7 @@ function redirectToDetail(abTestId, status) {
         window.location.href = './completedTestDetail?abTestId=' + abTestId;
     } else {
         // 미완료된 경우 기본 URL로 이동
-        window.location.href = './adTsetdetail?abTestId=' + abTestId;
+        window.location.href = './abTestdetail?abTestId=' + abTestId;
     }
 }
 function toggleSelectAll(checkbox) {

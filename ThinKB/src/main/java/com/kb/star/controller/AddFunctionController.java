@@ -26,6 +26,7 @@ import com.kb.star.command.addFunction.ABTestList;
 import com.kb.star.command.addFunction.ABTestVote;
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.addFunction.AddVoteOptionsCommand;
+import com.kb.star.command.addFunction.CompleteABTestDetail;
 import com.kb.star.command.addFunction.MakeAorBCommand;
 import com.kb.star.command.addFunction.MakePinTestCommand;
 import com.kb.star.command.addFunction.MakeVoteCommand;
@@ -74,7 +75,7 @@ public class AddFunctionController {
 	}
 
 	// ab테스트 투표화면
-	@RequestMapping("/adTsetdetail")
+	@RequestMapping("/abTestdetail")
 	public String adTsetdetail(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		command = new ABTestDetail(sqlSession);
@@ -95,9 +96,11 @@ public class AddFunctionController {
 
 	// ab테스트 투표 결과
 	@RequestMapping("/completedTestDetail")
-	public String completedTestDetail(HttpServletRequest request, Model model) {
+	public String completedTestDetail(HttpSession session, HttpServletRequest request, Model model) {
+		int userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("request", request);
-		command = new ABTestDetail(sqlSession);
+		model.addAttribute("userId", userId);
+		command = new CompleteABTestDetail(sqlSession);
 		command.execute(model);
 		return "/addFunction/resultABTestCopy";
 	}

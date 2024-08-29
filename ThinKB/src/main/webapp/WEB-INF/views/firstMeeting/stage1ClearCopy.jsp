@@ -356,7 +356,7 @@ body.reject-modal-open {
 		<div class="room1-title">[${meetingRoom.getRoomTitle()}] 투표 진행여부 결정</div>
 		<div class="room1-title-detail">이전 단계에서 수집된 아이디어 목록이에요. 아이디어를 다시
 			받으려면 반려사유를 선택해서 "다시 받기" 버튼을 눌러주세요.</div>
-		<div class="room1-title-detail">※ 단 '다시 받기'는 전체 아이디어에 같이 적용됩니다.</div>
+		<div class="room1-title-detail">※ 참여자는 반려 사유를 확인하고 다시 입력할 수 있습니다.</div>
 
 		<!-- 다시받기버튼 -->
 		<div style="text-align: right;">

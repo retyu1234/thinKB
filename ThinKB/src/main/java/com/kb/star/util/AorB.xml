@@ -98,4 +98,8 @@
 		ORDER BY
 		t.CreatedAt DESC
 	</select>
+	
+	<select id="myPick" resultType="Integer">
+		SELECT Pick from ABResult WHERE ABTestID = #{param1} and UserID = #{param2}
+	</select>
 </mapper>
