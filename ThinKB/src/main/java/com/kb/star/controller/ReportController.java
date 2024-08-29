@@ -42,7 +42,7 @@ public class ReportController {
 		if ("save".equals(action)) {
 			command = new FakeReport(sqlSession, servletContext);
 			command.execute(model);
-			path="redirect:/meetingList";
+			path="redirect:/myReportList";
 		} else if ("submit".equals(action)) {
 			command = new WordSubmit(sqlSession, servletContext);
 			command.execute(model);
