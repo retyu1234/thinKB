@@ -8,10 +8,15 @@
 		resultType="int">
 		SELECT COUNT(*)
 		FROM Reports
-		WHERE RoomID = #{roomId} and
-		IsFinal = true
+		WHERE RoomID = #{roomId}
 	</select>
 	<!-- Reports 테이블에 데이터 삽입 -->
+	<insert id="insertReportFalse">
+		INSERT INTO Reports (RoomID, UserID, ReportTitle,
+		ReportContent, IsFinal)
+		VALUES (#{roomId}, #{userId}, #{reportTitle},
+		#{reportContent}, false)
+	</insert>
 	<insert id="insertReport">
 		INSERT INTO Reports (RoomID, UserID, ReportTitle,
 		ReportContent, IsFinal)

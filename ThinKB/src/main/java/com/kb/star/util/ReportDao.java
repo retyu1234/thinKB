@@ -14,6 +14,7 @@ public interface ReportDao {
 
 	int checkFinalReport(@Param("roomId") int roomId);
 	void insertReport(@Param("roomId") int roomId,@Param("userId") int userId,@Param("reportTitle") String reportTitle,@Param("reportContent") String reportContent);
+	void insertReportFalse(@Param("roomId") int roomId,@Param("userId") int userId,@Param("reportTitle") String reportTitle,@Param("reportContent") String reportContent);
 	void updateReport(@Param("roomId") int roomId,@Param("userId") int userId,@Param("reportTitle") String reportTitle,@Param("reportContent") String reportContent);
 	ReportDetailsDto getReportDetails(@Param("roomId") int roomId);
 	ReportDetailsDto getReportDetailsFirst(@Param("roomId") int roomId);
