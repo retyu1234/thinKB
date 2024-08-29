@@ -1006,7 +1006,7 @@ function getTodoList(date) {
     }
 
     $.ajax({
-        url: '/star/getTodoList',
+        url: './getTodoList',
         type: 'GET',
         data: { date: date },
         dataType: 'json',

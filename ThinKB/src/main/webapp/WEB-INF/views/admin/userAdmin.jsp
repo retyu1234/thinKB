@@ -272,7 +272,7 @@
 			class="employee-search-form">
 			<div class="input-group">
 				<input type="text" class="employee-search-input" name="searchTerm"
-					value="${param.searchTerm}" placeholder="이름 / 팀 명으로 검색하세요..">
+					value="${param.searchTerm}" placeholder="이름 / 팀 명으로 검색하세요.">
 				<div class="input-group-append">
 					<button class="employee-search-button" type="submit">
 						<i class="fa fa-search"></i>
