@@ -14,6 +14,7 @@ public class UserCommentsDto {
 	private int associatedId;
 	private String associationType;
 	private boolean isDelete;
+	private String userProfileImg; // 새로 추가된 필드
 
 	// Getters and Setters
 
@@ -103,6 +104,14 @@ public class UserCommentsDto {
 
 	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public String getUserProfileImg() {
+		return userProfileImg;
+	}
+
+	public void setUserProfileImg(String userProfileImg) {
+		this.userProfileImg = userProfileImg;
 	}
 
 }

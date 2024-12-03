@@ -1,6 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
+<%
+// 사용자 확인
+Integer managerId = (Integer) request.getAttribute("managerId");
+Integer userId = (Integer) session.getAttribute("userId");
+boolean isParticipant = false;
+
+   if (managerId.equals(userId)) {
+       isParticipant = true;
+   }
+
+
+if (!isParticipant) {
+	%>
+    <script>
+        alert("회의방 방장이 아닙니다. 회의방 목록 화면으로 이동합니다.");
+        window.location.href = "./meetingList";
+    </script>
+    <%
+    return;
+}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -110,7 +133,7 @@ select {
 	display: flex;
 	justify-content: space-between;
 	padding: 30px 0;
-	font-size: 13pt;
+	font-size: 12pt;
 }
 
 .stage {
@@ -383,6 +406,26 @@ select {
             
             // 모든 조건이 만족되면 폼을 수동으로 제출합니다.
             this.submit();
+        }
+    });
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        const stageId = ${meetingRoom.getStageId()};
+        const timerElement = document.getElementById("timer");
+        const timerMessageElement = document.getElementById("timer-message");
+
+        if (stageId >= 2) {
+            if (timerElement) {
+                timerElement.innerHTML = "Time Out";
+            }
+            if (timerMessageElement) {
+                timerMessageElement.innerHTML = "지금은 작성할 수 없어요";
+                timerMessageElement.classList.remove("active");
+                timerMessageElement.classList.add("expired");
+            }
+            window.updateTimer = function() {
+                
+            };
         }
     });
 

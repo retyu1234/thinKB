@@ -8,15 +8,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>thinKB - 회의방 만들기</title>
 <style>
+body, html {
+	margin: 0;
+	padding: 0;
+	font-family: KB금융 본문체 Light;
+	overflow-x: hidden;
+    width: 100%;
+}
+
 .content-banner {
-	margin-top: 50px; /* content 영역의 여백 설정 */
+	margin-top: 50px;
 	margin-left: 15%;
 	margin-right: 15%;
 	margin-bottom: 30px;
 }
 
 .content {
-	padding: 20px; /* content 영역의 여백 설정 */
+	padding: 20px;
 	margin-left: 20%;
 	margin-right: 20%;
 }
@@ -27,6 +35,7 @@
 	color: black;
 	margin-top: 30px;
 	margin-bottom: 20px;
+	font-family: KB금융 제목체 Light;
 }
 
 
@@ -34,38 +43,40 @@
 	display: flex;
 	align-items: center;
 	width: 100%;
-	max-width: 600px; /* 전체 컨테이너의 최대 너비를 늘림 */
+	max-width: 600px;
 	position: relative;
 }
 
 .date-input-wrapper {
 	display: flex;
 	align-items: center;
-	width: 200px; /* 날짜 입력칸의 너비를 고정 */
-	margin-right: 10px; /* 오른쪽 여백 추가 */
+	width: 200px;
+	margin-right: 10px;
 }
 
 .date-input {
-	width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
+	width: 100%;
 	padding: 12px;
 	border: 3px solid lightgrey;
 	border-radius: 20px;
 	font-size: 15pt;
 	box-sizing: border-box;
+	font-family: KB금융 본문체 Light;
 }
 
 .date-input:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
+	border-color: #FFD700;
+	outline: none;
 }
 
 .new-subject {
-	font-size: 15pt; /* 제목의 글자 크기 */
+	font-size: 15pt;
 	color: black;
-	border: 3px solid #FFD700; /* 진한 노란색 테두리 */
-	border-radius: 20px; /* 라운드 처리 */
-	padding: 20px; /* 내부 여백 */
-	background-color: white; /* 배경색 */
+	border: 3px solid #FFD700;
+	border-radius: 20px;
+	padding: 20px;
+	background-color: white;
+	font-family: KB금융 본문체 Light;
 }
 
 input.new-subject {
@@ -79,8 +90,22 @@ input.new-subject {
 }
 
 input.new-subject:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
+	border-color: #FFD700;
+	outline: none;
+}
+textarea.new-subject {
+	font-size: 13pt;
+	color: black;
+	border: 3px solid lightgrey;
+	border-radius: 10px;
+	padding: 20px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+textarea.new-subject:focus {
+	border-color: #FFD700;
+	outline: none;
 }
 
 .calendar-icon {
@@ -90,10 +115,10 @@ input.new-subject:focus {
 }
 
 .error-message-container {
-	flex: 1; /* 남은 공간을 모두 차지하도록 설정 */
-	white-space: nowrap; /* 텍스트가 줄바꿈되지 않도록 설정 */
-	overflow: hidden; /* 내용이 넘칠 경우 숨김 */
-	text-overflow: ellipsis; /* 내용이 넘칠 경우 ... 표시 */
+	flex: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .error-message {
@@ -112,7 +137,6 @@ input.new-subject:focus {
 	display: none;
 }
 
-/* 기존의 calendar-popup 관련 스타일들... */
 .calendar-popup table {
 	width: 100%;
 	border-collapse: collapse;
@@ -136,6 +160,7 @@ input.new-subject:focus {
 	display: flex;
 	justify-content: space-between;
 	padding: 0 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
@@ -144,9 +169,9 @@ input.new-subject:focus {
 }
 
 .calendar-popup .disabled {
-	background-color: #f2f2f2; /* 회색 배경색 */
-	color: #ccc; /* 텍스트 색상 */
-	cursor: not-allowed; /* 커서 모양 변경 */
+	background-color: #f2f2f2;
+	color: #ccc;
+	cursor: not-allowed;
 }
 
 .timer-container {
@@ -168,6 +193,7 @@ input.new-subject:focus {
 	border-radius: 10px;
 	font-size: 16px;
 	text-align: center;
+	font-family: KB금융 본문체 Light;
 }
 
 .timer-input:hover {
@@ -175,13 +201,13 @@ input.new-subject:focus {
 }
 
 .yellow-button1 {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
-	padding: 10px 40px; /* 버튼의 여백 */
-	border: none; /* 테두리 없음 */
-	border-radius: 20px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
-	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
+	background-color: #e6b800;
+	color: black;
+	padding: 10px 40px;
+	border: none;
+	border-radius: 20px;
+	font-size: 20px;
+	cursor: pointer;
 	font-weight: bold;
 }
 
@@ -204,7 +230,7 @@ input.new-subject:focus {
 	background-color: #696969;
 	color: white;
 }
-
+/* 직원 목록 조회 모달창 */
 body.modal-open {
     overflow: hidden;
 }
@@ -237,6 +263,7 @@ body.modal-open {
 .modal-header {
     padding-bottom: 10px;
     margin-bottom: 20px;
+    font-family: KB금융 제목체 Light;
 }
 
 .modal-body {
@@ -245,7 +272,7 @@ body.modal-open {
 }
 
 .table-container {
-    max-height: 350px; /* 약 7명의 직원이 표시될 수 있는 높이 */
+    max-height: 350px; /* 최대 한번에 7명정도 */
     overflow-y: auto;
 }
 
@@ -273,7 +300,6 @@ body.modal-open {
     text-align: center;
 }
 
-/* 기존 스타일 유지 */
 .close {
     color: #aaa;
     font-size: 28px;
@@ -282,7 +308,7 @@ body.modal-open {
     position: absolute;
     top: 10px;
     right: 20px;
-    z-index: 1;  /* 추가: 다른 요소 위에 표시되도록 함 */
+    z-index: 1;  /*  다른 요소 위에 표시됨 */
 }
 
 .close:hover,
@@ -352,6 +378,7 @@ body.modal-open {
 	font-size: 18pt;
 	color: black;
 	font-weight: bold;
+	font-family: KB금융 제목체 Light;
 }
 .titleAndDetail-detail {
 	font-size: 13pt;
@@ -361,7 +388,7 @@ body.modal-open {
     display: flex; 
     align-items: center; 
     margin-bottom: 10px;
-    justify-content: space-between; /* 추가 */
+    justify-content: space-between;
 }
 
 .userList-left {
@@ -391,6 +418,7 @@ body.modal-open {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -407,20 +435,125 @@ body.modal-open {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
 	background-color: #60584C;
 }
+/*로딩*/
+.loading-hidden {
+  display: none;
+}
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+ .loading-hidden {
+    display: none !important;
+  }
+.loading-content {
+  text-align: center;
+}
+
+.thinking-brain {
+  font-size: 100px;
+  animation: pulse 1.5s infinite;
+}
+
+.loading-text {
+  font-size: 24px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.loading-dots span {
+  font-size: 36px;
+  animation: blink 1.4s infinite both;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; }
+  20% { opacity: 1; }
+  100% { opacity: 0.2; }
+}
+
+/* 모달창 안에서 직원검색 */
+.search-container {
+    display: flex;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    outline: none;
+    font-family: KB금융 본문체 Light;
+}
+
+.search-button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-button:hover {
+    background-color: #f0f0f0;
+}
 
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
 <!-- 헤더영역 -->
 	<div>
 		<%@ include file="../header.jsp"%>
 	</div>
-	
+	<!--ai 로딩 -->
+  <div id="loading-screen" class="loading-hidden">
+    <div class="loading-content">
+      <div class="thinking-brain">
+        🤔
+      </div>
+      <div class="loading-text">AI가 열심히 생각 중입니다...</div>
+      <div class="loading-dots">
+        <span>.</span><span>.</span><span>.</span>
+      </div>
+    </div>
+  </div>	
 <!-- 상단 배너영역 -->
 	<div class="content-banner">
 		<img src="<c:url value='./resources/newRoomBanner.png'/>" alt="newRoomBanner" 
@@ -443,19 +576,20 @@ body.modal-open {
 				placeholder="여기에 작성해주세요">
 
 	<!-- 아이디어 회의 상세설명 -->
-			<div class="titleAndDetail">
-				<div class="titleAndDetail-title">아이디어 회의 상세설명</div>
-				<div class="titleAndDetail-detail">회의 주제에 대한 상세한 설명을 입력해주세요. ex) 참고할 수 있는 관련문서, 보고서 등</div>
+			<div class="userList">
+				<div class="userList-left">
+					<div class="userList-title">아이디어 회의 상세설명</div>
+					<button type="button" id="autoCompleteBtn" class="yellow-button">자동완성</button>
+				</div>
+				<div class="userList-detail">상세 설명을 직접 입력하거나, 자동완성(KB AI) 버튼을 통해 채울 수 있어요.</div>
 			</div>
-			<input type="text" class="new-subject" style="height: 150px;"
-				name="content"
-				placeholder="여기에 작성해주세요">
+			<textarea id="content" class="new-subject" style="height: 400px; width: 100%; resize: vertical;" name="content" placeholder="여기에 작성해주세요"></textarea>
+	
 	<!-- 회의종료일 -->
 			<div class="title" style="margin-top: 70px;">회의 종료일</div>
 			<div class="date-input-container">
 				<div class="date-input-wrapper">
-					<input type="text" class="date-input" name="endDate"
-						id="datepicker" placeholder="YYYYMMDD"> <span
+					<input type="text" class="date-input" name="endDate" id="datepicker" placeholder="YYYYMMDD" readonly> <span
 						class="calendar-icon" onclick="toggleCalendar()">📅</span>
 				</div>
 				<div class="error-message-container">
@@ -464,8 +598,10 @@ body.modal-open {
 
 				<div class="calendar-popup" id="calendarPopup">
 					<div class="calendar-nav">
-						<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
-						<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
+						<span onclick="prevMonth()">&lt;</span> 
+						<span id="calendarYear"></span> 
+						<span id="calendarMonth"></span>
+						<span onclick="nextMonth()">&gt;</span>
 					</div>
 					<table id="calendarTable">
 						<thead>
@@ -512,7 +648,7 @@ body.modal-open {
 			</div>
 
 			<div id="selectedEmployees">
-				<!-- 선택된 직원들이 여기에 표시됩니다 -->
+				<!-- 선택된 직원들이 여기표시됨 -->
 			</div>
 			<input type="hidden" id="selectedEmployeeIds" name="users">
 			<div style="margin: 70px; text-align: center;">
@@ -521,8 +657,7 @@ body.modal-open {
 		</form>
 	</div>
 	
-	<!-- 모달창 -->
-	<!-- 직원 목록 모달 -->
+<!-- 직원 목록 모달 -->
 <div id="employeeModal" class="modal">
     <div class="modal-content">
         <span class="close" id="closeModalBtn">&times;</span>
@@ -530,6 +665,12 @@ body.modal-open {
             <h5>참여자 선택</h5>
         </div>
         <div class="modal-body">
+            <div class="search-container">
+                <input type="text" id="employeeSearch" placeholder="직원이름, 직원번호로 검색" class="search-input">
+				    <button id="searchBtn" class="search-button">
+				        <i class="fas fa-search"></i>
+				    </button>
+            </div>
             <div class="table-container">
                 <table class="table">
                     <thead>
@@ -538,7 +679,7 @@ body.modal-open {
                             <th>이름(직원번호)</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="employeeTableBody">
                         <c:forEach var="employee" items="${list}">
                             <tr>
                                 <td><input type="checkbox" name="employees"
@@ -555,6 +696,7 @@ body.modal-open {
         </div>
     </div>
 </div>
+
 
 	<script>
 		// 달력 팝업 열고 닫기 함수
@@ -704,330 +846,320 @@ body.modal-open {
 					openModal();
 				});
 
-		//모달 외부 영역 클릭 시 모달 닫기
-		window.onclick = function(event) {
-			var modal = document.getElementById('employeeModal');
-			if (event.target == modal) {
-				closeModal();
-			}
-		};
 
-		//?
-		// 선택된 직원들을 저장할 배열
-		var selectedEmployees = [];
+//직원 선택 체크박스에 대한 이벤트 리스너
+function addEmployeeCheckboxListeners() {
+    document.querySelectorAll('input[name="employees"]').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            var employeeId = this.value;
+            var employeeName = this.parentElement.nextElementSibling.textContent.trim().split('(')[0].trim();
+            toggleEmployeeSelection(employeeId, employeeName);
+        });
+    });
+}
 
-		//직원 선택 처리 함수
-		function toggleEmployeeSelection(employeeId, employeeName) {
-			var index = selectedEmployees.findIndex(function(emp) {
-				return emp.id === employeeId;
-			});
+//선택된 직원들의 ID를 담을 배열
+var selectedEmployees = [];
 
-			if (index === -1) {
-				// 직원이 선택되지 않았으면 배열에 추가
-				selectedEmployees.push({
-					id : employeeId,
-					name : employeeName
-				});
-			} else {
-				// 이미 선택된 직원이면 배열에서 제거
-				selectedEmployees.splice(index, 1);
-			}
+// 직원 선택 처리 함수 (employeeId 추가)
+function toggleEmployeeSelection(employeeId, employeeName) {
+    var index = selectedEmployees.findIndex(function(emp) {
+        return emp.id === employeeId;
+    });
 
-			updateSelectedEmployeesDisplay();
-			updateHiddenInput();
+    if (index === -1) {
+        // 직원이 선택되지 않았으면 배열에 추가
+        selectedEmployees.push({
+            id: employeeId,
+            name: employeeName
+        });
+    } else {
+        // 이미 선택된 직원이면 배열에서 제거
+        selectedEmployees.splice(index, 1);
+    }
+
+    updateSelectedEmployeesDisplay();
+    updateHiddenInput();
+}
+
+// 선택된 직원 목록을 화면에 업데이트하는 함수
+function updateSelectedEmployeesDisplay() {
+    var selectedEmployeesDiv = document.getElementById('selectedEmployees');
+    selectedEmployeesDiv.innerHTML = '';
+
+    if (selectedEmployees.length > 0) {
+        var ul = document.createElement('ul');
+        selectedEmployees.forEach(function(emp) {
+            var li = document.createElement('li');
+            li.textContent = emp.name + ' (' + emp.id + ')';
+            ul.appendChild(li);
+        });
+        selectedEmployeesDiv.appendChild(ul);
+    }
+}
+
+// hidden input 업데이트 함수
+function updateHiddenInput() {
+    var hiddenInput = document.getElementById('selectedEmployeeIds');
+    hiddenInput.value = selectedEmployees.map(function(emp) {
+        return emp.id;
+    }).join(',');
+}
+
+// 유효성 검사 함수 (수정됨)
+function validateForm() {
+	let isValid = true;
+
+	const titleInput = document.querySelector('input[name="title"]');
+	const contentInput = document.getElementById('content');
+	const endDateInput = document
+			.querySelector('input[name="endDate"]');
+	const selectedEmployeeIdsInput = document
+			.getElementById('selectedEmployeeIds');
+
+	const timerHours = document
+			.querySelector('input[name="timer_hours"]');
+	const timerMinutes = document
+			.querySelector('input[name="timer_minutes"]');
+	const timerSeconds = document
+			.querySelector('input[name="timer_seconds"]');
+	const timerError = document.getElementById('timerError');
+
+	// Validate title
+	if (!titleInput.value.trim()) {
+		showError(titleInput, '(필수)주제를 입력해주세요');
+		isValid = false;
+	} else {
+		clearError(titleInput);
+	}
+
+	// Validate content
+	if (!contentInput.value.trim()) {
+		showError(contentInput, '(필수)설명을 입력해주세요');
+		isValid = false;
+	} else {
+		clearError(contentInput);
+	}
+
+	// Validate end date
+	if (!endDateInput.value.trim()) {
+		document.getElementById('endDateError').textContent = '(필수)회의 종료일을 선택해주세요';
+		isValid = false;
+	} else {
+		document.getElementById('endDateError').textContent = '';
+	}
+
+	// Validate selected employees
+	if (!selectedEmployeeIdsInput.value.trim()) {
+		showError(selectedEmployeeIdsInput, '(필수)참여할 직원을 선택해주세요');
+		isValid = false;
+	} else {
+		clearError(selectedEmployeeIdsInput);
+	}
+
+	//타이머검증
+	if (timerHours.value.trim() === ''
+			&& timerMinutes.value.trim() === ''
+			&& timerSeconds.value.trim() === '') {
+		timerError.textContent = '(필수)타이머를 설정해주세요';
+		isValid = false;
+	} else {
+		timerError.textContent = '';
+	}
+
+	return isValid;
+}
+
+// 오류 표시 함수 (새로 추가)
+function showError(input, message) {
+	let errorElement = input.nextElementSibling;
+	if (!errorElement
+			|| !errorElement.classList.contains('error-message')) {
+		errorElement = document.createElement('span');
+		errorElement.classList.add('error-message');
+		input.parentNode.insertBefore(errorElement, input.nextSibling);
+	}
+	errorElement.textContent = message;
+}
+
+// 오류 제거 함수 (수정됨)
+function clearError(input) {
+	let errorElement;
+	if (input.id === 'datepicker') {
+		errorElement = document.getElementById('endDateError');
+	} else if (input.id === 'selectedEmployeeIds') {
+		errorElement = input.nextElementSibling;
+	} else {
+		errorElement = input.nextElementSibling;
+	}
+
+	if (errorElement
+			&& errorElement.classList.contains('error-message')) {
+		errorElement.textContent = '';
+	}
+}
+
+// 타이머 입력 오류 제거 함수
+function clearTimerError() {
+	let timerHours = document
+			.querySelector('input[name="timer_hours"]').value.trim();
+	let timerMinutes = document
+			.querySelector('input[name="timer_minutes"]').value.trim();
+	let timerSeconds = document
+			.querySelector('input[name="timer_seconds"]').value.trim();
+	let errorElement = document.getElementById('timerError');
+
+	if (timerHours !== '' || timerMinutes !== '' || timerSeconds !== '') {
+		if (errorElement
+				&& errorElement.classList.contains('error-message')) {
+			errorElement.textContent = '';
 		}
+	}
+}
 
-		//선택된 직원 목록을 화면에 업데이트하는 함수
-		function updateSelectedEmployeesDisplay() {
-			var selectedEmployeesDiv = document
-					.getElementById('selectedEmployees');
-			selectedEmployeesDiv.innerHTML = '';
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('input[name="title"], input[name="content"], input[name="endDate"]')
+        .forEach(function(input) {
+            input.addEventListener('input', function() {
+                clearError(this);
+            });
+        });
 
-			if (selectedEmployees.length > 0) {
-				var ul = document.createElement('ul');
-				selectedEmployees.forEach(function(emp) {
-					var li = document.createElement('li');
-					li.textContent = emp.name + ' (' + emp.id + ')';
-					ul.appendChild(li);
-				});
-				selectedEmployeesDiv.appendChild(ul);
-			}
-		}
+    document.querySelectorAll('input[name="timer_hours"], input[name="timer_minutes"], input[name="timer_seconds"]')
+        .forEach(function(input) {
+            input.addEventListener('input', function() {
+                clearTimerError();
+            });
+        });
 
-		//hidden input 업데이트 함수
-		function updateHiddenInput() {
-			var hiddenInput = document.getElementById('selectedEmployeeIds');
-			hiddenInput.value = selectedEmployees.map(function(emp) {
-				return emp.id;
-			}).join(',');
-		}
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        clearError(document.getElementById('selectedEmployeeIds'));
+    });
 
-		//직원 선택 체크박스에 대한 이벤트 리스너
-		function addEmployeeCheckboxListeners() {
-			document
-					.querySelectorAll('input[name="employees"]')
-					.forEach(
-							function(checkbox) {
-								checkbox
-										.addEventListener(
-												'change',
-												function() {
-													var employeeId = this.value;
-													var employeeName = this.parentElement.nextElementSibling.textContent
-															.trim();
-													toggleEmployeeSelection(
-															employeeId,
-															employeeName);
-												});
-							});
-		}
+    document.getElementById('closeModalBtn').addEventListener('click', function() {
+        closeModal();
+    });
 
-		//선택된 직원들의 ID를 담을 배열
-		var selectedEmployeeIds = [];
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        openModal();
+    });
 
-		// 직원 선택 처리 함수 (employeeId 추가)
-		function toggleEmployeeSelection(employeeId, employeeName) {
-			var index = selectedEmployeeIds.indexOf(employeeId);
+    document.getElementById('submitBtn').addEventListener('click', function() {
+        closeModal();
+    });
 
-			if (index === -1) {
-				// 선택되지 않은 경우 배열에 추가
-				selectedEmployeeIds.push(employeeId);
-			} else {
-				// 이미 선택된 경우 배열에서 제거
-				selectedEmployeeIds.splice(index, 1);
-			}
+    document.getElementById('datepicker').addEventListener('input', function() {
+        clearError(this);
+    });
 
-			updateSelectedEmployeesDisplay();
-			updateHiddenInput();
-		}
+    document.querySelectorAll('input[name="employees"]').forEach(function(checkbox) {
+        checkbox.addEventListener('change', function() {
+            var employeeId = this.value;
+            var employeeName = this.parentElement.nextElementSibling.textContent.trim();
+            toggleEmployeeSelection(employeeId, employeeName);
+        });
+    });
 
-		// 선택된 직원 목록을 화면에 업데이트하는 함수
-		function updateSelectedEmployeesDisplay() {
-			var selectedEmployeesDiv = document
-					.getElementById('selectedEmployees');
-			selectedEmployeesDiv.innerHTML = '';
+    createCalendar();
 
-			if (selectedEmployeeIds.length > 0) {
-				var ul = document.createElement('ul');
-				selectedEmployeeIds.forEach(function(employeeId) {
-					var li = document.createElement('li');
-					li.textContent = employeeId;
-					ul.appendChild(li);
-				});
-				selectedEmployeesDiv.appendChild(ul);
-			}
-		}
+    // 새로운 검색 기능 추가
+    const searchInput = document.getElementById('employeeSearch');
+    const searchBtn = document.getElementById('searchBtn');
+    const employeeTableBody = document.getElementById('employeeTableBody');
+    const allRows = Array.from(employeeTableBody.getElementsByTagName('tr'));
 
-		// hidden input 업데이트 함수
-		function updateHiddenInput() {
-			var hiddenInput = document.getElementById('selectedEmployeeIds');
-			hiddenInput.value = selectedEmployeeIds.join(',');
-		}
+    function performSearch() {
+        const searchTerm = searchInput.value.trim().toLowerCase();
 
-		// 유효성 검사 함수 (수정됨)
-		function validateForm() {
-			let isValid = true;
+        allRows.forEach(row => {
+            const employeeInfo = row.cells[1].textContent.toLowerCase();
+            if (searchTerm === '' || employeeInfo.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
 
-			const titleInput = document.querySelector('input[name="title"]');
-			const contentInput = document
-					.querySelector('input[name="content"]');
-			const endDateInput = document
-					.querySelector('input[name="endDate"]');
-			const selectedEmployeeIdsInput = document
-					.getElementById('selectedEmployeeIds');
+    // 검색 버튼 클릭 이벤트
+    searchBtn.addEventListener('click', performSearch);
 
-			const timerHours = document
-					.querySelector('input[name="timer_hours"]');
-			const timerMinutes = document
-					.querySelector('input[name="timer_minutes"]');
-			const timerSeconds = document
-					.querySelector('input[name="timer_seconds"]');
-			const timerError = document.getElementById('timerError');
+    // 검색 입력 필드에서 키 입력 이벤트
+    searchInput.addEventListener('input', performSearch);
 
-			// Validate title
-			if (!titleInput.value.trim()) {
-				showError(titleInput, '(필수)주제를 입력해주세요');
-				isValid = false;
-			} else {
-				clearError(titleInput);
-			}
+    // 모달이 열릴 때마다 검색 입력 필드를 초기화하고 모든 행을 표시
+    document.getElementById('openModalBtn').addEventListener('click', function() {
+        searchInput.value = '';
+        allRows.forEach(row => row.style.display = '');
+    });
 
-			// Validate content
-			if (!contentInput.value.trim()) {
-				showError(contentInput, '(필수)설명을 입력해주세요');
-				isValid = false;
-			} else {
-				clearError(contentInput);
-			}
+    // 모달 닫기 버튼 이벤트 (변경 없음)
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
 
-			// Validate end date
-			if (!endDateInput.value.trim()) {
-				document.getElementById('endDateError').textContent = '(필수)회의 종료일을 선택해주세요';
-				isValid = false;
-			} else {
-				document.getElementById('endDateError').textContent = '';
-			}
+    // 선택 완료 버튼 이벤트 (변경 없음)
+    document.getElementById('submitBtn').addEventListener('click', closeModal);
+});
 
-			// Validate selected employees
-			if (!selectedEmployeeIdsInput.value.trim()) {
-				showError(selectedEmployeeIdsInput, '(필수)참여할 직원을 선택해주세요');
-				isValid = false;
-			} else {
-				clearError(selectedEmployeeIdsInput);
-			}
 
-			//타이머검증
-			if (timerHours.value.trim() === ''
-					&& timerMinutes.value.trim() === ''
-					&& timerSeconds.value.trim() === '') {
-				timerError.textContent = '(필수)타이머를 설정해주세요';
-				valid = false;
-			} else {
-				timerError.textContent = '';
-			}
+</script>
+<script type="text/javascript">
+//로딩 화면 요소
+const loadingScreen = document.getElementById('loading-screen');
 
-			return isValid;
-		}
+// 자동 완성 버튼
+const autoCompleteBtn = document.getElementById('autoCompleteBtn');
 
-		// 오류 표시 함수 (새로 추가)
-		function showError(input, message) {
-			let errorElement = input.nextElementSibling;
-			if (!errorElement
-					|| !errorElement.classList.contains('error-message')) {
-				errorElement = document.createElement('span');
-				errorElement.classList.add('error-message');
-				input.parentNode.insertBefore(errorElement, input.nextSibling);
-			}
-			errorElement.textContent = message;
-		}
+document.getElementById('autoCompleteBtn').addEventListener('click', function(event) {
+    event.preventDefault();
+    var title = document.querySelector('input[name="title"]').value;
+    if (title.trim() === '') {
+        alert('먼저 회의 주제를 입력해주세요.');
+        return;
+    }
 
-		// 오류 제거 함수 (수정됨)
-		function clearError(input) {
-			let errorElement;
-			if (input.id === 'datepicker') {
-				errorElement = document.getElementById('endDateError');
-			} else if (input.id === 'selectedEmployeeIds') {
-				errorElement = input.nextElementSibling;
-			} else {
-				errorElement = input.nextElementSibling;
-			}
+    // 로딩 화면 표시
+    loadingScreen.classList.remove('loading-hidden');
+    this.disabled = true;
+    this.textContent = '로딩 중...';
 
-			if (errorElement
-					&& errorElement.classList.contains('error-message')) {
-				errorElement.textContent = '';
-			}
-		}
+    // UTF-8로 인코딩 후 Base64 인코딩
+    var encodedTitle = btoa(unescape(encodeURIComponent(title)));
 
-		// 타이머 입력 오류 제거 함수
-		function clearTimerError() {
-			let timerHours = document
-					.querySelector('input[name="timer_hours"]').value.trim();
-			let timerMinutes = document
-					.querySelector('input[name="timer_minutes"]').value.trim();
-			let timerSeconds = document
-					.querySelector('input[name="timer_seconds"]').value.trim();
-			let errorElement = document.getElementById('timerError');
+    fetch('./getAiResponse?userInput=' + encodedTitle, {
+        method: 'GET'
+    })
+    .then(response => response.text())
+    .then(data => {
+        // Base64 디코딩 후 UTF-8 디코딩
+        var decodedData = decodeURIComponent(escape(atob(data)));
+        document.getElementById('content').value = decodedData;
+        this.disabled = false;
+        this.textContent = '자동완성';
+     // 로딩 화면 숨기기
+        loadingScreen.classList.add('loading-hidden');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        this.disabled = false;
+        this.textContent = '자동완성';
+        alert('AI 응답을 가져오는 데 실패했습니다.');
+     // 로딩 화면 숨기기
+        loadingScreen.classList.add('loading-hidden');
+    });
+});
 
-			if (timerHours !== '' || timerMinutes !== '' || timerSeconds !== '') {
-				if (errorElement
-						&& errorElement.classList.contains('error-message')) {
-					errorElement.textContent = '';
-				}
-			}
-		}
-
-		// 이벤트 리스너 설정 (새로 추가)
-		document
-				.addEventListener(
-						'DOMContentLoaded',
-						function() {
-
-							// 입력 필드에 대한 이벤트 리스너 추가
-							document
-									.querySelectorAll(
-											'input[name="title"], input[name="content"], input[name="endDate"]')
-									.forEach(
-											function(input) {
-												input.addEventListener('input',
-														function() {
-															clearError(this);
-														});
-											});
-
-							// 타이머 입력 필드에 대한 이벤트 리스너 추가
-							document
-									.querySelectorAll(
-											'input[name="timer_hours"], input[name="timer_minutes"], input[name="timer_seconds"]')
-									.forEach(
-											function(input) {
-												input.addEventListener('input',
-														function() {
-															clearTimerError(); // 타이머 입력 필드에 입력이 있을 때마다 호출
-														});
-											});
-
-							// 직원 선택 버튼에 대한 이벤트 리스너
-							document
-									.getElementById('openModalBtn')
-									.addEventListener(
-											'click',
-											function() {
-												clearError(document
-														.getElementById('selectedEmployeeIds'));
-											});
-
-							// 기존의 이벤트 리스너들
-							document.getElementById('closeModalBtn')
-									.addEventListener('click', function() {
-										closeModal();
-									});
-
-							document.getElementById('openModalBtn')
-									.addEventListener('click', function() {
-										openModal();
-									});
-
-							document.getElementById('submitBtn')
-									.addEventListener('click', function() {
-										closeModal();
-									});
-
-							// datepicker에 대한 이벤트 리스너 추가
-							document.getElementById('datepicker')
-									.addEventListener('input', function() {
-										clearError(this);
-									});
-
-							document
-									.querySelectorAll('input[name="employees"]')
-									.forEach(
-											function(checkbox) {
-												checkbox
-														.addEventListener(
-																'change',
-																function() {
-																	var employeeId = this.value;
-																	var employeeName = this.parentElement.nextElementSibling.textContent
-																			.trim();
-																	toggleEmployeeSelection(
-																			employeeId,
-																			employeeName);
-																});
-											});
-
-							// 페이지 로드 시 초기 달력 생성
-							createCalendar();
-						});
-
-		// 모달 외부 영역 클릭 시 모달 닫기 (변경 없음)
-		window.onclick = function(event) {
-			var modal = document.getElementById('employeeModal');
-			if (event.target == modal) {
-				closeModal();
-			}
-		};
-	</script>
-
+// textarea에서 엔터 키 눌렀을 때 폼 제출 방지
+document.getElementById('content').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // 엔터 키의 기본 동작 방지
+        var cursorPosition = this.selectionStart;
+        var textBeforeCursor = this.value.substring(0, cursorPosition);
+        var textAfterCursor = this.value.substring(cursorPosition);
+        this.value = textBeforeCursor + '\n' + textAfterCursor;
+        this.selectionStart = this.selectionEnd = cursorPosition + 1;
+    }
+});
+</script>
 
 </body>
 </html>

@@ -8,10 +8,15 @@
 		resultType="int">
 		SELECT COUNT(*)
 		FROM Reports
-		WHERE RoomID = #{roomId} and
-		IsFinal = true
+		WHERE RoomID = #{roomId}
 	</select>
 	<!-- Reports 테이블에 데이터 삽입 -->
+	<insert id="insertReportFalse">
+		INSERT INTO Reports (RoomID, UserID, ReportTitle,
+		ReportContent, IsFinal)
+		VALUES (#{roomId}, #{userId}, #{reportTitle},
+		#{reportContent}, false)
+	</insert>
 	<insert id="insertReport">
 		INSERT INTO Reports (RoomID, UserID, ReportTitle,
 		ReportContent, IsFinal)
@@ -107,26 +112,29 @@
 	</resultMap>
 	<select id="getMyReportList" resultType="com.kb.star.dto.ReportsDto">
 	    SELECT 
-        r.ReportID,
-        r.RoomID,
-        r.UserID,
-        r.ReportTitle,
-        r.ReportContent,
-        r.IsFinal,
-        r.CreatedAt,
-        r.UpdatedAt,
-        mr.StageID,
+        r.ReportID AS reportId,
+        r.RoomID AS roomId,
+        r.UserID AS userId,
+        r.ReportTitle AS reportTitle,
+        r.ReportContent AS reportContent,
+        r.IsFinal AS isFinal,
+        r.CreatedAt AS createAt,
+        r.UpdatedAt AS updateAt,
+        mr.RoomTitle AS roomTitle,
+        mr.StageID AS stageId,
         CASE 
             WHEN mr.StageID = 6 THEN '완료'
-            WHEN mr.StageID = 5 THEN '작성중'
-            ELSE '기타'
+            WHEN mr.StageID = 5 then '작성중'
         END AS Status
     FROM 
         Reports r
     JOIN 
         MeetingRooms mr ON r.RoomID = mr.RoomID
     WHERE 
-        r.UserID = #{userId};
+        r.UserID = #{userId}
+        and mr.StageID>=5
+    ORDER BY
+    	r.UpdatedAt DESC
 	</select>
 <select id="getIdeaSummaries" resultMap="ideaSummaryResultMap">
     SELECT 
@@ -159,4 +167,71 @@
     <result property="likeNum" column="LikeNum" />
     <result property="opinionUserName" column="OpinionUserName" />
 </resultMap>
+
+	<!-- 관리자 - adminReportList.jsp -->
+	<!-- 관리자 보고서 목록 -->
+    <select id="getDepartmentReportList" resultType="com.kb.star.dto.DepartmentReportDto">
+        SELECT 
+            r.ReportID, 
+            r.RoomID, 
+            r.ReportTitle, 
+            r.CreatedAt, 
+            r.UpdatedAt, 
+            r.IsChoice,
+            u.UserName as AuthorName,
+            t.TeamName,
+            mr.RoomTitle
+        FROM 
+            Reports r
+        JOIN 
+            Users u ON r.UserID = u.UserID
+        JOIN 
+            Teams t ON u.TeamID = t.TeamID
+        JOIN 
+            MeetingRooms mr ON r.RoomID = mr.RoomID
+        WHERE 
+            u.DepartmentID = (SELECT DepartmentID FROM Users WHERE UserID = #{managerId})
+            and r.IsFinal=1
+        ORDER BY 
+            r.UpdatedAt DESC
+    </select>
+    <!-- 필터링 - 팀 -->
+    <select id="getAllTeams" resultType="string">
+	    SELECT DISTINCT TeamName FROM Teams ORDER BY TeamName
+	</select>
+    <!-- 관리자 채택 -->
+    <update id="approveReport">
+        UPDATE Reports
+        SET IsChoice = #{isChoice}
+    	WHERE ReportID = #{reportId}
+    </update>
+    
+    
+    <!-- 관리자 - reportDetail.jsp -->
+    <!-- 특정보고서 상세보기 -->
+    <select id="getReportDetail" parameterType="int" resultType="com.kb.star.dto.ReportDetailsDto">
+        SELECT r.*, u.UserName as AuthorName
+        FROM Reports r
+        JOIN Users u ON r.UserID = u.UserID
+        WHERE r.ReportID = #{reportId}
+    </select>
+    <!-- 특정보고서 참여자 -->
+    <select id="getReportMember" parameterType="int" resultType="com.kb.star.dto.ReportMemberDto">
+        SELECT u.UserID, u.UserName, t.TeamName, m.ContributionCnt
+        FROM MeetingRoomMembers m
+        JOIN Users u ON m.UserID = u.UserID
+        LEFT JOIN Teams t ON u.TeamID = t.TeamID
+        WHERE m.RoomID = #{roomId} AND m.IsDelete = 0
+        ORDER BY m.ContributionCnt DESC
+    </select>
+    <!-- 특정보고서 기안팀명 + 기안자 이름 -->
+    <select id="getReportAuthor" parameterType="int" resultType="com.kb.star.dto.ReportMemberDto">
+	    SELECT u.UserID as userId, u.UserName as userName, t.TeamName as teamName
+	    FROM Reports r
+	    JOIN Users u ON r.UserID = u.UserID
+	    JOIN Teams t ON u.TeamID = t.TeamID
+	    WHERE r.ReportID = #{reportId}
+	</select>
+    
 </mapper>
+

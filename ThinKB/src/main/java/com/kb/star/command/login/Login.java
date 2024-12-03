@@ -45,6 +45,7 @@ public class Login implements LoginCommand {
 					session.setAttribute("userName", dto.getUserName());
 					session.setAttribute("departmentId", dto.getDepartmentId());
 					session.setAttribute("teamId", dto.getTeamId());
+					session.setAttribute("profileImg", dto.getProfileImg());
 					session.setAttribute("isAdmin", dto.isAdmin());
 					 session.setAttribute("loginTime", new Timestamp(System.currentTimeMillis()));
 					model.addAttribute("loginSuccess", true);

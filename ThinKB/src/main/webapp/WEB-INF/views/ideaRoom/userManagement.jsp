@@ -2,53 +2,74 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<%
+// 사용자 확인
+Integer managerId = (Integer) request.getAttribute("managerId");
+Integer userId = (Integer) session.getAttribute("userId");
+boolean isParticipant = false;
+
+   if (managerId.equals(userId)) {
+       isParticipant = true;
+   }
+
+
+if (!isParticipant) {
+	%>
+    <script>
+        alert("회의방 방장이 아닙니다. 회의방 목록 화면으로 이동합니다.");
+        window.location.href = "./meetingList";
+    </script>
+    <%
+    return;
+}
+%>
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<title>참여자 관리</title>
+<title>thinKB - 참여자 관리</title>
 <style>
 .newRoom-body {
 	margin: 0;
 	padding: 0;
-	background-image:
-		url('${pageContext.request.contextPath}/resources/23029.jpg');
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	height: 400px;
+	caret-color: transparent;
+	font-family: KB금융 본문체 Light;
 }
 
 .content {
-	padding: 20px;
-	margin: 20px auto;
-	max-width: 900px;
-	background-color: #fff;
+	padding: 30px; /* content 영역의 여백 설정 */
+	margin-left: 20%;
+	margin-right: 20%;
+	caret-color: transparent;
+	font-family: KB금융 본문체 Light;
 }
 
-h2 {
-	margin-top: 0;
-}
-
-table {
+.usertable {
 	width: 100%;
 	border-collapse: collapse;
-	margin-bottom: 20px;
+	margin-bottom: 50px;
+	border-radius: 25px;
 }
 
-th, td {
+.usertable th, td {
 	padding: 12px;
 	text-align: left;
 	border-bottom: 1px solid #ddd;
 }
 
-th {
-	background-color: #f2f2f2;
+.usertable th {
+	background-color: #AB9A80;
+	color: white;
+	font-family: KB금융 제목체 Light;
 }
 
-button {
+.usertable button {
 	padding: 8px 12px;
 	border: none;
 	border-radius: 4px;
@@ -57,22 +78,48 @@ button {
 }
 
 .btn-danger {
-	background-color: #e74c3c;
+	background-color: transparent;
 }
 
 .btn-danger:hover {
-	background-color: #c0392b;
+	background-color: #EAEAEA;
 }
 
 .btn-primary {
-	background-color: #3498db;
+	background-color: #FFCC00;
+	color: white;
+	border: none; padding : 10px 15px;
+	border-radius: 25px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	padding: 10px 15px;
+	font-family: KB금융 제목체 Light;
 }
 
 .btn-primary:hover {
-	background-color: #2980b9;
+	background-color: #D4AA00;
 }
 
-.modal {
+.btn-primary1 {
+	background-color: #978A8F;
+	color: white;
+	border: none;
+	padding: 10px 15px;
+	border-radius: 25px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+	font-family: KB금융 제목체 Light;
+}
+
+.btn-primary1:hover {
+	background-color: #AB9A80;
+}
+.manage-buttons {
+	display: flex;
+	gap: 10px;
+}
+
+.userModal {
 	display: none;
 	position: fixed;
 	z-index: 1000;
@@ -84,29 +131,34 @@ button {
 	overflow: auto;
 }
 
-.modal-content {
+.userModal-content {
 	background-color: #fff;
 	margin: 5% auto;
 	padding: 20px;
 	border: 1px solid #ddd;
 	width: 80%;
-	max-width: 600px;
+	max-width: 800px;
+	height:auto;
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.modal-header, .modal-footer {
+.userModal-header, .userModal-footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.modal-header {
+.userModal-header {
 	border-bottom: 1px solid #ddd;
 }
 
-.modal-footer {
-	border-top: 1px solid #ddd;
+.userModal-footer {
+	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	gap:5px;
+	font-size:
 }
 
 .close {
@@ -120,20 +172,22 @@ button {
 	color: #000;
 }
 
-.employee-list, .chart-container {
-	margin-top: 20px;
+.employee-list {
+	text-align: left;
 }
 
 .employee {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 	align-items: center;
+	padding-left:10px;
 	padding: 10px 15px;
 	border-bottom: 1px solid #ddd;
 }
 
 .employee:last-child {
 	border-bottom: none;
+	
 }
 
 .employee button {
@@ -149,16 +203,27 @@ button {
 	background-color: #27ae60;
 }
 
-.chart-container {
-	text-align: center;
-}
-
 .employee-lists {
 	display: flex;
-	justify-content: space-between;
+	
 }
 
 .employee-list, .selected-employee-list {
+	width: 45%;
+}
+
+.charts-container {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
+.chart-wrapper {
+	width: 45%;
+}
+
+.barChart-wrapper {
 	width: 45%;
 }
 
@@ -174,72 +239,40 @@ button {
 
 /* 추가된 스타일 */
 .notification-container {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 #notificationTextarea {
-    width: 100%;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    resize: vertical;
+	width: 90%;
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	resize: vertical;
+	margin-left: 10px;
 }
 
 .input-container {
-    margin-bottom: 10px;
-    display: flex;
-    gap: 10px;
+	margin-bottom: 10px;
+	display: flex;
+	gap: 10px;
 }
 
 #inputField {
-    flex-grow: 1;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+	flex-grow: 1;
+	padding: 10px;
+	font-size: 14px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
 }
 
-#addTextButton {
-    padding: 10px 20px;
-    font-size: 14px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-#addTextButton:hover {
-    background-color: #0056b3;
-}
 
 .button-container {
-    display: flex;
-    gap: 10px;
+	display: flex;
+	gap: 10px;
 }
 
-#sendNotificationButton, #remindNonParticipantsButton {
-    padding: 10px 20px;
-    font-size: 14px;
-    border: none;
-    background-color: #28a745;
-    color: white;
-    border-radius: 4px;
-    cursor: pointer;
-}
 
-#sendNotificationButton:hover, #remindNonParticipantsButton:hover {
-    background-color: #218838;
-}
-
-#remindNonParticipantsButton {
-    background-color: #dc3545;
-}
-
-#remindNonParticipantsButton:hover {
-    background-color: #c82333;
-}
 
 .modal1 {
 	display: none;
@@ -258,24 +291,27 @@ button {
 	margin: 5% auto;
 	padding: 20px;
 	border: 1px solid #ddd;
-	width: 80%;
-	max-width: 600px;
+	width: 100%;
+	max-width: 400px;
+	height:auto;
+	min-height:600px;
 	border-radius: 8px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.modal-header1, .modal-footer1 {
+.modal-header1{
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+}
+.modal-footer1 {
+	display: flex;
+	justify-content: center;
 	align-items: center;
 }
 
 .modal-header1 {
 	border-bottom: 1px solid #ddd;
-}
-
-.modal-footer1 {
-	border-top: 1px solid #ddd;
 }
 
 .close1 {
@@ -289,12 +325,7 @@ button {
 	color: #000;
 }
 
-.selected-user-list {
-	margin-top: 10px;
-	border: 1px solid #ddd;
-	padding: 10px;
-	border-radius: 4px;
-}
+
 
 .selected-user-item {
 	padding: 5px 0;
@@ -304,146 +335,439 @@ button {
 .selected-user-item:last-child {
 	border-bottom: none;
 }
+
+.manageTop {
+	display: flex;
+	justify-content: space-between;
+}
+
+#backButton {
+	border: none;
+	background-color: #ffffff;
+	font-size: 26pt;
+	transition: font-size 0.3s ease;
+}
+
+#backButton:hover {
+	font-size: 30pt;
+}
+
+.manage-subject {
+	font-size: 11pt;
+	color: black;
+	padding: 10px;
+	background-color: white;
+	margin-bottom: 3px;
+	position: relative;
+	width: 100%;
+}
+
+input.manage-subject {
+	font-size: 11pt;
+	color: black;
+	border: 3px solid lightgrey;
+	border-radius: 20px;
+	padding: 10px;
+	padding-left: 20px;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+input.manage-subject:focus {
+	border-color: #FFD700;
+	outline: none;
+}
+
+.manage-top-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.search-container {
+	width: 50%;
+	margin-left: auto;
+	margin-right: 0;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.search-button {
+	position: absolute;
+	right: 30px;
+	top: 50%;
+	transform: translateY(-50%);
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 18px;
+	padding: 0;
+	line-height: 1;
+}
+
+.search-button span {
+	position: relative;
+	top: -2px;
+	font-size: 20pt;
+}
+
+#timer-section, #timer, #timer-message {
+	display: none;
+}
+#employeeSearch{
+	width:90%;
+	font-size:11pt;
+	padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+.gtltBtn{
+	background-color: #978A8F;
+	color: white; 
+	font-size: 1.4em;
+    border: none;
+    border-radius: 5px;
+    padding:10px;
+}
+.gtltBtn:hover{
+	background-color: #60584C; 
+}
+.employee-table {
+    border:none;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.employee-header {
+    background-color: #AB9A80;
+    border-radius:10px;
+    border:none;
+    font-weight: bold;
+    padding:10px;
+    color: white;
+}
+
+.employee {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.employee:last-child {
+    border-bottom: none;
+}
+
+.employee input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+
+.employee-list, .selected-employee-list {
+    width: 45%;
+}
+
+#employeeList, #selectedEmployees {
+    max-height: 300px;
+    overflow-y: auto;
+}
+.noPickUser{
+
+}
+#warningMessage {
+    margin: 5%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    height: 260px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+    color: black;
+    padding: 10px;
+    box-sizing: border-box;
+}
+#warningMessage img {
+    max-width: 50%;
+    max-height: 50%;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+#warningMessage p {
+    font-size: 1em;
+    word-wrap: break-word;
+    max-width: 100%;
+}
+.selected-user-table {
+    width: 100%;
+    border: none;
+    margin-bottom: 15px;
+    border-radius: 20px;
+    margin-top: 15px;
+}
+
+.selected-user-table th {
+    background-color: #AB9A80;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.selected-user-table td {
+    border-bottom: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+        #selectedUserContainer {
+            margin-bottom: 15px;
+            max-height: 260px; /* 최대 높이 설정 */
+            overflow-y: auto; /* 세로 스크롤 활성화 */
+        }
+
+        #selectedUserList {
+            max-height: 230px; /* tbody의 최대 높이 설정 */
+            overflow-y: auto; /* tbody에 스크롤 적용 */
+            display: block; /* tbody를 블록 레벨 요소로 변경 */
+        }
+
+        #selectedUserList tr {
+            display: table; /* tr을 테이블로 표시하여 width: 100% 적용 */
+            width: 100%;
+            table-layout: fixed; /* 고정 테이블 레이아웃 사용 */
+        }
+.line {
+	margin-top: 15px;
+	margin-bottom: 15px;
+	border: 2px solid lightgrey;
+}
 </style>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    var roomId = '${meetingRoom.roomId}';
+    var links = document.querySelectorAll('.side-menu a');
+    links.forEach(function(link) {
+        var url = new URL(link.href);
+        url.searchParams.set('roomId', roomId);
+        link.href = url.toString();
+    });
+
+    document.getElementById('backButton').addEventListener('click', function() {
+        var roomId = '${meetingRoom.roomId}';
+        var stageId = '${meetingRoom.stageId}';
+        var ideaId='${ideaId}';
+        window.location.href = './roomDetail?roomId=' + roomId + '&stage=' + stageId+'&ideaId='+ideaId;
+    });
+});
+</script>
 </head>
 <body>
 
 	<div class="newRoom-body">
 		<%@ include file="../header.jsp"%>
 	</div>
-	<c:if test="${userId == meetingRoom.roomManagerId}">
-		<%@ include file="../sideBar.jsp"%>
-	</c:if>
+	<%@ include file="../leftSideBar.jsp"%>
+	<%@ include file="../rightSideBar.jsp"%>
 
 	<div class="content">
-		<h2>참여자 관리</h2>
+		<div class="manageTop">
+			<h2 style="font-size: 20pt font-family: KB금융 제목체 Light;">👩‍👧‍👦참여자 관리</h2>
+			<button id="backButton"><img src="./resources/back.png" style="width:35px; height:35px;"/></button>
+		</div>
+		<hr class="line">
 
-		<table>
+		<h3 style="margin-bottom: 0; font-size: 16pt;">◾ 참여자 리스트</h3>
+		<div style="display:flex; justify-content:flex-end;">
+				<p style="margin-left:3%; font-size:10pt; margin-bottom:0;">※ 참여자 리스트에서 선택한 직원에게 알림을 보내실 수 있습니다.</p>
+				</div>
+		<div class="manage-top-container">
+			<div class="search-container">
+				<form action="./userManagement" method="GET" class="manage-subject">
+					<input type="hidden" name="roomId" value="${roomId}"> <input
+						type="text" class="manage-subject" name="searchKeyword"
+						placeholder="이름 또는 팀명으로 검색" value="${searchKeyword}">
+					<button type="submit" class="search-button">
+						<i class="fa fa-search"></i>
+					</button>
+				</form>
+			</div>
+			<div class="manage-buttons">
+				<button class="btn-primary1" onclick="openModal()">참가자 추가</button>
+				<button class="btn-primary" onclick="openModal1()">알림발송</button>
+			</div>
+		</div>
+		<table class="usertable">
 			<thead>
 				<tr>
-					<th><input type="checkbox" id="selectAll"> 전체 선택</th>
+					<th><input type="checkbox" id="selectAll"></th>
 					<th>참여자</th>
 					<th>이메일</th>
 					<th>기여도 점수</th>
+					<th>생년월일</th>
 					<th>강퇴</th>
 				</tr>
 			</thead>
 			<tbody>
 				<c:forEach var="member" items="${members}">
 					<tr>
-						<td><input type="checkbox" name="selectedUsers" value="${member.userId}"></td>
-						<td>${member.userName}(${member.departmentName})-
-							${member.teamName}</td>
+						<td><input type="checkbox" name="selectedUsers"
+							value="${member.userId}"></td>
+						<td>${member.userName}(${member.userId})-${member.teamName}</td>
 						<td>${member.email}</td>
-						<td>${member.contributionCnt}</td>
+						<td>${member.contributionCnt}점</td>
+						<td>${member.birth}</td>
 						<td><button class="btn-danger"
-								onclick="removeParticipant(${member.userId},${roomId})">강퇴</button></td>
+								onclick="removeParticipant(${member.userId},${roomId})">❌</button></td>
 					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
 
-		<div class="add-participant">
-			<button class="btn-primary" onclick="openModal()">참가자 추가</button>
-		</div>
-		<div class="send-noti">
-			<button class="btn-primary" onclick="openModal1()">알림발송</button>
-		</div>
-
+		<h3 style="font-size: 16pt;">◾ 참여자 기여도 보기</h3>
 		<!-- 기여도 차트 -->
-		<div class="chart-container">
-			<canvas id="contributionChart"></canvas>
-		</div>
-	</div>
-
-	<!-- 모달 -->
-	<div id="addParticipantModal" class="modal">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h2>직원 리스트</h2>
-				<span class="close" onclick="closeModal()">&times;</span>
+		<div class="charts-container">
+			<div class="chart-wrapper">
+				<canvas id="contributionPieChart"></canvas>
 			</div>
-			<form id="addParticipantForm" action="./addParticipants"
-				method="POST">
-				<input type="hidden" name="roomId" value="${roomId}"> <input
-					type="hidden" name="stageId" value="${meetingRoom.stageId}">
-				<div class="employee-lists">
-					<div class="employee-list">
-						<h3>전체 직원</h3>
-						<c:forEach var="user" items="${addUser}">
-							<div class="employee">
-								<input type="checkbox" id="user-${user.userId}"
-									value="${user.userId}"> <label
-									for="user-${user.userId}">${user.userName}
-									(${user.departmentName}) - ${user.teamName}</label>
-							</div>
-						</c:forEach>
-					</div>
-					<div class="transfer-buttons">
-						<button type="button" onclick="transferEmployees('right')">&gt;</button>
-						<button type="button" onclick="transferEmployees('left')">&lt;</button>
-					</div>
-					<div class="selected-employee-list">
-						<h3>선택된 직원</h3>
-						<div id="selectedEmployees"></div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="submit" class="btn-primary">참여자 추가</button>
-					<button type="button" class="btn-secondary" onclick="closeModal()">닫기</button>
-				</div>
-			</form>
+			<div class="barChart-wrapper">
+				<canvas id="contributionBarChart"></canvas>
+			</div>
 		</div>
-	</div>
-	<div>
-<div id="sendNotiModal" class="modal1">
-    <div class="modal-content1">
-        <div class="modal-header1">
-            <h2>알림 발송</h2>
-            <span class="close1" onclick="closeModal1()">&times;</span>
+
+		<!-- 모달 -->
+		<div id="addParticipantModal" class="userModal">
+			<div class="userModal-content">
+				<div class="userModal-header">
+					<h2>직원 리스트</h2>
+					<span class="close" onclick="closeModal()">&times;</span>
+				</div>
+				<form id="addParticipantForm" action="./addParticipants"
+					method="POST">
+					<input type="hidden" name="roomId" value="${roomId}"> <input
+						type="hidden" name="stageId" value="${meetingRoom.stageId}">
+<div class="employee-lists">
+    <div class="employee-list">
+        <h3>전체 직원</h3>
+        <input type="text" id="employeeSearch" placeholder="직원 검색...">
+        <div class="employee-table">
+            <div class="employee-header">
+                <input type="checkbox" id="selectAllEmployees">
+                <label for="selectAllEmployees">전체 선택</label>
+            </div>
+            <div id="employeeList">
+                <c:forEach var="user" items="${addUser}">
+                    <div class="employee">
+                        <input type="checkbox" id="user-${user.userId}" value="${user.userId}" class="employee-checkbox">
+                        <label for="user-${user.userId}">${user.teamName}/${user.userName}(${user.userId})</label>
+                    </div>
+                </c:forEach>
+            </div>
         </div>
-        <form id="sendNotiForm" action="./sendNotiUser" method="POST">
-        				<input type="hidden" name="roomId" value="${roomId}"> <input
-					type="hidden" name="stageId" value="${meetingRoom.stageId}">
-            <div class="notification-container">
-                <textarea id="notificationTextarea" name="notificationMessage" rows="5" cols="50" placeholder="여기에 알림 내용을 작성하세요..."></textarea>
+    </div>
+    <div class="transfer-buttons">
+        <button type="button" class="gtltBtn" onclick="transferEmployees('right')">&gt;</button>
+        <button type="button" class="gtltBtn" onclick="transferEmployees('left')">&lt;</button>
+    </div>
+    <div class="selected-employee-list">
+        <h3>선택된 직원</h3>
+        <p style="font-size:13px;">※선택된 직원들을 현재 회의방에 추가하실 수 있습니다. 선택된 직원들은 현재 단계부터 기여도 점수가 산정됩니다.</p>
+        <div class="employee-table">
+            <div class="employee-header" style="margin-top:3px;">
+                <input type="checkbox" id="selectAllSelectedEmployees">
+                <label for="selectAllSelectedEmployees">전체 선택</label>
             </div>
-            <div class="input-container">
-                <input type="text" id="inputField" placeholder="추가할 내용을 입력하세요">
-                <button type="button" id="addTextButton">입력 내용 추가</button>
-            </div>
-            <div class="selected-user-list" id="selectedUserList"></div>
-            <div class="modal-footer1 button-container">
-                <button type="submit" id="sendNotificationButton">발송</button>
-                <button type="button" id="remindNonParticipantsButton">미참여자 독촉</button>
-            </div>
-        </form>
+            <div id="selectedEmployees"></div>
+        </div>
     </div>
 </div>
-
-		<script>
+					<div class="userModal-footer">
+						<button type="submit" class="btn-primary" style="font-size:11pt;">참여자 추가</button>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div>
+			<div id="sendNotiModal" class="modal1">
+				<div class="modal-content1">
+					<div class="modal-header1">
+						<h2>알림 발송</h2>
+						<span class="close1" onclick="closeModal1()">&times;</span>
+					</div>
+					<form id="sendNotiForm" action="./sendNotiUser" method="POST">
+						<input type="hidden" name="roomId" value="${roomId}"> <input
+							type="hidden" name="stageId" value="${meetingRoom.stageId}">
+						<div class="notification-container">
+						<div class="noPickUser">
+						    <div id="warningMessage" style="display: none;">
+    <img alt="" src="./resources/nopick.png">
+    <p>선택된 직원이 없습니다.</p>
+</div>
+   </div> 
+       <div id="selectedUserContainer" style="display: none;">
+        <table class="selected-user-table">
+            <thead>
+                <tr>
+                    <th>선택된 직원 리스트</th>
+                </tr>
+            </thead>
+            <tbody id="selectedUserList">
+                <!-- 선택된 유저들이 여기에 추가됩니다 -->
+            </tbody>
+        </table>
+    </div>
+							<textarea id="notificationTextarea" name="notificationMessage"
+								rows="10" cols="100" placeholder="여기에 알림 내용을 작성하세요..."></textarea>
+						</div>
+						
+						<div class="modal-footer1 button-container">
+							<button type="submit" class="btn-primary1" id="sendNotificationButton">발송</button>
+							<button type="button" class="btn-primary" id="remindNonParticipantsButton">미참여자
+								알림</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+	<!-- 화면 하단 여백 -->
+	<div style="margin-top: 200px;"></div>
+</div>
+</div>
+			<script>
 		
 	function removeParticipant(userId, roomId) {
 	    // 지정된 URL로 userId를 쿼리 파라미터로 포함하여 페이지 이동
 	    window.location.href = './removeParticipant?id=' + encodeURIComponent(userId) + '&roomId=' + encodeURIComponent(roomId);
 	}
-function transferEmployees(direction) {
-    if (direction === 'right') {
-        const checkboxes = document.querySelectorAll('.employee-list input[type="checkbox"]:checked');
-        checkboxes.forEach(checkbox => {
-            const employee = checkbox.parentElement;
-            document.getElementById('selectedEmployees').appendChild(employee.cloneNode(true));
-            employee.remove();
-        });
-    } else {
-        const checkboxes = document.querySelectorAll('.selected-employee-list input[type="checkbox"]:checked');
-        checkboxes.forEach(checkbox => {
-            const employee = checkbox.parentElement;
-            document.querySelector('.employee-list').appendChild(employee.cloneNode(true));
-            employee.remove();
-        });
-    }
-}
+	function transferEmployees(direction) {
+	    if (direction === 'right') {
+	        const checkboxes = document.querySelectorAll('#employeeList .employee-checkbox:checked');
+	        checkboxes.forEach(checkbox => {
+	            const employee = checkbox.closest('.employee');
+	            document.getElementById('selectedEmployees').appendChild(employee.cloneNode(true));
+	            employee.remove();
+	        });
+	    } else {
+	        const checkboxes = document.querySelectorAll('#selectedEmployees .employee-checkbox:checked');
+	        checkboxes.forEach(checkbox => {
+	            const employee = checkbox.closest('.employee');
+	            document.getElementById('employeeList').appendChild(employee.cloneNode(true));
+	            employee.remove();
+	        });
+	    }
+	    // 전체 선택 체크박스 상태 초기화
+	    document.getElementById('selectAllEmployees').checked = false;
+	    document.getElementById('selectAllSelectedEmployees').checked = false;
+	}
 
 document.getElementById('addParticipantForm').addEventListener('submit', function(e) {
     e.preventDefault();
@@ -480,12 +804,17 @@ document.getElementById('sendNotiForm').addEventListener('submit', function(e) {
     this.submit();
 });
 document.getElementById('remindNonParticipantsButton').addEventListener('click', function() {
-    const roomId = document.querySelector('input[name="roomId"]').value;
+	const roomId = '${roomId}';
     const stageId = document.querySelector('input[name="stageId"]').value;
 
     if (!stageId) {
         console.error('Stage ID is missing or empty');
         alert('Stage ID가 설정되지 않았습니다.');
+        return;
+    }
+    if (!roomId) {
+        console.error('Stage ID is missing or empty');
+        alert('roomId ID가 설정되지 않았습니다.');
         return;
     }
 
@@ -512,19 +841,31 @@ function openModal() {
 }
 function openModal1() {
     const selectedCheckboxes = document.querySelectorAll('input[name="selectedUsers"]:checked');
+    const warningMessage = document.getElementById('warningMessage');
+    const selectedUserContainer = document.getElementById('selectedUserContainer');
     const selectedUserList = document.getElementById('selectedUserList');
+    
     selectedUserList.innerHTML = '';
 
-    selectedCheckboxes.forEach(checkbox => {
-        const userName = checkbox.closest('tr').querySelector('td:nth-child(2)').innerText;
-        const div = document.createElement('div');
-        div.className = 'selected-user-item';
-        div.innerText = userName;
-        selectedUserList.appendChild(div);
-    });
+    if (selectedCheckboxes.length === 0) {
+        warningMessage.style.display = 'flex';
+        selectedUserContainer.style.display = 'none';
+    } else {
+        warningMessage.style.display = 'none';
+        selectedUserContainer.style.display = 'block';
+        selectedCheckboxes.forEach(checkbox => {
+            const userName = checkbox.closest('tr').querySelector('td:nth-child(2)').innerText;
+            const tr = document.createElement('tr');
+            const td = document.createElement('td');
+            td.innerText = userName;
+            tr.appendChild(td);
+            selectedUserList.appendChild(tr);
+        });
+    }
 
     document.getElementById('sendNotiModal').style.display = 'block';
 }
+
 
 
 function closeModal() {
@@ -552,14 +893,7 @@ document.getElementById('selectAll').addEventListener('change', function() {
     });
 });
 
-document.getElementById('addTextButton').addEventListener('click', function() {
-    const inputField = document.getElementById('inputField');
-    const notificationTextarea = document.getElementById('notificationTextarea');
-    if (inputField.value.trim() !== '') {
-        notificationTextarea.value += '\n' + inputField.value;
-        inputField.value = '';
-    }
-});
+
 
 document.getElementById('sendNotificationButton').addEventListener('click', function() {
     const notificationText = document.getElementById('notificationTextarea').value;
@@ -571,70 +905,148 @@ document.getElementById('remindNonParticipantsButton').addEventListener('click',
     alert('미참여자에게 독촉 알림을 보냅니다.');
     closeModal1();
 });
-    document.addEventListener('DOMContentLoaded', function() {
-        var labels = [
-            <c:forEach var="member" items="${members}" varStatus="status">
-                '${member.userName}'<c:if test="${!status.last}">,</c:if>
-            </c:forEach>
-        ];
-        var data = [
-            <c:forEach var="member" items="${members}" varStatus="status">
-                ${member.contributionCnt}<c:if test="${!status.last}">,</c:if>
-            </c:forEach>
-        ];
-        
-        var ctx = document.getElementById('contributionChart').getContext('2d');
-        var contributionChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: '기여도',
-                    data: data,
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)',
-                        'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(153, 102, 255, 0.7)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
-                            }
-                        }
-                    }
+document.addEventListener('DOMContentLoaded', function() {
+    var labels = [
+        <c:forEach var="member" items="${members}" varStatus="status">
+            '${member.userName}'<c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+    var data = [
+        <c:forEach var="member" items="${members}" varStatus="status">
+            ${member.contributionCnt}<c:if test="${!status.last}">,</c:if>
+        </c:forEach>
+    ];
+    
+    var colors = [
+        'rgba(255, 99, 132, 0.7)',
+        'rgba(54, 162, 235, 0.7)',
+        'rgba(255, 206, 86, 0.7)',
+        'rgba(75, 192, 192, 0.7)',
+        'rgba(153, 102, 255, 0.7)',
+        'rgba(255, 159, 64, 0.7)',
+        'rgba(199, 199, 199, 0.7)',
+        'rgba(83, 102, 255, 0.7)',
+        'rgba(40, 159, 64, 0.7)',
+        'rgba(210, 199, 199, 0.7)'
+    ];
+
+    // 파이 차트
+    var ctxPie = document.getElementById('contributionPieChart').getContext('2d');
+    var contributionPieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: colors,
+                borderColor: colors.map(color => color.replace('0.7', '1')),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
                 },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-                                return context.parsed.y + '%';
-                            }
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            var label = context.label || '';
+                            var value = context.parsed || 0;
+                            var total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            var percentage = ((value / total) * 100).toFixed(1);
+                            return label + ': ' + percentage + '%';
                         }
                     }
                 }
             }
+        }
+    });
+
+ // 세로 막대 차트
+ // 세로 막대 차트
+    var ctxBar = document.getElementById('contributionBarChart').getContext('2d');
+    var contributionBarChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: colors,
+                borderColor: colors.map(color => color.replace('0.7', '1')),
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return Math.round(context.parsed.y) + '점';
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: '기여도 점수'
+                    },
+                    ticks: {
+                        stepSize: 1,
+                        callback: function(value) {
+                            return Math.round(value);
+                        }
+                    },
+                    suggestedMax: Math.max(...data) + 1
+                }
+            }
+        }
+    });
+});
+//전체 직원 검색
+document.addEventListener('DOMContentLoaded', function() {
+    const selectAllEmployees = document.getElementById('selectAllEmployees');
+    const selectAllSelectedEmployees = document.getElementById('selectAllSelectedEmployees');
+
+    selectAllEmployees.addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('#employeeList .employee-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
         });
     });
+
+    selectAllSelectedEmployees.addEventListener('change', function() {
+        const checkboxes = document.querySelectorAll('#selectedEmployees .employee-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
+    });
+    const searchInput = document.getElementById('employeeSearch');
+    const employeeList = document.getElementById('employeeList');
+    const employees = Array.from(employeeList.getElementsByClassName('employee'));
+
+    searchInput.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase();
+        employees.forEach(employee => {
+            const text = employee.textContent.toLowerCase();
+            if (text.includes(searchTerm)) {
+                employee.style.display = '';
+            } else {
+                employee.style.display = 'none';
+            }
+        });
+    });
+});
 </script>
 </body>
 </html>

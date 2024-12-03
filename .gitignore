@@ -4,7 +4,8 @@
 
 mybatis-config.xml
 log4j.xml
-
+application.properties
+src/main/resources/application.properties
 lecture
 target
 pom.properties

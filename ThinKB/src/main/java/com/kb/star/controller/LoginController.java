@@ -44,7 +44,9 @@ public class LoginController {
 	public String mainView(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		int id = (Integer) session.getAttribute("userId");
+		int departmentId = (Integer) session.getAttribute("departmentId");
 		model.addAttribute("id", id);
+		model.addAttribute("departmentId", departmentId);
 		command = new UserInfoCommand(sqlSession);
 		command.execute(model);
 		return "main";
@@ -74,12 +76,6 @@ public class LoginController {
 		command=new ProfileImg(sqlSession);
 		command.execute(model);
 		return "redirect:/mypage";
-	}
-	//관리자메인
-	@RequestMapping("/adminMain")
-	public String adminMain(HttpServletRequest request,Model model) {
-		
-		return "adminMain";
 	}
 	//로그아웃
 	@RequestMapping("/logout")

@@ -3,12 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kb.star.util.AddVoteDao">
-
+<!-- #{param4} 투표방 만든사람 추가 -->
 	<insert id="insertNewVote">
 		INSERT INTO AddVote
 		(Title, DepartmentID, EndDate,
-		IsCompleted)
-		values (#{param1},#{param2},#{param3},0)
+		IsCompleted, createUserID)
+		values (#{param1},#{param2},#{param3},0,#{param4})
 	</insert>
 
 	<select id="voteIdConfirm" resultType="int">
@@ -25,12 +25,31 @@
 	</insert>
 
 	<select id="myAllVote" resultType="com.kb.star.dto.AddVoteDto">
-		SELECT ad.* from AddVote ad
-		inner join
-		VoteParticipations vp on ad.AddVoteID = vp.AddVoteID
-		where
-		ad.IsDelete = 0
-		and vp.UserID = #{param1} order by ad.AddVoteID desc;
+		SELECT 
+    ad.*,
+    COALESCE(participation_counts.totalNum, 0) as totalNum,
+    COALESCE(participation_counts.voteNum, 0) as voteNum
+FROM 
+    AddVote ad
+LEFT JOIN (
+    SELECT 
+        AddVoteID,
+        COUNT(DISTINCT UserID) as totalNum,
+        COUNT(DISTINCT CASE WHEN OptionID != 0 THEN UserID END) as voteNum
+    FROM 
+        VoteParticipations
+    GROUP BY 
+        AddVoteID
+) participation_counts ON ad.AddVoteID = participation_counts.AddVoteID
+WHERE
+    ad.IsDelete = 0
+    AND EXISTS (
+        SELECT 1 
+        FROM VoteParticipations vp 
+        WHERE vp.AddVoteID = ad.AddVoteID AND vp.UserID = #{param1}
+    )
+ORDER BY 
+    ad.AddVoteID DESC;
 	</select>
 
 
@@ -47,6 +66,14 @@
 		where
 		AddVoteId = #{param1}
 		order by OptionID desc;
+	</select>
+	
+	<select id="voteOptionsResult"
+		resultType="com.kb.star.dto.AddVoteOptionsDto">
+		SELECT * from AddVoteOptions
+		where
+		AddVoteId = #{param1}
+		order by VoteCount desc;
 	</select>
 
 	<select id="voteOptionsAfter"
@@ -103,6 +130,21 @@
 		FROM VoteParticipations
 		WHERE UserID = #{userId} AND AddVoteID = #{addVoteId}
 	</select>
+	
+	<!-- 투표 만든사람 찾기위해 모든 직원정보 담기 -->
+	<select id="whosVoteMaker" resultType="com.kb.star.dto.UsersDto">
+		SELECT u.UserID, u.UserName from Users u
+	</select>
 
+<!-- command분리후 새로 만든 내 투표결과 -->
+<select id="myVoteResult" resultType="com.kb.star.dto.VoteParticipationsDto">
+	SELECT * FROM VoteParticipations WHERE AddVoteID = #{param1} and UserID = #{param2}
+</select>
+
+<!-- 투표하면 업데이트 -->
+<update id="voteUpdate">
+	UPDATE VoteParticipations SET OptionID = #{param1}, VotedAt = NOW() 
+	WHERE AddVoteID = #{param2} and UserID = #{param3}
+</update>
 
 </mapper>

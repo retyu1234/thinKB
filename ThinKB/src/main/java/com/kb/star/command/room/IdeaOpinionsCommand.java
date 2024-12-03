@@ -1,5 +1,6 @@
 package com.kb.star.command.room;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
+import com.kb.star.dto.UsersDto;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
 
@@ -34,8 +36,10 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		int roomId = Integer.parseInt(map.get("roomId").toString());
 		int ideaId = Integer.parseInt(map.get("ideaId").toString());
+		int stage = Integer.parseInt(map.get("stage").toString());
 		model.addAttribute("roomId", roomId);
 		model.addAttribute("ideaId", ideaId);
+		model.addAttribute("stage", stage);
 
 		HttpSession session = request.getSession();
 		int userId = (Integer) session.getAttribute("userId");
@@ -73,6 +77,22 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		} else { // 댓글을 삭제해서 2개 미만으로 떨어질 경우
 			ideaOpinionsDao.updateStatus(userId, ideaId, roomId, false);
 		}
+		
+		// 현재 탭에 이미 의견을 작성했는지 확인
+        String currentTab = (String) map.get("currentTab");
+        if (currentTab == null || currentTab.isEmpty()) {
+            currentTab = "tab-smart"; // 기본값 설정
+        }
+        model.addAttribute("currentTab", currentTab);
+        
+        // 현재 탭의 hatColor 설정
+        String currentHatColor = getHatColorFromTab(currentTab);
+        model.addAttribute("currentHatColor", currentHatColor);
+        
+		// 사용자가 작성한 탭 목록 가져오기(사용자가 각 탭에 하나씩만 의견을 달 수 있도록 제한 / 이미 의견을 단 탭을 표시하거나 강조 목적)
+        List<String> userCommentedTabs = ideaOpinionsDao.getUserCommentedTabs(userId, ideaId); 
+        model.addAttribute("userCommentedTabs", userCommentedTabs);
+
 
 		// 타이머 종료 시간
 		String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
@@ -86,30 +106,61 @@ public class IdeaOpinionsCommand implements RoomCommand {
 		int doneUserCount = ideaOpinionsDao.getDoneUserCount(roomId, ideaId);
 		model.addAttribute("doneUserCount", doneUserCount);
 
-		// 방장 사이드탭
+		// 상세설명 - 토글
 		RoomDao dao = sqlSession.getMapper(RoomDao.class);
 		MeetingRooms info = dao.roomDetailInfo(roomId);
 		model.addAttribute("meetingRoom", info);
 
 		model.addAttribute("opinionForm", new IdeaOpinionsDto());
 		model.addAttribute("userOpinions", ideaOpinionsDao.getUserCommentedTabs(userId, ideaId));
+		
+		
 
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
 		model.addAttribute("meetingRoom", meetingRoom);
+		// 오른쪽 사이드바
+		List<Integer> userIdList = dao.roomIdFormember(roomId);
+		List<UsersDto> userList = new ArrayList<UsersDto>();
+		for(int ids : userIdList) {
+			UsersDto user = dao.whosMember(ids);
+			if(user != null) {
+				userList.add(user);
+			}
+		}
+		model.addAttribute("userList", userList);
+		
+		// url로 접속 막기
+		model.addAttribute("userIdList", userIdList);
+		
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, userId); // RoomDao
+		model.addAttribute("myContributionNum", myContributionNum);
 
+		
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
 		model.addAttribute("yesPickList", dto);
-		System.out.println("아이디어 오피니언 커맨드" + dto);
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userId", userId);
 		params.put("roomId", roomId);
 		params.put("ideaId", ideaId);
 
-		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByroomId", params);
 		model.addAttribute("roomMessage", roomMessage);
-		// 여기까지 leftSideBar 출력용
 
 	}
+	
+    private String getHatColorFromTab(String currentTab) {
+        switch (currentTab) {
+            case "tab-smart": return "Smart";
+            case "tab-positive": return "Positive";
+            case "tab-worry": return "Worry";
+            case "tab-strict": return "Strict";
+            default: return "Smart";
+        }
+    }
 }

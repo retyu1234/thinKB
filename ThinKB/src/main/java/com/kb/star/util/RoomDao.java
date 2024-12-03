@@ -4,11 +4,14 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.dto.Ideas;
+import com.kb.star.dto.MeetingRoomMember;
 import com.kb.star.dto.MeetingRoomMembers;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.StageParticipationIdeas;
 import com.kb.star.dto.RejectLog;
+import com.kb.star.dto.RejectMember;
 import com.kb.star.dto.TimersDto;
 import com.kb.star.dto.UserListDto;
 import com.kb.star.dto.UsersDto;
@@ -54,7 +57,7 @@ public interface RoomDao {
 	
 	void updateRoomInfo(String title,String Description, String endDate,int roomId);
 	
-	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId);
+//	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId);
 	
 	List<UserListDto>selectAvailableEmployees(@Param("roomId") int roomId,@Param("departmentId") int departmentId);
 
@@ -64,7 +67,7 @@ public interface RoomDao {
 
 	String rejectLogSelect(int ideaID);
 
-	void makeNotification(Integer user, int ideaNum, String notification);
+	void makeNotification(Integer user, int ideaNum, String notification, int roomId);
 
 	void addMeetingRoomMembers(@Param("roomId") int roomId, @Param("userIds") List<Integer> userIds);
 	
@@ -122,4 +125,27 @@ public interface RoomDao {
 
 	UsersDto whosMember(int id);
 
+	List<Ideas> totalIdea(int roomId);
+
+	List<IdeaOpinionsDto> ideaIdForOpinion(int firstNum);
+
+	List<MeetingRoomMember> memberForRoomId(int roomId);
+	
+	List<MeetingRoomMembers> selectCurrentMembers(@Param("roomId") int roomId,@Param("searchKeyword") String searchKeyword);
+
+	List<RejectLog> rejectList(int roomId, int id);
+
+	int totalContributionNum(int roomId);
+
+	int myContributionNum(int roomId, int id);
+	
+	void contributionFivePoint(int roomId, int id);
+
+	RejectMember rejectMember(int roomId, int rejectId);
+
+	int whatsParticipant(int roomId, int id);
+	
+	Integer getIdeaIdPickOne(int roomId);
+
+	List<MeetingRoomMember> acceptMember(int roomId);
 }

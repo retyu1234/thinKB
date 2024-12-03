@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>테스트 생성</title>
+<title>thinKB - A/B테스트 만들기</title>
 <head>
 <meta charset="UTF-8">
 <title>테스트 생성</title>
@@ -15,11 +15,11 @@ html, body {
     overflow-x: hidden;
 }
 .ab-body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .ab-banner {
-	margin-top: 50px; /* content 영역의 여백 설정 */
+	margin-top: 50px;
 	margin-left: 15%;
 	margin-right: 15%;
 	margin-top: 1%;
@@ -43,18 +43,19 @@ html, body {
 	font-size: 18pt;
 	color: black;
 	font-weight: bold;
+	font-family: KB금융 제목체 Light;
 }
 .titleAndDetail-detail {
 	font-size: 13pt;
 }
 
 .new-subject {
-	font-size: 15pt; /* 제목의 글자 크기 */
+	font-size: 15pt;
 	color: black;
-	border: 3px solid #FFD700; /* 진한 노란색 테두리 */
-	border-radius: 20px; /* 라운드 처리 */
-	padding: 20px; /* 내부 여백 */
-	background-color: white; /* 배경색 */
+	border: 3px solid #FFD700;
+	border-radius: 20px;
+	padding: 20px;
+	background-color: white;
 }
 
 input.new-subject {
@@ -65,11 +66,12 @@ input.new-subject {
 	padding: 20px;
 	width: 100%;
 	box-sizing: border-box;
+	font-family: KB금융 본문체 Light;
 }
 
 input.new-subject:focus {
-	border-color: #FFD700; /* 포커스 시 테두리 색상 */
-	outline: none; /* 기본 포커스 스타일 제거 */
+	border-color: #FFD700;
+	outline: none;
 }
 
 .yellow-button {
@@ -81,6 +83,7 @@ input.new-subject:focus {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
@@ -97,6 +100,7 @@ input.new-subject:focus {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -112,7 +116,7 @@ input.new-subject:focus {
 }
 
 .image-box {
-    width: 48%; /* 양쪽 간격을 위해 조정 */
+    width: 48%;
     height: 400px;
     border: 2px solid #ccc;
     border-radius: 10px;
@@ -135,6 +139,7 @@ input.new-subject:focus {
     font-weight: bold;
     font-size: 15pt;
     margin-left: 20px;
+    font-family: KB금융 제목체 Light;
 }
 
 .image-preview {

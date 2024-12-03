@@ -10,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
+import com.kb.star.util.RoomDao;
 import com.kb.star.util.UserDao;
 
 public class makeRoomCommand implements RoomCommand {
@@ -36,9 +37,6 @@ public class makeRoomCommand implements RoomCommand {
 		String timer_seconds = request.getParameter("timer_seconds");
 		String users = request.getParameter("users");
 		String[] list = users.split(",");
-		for (String user : list) {
-			System.out.println(user);
-		}
 		
 		// MeetingRooms 회의방 신규 생성
 		UserDao dao = sqlSession.getMapper(UserDao.class);
@@ -63,12 +61,10 @@ public class makeRoomCommand implements RoomCommand {
 										.plusSeconds(sec);
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
 		String formattedTime = endTime.format(formatter);
-		System.out.println("타이머 저장될 시간? " + formattedTime);
 		
 		
 		//제일 마지막 회의방번호 조회 -> 타이머 테이블 신규 생성
 		int roomNum = dao.roomNumConfirm(id);
-		System.out.println("roomNum " + roomNum);
 		dao.insertNewTimer(roomNum,formattedTime);
 		
 		//회의방멤버 추가(방장/참여자 따로)
@@ -90,19 +86,19 @@ public class makeRoomCommand implements RoomCommand {
 		}
 		
 		model.addAttribute("id", id);
-
 		
-		/*
-		 * model.addAttribute("id", request.getParameter("id"));
-		model.addAttribute("title", request.getParameter("title"));
-		model.addAttribute("content", request.getParameter("content"));
-		model.addAttribute("endDate", request.getParameter("endDate"));
-		model.addAttribute("timer_hours", request.getParameter("timer_hours"));
-		model.addAttribute("timer_minutes", request.getParameter("timer_minutes"));
-		model.addAttribute("timer_seconds", request.getParameter("timer_seconds"));
-		model.addAttribute("users", request.getParameter("users"));
-		 */
-
+		//방만들고 알림 보내기 추가
+		RoomDao roomDao = sqlSession.getMapper(RoomDao.class);
+		
+		String notification = "회의방이 새로 만들어졌어요, 🕒"
+				+ hour + "시간 " + min + "분 "+ sec + "초안에 [" + title
+						+ "]에 대한 아이디어를 제출해주세요!";
+		
+		roomDao.makeNotification(Integer.parseInt(id), 0, notification, roomNum);
+		for (String user : list) {
+			int notiId = Integer.parseInt(user);
+			roomDao.makeNotification(notiId, 0, notification, roomNum);
+		}
 	}
 
 }

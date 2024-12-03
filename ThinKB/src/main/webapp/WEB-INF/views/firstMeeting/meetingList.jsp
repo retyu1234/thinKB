@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate var="currentDate" value="${now}" pattern="yyyy-MM-dd" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,11 +11,11 @@
 <title>thinKB - 회의방 목록</title>
 <style>
 body {
-	font-family: Arial, sans-serif;
+	font-family: KB금융 본문체 Light;
 }
 
 .content-banner {
-	margin-top: 50px; /* content 영역의 여백 설정 */
+	margin-top: 50px;
 	margin-left: 15%;
 	margin-right: 15%;
 	margin-bottom: 15px;
@@ -31,7 +35,7 @@ body {
 	padding: 20px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-
+/* 상단 회의방 만들기 버튼 */
 .button-container {
 	display: flex;
 	justify-content: flex-end;
@@ -42,7 +46,6 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-/* 	margin: 10px 0; */
 }
 
 .progress {
@@ -55,6 +58,7 @@ body {
 	width: 80%;
 	border: 1px solid #ccc;
 	font-size: 11pt;
+	font-family: KB금융 본문체 Light;
 }
 
 .progress label {
@@ -65,7 +69,7 @@ body {
 .progress input {
 	margin-right: 5px;
 }
-/* 진행중인 단계 */
+
 .progress-header-container {
 	display: flex;
 	justify-content: left;
@@ -78,10 +82,9 @@ body {
 	margin: 0;
 	padding: 10px 0;
 	font-size: 18pt;
-	/* margin-bottom: 20px; */
+	font-family: KB금융 제목체 Light;
 }
 
-/* <style> 태그 안에 다음 CSS를 추가하세요 */
 .progress input[type="checkbox"] {
 	appearance: none;
 	-webkit-appearance: none;
@@ -97,17 +100,17 @@ body {
 }
 
 .progress input[type="checkbox"]:checked {
-	background-color: #FFCC00; /* 체크된 상태의 배경색 */
-	border-color: #FFCC00; /* 체크된 상태의 테두리 색 */
+	background-color: #FFCC00;
+	border-color: #FFCC00;
 }
 
 .progress input[type="checkbox"]:checked::before {
-	content: '\2714'; /* 체크 표시 */
+	content: '\2714';
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	color: white; /* 체크 표시 색상 */
+	color: white;
 	font-size: 14px;
 }
 
@@ -117,81 +120,89 @@ body {
 	cursor: pointer;
 }
 
+/* 아이디어 회의방 목록 */
 .ideas {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px 30px;
-    padding: 10px;
-    margin-top: 40px;
-    margin-bottom: 50px;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 20px 30px;
+	padding: 10px;
+	margin-top: 40px;
+	margin-bottom: 50px;
 }
 
 .idea {
-    background-color: #F1EFE5;
-    border-radius: 20px;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease;
-    height: 240px;
+	background-color: #F1EFE5;
+	border-radius: 20px;
+	padding: 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	display: flex;
+	flex-direction: column;
+	cursor: pointer;
+	transition: box-shadow 0.3s ease;
+	height: 240px;
 }
 
 .idea:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .team-tag {
-    align-self: flex-start;
-    background-color: #FFD700;
-    color: black;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8em;
-    margin-bottom: 10px;
-    transition: all 0.3s ease;
+	align-self: flex-start;
+	background-color: #FFD700;
+	color: black;
+	padding: 5px 10px;
+	border-radius: 15px;
+	font-size: 0.8em;
+	margin-bottom: 10px;
+	transition: all 0.3s ease;
 }
 
+.team-tag-active {
+	background-color: #FFD700;
+}
+
+.team-tag-completed, .team-tag-overdue {
+	background-color: #808080;
+	color: #ffffff;
+}
 .idea[data-stage="6"] {
-    background-color: #f0f0f0;
+	background-color: #f0f0f0;
 }
 
 .idea[data-stage="6"] .team-tag {
-    background-color: #808080;
-    color: #ffffff;
+	background-color: #808080;
+	color: #ffffff;
 }
 
-.idea[data-stage="6"] .room-title,
-.idea[data-stage="6"] .stage,
-.idea[data-stage="6"] .end-date {
-    color: #808080;
+.idea[data-stage="6"] .room-title, .idea[data-stage="6"] .stage, .idea[data-stage="6"] .end-date
+	{
+	color: #808080;
 }
 
 .room-title {
-    text-align: center;
-    font-weight: bold;
-    margin: 5px 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 15pt;
-    height: 3.6em; /* 2줄 높이에 맞춰 고정 (1.8em * 2) */
-    line-height: 1.8em; /* 줄 간격 설정 */
+	text-align: center;
+	font-weight: bold;
+	margin: 5px 0;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-size: 15pt;
+	height: 3.6em;
+	line-height: 1.8em;
+	font-family: KB금융 제목체 Light;
 }
 
-
 .stage, .end-date {
-    text-align: right;
-    font-size: 13pt;
-    margin-top: 10px;
-    margin-right: 10px;
+	text-align: right;
+	font-size: 13pt;
+	margin-top: 10px;
+	margin-right: 10px;
 }
 
 .stage {
-    margin-top: auto;
+	margin-top: auto;
 }
 
 .yellow-button {
@@ -203,13 +214,13 @@ body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .yellow-button:hover {
 	background-color: #D4AA00;
 }
 
-/* 회색버튼 */
 .grey-button {
 	background-color: #978A8F;
 	color: white;
@@ -219,6 +230,7 @@ body {
 	font-size: 13pt;
 	cursor: pointer;
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
 
 .grey-button:hover {
@@ -226,37 +238,37 @@ body {
 }
 
 .no-room {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border-radius: 20px;
-    font-weight: bold;
-    height: 300px;
-    width: 100%;
-    margin: 0 auto;
-    margin-bottom: 50px;
-    text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	border-radius: 20px;
+	font-weight: bold;
+	height: 300px;
+	width: 100%;
+	margin: 0 auto;
+	margin-bottom: 50px;
+	text-align: center;
 }
 
 .no-room-contents {
-    color: grey;
-    font-size: 20px;
-    text-align: center;
-    margin-bottom: 10px;
-    width: 100%; /* 추가: 너비를 100%로 설정 */
+	color: grey;
+	font-size: 20px;
+	text-align: center;
+	margin-bottom: 10px;
+	width: 100%;
 }
 
 .no-room-img {
-    width: 100px;
-    height: auto;
-    margin-bottom: 10px;
-    display: block; /* 추가: 이미지를 블록 요소로 변경 */
-    margin-left: auto; /* 추가: 좌우 마진을 자동으로 설정 */
-    margin-right: auto; /* 추가: 좌우 마진을 자동으로 설정 */
+	width: 150px;
+	height: auto;
+	margin-bottom: 10px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
-
+/* 페이지네이션 */
 .pagination {
 	display: flex;
 	justify-content: center;
@@ -283,34 +295,67 @@ body {
 .pagination a:hover:not(.active) {
 	background-color: #ddd;
 }
+
 .line-container {
-    width: 100%;
-    padding: 0 15px;
-    box-sizing: border-box;
+	width: 100%;
+	padding: 0 15px;
+	box-sizing: border-box;
 }
+
 .line {
-    border: none;
-    border-top: 2px solid #ffc107;
-    width: 100%;
-    margin: 10px 0;
-    transition: border-color 0.3s ease;
-} 
+	border: none;
+	border-top: 2px solid #ffc107;
+	width: 100%;
+	margin: 10px 0;
+	transition: border-color 0.3s ease;
+}
 
 .idea[data-stage="6"] .line {
-    border-top: 2px solid #808080;
+	border-top: 2px solid #808080;
 }
 
+/* 보고서 결재 상태 태그 */
+.status-tag {
+    align-self: flex-start;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+}
+
+.status-pending {
+    background-color: #FFA500;
+    color: white;
+}
+
+.status-rejected {
+    background-color: #808080;
+    color: white;
+}
+
+.status-accepted {
+    background-color: #32CD32;
+    color: white;
+}
+
+.tag-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
 </style>
 </head>
 
 <body>
 	<!-- 헤더 영역 -->
 	<%@ include file="../header.jsp"%>
-	
+
 	<!-- 상단 배너영역 -->
 	<div class="content-banner">
-		<img src="<c:url value='./resources/roomListBanner.png'/>" alt="roomListBanner" 
-		style="max-width: 100%; height: auto;">
+		<img src="<c:url value='./resources/roomListBanner.png'/>"
+			alt="roomListBanner" style="max-width: 100%; height: auto;">
 	</div>
 
 	<div class="meetingList-content">
@@ -337,125 +382,100 @@ body {
 					type="checkbox" data-stage="6" onchange="filterIdeas()"> 완료</label>
 			</div>
 		</div>
-
 		<!-- 회의방 목록 -->
-<%-- 		<div class="ideas">
-
+		<div class="ideas">
 			<c:forEach var="li" items="${roomList}">
 				<div class="idea" data-stage="${li.getStageId()}"
 					<c:if test="${li.getStageId() >= 3}">
-                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
-                <c:forEach var="idea" items="${ideasList}">
-                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${idea.getIdeaID()}'"
-                </c:forEach>
-            </c:if>
-					<c:if test="${li.getStageId() < 3}">
-                onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'"
-            </c:if>>
-					<div class="idea-header">
-						<h2>
-							<span class="idea-icon">📝</span> <span class="room-title">${li.getRoomTitle()}</span>
-						</h2>
-						<img src="./resources/nextIcon.png" alt="더 보기" class="next-icon">
-					</div>
-					<div class="idea-details">
-						<p>종료일: ${li.getEndDate()}</p>
-						<p>
-							주최 팀명:
-							<c:forEach var="team" items="${teamInfo}">
-								<c:if test="${team.getTeamId() == li.getTeamId()}">
-                                ${team.getTeamName()}
-                            </c:if>
-							</c:forEach>
-						</p>
-						<p>
-							단계:
-							<c:choose>
-								<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
-								<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
-								<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-								<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
-								<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
-								<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
-							</c:choose>
-						</p>
-						<c:if test="${li.getStageId() >= 3}">
-							<c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
-							<c:forEach var="idea" items="${ideasList}">
-								<input type="hidden" name="ideaId" value="${idea.getIdeaID()}" />
-							</c:forEach>
-						</c:if>
-					</div>
-					</div>
-			</c:forEach>
-
-			<div class="no-room" style="display: none;">
-				<img src="./resources/noContent.png" alt="no Contents"
-					style="width: 100px; height: auto; margin-bottom: 10px;">
-				<div class="contents">선택한 단계의 회의방이 없어요.</div>
-				<div class="contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
-			</div>
-
-		</div> --%>
-		<div class="ideas">
-    		<c:forEach var="li" items="${roomList}">
-		        <div class="idea" data-stage="${li.getStageId()}"
-		            <c:if test="${li.getStageId() >= 3}">
 		                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
 		                <c:forEach var="idea" items="${ideasList}">
 		                    onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}&ideaId=${idea.getIdeaID()}'"
 		                </c:forEach>
 		            </c:if>
-		            <c:if test="${li.getStageId() < 3}">
+					<c:if test="${li.getStageId() < 3}">
 		                onclick="window.location.href='./roomDetail?roomId=${li.getRoomId()}&stage=${li.getStageId()}'"
 		            </c:if>>
-		            <div class="team-tag">
-					    <c:choose>
-					        <c:when test="${li.getStageId() == 6}">
-					            완료
-					        </c:when>
-					        <c:otherwise>
-					            진행중
-					        </c:otherwise>
-					    </c:choose>
+					<div class="tag-container">
+					<div class="team-tag 
+						<c:choose>
+							<c:when test="${li.getStageId() == 6 || li.getEndDate() < currentDate}">
+								team-tag-completed
+							</c:when>
+							<c:otherwise>
+								team-tag-active
+							</c:otherwise>
+						</c:choose>
+					">
+						<c:choose>
+							<c:when test="${li.getStageId() == 6}">
+								완료
+							</c:when>
+							<c:when test="${li.getEndDate() < currentDate}">
+								기간종료
+							</c:when>
+							<c:otherwise>
+								진행중
+							</c:otherwise>
+						</c:choose>
 					</div>
-		            <div class="room-title">${li.getRoomTitle()}</div>
-		            <div class="line-container">
-        				<hr class="line">
-    				</div>
-		            <div class="stage">
-		                <c:choose>
-		                    <c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
-		                    <c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
-		                    <c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
-		                    <c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
-		                    <c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
-		                    <c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
-		                </c:choose>
-		            </div>
-		            <div class="end-date">
-		            <c:forEach var="team" items="${teamInfo}">
-		                    <c:if test="${team.getTeamId() == li.getTeamId()}">
+                    <c:forEach var="report" items="${reportsResult}">
+                        <c:if test="${report.getRoomId() == li.getRoomId()}">
+                            <div class="status-tag 
+                                <c:choose>
+                                    <c:when test="${report.getIsChoice() == -1}">status-pending</c:when>
+	                                <c:when test="${report.getIsChoice() == 0}">status-rejected</c:when>
+	                                <c:when test="${report.getIsChoice() == 1}">status-accepted</c:when>
+	                                <c:otherwise>status-pending</c:otherwise>
+                                </c:choose>">
+                                <c:choose>
+                                    <c:when test="${report.getIsChoice() == -1}">결재대기</c:when>
+	                                <c:when test="${report.getIsChoice() == 0}">미채택</c:when>
+	                                <c:when test="${report.getIsChoice() == 1}">채택</c:when>
+	                                <c:otherwise>결재대기</c:otherwise>
+                                </c:choose>
+                            </div>
+                        </c:if>
+                    </c:forEach>
+                </div>
+					<div class="room-title">${li.getRoomTitle()}</div>
+					<div class="line-container">
+						<hr class="line">
+					</div>
+					<div class="stage">
+						<c:choose>
+							<c:when test="${li.getStageId() == 1}">아이디어 초안 작성중</c:when>
+							<c:when test="${li.getStageId() == 2}">아이디어 투표 진행중</c:when>
+							<c:when test="${li.getStageId() == 3}">1차 의견 작성중</c:when>
+							<c:when test="${li.getStageId() == 4}">2차 의견 작성중</c:when>
+							<c:when test="${li.getStageId() == 5}">최종보고서 작성중</c:when>
+							<c:when test="${li.getStageId() == 6}">아이디어 회의 완료</c:when>
+						</c:choose>
+					</div>
+					<div class="end-date">
+						<c:forEach var="team" items="${teamInfo}">
+							<c:if test="${team.getTeamId() == li.getTeamId()}">
 		                        ${team.getTeamName()} 주최
 		                    </c:if>
-		                </c:forEach>
-		            </div>
-		            <div class="end-date">~ ${li.getEndDate()}</div>
-		            <c:if test="${li.getStageId() >= 3}">
-		                <c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
-		                <c:forEach var="idea" items="${ideasList}">
-		                    <input type="hidden" name="ideaId" value="${idea.getIdeaID()}" />
-		                </c:forEach>
-		            </c:if>
-		        </div>
-    		</c:forEach>		
+						</c:forEach>
+					</div>
+					<div class="end-date">~ ${li.getEndDate()}</div>
+					<c:if test="${li.getStageId() >= 3}">
+						<c:set var="ideasList" value="${roomIdeasMap[li.roomId]}" />
+						<c:forEach var="idea" items="${ideasList}">
+							<input type="hidden" name="ideaId" value="${idea.getIdeaID()}" />
+							<input type="hidden" name="stageId" value="${idea.getStageID()}" />
+						</c:forEach>
+					</c:if>
+				</div>
+			</c:forEach>
 		</div>
-		
-<!-- 회의방 없는경우 div따로 뺌 -->
- 		<div class="no-room" style="display: none;">
-		    <img class="no-room-img" src="./resources/noContent.png" alt="no Contents">
-		    <div class="no-room-contents">선택한 단계의 회의방이 없어요.</div>
-		    <div class="no-room-contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
+
+		<!-- 회의방 없는경우 div따로 뺌 -->
+		<div class="no-room" style="display: none;">
+			<img class="no-room-img" src="./resources/noContent.png"
+				alt="no Contents">
+			<div class="no-room-contents">선택한 단계의 회의방이 없어요.</div>
+			<div class="no-room-contents">다른 단계를 선택하거나 새로운 회의방을 만들어보세요!</div>
 		</div>
 
 
@@ -481,46 +501,54 @@ body {
 			</c:if>
 
 		</div>
-</div>
+	</div>
 
 
 <script>
 function filterIdeas() {
-    var checkboxes = document.querySelectorAll('.progress input:checked');
-    var ideas = document.querySelectorAll('.idea');
-    var anyVisible = false;
+	var checkboxes = document
+			.querySelectorAll('.progress input:checked');
+	var ideas = document.querySelectorAll('.idea');
+	var anyVisible = false;
 
-    if (checkboxes.length === 0) {
-        // 체크된 박스가 없으면 모든 아이디어를 표시
-        ideas.forEach(function(idea) {
-            idea.style.display = 'flex';
-        });
-        anyVisible = true;
-    } else {
-        ideas.forEach(function(idea) {
-            var ideaStage = idea.getAttribute('data-stage');
-            var shouldShow = Array.from(checkboxes).some(function(checkbox) {
-                return checkbox.getAttribute('data-stage') === ideaStage;
-            });
-            idea.style.display = shouldShow ? 'flex' : 'none';
-            if (shouldShow) anyVisible = true;
-        });
-    }
+	if (checkboxes.length === 0) {
+		// 체크된 박스가 없으면 전체 표시
+		ideas.forEach(function(idea) {
+			idea.style.display = 'flex';
+		});
+		anyVisible = true;
+	} else {
+		ideas
+				.forEach(function(idea) {
+					var ideaStage = idea.getAttribute('data-stage');
+					var shouldShow = Array
+							.from(checkboxes)
+							.some(
+									function(checkbox) {
+										return checkbox
+												.getAttribute('data-stage') === ideaStage;
+									});
+					idea.style.display = shouldShow ? 'flex' : 'none';
+					if (shouldShow)
+						anyVisible = true;
+				});
+	}
 
-    // 표시할 아이디어가 없는 경우 메시지 표시
-    var noRoomMessage = document.querySelector('.no-room');
-    if (noRoomMessage) {
-        noRoomMessage.style.display = anyVisible ? 'none' : 'flex';
-    }
+	// 표시할 아이디어가 없는 경우 메시지 표시
+	var noRoomMessage = document.querySelector('.no-room');
+	if (noRoomMessage) {
+		noRoomMessage.style.display = anyVisible ? 'none' : 'flex';
+	}
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    var checkboxes = document.querySelectorAll('.progress input[type="checkbox"]');
-    checkboxes.forEach(function(checkbox) {
-        checkbox.addEventListener('change', filterIdeas);
-    });
-    // 페이지 로드 시 초기 필터링 적용
-    filterIdeas();
+	var checkboxes = document
+			.querySelectorAll('.progress input[type="checkbox"]');
+	checkboxes.forEach(function(checkbox) {
+		checkbox.addEventListener('change', filterIdeas);
+	});
+	// 페이지 로드 시 초기(아무것도 안선택된, 전체 나오는) 필터링 적용
+	filterIdeas();
 });
 </script>
 

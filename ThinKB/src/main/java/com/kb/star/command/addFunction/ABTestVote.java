@@ -24,6 +24,7 @@ public class ABTestVote implements AddCommand {
 		HttpServletRequest request=(HttpServletRequest)map.get("request");	
 		int userId=(Integer)map.get("userId");
 		int abTestId=Integer.parseInt(request.getParameter("abTestId"));
+		model.addAttribute("abTestId", abTestId); // 추가
 		int pick=Integer.parseInt(request.getParameter("pick"));
 		AorBDao dao=sqlSession.getMapper(AorBDao.class);
 		if(pick==1) {

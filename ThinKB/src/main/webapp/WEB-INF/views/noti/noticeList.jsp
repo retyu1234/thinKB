@@ -5,14 +5,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notification Panel</title>
+<title>thinKB - 알림함 목록</title>
 <style>
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+.notiList-body {
+	font-family: KB금융 본문체 Light;
+}
+
+.notiList-banner {
+	margin-top: 45px;
+	margin-left: 15%;
+	margin-right: 15%;
+}
+
+.notiList-content {
+	padding: 20px;
+	margin-left: 17%;
+	margin-right: 17%;
+	margin-top: 1%;
+}
 .noticeListBody {
     padding: 20px;
-    font-family: Arial, sans-serif;
+    font-family: KB금융 본문체 Light;
     width: 60%;
     margin: 0 auto; /* 가운데 정렬을 위한 설정 */
-    margin-top: 120px;
 }
 
 .notification-container {
@@ -26,7 +45,6 @@
     background-color: #ffc107;
     padding: 20px; /* 패딩 두께 증가 */
     border-radius: 5px;
-    font-size: 1.2em; /* 글자 크기 증가 */
 }
 
 .noticeListheader img {
@@ -40,18 +58,19 @@
 
 .tabs {
     display: flex;
-    margin-top: 15px;
 }
 
 .tab {
     padding: 15px 30px; /* 탭 두께 증가 */
     cursor: pointer;
-    font-size: 1.2em; /* 글자 크기 증가 */
+    font-size: 15pt;
     /* background-color: #f0f0f0; /* 기본 탭 색상 */ */
     margin-right: 5px; /* 탭 간격 */
     border-radius: 5px;
     /* border: 1px solid #ddd; */
     transition: background-color 0.3s;
+    font-family: KB금융 제목체 Light;
+    font-weight: bold;
 }
 
 .tab:hover {
@@ -75,10 +94,10 @@
     align-items: center;
     padding: 20px; /* 패딩 두께 증가 */
     margin-bottom: 10px;
-    border-radius: 5px;
+    border-radius: 20px;
     background-color: #fff8e1;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    font-size: 1.1em; /* 글자 크기 증가 */
+    font-size: 13pt;
     cursor: pointer;
 }
 
@@ -98,13 +117,16 @@
 
 /* 아이디어 제목 */
 .title {
+	font-size: 15pt;
     font-weight: bold; 
-    font-size: 1.3em; 
-    margin-bottom: 20px;
     color : #333333;
+    display: flex;
+    align-items: center;
+    font-family: KB금융 제목체 Light;
 }
 /* 날짜 */
 .notification-date  {
+	font-size: 10pt;
     right: 10px; /* 오른쪽 여백 설정 */
     text-align: right;
 	align-self: flex-end;
@@ -125,70 +147,65 @@
 }
 
 /* 모달창 */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
+.notiListModal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    padding-top: 250px;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0, 0, 0); /* Fallback color */
-    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
-.modal-content {
+.notiListModal-content {
     background-color: #fefefe;
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 40%;
+    width: 30%;
     border-radius: 10px;
     text-align: center;
 }
 
-.close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.modal-title {
+.notiListModal-title {
     font-size: 1.5em;
     font-weight: bold;
 }
 
-.modal-room {
+.notiListModal-room {
     font-size: 1.2em;
     color: #555;
     margin-bottom: 20px;
 }
 
-.modal-message-box {
+.notiListModal-message-box {
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #f9f9f9;
-    padding: 100px;
+    height: 200px;
     font-size: 1.2em;
-    /* width: 80%; */
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 10px;
 }
 
-.modal-footer {
+.notiListModal-message {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+.notiListModal-footer {
     text-align: center;
 }
 
-.modal-button {
+.notiListModal-button {
     background-color: #ffc107;
     color: black;
     border: none;
@@ -201,49 +218,76 @@
     margin-bottom: 20px;
 }
 
-.modal-button:hover {
+.notiListModal-button:hover {
     background-color: #e0a800;
 }
 
-.yellow-button {
-	background-color: #e6b800; /* 진한 노란색 배경색 */
-	color: black; /* 텍스트 색상 */
+/* 모두 읽음 버튼 */
+.btn-allRead {
+	background-color: #FFCC00;
+	color: #000;
 	padding: 10px 20px; /* 버튼의 여백 */
 	border: none; /* 테두리 없음 */
 	border-radius: 10px; /* 라운드 처리 */
-	font-size: 20px; /* 텍스트 크기 */
+	font-size: 13pt; 
 	cursor: pointer; /* 마우스 커서를 포인터로 변경 */
 	font-weight: bold;
+	font-family: KB금융 본문체 Light;
 }
-
-.yellow-button:hover {
-	background-color: #696969;
-	color: white;
+.btn-allRead:hover {
+	background-color: #D4AA00;
 }
-
+.idea-title {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 10px;
+}
+ .notiPagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+.notiPagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+    margin: 0 4px;
+}
+.notiPagination a.notiActive {
+    background-color: #FFCC00;
+    color: white;
+    border: 1px solid #FFCC00;
+    border-radius:100px;
+    font-family: KB금융 본문체 Light
+}
+.notiPagination a:hover:not(.notiActive) {background-color: #ddd;}
 </style>
 </head>
-<body>
+<body class="notiList-body">
 <%@ include file="../header.jsp"%>
-<div class="noticeListBody">
+<div class="notiList-content">
     <div class="notification-container">
-        <div class="noticeListheader">
+        <%-- <div class="noticeListheader">
             <div>
                 <img src="./resources/bell.png" alt="알림">
             </div>
             <c:set var="userName" value="${sessionScope.userName}" />
             <div class="user">${userName}님</div> <!-- 세션의 userName 출력 -->
-        </div>
+        </div> --%>
      <!-- 모두읽음 버튼 추가 -->   
+     <div style="display:flex; justify-content:space-between">
+     <h2 style="margin:0; margin-top:20px;">알림함</h2> 
 	<div style="margin: 20px;">
         <form id="allReadForm" action="./allRead" method="post">
 		    <input type="hidden" name="userId" value="${userId}">
 		    <div style="text-align: right;">
-		        <button type="submit" class="yellow-button">모두 읽음</button>
+		        <button type="submit" class="btn-allRead">모두 읽음</button>
 		    </div>
 		</form>
-	</div>
-	
+	</div></div>
+	<hr style="border:1px solid lightgrey"/>
 	<c:if test="${not empty message}">
 	    <script>
 	        alert("${message}");
@@ -256,41 +300,65 @@
         </div>
     </div>
 
-    <div class="notification-list">
-	    <c:forEach var="notification" items="${notifications}">
-	        <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
-	            <div class="notification-content">
-	            <c:if test="${notification.getIdeaID() != 0}">
-	                <div class="title">대상 아이디어: [${notification.idea.title}]</div>
-	            </c:if>
-	                <div><p>${notification.message}</p></div>
-	                <div>회의방 제목: ${notification.roomTitle}</div>
-	            </div>
-	            <div class="notification-date">
-	            	<div class="delete" data-id="${notification.notificationID}">
-					    <img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
-					</div>
-	                <div class="date">${notification.createdAt}</div>
-	            </div>
-	        </div>
-	    </c:forEach>
-	</div>
+       <div class="notification-list">
+            <c:forEach var="notification" items="${notifications}">
+                <div class="notification ${notification.read ? 'read' : 'unread'}" data-id="${notification.notificationID}">
+                    <div class="notification-content">
+                        <div class="title">
+                            <img src="./resources/meeting.png" style="width:35px; height:35px; margin-right:10px;" alt="회의방제목"> 
+                            ${notification.roomTitle}
+                            <c:if test="${notification.getIdeaID() != 0}">
+                                <span class="idea-title">(아이디어: ${notification.idea.title})</span>
+                            </c:if>
+                        </div>
+                        <div style="margin-left: 40px;">${notification.message}</div>
+                    </div>
+                    <div class="notification-date">
+                        <div class="delete" data-id="${notification.notificationID}">
+                            <img src="./resources/delete.png" alt="Delete" style="width: 40px; height: 40px;">
+                        </div>
+                        <div class="date">${notification.createdAt}</div>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+                <div class="notiPagination">
+            <c:if test="${currentPage > 1}">
+                <a href="?page=${currentPage - 1}&pageSize=${pageSize}">&laquo;</a>
+            </c:if>
+            <c:forEach begin="1" end="${totalPages}" var="i">
+                <c:choose>
+                    <c:when test="${currentPage eq i}">
+                        <a class="notiActive" href="#">${i}</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="?page=${i}&pageSize=${pageSize}">${i}</a>
+                    </c:otherwise>
+                </c:choose>
+            </c:forEach>
+            <c:if test="${currentPage < totalPages}">
+                <a href="?page=${currentPage + 1}&pageSize=${pageSize}">&raquo;</a>
+            </c:if>
+        </div>
 </div>
 
 <!-- 모달 창 -->
-<div id="notificationModal" class="modal">
-    <div class="modal-content">
+<div id="notiListModal" class="notiListModal">
+    <div class="notiListModal-content">
         <span class="close">&times;</span>
-        <h2 id="modalTitle" class="modal-title"></h2>
-        <p id="modalRoom" class="modal-room"></p>
-        <div class="modal-message-box">
-            <p id="modalMessage" class="modal-message"></p>
+        <h2 id="modalTitle" class="notiListModal-title"></h2>
+        <p id="modalRoom" class="notiListModal-room"></p>
+        <div class="notiListModal-message-box">
+            <p id="modalMessage1" class="notiListModal-message"></p>
         </div>
-        <div class="modal-footer">
-            <button id="closeModal" class="modal-button">닫기</button>
+        <div class="notiListModal-footer">
+            <button id="closeModal" class="btn-allRead">닫기</button>
         </div>
     </div>
 </div>
+
+<!-- 하단 간격조정 -->
+	<div style="margin-bottom: 200px;"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
@@ -331,18 +399,22 @@ $(document).ready(function() {
 
 
     // 알림 클릭 시 모달 창 띄우기 및 읽음 상태 업데이트
-    $('.notification').click(function() {
+ $('.notification').click(function() {
         currentNotificationId = $(this).data('id'); // 알림 ID 가져오기
         const title = $(this).find('.title').text();
         const message = $(this).find('.notification-content div:nth-child(2)').text();
         const room = $(this).find('.notification-content div:nth-child(3)').text();
+        
         $('#modalTitle').text(title);
-        $('#modalMessage').text(message);
+        $('#modalMessage1').text(message);
         $('#modalRoom').text(room);
-        $('#notificationModal').show();
+        $('#notiListModal').show();
         
         // 알림을 읽음 상태로 업데이트
         // window.location.href = `./updateRead/\${notificationId}`;
+        
+     	// 화면 유지하기 위해 스크롤 위치 저장
+        localStorage.setItem('scrollPosition', $(window).scrollTop());
     });
     
 	 // 알림 삭제 기능
@@ -356,7 +428,7 @@ $(document).ready(function() {
     
     // 모달 창 닫기
     $('.close, #closeModal').click(function() {
-        $('#notificationModal').hide();
+    	$('#notiListModal').hide(); 
         
         // 알림을 읽음 상태로 업데이트
         window.location.href = `./updateRead/\${currentNotificationId}`;
@@ -364,13 +436,20 @@ $(document).ready(function() {
 
     // 모달 창 바깥 클릭 시 닫기
     $(window).click(function(event) {
-        if (event.target.id === 'notificationModal') {
-            $('#notificationModal').hide();
+    	 if (event.target.id === 'notiListModal') {
+             $('#notiListModal').hide();
             
             // 알림을 읽음 상태로 업데이트
             window.location.href = `./updateRead/\${currentNotificationId}`;
         }
     });
+    
+ 	// 스크롤 위치 복원
+    if (localStorage.getItem('scrollPosition') !== null) {
+        $(window).scrollTop(localStorage.getItem('scrollPosition'));
+        localStorage.removeItem('scrollPosition');
+    }
+ 	
 });
 </script>
 </body>

@@ -14,6 +14,9 @@ public interface IdeaOpinionsDao {
     // 각 모자 색상에 따른 의견 5개 목록 검색
     List<IdeaOpinionsDto> findTop5ByHatColor(String hatColor);
     
+    // stage3인(=투표로 선택된) 아이디어만 찾는 쿼리
+    List<Ideas> yesPickIdeaList(int roomId);
+    
     
 	// ideaOpinions.jsp
     // 알림 테이블의 IdeaID컬럼으로 Ideas 테이블 정보 가져오기
@@ -59,8 +62,9 @@ public interface IdeaOpinionsDao {
     
     // 다음단계
     // 2개 이상 의견 작성한 사람들의 MeetingRoomMembers테이블의 기여도 +1
-    void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
-	
+    // void updateContribution(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
+    void updateContribution(@Param("roomId") int roomId, @Param("userId") int userId);
+    
     // Timer 시간 새로 insert 해주기
 	void updateNewTimer(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("formattedTime") String formattedTime);
     
@@ -68,13 +72,17 @@ public interface IdeaOpinionsDao {
     void updateStage(@Param("roomId") int roomId);
     
     // Ideas에서 아이디어 StageID 4로 변경
-	void updateIdeaStage(@Param("ideaId") int ideaId);
+	void updateIdeaStage(@Param("roomId") int roomId);
 	
 	// 방번호별 userList
 	List<Integer> RoomForUserList(@Param("roomId") int roomId);
 	// StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기
-	void insertStageParticipation(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("list") Integer list);
-    
+	// void insertStageParticipation(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("list") Integer list);
+	void insertStageParticipation(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("userId") Integer userId);
+	
+	// ideaOpinionsClear.jsp
+	// Ideas 테이블에서 제목, stageID 가져오기
+	List<Ideas> getIdeasInfo(@Param("roomId") int roomId); // Ideas = IdeasDto
 
 	
     
@@ -101,7 +109,8 @@ public interface IdeaOpinionsDao {
     // 1개 이상 의견 작성시 StageParticipation테이블의 status 업데이트
     void updateStatus2(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("roomId") int roomId, @Param("status") boolean status);
     // 1개 이상 의견 작성시 MeetingRoomMembers테이블의 기여도 +1
-    void updateContribution2(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
+    // void updateContribution2(@Param("ideaId") int ideaId, @Param("userId") int userId, @Param("roomId") int roomId);
+    void updateContribution2(@Param("roomId") int roomId);
     // 사용자별 특정 탭에 이미 작성한 의견이 있는지 확인하는 메서드(중복작성방지)
     int countUserOpinionsInTab(@Param("userId") int userId, @Param("ideaId") int ideaId, @Param("hatColor") String hatColor);
     
@@ -132,20 +141,21 @@ public interface IdeaOpinionsDao {
     void updateStage5(@Param("roomId") int roomId);
     
     // Ideas에서 아이디어 StageID 5로 변경
-	void updateIdeaStage5(@Param("ideaId") int ideaId);
+	void updateIdeaStage5(@Param("roomId") int roomId);
 	
 	// 방번호별 userList
 	List<Integer> RoomForUserList5(@Param("roomId") int roomId);
 	// StageParticipation에서 참여자별 StageID 4로 새로 생성해서 Status 0으로 일괄 넣기
-	void insertStageParticipation5(@Param("roomId") int roomId, @Param("ideaId") int ideaId, @Param("list") Integer list);
+	void insertStageParticipation5(@Param("roomId") int roomId, @Param("list") Integer list);
 
 	
 	
 	// ideaOpinionsClear2.jsp
 	// Ideas 테이블에서 제목, stageID 가져오기
-	List<Ideas> getIdeasInfo(@Param("roomId") int roomId); // Ideas = IdeasDto
+	List<Ideas> getIdeasInfo2(@Param("roomId") int roomId); // Ideas = IdeasDto
 
-
+	//기안자 +기여도
+	void updateContributionCntForYesPick(@Param("roomId") int roomId);
     
 }
 

@@ -1,5 +1,9 @@
 package com.kb.star.command.room;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +19,10 @@ import com.kb.star.dto.IdeaOpinionsDto;
 import com.kb.star.dto.Ideas;
 import com.kb.star.dto.MeetingRooms;
 import com.kb.star.dto.NotiDto;
+import com.kb.star.dto.UsersDto;
 import com.kb.star.util.IdeaOpinionsDao;
 import com.kb.star.util.RoomDao;
+
 
 public class IdeaOpinions2Command implements RoomCommand {
 
@@ -34,8 +40,10 @@ public class IdeaOpinions2Command implements RoomCommand {
         HttpServletRequest request = (HttpServletRequest) map.get("request");
         int roomId = Integer.parseInt(map.get("roomId").toString());
         int ideaId = Integer.parseInt(map.get("ideaId").toString());
+        int stage = Integer.parseInt(map.get("stage").toString());
         model.addAttribute("roomId", roomId);
         model.addAttribute("ideaId", ideaId);
+        model.addAttribute("stage", stage);
 
         HttpSession session = request.getSession();
         int userId = (Integer) session.getAttribute("userId");
@@ -43,10 +51,6 @@ public class IdeaOpinions2Command implements RoomCommand {
         
         IdeaOpinionsDao ideaOpinionsDao = sqlSession.getMapper(IdeaOpinionsDao.class);
         
-        
-	    // 타이머 종료 시간 
-        String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
-        model.addAttribute("timer", endTime);
         
         // 방장 ID 가져오기
         int roomManagerId = ideaOpinionsDao.getRoomManagerId(roomId);
@@ -59,10 +63,10 @@ public class IdeaOpinions2Command implements RoomCommand {
         int doneUserCount = ideaOpinionsDao.getDoneUserCount2(roomId, ideaId);
         model.addAttribute("doneUserCount", doneUserCount);
         
-        // 방장 사이드탭
-        RoomDao dao=sqlSession.getMapper(RoomDao.class);
-        MeetingRooms info = dao.roomDetailInfo(roomId);
-        model.addAttribute("meetingRoom", info);
+		// 상세설명 - 토글
+		RoomDao dao = sqlSession.getMapper(RoomDao.class);
+		MeetingRooms info = dao.roomDetailInfo(roomId);
+		model.addAttribute("meetingRoom", info);
 	    
         // 방 제목
         Ideas idea = ideaOpinionsDao.getIdeaTitleById(ideaId);
@@ -73,25 +77,44 @@ public class IdeaOpinions2Command implements RoomCommand {
         List<IdeaOpinionsDto> previousPositiveOpinions = ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, "Positive");
         List<IdeaOpinionsDto> previousWorryOpinions = ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, "Worry");
         List<IdeaOpinionsDto> previousStrictOpinions = ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, "Strict");
+        model.addAttribute("previousSmartOpinions", previousSmartOpinions);
+        model.addAttribute("previousPositiveOpinions", previousPositiveOpinions);
+        model.addAttribute("previousWorryOpinions", previousWorryOpinions);
+        model.addAttribute("previousStrictOpinions", previousStrictOpinions);
 
+        
         // 현재 탭에 이미 의견을 작성했는지 확인
-        String currentTab = map.get("currentTab").toString();
+        String currentTab = (String) map.get("currentTab");
+        if (currentTab == null || currentTab.isEmpty()) {
+            currentTab = "tab-smart"; // 기본값으로 '객관적관점' 탭 설정
+        }
+        model.addAttribute("currentTab", currentTab);
+        
         // 현재 탭
         String hatColor = getHatColorFromTab(currentTab);
+        model.addAttribute("currentHatColor", hatColor);
 
+        // 탭별로 현재 의견 전체를 가져오는 로직
         List<IdeaOpinionsDto> currentOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, hatColor);
+        model.addAttribute("currentOpinions", currentOpinions);
+        
+        // 각 탭별로 현재 의견을 가져오는 로직
+        List<IdeaOpinionsDto> smartOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, "Smart");
+        List<IdeaOpinionsDto> positiveOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, "Positive");
+        List<IdeaOpinionsDto> worryOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, "Worry");
+        List<IdeaOpinionsDto> strictOpinions = ideaOpinionsDao.getCurrentOpinionsByHatColor(ideaId, "Strict");
+        model.addAttribute("smartOpinions", smartOpinions);
+        model.addAttribute("positiveOpinions", positiveOpinions);
+        model.addAttribute("worryOpinions", worryOpinions);
+        model.addAttribute("strictOpinions", strictOpinions);
+        
         
         // 사용자가 특정 의견에 좋아요를 눌렀는지 확인하여 설정
         for (IdeaOpinionsDto opinion : currentOpinions) {
             opinion.setLikedByCurrentUser(ideaOpinionsDao.checkUserLikedOpinion(userId, opinion.getOpinionID()));
         }
 
-        model.addAttribute("previousSmartOpinions", previousSmartOpinions);
-        model.addAttribute("previousPositiveOpinions", previousPositiveOpinions);
-        model.addAttribute("previousWorryOpinions", previousWorryOpinions);
-        model.addAttribute("previousStrictOpinions", previousStrictOpinions);
         
-        model.addAttribute("currentOpinions", currentOpinions);
         model.addAttribute("previousOpinions", ideaOpinionsDao.getPreviousOpinionsByHatColor(ideaId, hatColor));
         
         
@@ -124,6 +147,27 @@ public class IdeaOpinions2Command implements RoomCommand {
 		// leftSideBar.jsp 출력용
 		MeetingRooms meetingRoom = sqlSession.selectOne("com.kb.star.util.RoomDao.roomDetailInfo", roomId);
 		model.addAttribute("meetingRoom", meetingRoom);
+		
+		//오른쪽 사이드바
+		List<Integer> userIdList = dao.roomIdFormember(roomId);
+		List<UsersDto> userList = new ArrayList<UsersDto>();
+		for(int ids : userIdList) {
+			UsersDto user = dao.whosMember(ids);
+			if(user != null) {
+				userList.add(user);
+			}
+		}
+		model.addAttribute("userList", userList);
+		
+		// url로 접속 막기
+		model.addAttribute("userIdList", userIdList);
+		
+		// 오른쪽 사이드바 기여도
+		int totalContributionNum = dao.totalContributionNum(roomId); // RoomDao
+		model.addAttribute("totalContributionNum", totalContributionNum);
+		
+		int myContributionNum = dao.myContributionNum(roomId, userId); // RoomDao
+		model.addAttribute("myContributionNum", myContributionNum);
 
 		// idea에서 stageID = 3인(=선택된 아이디어) 조회해서 model에 담기
 		List<Ideas> dto = dao.yesPickIdeaList(roomId);
@@ -134,9 +178,22 @@ public class IdeaOpinions2Command implements RoomCommand {
 		params.put("roomId", roomId);
 		params.put("ideaId", ideaId);
 
-		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByIdeaId", params);
+		List<NotiDto> roomMessage = sqlSession.selectList("com.kb.star.util.NotiDao.getMessagesByroomId", params);
 		model.addAttribute("roomMessage", roomMessage);
+//		int stageId = Integer.parseInt(request.getParameter("stage"));
+//		model.addAttribute("stage",stageId);
 		// 여기까지 leftSideBar 출력용
+		
+		
+		// 타이머 종료 시간 
+        String endTime = ideaOpinionsDao.getEndTime(roomId, ideaId);
+        model.addAttribute("timer", endTime);
+        boolean isTimerEnded = isTimerEnded(endTime);
+        model.addAttribute("isTimerEnded", isTimerEnded);
+        // 사용자의 의견 작성 가능 여부를 확인
+        boolean canWriteOpinion = !isTimerEnded && userOpinionCount < 4 && !userCommentedTabs.contains(currentHatColor);
+        model.addAttribute("canWriteOpinion", canWriteOpinion);
+        
     }
     
     private String getHatColorFromTab(String currentTab) {
@@ -146,6 +203,18 @@ public class IdeaOpinions2Command implements RoomCommand {
             case "tab-worry": return "Worry";
             case "tab-strict": return "Strict";
             default: return "Smart";
+        }
+    }
+    
+    private boolean isTimerEnded(String endTime) {
+        if (endTime == null) return false;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date end = sdf.parse(endTime);
+            return new Date().after(end);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
         }
     }
     

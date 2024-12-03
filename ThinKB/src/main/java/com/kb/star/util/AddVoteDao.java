@@ -7,16 +7,14 @@ import org.apache.ibatis.annotations.Param;
 
 import com.kb.star.dto.AddVoteDto;
 import com.kb.star.dto.AddVoteOptionsDto;
-import com.kb.star.dto.MeetingRooms;
-import com.kb.star.dto.Teams;
-import com.kb.star.dto.UserListDto;
 import com.kb.star.dto.UsersDto;
+import com.kb.star.dto.VoteParticipationsDto;
 
 // 마이바티스 인터페이스
 public interface AddVoteDao {
 
 	// 새로운 투표 생성
-	void insertNewVote(String title, String departmentId, String endDate);
+	void insertNewVote(String title, String departmentId, String endDate, String id);
 
 	int voteIdConfirm(String departmentId);
 
@@ -42,5 +40,13 @@ public interface AddVoteDao {
 	void updateCompletedStatus();
 
 	Integer getUserOptionIdForVote(Map<String, Object> params);
+
+	List<UsersDto> whosVoteMaker();
+
+	VoteParticipationsDto myVoteResult(int addVoteId, int userId);
+
+	void voteUpdate(int optionId, int addVoteId, int userId);
+
+	List<AddVoteOptionsDto> voteOptionsResult(int addVoteId);
 
 }

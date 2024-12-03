@@ -29,15 +29,11 @@ public class AddVoteOptionsCommand implements AddCommand {
 		List<AddVoteOptionsDto> dto = dao.voteOptions(addVoteId);
 		model.addAttribute("optionList", dto);
 		
-		// 투표 결과 출력
-		List<AddVoteOptionsDto> voteresult = dao.voteOptionsAfter(addVoteId);
-		model.addAttribute("voteresult", voteresult);
-		
 		// 투표 항목 정보
 		AddVoteDto voteInfo = dao.selectVoteByAddVoteId(addVoteId);
 		model.addAttribute("voteInfo", voteInfo);
 		
-		// 투표 참여여부 확인 및 OptionID 가져오기
+//		// 투표 참여여부 확인 및 OptionID 가져오기
 		Integer optionId = dao.checkVoteParticipation(addVoteId, userId);
 		model.addAttribute("votedOptionId", optionId);
 

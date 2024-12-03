@@ -16,6 +16,175 @@
 	text-align: center;
 }
 
+.ab-body {
+	font-family: Arial, sans-serif;
+	background-color: #FFFFf1;
+}
+
+.header1 {
+	text-align: center;
+}
+
+.header1 img {
+	width: 100%;
+	height: auto;
+	max-height: 500px;
+}
+
+.user-info p {
+	margin: 0;
+}
+
+.button-container {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 10px;
+}
+
+.progress-container {
+	display: flex;
+	justify-content: center;
+	margin: 10px 0;
+}
+
+.progress {
+	background-color: #ffffff;
+	padding: 10px;
+	border-radius: 25px;
+	display: flex;
+	justify-content: space-around;
+	height: 50px;
+	width: 80%;
+	border: 1px solid #ccc;
+	font-size: 1.3em;
+	justify-content: flex-start;
+}
+
+.progress label {
+	display: flex;
+	align-items: center;
+	margin-left: 40px;
+}
+
+.progress input {
+	margin-right: 5px;
+}
+
+/* 진행중인 단계 */
+.progress-header-container {
+	display: flex;
+	justify-content: left;
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 50px;
+}
+
+.progress-header {
+	margin: 0;
+	padding: 10px 0;
+}
+
+.ideas {
+	margin: 30px 20px;
+}
+
+.idea {
+	padding: 20px 20px;
+	background-color: #ffffff;
+	border-radius: 10px;
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	height: 100px;
+	width: 80%;
+	border: 1px solid #ccc;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 1.2em;
+	cursor: pointer;
+}
+
+.idea h3, .idea p {
+	margin: 0;
+}
+
+.idea-left {
+	text-align: left;
+}
+
+.idea-right {
+	display: flex;
+	justify-content: center;
+	align-items: center; /* 세로 가운데 정렬 */
+	flex-direction: column;
+	height: 100%;
+}
+
+.idea-status {
+	padding: 10px 20px;
+	border-radius: 10px;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+
+.idea-complete {
+	background-color: #CEFBC9; /* 완료 상태 배경색 */
+}
+
+.idea-complete:hover {
+	background-color: #CEFBA9; /* 완료 상태 호버 배경색 */
+}
+
+.idea-incomplete {
+	background-color: #EAEAEA; /* 미완료 상태 배경색 */
+}
+
+.idea-incomplete:hover {
+	background-color: #D3D3D3; /* 미완료 상태 호버 배경색 */
+}
+
+.vote-button-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 30px;
+}
+
+.vote-button {
+	background-color: #ffc107;
+	font-size: 1.2em;
+	border: none;
+	width: 300px;
+	padding: 15px 30px;
+	border-radius: 25px;
+	cursor: pointer;
+}
+
+.vote-button:hover {
+	background-color: #e0a800;
+}
+
+.abtestMake {
+	display: flex;
+	justify-content: end;
+	margin-right: 10%;
+}
+
+.abtestMake button {
+	padding: 15px 30px; /* 패딩을 더 크게 설정 */
+	background-color: #ffcc00;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	font-size: 20px; /* 폰트 크기를 더 크게 설정 */
+	font-weight: bold;
+	margin-bottom: 5px;
+	transition: background-color 0.3s;
+}
+
 .header1 img {
 	width: 100%;
 	height: auto;
@@ -179,7 +348,7 @@
 </head>
 
 <body class="ab-body">
-	<%@ include file="../header.jsp"%></div>
+	<%@ include file="../header.jsp"%>
 	<div class="header1">
 		<img src="./resources/header2.jpg" alt="Header Image">
 	</div>
@@ -211,7 +380,7 @@
 					<br>
 				</div>
 				<div class="idea-right">
-					<div class="idea-status">${test.participated ? '완료' : '미완료'}
+					<div class="idea-status">${test.participated ? '완료' : '미완료 '}
 					</div>
 				</div>
 			</div>

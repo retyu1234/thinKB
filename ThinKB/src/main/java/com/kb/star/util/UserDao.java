@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import com.kb.star.dto.ContributionDetail;
 import com.kb.star.dto.MeetingRoomStats;
 import com.kb.star.dto.MeetingRooms;
+import com.kb.star.dto.ReportsDto;
 import com.kb.star.dto.Teams;
 import com.kb.star.dto.TodoDto;
 import com.kb.star.dto.UserListDto;
@@ -82,5 +83,9 @@ public interface UserDao {
 	MeetingRoomStats getMeetingRoomStats(int userId);
     
 	List<ContributionDetail> getUserContributions(int userId);
+	
+	MeetingRoomStats getMeetingRoomStatsAdmin(int userId);
+
+	List<ReportsDto> reportsResult();
 
 }

@@ -26,12 +26,15 @@ import com.kb.star.command.addFunction.ABTestList;
 import com.kb.star.command.addFunction.ABTestVote;
 import com.kb.star.command.addFunction.AddCommand;
 import com.kb.star.command.addFunction.AddVoteOptionsCommand;
+import com.kb.star.command.addFunction.CompleteABTestDetail;
 import com.kb.star.command.addFunction.MakeAorBCommand;
 import com.kb.star.command.addFunction.MakePinTestCommand;
 import com.kb.star.command.addFunction.MakeVoteCommand;
 import com.kb.star.command.addFunction.PinTestDetailCommand;
 import com.kb.star.command.addFunction.VoteListCommand;
+import com.kb.star.command.addFunction.addVoteAfterCommand;
 import com.kb.star.command.addFunction.pinListCommand;
+import com.kb.star.command.addFunction.submitAddVoteCommand;
 import com.kb.star.command.room.UserListCommand;
 import com.kb.star.dto.AddVoteDto;
 import com.kb.star.util.AddVoteDao;
@@ -72,7 +75,7 @@ public class AddFunctionController {
 	}
 
 	// ab테스트 투표화면
-	@RequestMapping("/adTsetdetail")
+	@RequestMapping("/abTestdetail")
 	public String adTsetdetail(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		command = new ABTestDetail(sqlSession);
@@ -88,14 +91,16 @@ public class AddFunctionController {
 		model.addAttribute("userId", userId);
 		command = new ABTestVote(sqlSession);
 		command.execute(model);
-		return "redirect:/AorBList";
+		return "redirect:/completedTestDetail";
 	}
 
 	// ab테스트 투표 결과
 	@RequestMapping("/completedTestDetail")
-	public String completedTestDetail(HttpServletRequest request, Model model) {
+	public String completedTestDetail(HttpSession session, HttpServletRequest request, Model model) {
+		int userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("request", request);
-		command = new ABTestDetail(sqlSession);
+		model.addAttribute("userId", userId);
+		command = new CompleteABTestDetail(sqlSession);
 		command.execute(model);
 		return "/addFunction/resultABTestCopy";
 	}
@@ -172,30 +177,15 @@ public class AddFunctionController {
 
 	// 투표 제출
 	@RequestMapping("/submitAddVote")
-	public String submitAddVote(HttpServletRequest request, Model model, RedirectAttributes redirectAttributes) {
+	public String submitAddVote(@RequestParam("addVoteId") int addVoteId,
+			@RequestParam("optionId") int optionId, HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
-		int userId = Integer.parseInt(session.getAttribute("userId").toString());
-
-		String addVoteIdStr = request.getParameter("addVoteId");
-		String optionIdStr = request.getParameter("optionId");
-
-		if (addVoteIdStr == null || addVoteIdStr.isEmpty() || optionIdStr == null || optionIdStr.isEmpty()) {
-			throw new IllegalArgumentException("Invalid parameters");
-		}
-
-		int addVoteId = Integer.parseInt(addVoteIdStr);
-		int optionId = Integer.parseInt(optionIdStr);
-
-		AddVoteDao dao = sqlSession.getMapper(AddVoteDao.class);
-
-		// 투표 참여자의 optionId 업데이트
-		dao.updateVoteParticipation(optionId, addVoteId, userId);
-
-		// 선택된 옵션의 voteCount 증가
-		dao.incrementVoteCount(optionId);
-
-		// RedirectAttributes를 사용하여 파라미터 전달
-		redirectAttributes.addAttribute("addVoteId", addVoteId);
+		int id = (Integer) session.getAttribute("userId");
+		model.addAttribute("userId", id);
+		model.addAttribute("addVoteId", addVoteId);
+		model.addAttribute("optionId", optionId);
+		command = new submitAddVoteCommand(sqlSession);
+		command.execute(model);
 
 		return "redirect:/addVoteAfter";
 	}
@@ -206,9 +196,11 @@ public class AddFunctionController {
 		int userId = (Integer) session.getAttribute("userId");
 		model.addAttribute("id", userId);
 		model.addAttribute("addVoteId", addVoteId);
-		command = new AddVoteOptionsCommand(sqlSession);
+		command = new addVoteAfterCommand(sqlSession);
+//		command = new AddVoteOptionsCommand(sqlSession);
 		command.execute(model);
-		return "addFunction/addVoteAfter";
+//		return "addFunction/addVoteAfter";
+		return "addFunction/addVoteAfterCopy";
 	}
 
 	@RequestMapping("/AorBFeedbackList")
@@ -218,7 +210,7 @@ public class AddFunctionController {
 		model.addAttribute("userId", userId);
 		command = new ABFeedbackListCommand(sqlSession);
 		command.execute(model);
-		return "/addFunction/AorBFeedbackList";
+		return "/addFunction/AorBFeedbackListCopy";
 	}
 
 	// 핀테스트 목록
@@ -249,7 +241,7 @@ public class AddFunctionController {
 	
 	// 핀테스트 세부 내용
 	@RequestMapping(value = "/pinTestDetail", method = RequestMethod.GET)
-	public String ㅔ(HttpServletRequest request, Model model) {
+	public String pinTestDetail(HttpServletRequest request, Model model) {
 		model.addAttribute("request", request);
 		command = new PinTestDetailCommand(sqlSession); // 변경된 커맨드 클래스 사용
 		command.execute(model);

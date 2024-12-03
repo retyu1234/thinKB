@@ -37,10 +37,17 @@ public interface IdeaDao {
     // RoomID로 RoomTitle 조회
     String selectRoomTitleById(int roomId);
     
-    //기여도 추가
+    // 기여도 추가
     void contributionUpdate(int roomId, int userId);
 
+    // 아이디어 답변 댓글 삽입
     void insertIdeaAnswerReply(@Param("replyStep") int replyStep, @Param("replyContent") String replyContent, 
             @Param("userId") int userId, @Param("roomId") int roomId, @Param("ideaId") int ideaId);
+    
+    // 아이디어별 댓글 수 조회
+    int selectIdeaReplyCountByIdeaId(int ideaId);
+
+    // 댓글의 IsDelete 필드를 1로 업데이트
+    void updateIsDeleteById(@Param("ideaReplyId") int ideaReplyId, @Param("userId") int userId);
 
 }

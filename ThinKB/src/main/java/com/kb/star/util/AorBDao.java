@@ -31,5 +31,7 @@ public interface AorBDao {
 	// 11:08 추가
 	List<AorBDto> getAorBFeedbackList(@Param("departmentId") int departmentId);
 
+	public Integer myPick(int abTestId, int userId);
+
 
 }

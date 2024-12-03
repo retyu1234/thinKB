@@ -1,32 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="java.util.*, java.text.SimpleDateFormat" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<%
+// 사용자 확인
+Integer managerId = (Integer) request.getAttribute("managerId");
+Integer userId = (Integer) session.getAttribute("userId");
+boolean isParticipant = false;
+
+   if (managerId.equals(userId)) {
+       isParticipant = true;
+   }
+
+
+if (!isParticipant) {
+	%>
+    <script>
+        alert("회의방 방장이 아닙니다. 회의방 목록 화면으로 이동합니다.");
+        window.location.href = "./meetingList";
+    </script>
+    <%
+    return;
+}
+%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Insert title here</title>
+<title>thinKB - 회의방관리</title>
 <style>
 .newRoom-body {
 	margin: 0;
 	padding: 0;
-	background-image:
-		url('${pageContext.request.contextPath}/resources/23029.jpg');
-	background-size: cover; /* 이미지가 요소에 완전히 맞도록 비율을 조정 */
-	background-position: center; /* 이미지를 가운데 정렬 */
-	background-repeat: no-repeat;
-	height: 400px; /* 요소의 높이를 400px로 고정 */
+	caret-color: transparent;
 }
 
 .content {
-	padding: 20px; /* content 영역의 여백 설정 */
-	margin-left: 25%;
-	margin-right: 25%;
+	padding: 30px; /* content 영역의 여백 설정 */
+	margin-left: 20%;
+	margin-right: 20%;
+	caret-color: transparent;
+	font-family: KB금융 본문체 Light;
 }
 
 .title {
-	font-size: 30px;
+	font-size: 16pt;
 	font-weight: bold;
 	color: black;
 	margin-top: 30px;
@@ -36,12 +56,13 @@
 .custom-input {
 	width: 100%; /* 화면 가로에 꽉 차도록 설정 (여백 20px 고려) */
 	padding: 12px; /* 내부 여백 설정 */
-	border: 3px solid #666; /* 테두리 두께와 색상 설정 */
+	border: 2px solid #666; /* 테두리 두께와 색상 설정 */
 	border-radius: 8px; /* 테두리 둥글기 설정 */
 	transition: border-color 0.3s ease; /* 테두리 색 변화에 대한 transition 설정 */
 	/* 기본 테두리 색상 */
 	border-color: #666;
 	font-size: 16px; /* 글자 크기 설정 */
+	font-family: KB금융 본문체 Light;
 }
 
 /* 입력 중에는 노란색 테두리로 변경 */
@@ -68,10 +89,11 @@
 .date-input {
 	width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 */
 	padding: 12px;
-	border: 3px solid #666;
+	border: 2px solid #666;
 	border-radius: 8px;
 	font-size: 16px;
 	box-sizing: border-box;
+	font-family: KB금융 본문체 Light;
 }
 
 .calendar-icon {
@@ -126,6 +148,7 @@
 	display: flex;
 	justify-content: space-between;
 	padding: 0 10px;
+	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
@@ -158,6 +181,7 @@
 	border-radius: 5px;
 	font-size: 16px;
 	text-align: center;
+	font-family: KB금융 본문체 Light;
 }
 
 .timer-input:hover {
@@ -185,21 +209,22 @@
 	margin: 20px;
 }
 
-.btn {
-	display: inline-block;
-	padding: 10px 20px;
-	font-size: 16px;
+/* 노란색 버튼 */
+.yellow-button {
+	background-color: #FFCC00;
 	color: black;
-	background-color: #e6b800;
+	padding: 10px 20px;
 	border: none;
 	border-radius: 10px;
+	font-size: 13pt;
 	cursor: pointer;
+	font-weight: bold;
 }
 
-.btn:hover {
-	background-color: #696969;
-	color: white;
+.yellow-button:hover {
+	background-color: #D4AA00;
 }
+
 
 .modal {
 	display: none;
@@ -260,31 +285,7 @@
 	border-bottom: 1px solid #ddd;
 }
 
-.btn-secondary, .btn-primary {
-	padding: 10px 20px;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	font-size: 16px;
-}
 
-.btn-secondary {
-	background-color: gray;
-	color: white;
-}
-
-.btn-primary {
-	background-color: blue;
-	color: white;
-}
-
-.btn-secondary:hover {
-	background-color: darkgray;
-}
-
-.btn-primary:hover {
-	background-color: darkblue;
-}
 
 .error-message {
 	color: red;
@@ -350,6 +351,28 @@
 	color: red;
 	font-size: 0.9em;
 }
+#timer-section, #timer, #timer-message {
+    display: none;
+}
+.manageTop{
+	display: flex;
+	justify-content: space-between;
+}
+#backButton{
+	border: none;
+	background-color: #ffffff;
+	font-size: 26pt;
+	transition: font-size 0.3s ease; 
+}
+#backButton:hover{
+	font-size: 30pt;
+}
+.custom-textarea {
+    height: 150px; /* Adjust the height as needed */
+    resize: vertical; /* Allows vertical resizing */
+    white-space: pre-wrap; /* Preserves line breaks */
+    overflow-y: auto; /* Adds a vertical scrollbar if needed */
+}
 </style>
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', function() {
@@ -360,6 +383,13 @@ document.addEventListener('DOMContentLoaded', function() {
         url.searchParams.set('roomId', roomId);
         link.href = url.toString();
     });
+
+    document.getElementById('backButton').addEventListener('click', function() {
+        var roomId = '${meetingRoom.roomId}';
+        var stageId = '${meetingRoom.stageId}';
+        var ideaId='${ideaId}';
+        window.location.href = './roomDetail?roomId=' + roomId + '&stage=' + stageId+'&ideaId='+ideaId;
+    });
 });
 </script>
 </head>
@@ -368,27 +398,30 @@ document.addEventListener('DOMContentLoaded', function() {
 	<div class="newRoom-body">
 		<%@ include file="../header.jsp"%>
 	</div>
-	<c:if test="${userId == meetingRoom.roomManagerId}">
-		<%@ include file="../sideBar.jsp"%>
-	</c:if>
+
+		<%@ include file="../leftSideBar.jsp"%>
+		<%@ include file="../rightSideBar.jsp"%>
+	
 
 	<div class="content">
+	<div class="manageTop">
+	<h2 style="font-size:20pt font-family: KB금융 제목체 Light;">⚙️회의방 관리</h2>
+	<button id="backButton"><img src="./resources/back.png" style="width:35px; height:35px;"/></button></div><hr class="line">
 		<form action="./updateRoomInfo" method="post"
 			onsubmit="return validateForm()">
 			<input type="hidden" name="roomId" value="${meetingRoom.roomId}" />
 			<input type="hidden" name="departmentId" value="${departmentId}" />
 			<input type="hidden" name="teamId" value="${teamId}" />
 
-			<div class="title">주제 변경</div>
+			<div class="title">◾ 주제 변경</div>
 			<input type="text" class="custom-input" name="title"
 				value="${meetingRoom.roomTitle}" placeholder="여기에 입력하세요">
 
-			<div class="title" style="margin-top: 70px;">회의 상세설명 변경</div>
-			<input type="text" class="custom-input" style="height: 70px;"
-				name="content" value="${meetingRoom.description}"
-				placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">
+			<div class="title" style="margin-top: 70px;">◾ 회의 상세설명 변경</div>
+			<textarea class="custom-input custom-textarea" name="content" 
+			placeholder="회의 주제에 대한 상세한 설명을 적어주세요 ex)참고할 수 있는 관련문서, 보고서 경로 등">${meetingRoom.description}</textarea>
 
-			<div class="title" style="margin-top: 70px;">회의 종료일 변경</div>
+			<div class="title" style="margin-top: 70px;">◾ 회의 종료일 변경</div>
 			<div class="date-input-container">
 				<div class="date-input-wrapper">
 					<input type="text" class="date-input" name="endDate"
@@ -402,8 +435,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 				<div class="calendar-popup" id="calendarPopup">
 					<div class="calendar-nav">
-						<span onclick="prevMonth()">&lt;</span> <span id="calendarMonth"></span>
-						<span id="calendarYear"></span> <span onclick="nextMonth()">&gt;</span>
+						<span onclick="prevMonth()">&lt;</span>
+						<span id="calendarYear"></span>
+						<span id="calendarMonth"></span>
+						<span onclick="nextMonth()">&gt;</span>
 					</div>
 					<table id="calendarTable" class="calendar-table">
 						<thead>
@@ -422,8 +457,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 
-			<div class="title" style="margin-top: 70px;">타이머 설정 변경</div>
-			<h2>아이디어별 타이머</h2>
+			<div class="title" style="margin-top: 70px;">◾ 타이머 설정 변경</div>
 
 			<c:set var="hasNonZeroIdea" value="false" />
 			<c:forEach var="timer" items="${timers}">
@@ -434,11 +468,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			<c:choose>
 				<c:when test="${hasNonZeroIdea}">
+				<div style="display:flex; justify-content:flex-start;">
 					<c:forEach var="timer" items="${timers}">
 						<c:if test="${timer.ideaId > 0}">
-							<div class="ideaTimer-card">
+							<div class="ideaTimer-card" style="margin-right:5%;">
 								<div class="card-header">
-									<h3>${timer.ideaTitle}</h3>
+									<h3>${timer.title}</h3>
 									<p>방 ID: ${timer.roomId}</p>
 								</div>
 								<div class="card-body">
@@ -462,13 +497,14 @@ document.addEventListener('DOMContentLoaded', function() {
 							</div>
 						</c:if>
 					</c:forEach>
+					</div>
 				</c:when>
 				<c:otherwise>
 					<c:forEach var="timer" items="${timers}">
 						<c:if test="${timer.ideaId == 0}">
 							<div class="ideaTimer-card">
 								<div class="card-header">
-									<h3>${timer.ideaId == 0 ? '초안작성' : timer.ideaTitle}</h3>
+									<h3>${timer.ideaId == 0 ? '초안작성' : timer.title}</h3>
 									<p>방 ID: ${timer.roomId}</p>
 								</div>
 								<div class="card-body">
@@ -496,7 +532,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			</c:choose>
 
 			<div style="margin: 70px; text-align: center;">
-				<button class="btn" type="submit">수정하기</button>
+				<button class="yellow-button" type="submit">수정하기</button>
 			</div>
 		</form>
 	</div>

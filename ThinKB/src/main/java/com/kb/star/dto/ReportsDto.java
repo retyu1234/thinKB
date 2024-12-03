@@ -10,9 +10,17 @@ public class ReportsDto {
 	private boolean isFinal;
 	private String createAt;
 	private String updateAt;
+	private String roomTitle;
     private int stageId;
+    private int isChoice;
     private String status;
     
+	public int getIsChoice() {
+		return isChoice;
+	}
+	public void setIsChoice(int isChoice) {
+		this.isChoice = isChoice;
+	}
 	public int getStageId() {
 		return stageId;
 	}
@@ -72,6 +80,12 @@ public class ReportsDto {
 	}
 	public void setUpdateAt(String updateAt) {
 		this.updateAt = updateAt;
+	}
+	public String getRoomTitle() {
+		return roomTitle;
+	}
+	public void setRoomTitle(String roomTitle) {
+		this.roomTitle = roomTitle;
 	}
 	
 }
